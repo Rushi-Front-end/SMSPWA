@@ -11,7 +11,17 @@ import { Linechartwithlabels } from '../../charts/apexcharts/linechart/linedata'
 const Analytics = () => {
   return(
   <Fragment>
-   <Pageheader currentpage="Dashboard" activepage="Dashboard" mainpage="Dashboard" />
+   {/* <Pageheader currentpage="Dashboard" activepage="Dashboard" mainpage="Dashboard" /> */}
+    <h4 className='pt-4'>Dashboard</h4>
+    <div className="breadcrumbs !border-0 ">
+                        <ol className="flex items-center whitespace-nowrap min-w-0">
+                           
+
+                            <li className="text-sm text-black-500 dark:text-[#8c9097] dark:text-white/50 hover:text-primary truncate" aria-current="page">
+                            Create Student
+                            </li>
+                        </ol>
+                    </div>
             <div className="grid grid-cols-12 gap-x-6">
                 <div className="xl:col-span-12 col-span-12">
                     <div className="grid grid-cols-12 gap-x-6">
@@ -99,7 +109,7 @@ const Analytics = () => {
                             <div className="box">
                                 <div className="box-header justify-between">
                                     <div className="box-title">
-                                        Staff Attendance Stats Statistics
+                                        Students
                                     </div>
                                     <div>
                                         <button type="button" className="ti-btn ti-btn-primary 1 !text-[0.85rem] !m-0 !font-medium">View All</button>
@@ -133,7 +143,7 @@ const Analytics = () => {
                             <div className="box">
                                 <div className="box-header justify-between">
                                     <div className="box-title">
-                                    Student Attendance Stats Statistics
+                                    Staff
                                     </div>
                                     <div>
                                         <button type="button" className="ti-btn ti-btn-primary 1 !text-[0.85rem] !m-0 !font-medium">View All</button>
@@ -167,7 +177,7 @@ const Analytics = () => {
                             <div className="box">
                                 <div className="box-header justify-between">
                                     <div className="box-title">
-                                        Expense Attendance Stats Statistics
+                                        Sickness
                                     </div>
                                     <div>
                                         <button type="button" className="ti-btn ti-btn-primary 1 !text-[0.85rem] !m-0 !font-medium">View All</button>
@@ -217,11 +227,11 @@ const Analytics = () => {
             <div className="grid grid-cols-12 gap-x-6">
                 <div className="xl:col-span-12 col-span-12">
                     <div className="grid grid-cols-12 gap-x-6">
-                        <div className="xxl:col-span-4 xl:col-span-12 col-span-12">
+                        <div className="xxl:col-span-6 xl:col-span-6 col-span-12">
                             <div className="box">
                                 <div className="box-header justify-between">
                                     <div className="box-title">
-                                       Student Attendance Stats Statistics
+                                      Exam Result
                                     </div>
                                     <div>
                                         <button type="button" className="ti-btn ti-btn-primary 1 !text-[0.85rem] !m-0 !font-medium">View All</button>
@@ -231,6 +241,56 @@ const Analytics = () => {
                                     <div id="sessions">
                                     <Linechartwithlabels/>
                                     </div>
+                                </div>
+                                {/* <div className="box-footer !p-0">
+                                    <div className="grid grid-cols-12 justify-center">
+                                        <div className="col-span-6 pe-0 text-center">
+                                            <div className="sm:p-4  p-2 ">
+                                                <span className="text-[#8c9097] dark:text-white/50 text-[0.6875rem]">Present</span>
+                                                <span className="block text-[1rem] font-semibold">44%</span>
+                                            </div>
+                                        </div>
+                                        <div className="col-span-6 px-0 text-center">
+                                            <div className="sm:p-4 p-2">
+                                                <span className="text-[#8c9097] dark:text-white/50 text-[0.6875rem]">Absent</span>
+                                                <span className="block text-[1rem] font-semibold">55%</span>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div> */}
+                            </div>
+                        </div> 
+                        
+                        <div className="xxl:col-span-6 xl:col-span-6 col-span-12">
+                            <div className="box">
+                                <div className="box-header justify-between">
+                                    <div className="box-title">
+                                       Reminder
+                                    </div>
+                                    <div>
+                                        <button type="button" className="ti-btn ti-btn-primary 1 !text-[0.85rem] !m-0 !font-medium">View All</button>
+                                    </div>
+                                </div>
+                                <div className="box-body !my-2 !py-6 !px-2">
+                                   <div className='reminder-list'>
+                                    <ul className='reminder-listing'>
+                                        <li className='pb-2'>
+                                        <button type="button" className="ti-btn ti-btn-success-full !rounded-full ti-btn-wave">16 June 2024</button>
+                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam, veritatis maxime. Ut modi, natus ab ducimus unde mollitia fuga minus cumque dolorum non fugit cum repellendus deleniti enim quo ullam.</p>
+                                        <hr/>
+                                        </li>
+                                        <li className='pb-2'>
+                                        <button type="button" className="ti-btn ti-btn-success-full !rounded-full ti-btn-wave">16 June 2024</button>
+                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam, veritatis maxime. Ut modi, natus ab ducimus unde mollitia fuga minus cumque dolorum non fugit cum repellendus deleniti enim quo ullam.</p>
+                                        <hr/>
+                                        </li>
+                                        <li className='pt-2'>
+                                        <button type="button" className="ti-btn ti-btn-success-full !rounded-full ti-btn-wave">16 June 2024</button>
+                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam, veritatis maxime. Ut modi, natus ab ducimus unde mollitia fuga minus cumque dolorum non fugit cum repellendus deleniti enim quo ullam.</p>
+                                        </li>
+                                    </ul>
+                                   </div>
                                 </div>
                                 {/* <div className="box-footer !p-0">
                                     <div className="grid grid-cols-12 justify-center">

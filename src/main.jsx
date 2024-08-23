@@ -42,6 +42,7 @@ import Visitor from './container/pages/extraFeatures/visitor.jsx'
 import CreateVisitor from './container/pages/extraFeatures/createVisitor.jsx'
 import Complaints from './container/pages/extraFeatures/complaints.jsx'
 import CreateComplaint from './container/pages/extraFeatures/createComplaint.jsx'
+import ErrorPage from './container/pages/404page/errorPage.jsx'
 
 
 
@@ -58,6 +59,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           </Route>    
           <Route path={`${import.meta.env.BASE_URL}`} element={<App />}>           
             <Route path={`${import.meta.env.BASE_URL}dashboard`} element={<Analytics />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/404page/pageNotFound`} element={<ErrorPage />} />
             <Route path={`${import.meta.env.BASE_URL}pages/student/studentDetails`} element={<Student />} />
             <Route path={`${import.meta.env.BASE_URL}pages/schools/allSchools`} element={<AllSchool />} />
             <Route path={`${import.meta.env.BASE_URL}pages/attendance/staffAttendance`} element={<StaffAttendance />} />

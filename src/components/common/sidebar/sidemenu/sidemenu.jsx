@@ -48,7 +48,7 @@ export const MENUITEMS = [
       },
       {
         icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-        path: `${import.meta.env.BASE_URL}pages/staff/staffDetails`,
+        path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
         type: "link",
         Name: '',
         active: false,
@@ -62,7 +62,7 @@ export const MENUITEMS = [
       },
       {
         icon: (<i className="bx bx-error side-menu__icon"></i>),
-        path: `${import.meta.env.BASE_URL}pages/timeTable/timeTable`,
+        path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
         type: "link",
         Name: '',
         active: false,
@@ -79,7 +79,7 @@ export const MENUITEMS = [
       },
           {
             icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
-            path: `${import.meta.env.BASE_URL}pages/admissionQuery/admissionQueryDetails`,
+            path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
             type: "link",
             Name: '',
             active: false,
@@ -106,7 +106,7 @@ export const MENUITEMS = [
           },
           {
             icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-            path: `${import.meta.env.BASE_URL}pages/health/healthDetails`,
+            path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
             type: "link",
             Name: '',
             active: false,
@@ -124,7 +124,7 @@ export const MENUITEMS = [
           },
               {
                 icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
-                path: `${import.meta.env.BASE_URL}pages/attendance/staffAttendance`,
+                path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                 type: "link",
                 Name: '',
                 active: false,
@@ -137,7 +137,7 @@ export const MENUITEMS = [
               },
               {
                 icon: (<i className="bx bx-task side-menu__icon"></i>),
-                path: `${import.meta.env.BASE_URL}pages/attendance/studentAttendance`,
+                path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                 type: "link",
                 Name: '',
                 active: false,
@@ -150,7 +150,7 @@ export const MENUITEMS = [
               },
               {
                 icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-                path: `${import.meta.env.BASE_URL}pages/attendance/hostelAttendance`,
+                path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                 type: "link",
                 Name: '',
                 active: false,
@@ -168,7 +168,7 @@ export const MENUITEMS = [
               },
                   {
                     icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
-                    path: `${import.meta.env.BASE_URL}pages/leave/staffLeave`,
+                    path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                     type: "link",
                     Name: '',
                     active: false,
@@ -181,7 +181,7 @@ export const MENUITEMS = [
                   },
                   {
                     icon: (<i className="bx bx-task side-menu__icon"></i>),
-                    path: `${import.meta.env.BASE_URL}pages/aboutus`,
+                    path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                     type: "link",
                     Name: '',
                     active: false,
@@ -194,7 +194,7 @@ export const MENUITEMS = [
                   },
                   {
                     icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-                    path: `${import.meta.env.BASE_URL}pages/leave/hosteliteLeave`,
+                    path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                     type: "link",
                     Name: '',
                     active: false,
@@ -212,7 +212,7 @@ export const MENUITEMS = [
                   },
                       {
                         icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
-                        path: `${import.meta.env.BASE_URL}pages/extraFeatures/reports`,
+                        path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                         type: "link",
                         Name: '',
                         active: false,
@@ -225,7 +225,7 @@ export const MENUITEMS = [
                       },
                       {
                         icon: (<i className="bx bx-task side-menu__icon"></i>),
-                        path: `${import.meta.env.BASE_URL}pages/extraFeatures/eventManagement`,
+                        path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                         type: "link",
                         Name: '',
                         active: false,
@@ -238,7 +238,7 @@ export const MENUITEMS = [
                       },
                       {
                         icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-                        path: `${import.meta.env.BASE_URL}pages/extraFeatures/expenseManagement`,
+                        path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                         type: "link",
                         Name: '',
                         active: false,
@@ -251,7 +251,7 @@ export const MENUITEMS = [
                       },  
                       {
                         icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-                        path: `${import.meta.env.BASE_URL}pages/extraFeatures/complaints`,
+                        path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                         type: "link",
                         Name: '',
                         active: false,
@@ -264,7 +264,7 @@ export const MENUITEMS = [
                       }, 
                       {
                         icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-                        path: `${import.meta.env.BASE_URL}pages/aboutus`,
+                        path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                         type: "link",
                         Name: '',
                         active: false,
@@ -277,7 +277,7 @@ export const MENUITEMS = [
                       }, 
                       {
                         icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-                        path: `${import.meta.env.BASE_URL}pages/extraFeatures/annoucement`,
+                        path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                         type: "link",
                         Name: '',
                         active: false,
@@ -290,7 +290,7 @@ export const MENUITEMS = [
                       }, 
                       {
                         icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-                        path: `${import.meta.env.BASE_URL}pages/extraFeatures/visitor`,
+                        path: `${import.meta.env.BASE_URL}pages/404page/pageNotFound`,
                         type: "link",
                         Name: '',
                         active: false,

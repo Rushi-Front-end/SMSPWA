@@ -10,7 +10,7 @@ const SubjectTable = () => {
                         <th scope="col" className="text-start">Sl No.</th>
                         <th scope="col" className="text-start">Subject Name</th>
                         <th scope="col" className="text-start">Subject Code</th>
-                        <th scope="col" className="text-start">Status</th>
+                        <th scope="col" className="text-start">Type</th>
                         <th scope="col" className="text-start">Action</th>
                     </tr>
                     </thead>
@@ -22,7 +22,7 @@ const SubjectTable = () => {
                             ENg
                             </td>
                             <td>
-                                <span className="badge bg-success text-white">Active</span></td>
+                               Theory</td>
                             <td><div className="hstack flex gap-3 
  text-[.9375rem]">
                                 <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>

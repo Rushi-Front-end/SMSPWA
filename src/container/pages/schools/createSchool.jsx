@@ -6,24 +6,24 @@ import { Link } from 'react-router-dom';
 const CreateSchool = () => {
     return (
         <div>
-            <h4 className='pt-4'>Create School</h4>
+            <h4 className='pt-4'> Schools</h4>
             <div className="breadcrumbs-wrapper mb-4">
                 <div className='school-flex-container'>
                     <div className='flex flex-row mb-4 items-center'>
 
-                        <div className='backButton self-center '>
+                        {/* <div className='backButton self-center '>
                             <Link to={`${import.meta.env.BASE_URL}pages/schools/allSchools`}>
 
                                 <button type="button" className="ti-btn ti-btn-info-full ti-btn-wave">Back</button>
                             </Link>
-                        </div>
+                        </div> */}
 
                         <div className="breadcrumbs !border-0 ">
                             <ol className="flex items-center whitespace-nowrap min-w-0">
                                 <li className="text-sm">
                                     <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}dashboard`}>
                                         Dashboard
-                                        <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-gray-300 dark:text-white/10 rtl:rotate-180"
+                                        <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-black-300 dark:text-white/10 rtl:rotate-180"
                                             width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14"
                                                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -33,7 +33,7 @@ const CreateSchool = () => {
                                 <li className="text-sm">
                                     <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}pages/schools/allSchools`}>
                                         Schools
-                                        <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-gray-300 dark:text-white/10 rtl:rotate-180"
+                                        <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-black-300 dark:text-white/10 rtl:rotate-180"
                                             width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14"
                                                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -72,6 +72,10 @@ const CreateSchool = () => {
                             </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">School Category*:</label>
+                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                            </div>
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <label className="ti-form-select rounded-sm !p-0 mb-2">Prakalpa*:</label>
                                 <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
                             </div>
 
@@ -125,7 +129,11 @@ const CreateSchool = () => {
 
                     <div className='student-create-btn'>
                         <div className='flex justify-end'>
-                            <button type="button" className="ti-btn ti-btn-secondary-full !rounded-full ti-btn-wave">+ Save</button>
+                            <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Save</button>
+                            <Link to={`${import.meta.env.BASE_URL}pages/schools/allSchools`}>
+
+                                <button type="button" className="ti-btn ti-btn-info-full !rounded-full ti-btn-wave">Cancel</button>
+                            </Link>
                         </div>
                     </div>
                 </div>

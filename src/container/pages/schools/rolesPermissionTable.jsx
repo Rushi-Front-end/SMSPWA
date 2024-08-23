@@ -10,6 +10,7 @@ const RolesPermissionTable = () => {
                         <th scope="col" className="text-start">Sl No.</th>
                         <th scope="col" className="text-start">	Role Name</th>
                         <th scope="col" className="text-start">Permissions</th>
+                        <th scope="col" className="text-start">Description</th>
                         <th scope="col" className="text-start">Status</th>
                         <th scope="col" className="text-start">Action</th>
                     </tr>
@@ -23,6 +24,7 @@ const RolesPermissionTable = () => {
                                     <button type="button" className="ti-btn ti-btn-danger-full ti-btn-wave">Assign Permission</button>
                                 </Link>
                             </td>
+                            <td>Testing</td>
                             <td>
                                 <span className="badge bg-success text-white">Active</span></td>
                             <td><div className="hstack flex gap-3 
