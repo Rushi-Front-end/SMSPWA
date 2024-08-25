@@ -1,52 +1,52 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Pageheader from '../../../components/common/pageheader/pageheader';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import media50 from "../../../assets/images/media/media-50.jpg";
-import StudentMedical from './studentMedical';
 
 
+const EditStudent = () => {
 
-const CreateStudent = () => {
+  const navigate = useNavigate()
+  const {studentid} = useParams()
+  const [student, setStudent] = useState({})
 
-    const [values, setValues] = useState({
-        academicYear: '',
-        class: '',
-        aadhar: '',
-        name: '',
-        dob: ''
-
+  useEffect(()=>{
+    axios.get('https://66c9968d59f4350f064ce86d.mockapi.io/students/'+studentid)
+    .then((res)=>{
+      console.log(res.data)
+      setStudent(res.data)
     })
-    const [file, setFile] = useState();
-    const [studMed, setStudMedical] = useState(false);
+    .catch((err)=>{
+      console.log(err)
+    })
+  },[studentid])
 
-    const navigate = useNavigate()
 
-    const profileImage = (e) => {
-        console.log(e.target.files);
-        setFile(URL.createObjectURL(e.target.files[0]));
-    }
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('https://66c9968d59f4350f064ce86d.mockapi.io/students', values)
-            .then(res => {
-                console.log(res)
-                navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
+        setTimeout(() => {
+            //alert(JSON.stringify(values, null, 2));
+
+            axios.put('https://66c9968d59f4350f064ce86d.mockapi.io/students/'+studentid, student)
+            .then(res=>{
+              console.log(res)
+              navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
             })
-            .catch(err => console.log(err))
-    }
-    const NextPageOpen = (e) => {
-        setStudMedical(true)
+            .catch((err)=>{
+              console.log(err)
+            })   
+
+          }, 400);
     }
 
     return (
         <div>
             {/* <Pageheader currentpage="Student" activepage="Student" mainpage="Create Student" /> */}
-            <h4 className='pt-4 borderBottom'>Create Student</h4>
+            <h4 className='pt-4 borderBottom'>Update Student</h4>
 
             <div className="breadcrumbs-wrapper mb-4">
                 <div className='createstud-flex-container'>
@@ -94,32 +94,28 @@ const CreateStudent = () => {
             <div className='student-form-create'>
                 <div className='box p-4 ' >
                     <h4 className=' pb-2'>Student Form</h4>
-                    {studMed ? <div className='student-medical-details-page'>
-                        <StudentMedical setStudMedical={setStudMedical} values={values} />
-                    </div>
-                        :
-                        <div className='student-details-first-page'>
-                            <div className='student-profile-uploads pt-4'>
-                                <div className='student-profile-wrap flex items-center'>
-                                    <div className='left-side-profile-pic'>
-                                        <img src={file} className="img-fluid !rounded-full !inline-flex profile-image" />
-                                    </div>
-                                    <div className='right-side-upload-pic'>
-                                        <p>Upload Student Photo (150px X 150px)</p>
-                                        <div>
-                                            <label htmlFor="file-input" className="sr-only">Choose file</label>
-                                            <input type="file" onChange={profileImage} name="file-input" id="file-input" className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/50
+                    <div className='student-details-first-page'>
+                    <div className='student-profile-uploads pt-4'>
+                        <div className='student-profile-wrap flex items-center'>
+                            <div className='left-side-profile-pic'>
+                        <img src={media50} style={{width: "150px",height:"150px", background:'gray', marginRight:'50px' }}  className="img-fluid !rounded-full !inline-flex profileImage"  />
+                            </div>
+                            <div className='right-side-upload-pic'>
+                                <p>Upload Student Photo (150px X 150px)</p>
+                                <div>
+                                <label htmlFor="file-input" className="sr-only">Choose file</label>
+                                <input type="file"  name="file-input" id="file-input" className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/50
                                        file:border-0
                                       file:bg-light file:me-4
                                       file:py-3 file:px-4
                                       dark:file:bg-black/20 dark:file:text-white/50"/>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                            <div className='academic-details mb-4 pt-4'>
-                                <h6 className=' pb-2'>Academic Details</h6>
-                                {/* <div className='grid grid-cols-12 sm:gap-6'>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='academic-details mb-4 pt-4'>
+                        <h6 className=' pb-2'>Academic Details</h6>
+                        {/* <div className='grid grid-cols-12 sm:gap-6'>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Academic Year:</label>
                             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} name='academicYear' />
@@ -135,35 +131,34 @@ const CreateStudent = () => {
                             </div>
 
                         </div> */}
+                    </div>
+                    <div className='aadharcard-details mb-4'>
+                        <h6 className=' pb-2'>Student Aadhar Card Details</h6>
+                        <div className='grid grid-cols-12 sm:gap-6'>
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <label className="ti-form-select rounded-sm !p-0 mb-2">Aadhar Card Number:</label>
+                                <input type="text" className="form-control" id="input-text" placeholder="Enter Aadhar Card Number" value={student.aadhar} onChange={(e) => setStudent({ ...student, aadhar: e.target.value })} name='aadhar' />
                             </div>
-                            <div className='aadharcard-details mb-4'>
-                                <h6 className=' pb-2'>Student Aadhar Card Details</h6>
-                                <div className='grid grid-cols-12 sm:gap-6'>
-                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Aadhar Card Number:</label>
-                                        <input type="text" className="form-control" id="input-text" placeholder="Enter Aadhar Card Number" onChange={(e) => setValues({ ...values, aadhar: e.target.value })} name='aadhar' />
-                                    </div>
-                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Name of Aadhar Card</label>
-                                        <input type="text" className="form-control" id="input-text" placeholder="Enter Aadhar Card Number" />
-                                    </div>
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <label className="ti-form-select rounded-sm !p-0 mb-2">Name of Aadhar Card</label>
+                                <input type="text" className="form-control" id="input-text" placeholder="Enter Aadhar Card Number" value={student.name} />
+                            </div>
 
 
 
+                        </div>
+                    </div>
+                    <div className='personal-details mb-4'>
+                        <h6 className=' pb-2'>Personal Details</h6>
+                        <div className='grid grid-cols-12 sm:gap-6'>
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <label className="ti-form-select rounded-sm !p-0 mb-2">Full Name:</label>
+                                <div className='flex rounded-sm'>
+                                    <input type="text" className="form-control input-group-control" id="input-text" placeholder="Enter Full Name" value={student.name} onChange={(e) => setStudent({ ...student, name: e.target.value })} name='name' />
                                 </div>
                             </div>
-                            <div className='personal-details mb-4'>
-                                <h6 className=' pb-2'>Personal Details</h6>
-                                <div className='grid grid-cols-12 sm:gap-6'>
-                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Full Name:</label>
-                                        <div className='flex rounded-sm'>
-                                            {/* <Select className="place-holder" classNamePrefix='react-select' options={singleselect} /> */}
-                                            <input type="text" className="form-control input-group-control" id="input-text" placeholder="Enter Full Name" onChange={(e) => setValues({ ...values, name: e.target.value })} name='name' />
-                                        </div>
-                                    </div>
 
-                                    {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Mobile No.</label>
                             <div className='flex rounded-sm'>
                             <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
@@ -176,13 +171,13 @@ const CreateStudent = () => {
                             <input type="text" className="form-control" id="input-text" placeholder="Enter Email ID" />
                             </div> */}
 
-                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                        <label htmlFor="input-datetime-local" className="form-label">DOB</label>
-                                        <input type="date" className="form-control" id="input-datetime-local" onChange={(e) => setValues({ ...values, dob: e.target.value })} name='dob' />
-                                    </div>
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <label htmlFor="input-datetime-local" className="form-label">DOB</label>
+                                <input type="date" className="form-control" id="input-datetime-local" value={student.dob} onChange={(e) => setStudent({ ...student, dob: e.target.value })} name='dob' />
+                            </div>
 
 
-                                    {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Blood Group:</label>
                             <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
                             </div>
@@ -216,10 +211,10 @@ const CreateStudent = () => {
                             <input type="text" className="form-control" id="input-text" placeholder="" />
                             </div> */}
 
-                                </div>
-                            </div>
+                        </div>
+                    </div>
 
-                            {/* <div className='permanentAddr-details mb-4'>
+                    {/* <div className='permanentAddr-details mb-4'>
                 <h6 className=' pb-2'>Student Permanent Address Details</h6>
                 <div className='grid grid-cols-12 sm:gap-6'>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
@@ -249,7 +244,7 @@ const CreateStudent = () => {
                         </div>
             </div> */}
 
-                            {/* <div className='medical-details mb-4'>
+                    {/* <div className='medical-details mb-4'>
                 <h6 className=' pb-2'>Student Medical Details</h6>
                 <div className='grid grid-cols-12 sm:gap-6'>
                                                     
@@ -274,21 +269,17 @@ const CreateStudent = () => {
                         </div>
             </div> */}
 
-                            <div className='student-create-btn'>
-                                <div className='flex justify-end'>
-                                    {/* <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSubmit} >Next</button> */}
-                                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={NextPageOpen} >Next</button>
-                                    <div className='backButton'>
-                                        <Link to={`${import.meta.env.BASE_URL}pages/student/studentDetails`}>
+                    <div className='student-create-btn'>
+                        <div className='flex justify-end'>
+                            <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSubmit} >Save</button>
+                      
 
-                                            <button type="button" className="ti-btn ti-btn-info-full ml-15 !rounded-full ti-btn-wave">Reset</button>
-                                        </Link>
-                                    </div>
-
-                                </div>
-                            </div>
                         </div>
-                    }
+                    </div>
+                    </div>
+                    <div className='student-medical-details-page'>
+                        
+                        </div>
                 </div>
             </div>
             {/* Student form create end */}
@@ -296,4 +287,4 @@ const CreateStudent = () => {
     )
 }
 
-export default CreateStudent
+export default EditStudent

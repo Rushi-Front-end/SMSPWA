@@ -36,47 +36,47 @@ const HealthDocumentDetails = () => {
                            </div>
                            <div className="healthmore-doc-details">
                             
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap  pt-4">
                                 <span className="label-text">Defects At Birth :</span>
                                 <span className="field-text"></span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Deficiencies :</span>
                                 <span className="field-text"></span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Childhood Diseases :</span>
                                 <span className="field-text"></span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Developmental delay & Disability :</span>
                                 <span className="field-text"></span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Acuity Left Eye : </span>
                                 <span className="field-text">OK</span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Acuity Right Eye :</span>
                                 <span className="field-text">OK</span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Description Diseases:</span>
                                 <span className="field-text">OK</span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Suggestions & Treatments: </span>
                                 <span className="field-text">NA</span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Remarks:</span>
                                 <span className="field-text">NOT REQUIREd</span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Name of Doctor:</span>
                                 <span className="field-text">DR. MAYUr</span>
                             </div>
-                            <div className="health-rows-wrap">
+                            <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Hospital Name:</span>
                                 <span className="field-text"> DANDALE CLINIc</span>
                             </div>

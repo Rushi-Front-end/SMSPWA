@@ -1,10 +1,12 @@
 import React from 'react'
 import Select from 'react-select';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata';
-const CreateClass = () => {
+const CreateClass = (props) => {
+    console.log('updateClass',props)
+
   return (
     <div className='p-5 !pt-0 rounded-sm dark:border-white/10 border-gray-200'>
-    <h3>Create Class</h3>
+    {props.updateClass === true ? <h3>Update Class</h3> : <h3>Create Class</h3>}
     <hr />
     <div className='form-handling-sec pt-4'>
         {/* <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12">
@@ -29,7 +31,10 @@ const CreateClass = () => {
         <div className='createSchool-btn pt-4'>
             <div className='flex justify-end'>
                 {/* <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave">Cancel</button> */}
-                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create</button>
+                <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave" onClick={()=> props.updateClassChild(false)}>Cancel</button>
+                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">
+                {props.updateClass === true ? 'Update' : 'Create'}
+                </button>
             </div>
         </div>
     </div>

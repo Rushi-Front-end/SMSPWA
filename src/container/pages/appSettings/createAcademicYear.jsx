@@ -34,7 +34,7 @@ const CreateAcademicYear = () => {
         <div className='createSchool-btn pt-4'>
             <div className='flex justify-end'>
                 {/* <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave">Cancel</button> */}
-                <button type="button" className="ti-btn ti-btn-secondary-full !rounded-full ti-btn-wave">+ Create</button>
+                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create</button>
             </div>
         </div>
     </div>

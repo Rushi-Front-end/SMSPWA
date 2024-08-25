@@ -82,7 +82,7 @@ const TimeInnerTable = () => {
                     <button type="button" className="ti-btn ti-btn-success-full !rounded-full ti-btn-wave">Save</button>
                     </div>
                     <div className='addNew-btn'>
-                    <button type="button" className="ti-btn ti-btn-secondary-full !rounded-full ti-btn-wave">Add New</button>
+                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Add New</button>
                     </div>
                 </div>
             </div>

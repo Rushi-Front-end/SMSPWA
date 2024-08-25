@@ -1,10 +1,11 @@
 import React from 'react'
 import Select from 'react-select';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata';
-const SubjectCreateForm = () => {
+const SubjectCreateForm = (props) => {
   return (
     <div className='p-5 border rounded-sm dark:border-white/10 border-gray-200'>
-    <h3>Create Subject</h3>
+    {/* <h3>Create Subject</h3> */}
+    {props.dataFromChildSubject === true ? <h3>Update Subject</h3> : <h3>Create Subject</h3>}
     <hr />
     <div className='form-handling-sec pt-4'>
         
@@ -33,8 +34,10 @@ const SubjectCreateForm = () => {
         <hr />
         <div className='createSchool-btn pt-4'>
             <div className='flex justify-end'>
-                {/* <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave">Cancel</button> */}
-                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create</button>
+                <button type="button" onClick={()=>props.setDataFromChildSubject(false)} className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave">Cancel</button>
+                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">
+                {props.dataFromChildSubject === true ? 'Update' : 'Create'}
+                </button>
             </div>
         </div>
     </div>

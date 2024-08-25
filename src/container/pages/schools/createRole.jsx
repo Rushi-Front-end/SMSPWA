@@ -1,9 +1,12 @@
 import React from 'react'
 
-const CreateRole = () => {
+const CreateRole = (props) => {
+    // console.log(props,"RoleCreated")
   return (
     <div className='p-5 !pt-0 rounded-sm dark:border-white/10 border-gray-200'>
-    <h3>Create Role</h3>
+    {/* <h3>Create Role</h3> */}
+    {props.dataFromChild === true ? <h3>Update  Role</h3> : <h3>Create Role</h3>}
+
     <hr />
     <div className='form-handling-sec pt-4'>
         
@@ -20,8 +23,10 @@ const CreateRole = () => {
         <hr />
         <div className='createSchool-btn pt-4'>
             <div className='flex justify-end'>
-                {/* <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave">Cancel</button> */}
-                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create</button>
+                <button type="button" onClick={()=> props.setDataFromChild(false)} className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave">Cancel</button>
+                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">
+                {props.dataFromChild === true ? 'Update' : 'Create'}
+                </button>
             </div>
         </div>
     </div>

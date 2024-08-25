@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 const AllSchool = () => {
     return (
         <div>
-            <h4 className='textUpperCase pt-4'>Schools </h4>
-            <div className="school-flex-container pb-4">
+            <h4 className='borderBottom pt-4'>Schools </h4>
+            <div className="school-flex-container pb-4 pt-2">
                 <div className='flex justify-between'>
                     <div className="breadcrumbs !border-0 ">
                         <ol className="flex items-center whitespace-nowrap min-w-0">
@@ -34,7 +34,7 @@ const AllSchool = () => {
 
             <div className='create-stud-table'>
                 <div className='box p-4'>
-                    <div className='m-4 '>
+                    <div className='pb-4 '>
                         <div className='school-head-wrap'>
                             <h4>All Schools Data</h4>
                         </div>
@@ -71,9 +71,17 @@ const AllSchool = () => {
 
                                             <td><div className="hstack flex gap-3 
  text-[.9375rem]">
-                                                <Link aria-label="anchor" href="#" className="ti-btn ti-btn-icon
-ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
-                                                </Link>
+                                                <div className="ti-dropdown hs-dropdown">
+                                                    <button type="button"
+                                                        className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                                        <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                    </button>
+                                                    <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                        <li><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                                        <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
+
+                                                    </ul>
+                                                </div>
                                             </div>
                                             </td>
                                         </tr>

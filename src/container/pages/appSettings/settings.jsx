@@ -20,13 +20,13 @@ const Settings = () => {
                         <div className="box-body">
                             <div className="border-b-2 border-gray-200 dark:border-white/10">
                                 <nav className="-mb-0.5 flex space-x-6 rtl:space-x-reverse">
-                                    <Link className="hs-tab-active:font-semibold hs-tab-active:border-primary hs-tab-active:text-primary py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-primary active" to="#" id="underline-item-1" data-hs-tab="#underline-1" aria-controls="underline-1">
+                                    <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning active" to="#" id="underline-item-1" data-hs-tab="#underline-1" aria-controls="underline-1">
                                     Academic Years
                                     </Link>
-                                    <Link className="hs-tab-active:font-semibold hs-tab-active:border-primary hs-tab-active:text-primary py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-primary " to="#" id="underline-item-2" data-hs-tab="#underline-2" aria-controls="underline-2">
+                                    <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning " to="#" id="underline-item-2" data-hs-tab="#underline-2" aria-controls="underline-2">
                                     Complaints
                                     </Link>
-                                    <Link className="hs-tab-active:font-semibold hs-tab-active:border-primary hs-tab-active:text-primary py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-primary" to="#" id="underline-item-3" data-hs-tab="#underline-3" aria-controls="underline-3">
+                                    <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning" to="#" id="underline-item-3" data-hs-tab="#underline-3" aria-controls="underline-3">
                                     Outpasses
                                     </Link>
                                    
@@ -55,11 +55,17 @@ const Settings = () => {
                                                                 <td>01 Jun 2024 - 31 Mar 2025</td>
                                                                 <td>
                                                                 <span className="badge bg-success text-white">Active</span></td>
-                                                                <td><div className="hstack flex gap-3 
-text-[.9375rem]">
-<button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-<button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button>
-                                                                </div>
+                                                                <td>
+                                                                <div className="ti-dropdown hs-dropdown">
+                                    <button type="button"
+                                        className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                        <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                    </button>
+                                    <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                        <li><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                        <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
+                                    </ul>
+                                </div>
                                                                 </td>
                                                             </tr>
                                                             <tr>

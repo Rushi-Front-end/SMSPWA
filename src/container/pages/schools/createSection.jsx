@@ -1,10 +1,10 @@
 import React from 'react'
 import Select from 'react-select';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata';
-const CreateSection = () => {
+const CreateSection = (props) => {
   return (
     <div className='p-5 !pt-0 rounded-sm dark:border-white/10 border-gray-200'>
-    <h3>Create Class</h3>
+    <h3>Create Section</h3>
     <hr />
     <div className='form-handling-sec pt-4'>
         
@@ -25,7 +25,7 @@ const CreateSection = () => {
         <hr />
         <div className='createSchool-btn pt-4'>
             <div className='flex justify-end'>
-                {/* <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave">Cancel</button> */}
+                <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave" onClick={()=> props.setAddSec(false)}>Cancel</button>
                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create</button>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import Pageheader from '../../../components/common/pageheader/pageheader';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
@@ -14,6 +14,30 @@ import SubjectCreateForm from './subjectCreateForm';
 
 
 const SchoolsDetails = () => {
+    const [updateClass, setUpdateClass] = useState(false);
+    const [addSec, setAddSec] = useState(false);
+
+    const [dataFromChild, setDataFromChild] = useState("");
+    const [dataFromChildSubject, setDataFromChildSubject] = useState("");
+
+    const handleDataFromChild = (data) => {
+        setDataFromChild(data);
+      }
+    const handleSubDataFromChild = (subData) => {
+        setDataFromChildSubject(subData);
+      }
+
+    //   console.log(dataFromChild, "dataFromChild", dataFromChildSubject)
+
+    const updateForm = () => {
+        setUpdateClass(true);
+    }
+
+    const addSection = () => {
+        setAddSec(true)
+    }
+
+
     return (
         <Fragment>
 
@@ -23,8 +47,8 @@ const SchoolsDetails = () => {
                     <div className="grid grid-cols-12 gap-x-6">
                         <div className="xxl:col-span-12 xl:col-span-12 col-span-12">
 
-                            <h4 className='pt-4'>Schools</h4>
-                            <div className="school-flex-container pb-4">
+                            <h4 className='borderBottom pt-4'>Schools</h4>
+                            <div className="school-flex-container pb-4 pt-2">
                                 <div className='flex flex-row items-center'>
                                     {/* <div className='backButton'>
                                         <Link to={`${import.meta.env.BASE_URL}pages/schools/schoolsDetails`}>
@@ -71,12 +95,12 @@ const SchoolsDetails = () => {
 
                             <div className='school-individual-details'>
                                 <div className='box'>
-                                    <div className='box-body'>
+                                    <div className='p-4'>
                                         <div className='flex justify-between school-detail-listing'>
-                                            <h3>Ashram School</h3>
+                                            <h4>Ashram School</h4>
                                             <div className="school-edit-button">
                                                 <Link to={`${import.meta.env.BASE_URL}pages/schools/createSchool`}>
-                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">+ Edit School</button>
+                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">Edit School</button>
                                                 </Link>
                                             </div>
                                         </div>
@@ -125,7 +149,7 @@ const SchoolsDetails = () => {
                                                             <div className='classes-top-head flex justify-between'>
                                                                 <h4>Class 5th</h4>
                                                                 <div className='classes-add-secbtn'>
-                                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">+ Add Section</button>
+                                                                    <button type="button" onClick={() => addSection()} className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
                                                                 </div>
                                                             </div>
 
@@ -149,11 +173,23 @@ const SchoolsDetails = () => {
                                                                                 <td>Test</td>
                                                                                 <td>
                                                                                     <span className="badge bg-success text-white">Active</span></td>
-                                                                                <td><div className="hstack flex gap-3 
+                                                                                    <td>
+                                                                                    <div className="hstack flex gap-3 
  text-[.9375rem]">
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button>
-                                                                                </div>
+                                                                                        <div className="ti-dropdown hs-dropdown">
+                                                                                            <button type="button"
+                                                                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                                                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                                                            </button>
+                                                                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                                                                <li  onClick={() => updateForm()}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                                                                                <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
+
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                        {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
+                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
+                                                                                    </div>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr className="border-b border-defaultborder">
@@ -163,11 +199,23 @@ const SchoolsDetails = () => {
                                                                                 <td>Test</td>
                                                                                 <td>
                                                                                     <span className="badge bg-success text-white">Active</span></td>
-                                                                                <td><div className="hstack flex gap-3 
+                                                                                <td>
+                                                                                    <div className="hstack flex gap-3 
  text-[.9375rem]">
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button>
-                                                                                </div>
+                                                                                        <div className="ti-dropdown hs-dropdown">
+                                                                                            <button type="button"
+                                                                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                                                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                                                            </button>
+                                                                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                                                                <li  onClick={() => updateForm()}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                                                                                <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
+
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                        {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
+                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
+                                                                                    </div>
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>
@@ -180,7 +228,7 @@ const SchoolsDetails = () => {
                                                             <div className='classes-top-head flex justify-between'>
                                                                 <h4>Class 6th</h4>
                                                                 <div className='classes-add-secbtn'>
-                                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">+ Add Section</button>
+                                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
                                                                 </div>
                                                             </div>
 
@@ -204,11 +252,23 @@ const SchoolsDetails = () => {
                                                                                 <td>Test</td>
                                                                                 <td>
                                                                                     <span className="badge bg-success text-white">Active</span></td>
-                                                                                <td><div className="hstack flex gap-3 
+                                                                                    <td>
+                                                                                    <div className="hstack flex gap-3 
  text-[.9375rem]">
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button>
-                                                                                </div>
+                                                                                        <div className="ti-dropdown hs-dropdown">
+                                                                                            <button type="button"
+                                                                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                                                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                                                            </button>
+                                                                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                                                                <li  onClick={() => updateForm()}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                                                                                <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
+
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                        {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
+                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
+                                                                                    </div>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr className="border-b border-defaultborder">
@@ -218,11 +278,23 @@ const SchoolsDetails = () => {
                                                                                 <td>Test</td>
                                                                                 <td>
                                                                                     <span className="badge bg-success text-white">Active</span></td>
-                                                                                <td><div className="hstack flex gap-3 
+                                                                                    <td>
+                                                                                    <div className="hstack flex gap-3 
  text-[.9375rem]">
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button>
-                                                                                </div>
+                                                                                        <div className="ti-dropdown hs-dropdown">
+                                                                                            <button type="button"
+                                                                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                                                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                                                            </button>
+                                                                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                                                                <li  onClick={() => updateForm()}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                                                                                <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
+
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                        {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
+                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
+                                                                                    </div>
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>
@@ -234,8 +306,12 @@ const SchoolsDetails = () => {
                                                     </div>
                                                     <div className="col-span-12 xl:col-span-4">
 
-                                                        <CreateClass />
-                                                        {/* <CreateSection/> */}
+                                                      {
+                                                        addSec === true ? <CreateSection addSec={addSec} setAddSec={setAddSec}  /> : <CreateClass updateClassChild={setUpdateClass} updateClass={updateClass} />
+                                                      }                                      
+                                                    
+
+                                                    {/* <CreateSection/> */}
                                                     </div>
                                                 </div>
 
@@ -243,11 +319,11 @@ const SchoolsDetails = () => {
                                             <div id="underline-3" className="hidden" role="tabpanel" aria-labelledby="underline-item-3">
                                                 <div className="grid grid-cols-12  gap-4">
                                                     <div className="col-span-12 xl:col-span-8">
-                                                        <RolesPermissionTable />
+                                                        <RolesPermissionTable sendDataToParent={handleDataFromChild} />
                                                     </div>
                                                     <div className="col-span-12 xl:col-span-4">
 
-                                                        <CreateRole />
+                                                        <CreateRole dataFromChild={dataFromChild} setDataFromChild={setDataFromChild} />
                                                         {/* <CreateSection/> */}
                                                     </div>
                                                 </div>
@@ -269,11 +345,11 @@ const SchoolsDetails = () => {
                                             <div id="underline-5" className="hidden" role="tabpanel" aria-labelledby="underline-item-5">
                                                 <div className="grid grid-cols-12  gap-4">
                                                     <div className="col-span-12 xl:col-span-8">
-                                                        <SubjectTable />
+                                                        <SubjectTable sendSubDataToParent={handleSubDataFromChild} />
                                                     </div>
                                                     <div className="col-span-12 xl:col-span-4">
 
-                                                        <SubjectCreateForm />
+                                                        <SubjectCreateForm dataFromChildSubject={dataFromChildSubject} setDataFromChildSubject={setDataFromChildSubject} />
                                                         {/* <CreateSection/> */}
                                                     </div>
                                                 </div>

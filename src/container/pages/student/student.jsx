@@ -5,50 +5,73 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../../redux/action';
 import axios from 'axios';
+import Loader from '../loader/loader';
 
 
 const Student = () => {
 
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
+    const [spinner, setSpinner] = useState(false)
 
     const getStudentDetails = () => {
-        axios.get('https://66bcb9c524da2de7ff6ba282.mockapi.io/student')
-            .then(res => setData(res.data))
+        setSpinner(true)
+        axios.get('https://66c9968d59f4350f064ce86d.mockapi.io/students')
+            .then(res =>{ setData(res.data)
+                setSpinner(false)
+            })
             .catch(err => console.log(err))
     }
-
+ 
     useEffect(() => {
         getStudentDetails()
     }, [])
-
+ 
     const handleChange = value => {
-        setSearch(value);
-        filterData(value);
-    }
-
-    const filterData = value => {
-        const lowerCaseValue = value.toLowerCase().trim();
-        if (!lowerCaseValue) {
-            //setData(data);
+        // setSearch(value);
+        // filterData(value);
+        console.log(value,"SSSSSS", value.length)
+        if (!value || value.length === 0 ) {
             getStudentDetails()
         }
-        else {
+    }
+    
+    const filterData = value => {
+        // alert(value)
+        const lowerCaseValue = value.toLowerCase().trim();
+        console.log(search,"dsdsdsd")
+        // console.log(lowerCaseValue, "Lowerrrr" ,lowerCaseValue.length)
+        // if (!lowerCaseValue || lowerCaseValue.length === 0 ) {
+        //     getStudentDetails()
+        // }
+        // else {
             const filteredData = data.filter(item => {
-                return Object.keys(item).some(key => {
-                    return item[key].toString().toLowerCase().includes(lowerCaseValue)
-                })
+                // return Object.keys(item).some(key => {
+                //     return item[key].toString().toLowerCase().includes(lowerCaseValue)
+                // })
+                return Object.values(item).join('').toLowerCase().includes(search.toLowerCase())
+
             });
             setData(filteredData);
-        }
+        // }
     }
+ 
+  
+ 
+    const deleteDatahandler = (id) =>{
+        axios.delete('https://66c9968d59f4350f064ce86d.mockapi.io/students/'+id)
+        .then((res)=>{
+            getStudentDetails()
+        })
+        .catch(err=>console.log(err))
+      }
 
 
     return (
         <div>
-            <h4 className='pt-4'>Student Details</h4>
+            <h4 className='pt-4 borderBottom'>Student Details</h4>
 
-            <div className="student-flex-container pb-4">
+            <div className="student-flex-container pb-4 pt-2">
                 <div className='flex justify-between'>
                     <div className="breadcrumbs !border-0 ">
                         <ol className="flex items-center whitespace-nowrap min-w-0">
@@ -77,7 +100,7 @@ const Student = () => {
             <div className='create-stud-table'>
                 <div className='box p-4'>
                     <div className='stud-head-wrap'>
-                        <h3>All Students Data</h3>
+                        <h4>All Students Data</h4>
                     </div>
                     <div className='stud-top-sec flex justify-between pt-4 pb-4'>
 
@@ -85,8 +108,15 @@ const Student = () => {
                         <div className='student-top-grid'>
                             <div className='grid grid-cols-12 sm:gap-6'>
                                 <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                    <input type="search" onChange={(e) => handleChange(e.target.value)} value={search} className="form-control" id="input-search" placeholder="Search" />
-
+                                    {/* <input type="search" onChange={(e) => handleChange(e.target.value)} value={search} className="form-control" id="input-search" placeholder="Search" /> */}
+                                    <div className="flex rounded-sm search-box">
+                                        <input type="search" onBlur={(e)=>handleChange(search)}  onChange={(e) =>  setSearch(e.target.value)} value={search}  id="hs-trailing-button-add-on-with-icon" name="hs-trailing-button-add-on-with-icon" className="ti-form-input rounded-none rounded-s-sm focus:z-10" />
+                                        <button aria-label="button"  onClick={()=>filterData(search)} type="button" className="inline-flex search-icon flex-shrink-0 justify-center items-center rounded-e-sm border border-transparent font-semibold bg-warning text-white hover:bg-warning focus:z-10 focus:outline-none focus:ring-0 focus:ring-warning transition-all text-sm">
+                                            <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                     <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
@@ -100,7 +130,7 @@ const Student = () => {
                         </div>
                         <div className="stud-create-btn">
                             <Link to={`${import.meta.env.BASE_URL}pages/student/createStudent`} className="product-image">
-                                <button type="button" className="ti-btn ti-btn-warning-full ti-btn-wave">Add Students</button>
+                                <button type="button" className="ti-btn ti-btn-warning-full  !rounded-full  ti-btn-wave">Add Students</button>
                             </Link>
                         </div>
                     </div>
@@ -140,9 +170,8 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                             </div>
                                             </td>
                                         </tr> */}
-
-
                                         {
+                                            spinner ? <Loader /> :
                                             data.map((dt, index) => {
                                                 return <tr key={dt.id}>
                                                     <td>{++index}</td>
@@ -156,7 +185,21 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                                     {/* <td>{dt.dob}</td> */}
                                                     <td>{dt.class}</td>
                                                     <td>{dt.aadhar}</td>
-                                                    <td><div className="hstack flex gap-3 text-[.9375rem]"><Link aria-label="anchor" href="#" className="ti-btn ti-btn-icon ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i></Link></div></td>
+                                                    <td><div className="hstack flex gap-3 text-[.9375rem]">
+                                                    <div className="ti-dropdown hs-dropdown">
+                                                    <button type="button"
+                                                        className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                                        <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                    </button>
+                                                    <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                        <li ><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/student/editStudent/`+dt.id}>Edit</Link></li>
+                                                        <li><Link className="ti-dropdown-item" onClick={()=>deleteDatahandler(dt.id)}
+
+>Delete</Link></li>
+
+                                                    </ul>
+                                                </div>
+                                                        </div></td>
                                                 </tr>
                                             })
 

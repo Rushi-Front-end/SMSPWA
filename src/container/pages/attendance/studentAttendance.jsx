@@ -1,30 +1,34 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
+import { singleselect } from '../../forms/formelements/formselect/formselectdata'
+import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 
 const StudentAttendance = () => {
     const [startDate, setStartDate] = useState(new Date());
+    const [startDate3, setStartDate3] = useState(new Date());
+
 
     return (
         <div>
-            <h4 className='pt-4'>Student Attendance Details</h4>
-            <div className="studentatt-flex-container m-4">
+            <h4 className='pt-4 borderBottom'>Student Attendance </h4>
+            <div className="studentatt-flex-container pb-4 pt-2">
                 <div className='flex justify-between'>
                     <div className="flex-container-wrapper">
                         <div className='flex flex-row items-center'>
-                            <div className='backButton'>
+                            {/* <div className='backButton'>
                                 <Link to={`${import.meta.env.BASE_URL}pages/staff/staffDetails`}>
 
                                     <button type="button" className="ti-btn ti-btn-info-full ti-btn-wave">Back</button>
                                 </Link>
-                            </div>
+                            </div> */}
 
                             <div className="breadcrumbs !border-0 ">
                                 <ol className="flex items-center whitespace-nowrap min-w-0">
                                     <li className="text-sm">
                                         <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}dashboard`}>
                                             Dashboard
-                                            <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-gray-300 dark:text-white/10 rtl:rotate-180"
+                                            <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-black-300 dark:text-white/10 rtl:rotate-180"
                                                 width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14"
                                                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -50,10 +54,11 @@ const StudentAttendance = () => {
 
             <div className='create-stud-table'>
                 <div className='box p-4'>
-                    <div className='m-4'>
-                        <div className='grid grid-cols-12 sm:gap-6'>
-                            <div className="xl:col-span-5 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label htmlFor="input-datetime-local" className="form-label">Attendance Date*</label>
+                <h4>Student Attendance List</h4>
+                <div className='common-attend-filter-list pt-4'>
+                        <div className='grid grid-cols-12 sm:gap-6 '>
+                            <div className="xl:col-span-3 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                {/* <label htmlFor="input-datetime-local" className="form-label">Attendance Date*</label> */}
                                 {/* <input type="datetime-local" className="form-control" id="input-datetime-local" /> */}
                                 <div className="input-group !flex-nowrap">
                                     <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
@@ -61,25 +66,35 @@ const StudentAttendance = () => {
                                 </div>
                             </div>
 
+                            <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                {/* <label className="form-label">Department</label> */}
+                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                            </div>
 
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label className="form-label"></label>
-                                <button type="button" className="ti-btn ti-btn-secondary-full ti-btn-wave">Filter</button>
+                                {/* <label className="form-label">Role</label> */}
+                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                            </div>
+                           
+                            <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>
                             </div>
 
                         </div>
                     </div>
                     {/* Top section end */}
                     {/* Table section start */}
-                    <div className="student-table-details">
+                    <div className="student-table-details pt-4">
                         <div className="table-responsive">
-                            <table className="table whitespace-nowrap table-sm min-w-full">
+                            <table className="table whitespace-nowrap table-bordered table-sm min-w-full">
                                 <thead><tr className="border-b  border-defaultborder">
-                                    <th scope="col" className="text-start">Sl No</th>
-                                    <th scope="col" className="text-start">	Student Role No.</th>
+                                <th scope="col" className="text-start">#</th>
+                                    <th scope="col" className="text-start">Student ID</th>
                                     <th scope="col" className="text-start"> Name</th>
-                                    <th scope="col" className="text-start">Class Details</th>
-                                    <th scope="col" className="text-start">	Attendance Date& Time</th>
+                                    <th scope="col" className="text-start">Mobile No.</th>
+                                    <th scope="col" className="text-start">Class</th>
+                                    <th scope="col" className="text-start">In Time</th>
+                                    <th scope="col" className="text-start">Out Time</th>
                                     <th scope="col" className="text-start">Status</th>
                                     <th scope="col" className="text-start">Action</th>
                                 </tr>
@@ -87,24 +102,45 @@ const StudentAttendance = () => {
                                 <tbody>
                                     <tr className="border-b border-defaultborder">
                                         <td>1</td>
-                                        <td>001</td>
+                                        <td>EMP001</td>
                                         <td>
-                                            Rahul Patil
+                                            <Link className='text-primary'>
+                                            Dr. Pravin Khonde
+                                            </Link>
                                         </td>
-                                        <td>Class V1, Section A</td>
-                                        <td></td>
+                                        <td>91 7777777777</td>
+                                        <td>Teacher</td>
 
-
-                                        <td><span className="badge bg-danger/10 text-danger">Absent</span></td>
-                                        <td>
-                                            <div className='flex '>
-                                                <div className='absent-button'>
-                                                    <button type="button" className="ti-btn ti-btn-danger-full ti-btn-wave">Absent</button>
-                                                </div>
-                                                <div className='present-button'>
-                                                    <button type="button" className="ti-btn ti-btn-success-full ti-btn-wave">Present</button>
+                                        <td className='xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12'>
+                                            <div className="form-group ">
+                                                <div className="input-group !flex-nowrap">
+                                                    <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-time-line"></i> </div>
+                                                    <DatePicker className="ti-form-input  focus:z-10" selected={startDate3} onChange={(date) => setStartDate3(date)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" />
                                                 </div>
                                             </div>
+                                        </td>
+                                        <td className='xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12'>
+                                            <div className="form-group ">
+                                                <div className="input-group !flex-nowrap">
+                                                    <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-time-line"></i> </div>
+                                                    <DatePicker className="ti-form-input  focus:z-10" selected={startDate3} onChange={(date) => setStartDate3(date)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span className="badge bg-danger/10 text-danger">Absent</span></td>
+                                        <td>
+                                            {/* <div className='save-btn'>
+                                                <button type="button" className="ti-btn ti-btn-secondary-full ti-btn-wave">Save</button>
+                                            </div> */}
+                                             <div className="ti-dropdown hs-dropdown">
+                                            <button type="button"
+                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                            </button>
+                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                <li><Link className="ti-dropdown-item" to="#">Save</Link></li>
+                                            </ul>
+                                        </div>
                                         </td>
                                     </tr>
 

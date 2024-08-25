@@ -5,7 +5,7 @@ const TimeTableTabs = () => {
   return (
     <div>
       <div className='box'>
-      <div className="box-body">
+      <div className="p-4 timetab-wrapper">
               <select id="tab-select" className="mb-5 sm:hidden py-2 px-3 pe-9 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-[#8c9097] dark:text-white/50" aria-label="Tabs">
                 <option value="#hs-tab-to-select-1">Monday</option>
                 <option value="#hs-tab-to-select-2">Tuesday</option>
@@ -17,7 +17,7 @@ const TimeTableTabs = () => {
               </select>
 
               <div className="hidden sm:block border-b-0 border-gray-200 dark:border-white/10">
-                <nav className="flex space-x-2 rtl:space-x-reverse" aria-label="Tabs">
+                <nav className="flex timetable-navs space-x-2 rtl:space-x-reverse" aria-label="Tabs">
                   <button type="button" className="hs-tab-active:bg-white hs-tab-active:border-b-transparent hs-tab-active:text-primary dark:hs-tab-active:bg-transparent dark:hs-tab-active:border-b-white/10 dark:hs-tab-active:text-primary -mb-px py-2 px-3 inline-flex items-center gap-2 bg-gray-50 text-sm font-medium text-center border text-defaulttextcolor rounded-t-sm hover:text-primary dark:bg-black/20 dark:border-white/10 dark:text-[#8c9097] dark:text-white/50 dark:hover:text-gray-300 active" id="hs-tab-to-select-item-1" data-hs-tab="#hs-tab-to-select-1" aria-controls="hs-tab-to-select-1">
                   Monday
                   </button>

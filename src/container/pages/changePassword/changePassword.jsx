@@ -31,7 +31,7 @@ const ChangePassword = () => {
 
                         <div className='change-pass-btn pt-4'>
                             <div className='password-chan-btn'>
-                                <button type="button" className="ti-btn ti-btn-secondary-full !rounded-full ti-btn-wave">Update Password</button>
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Update Password</button>
                             </div>
                         </div>
                     </div>

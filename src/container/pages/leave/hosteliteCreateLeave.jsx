@@ -5,18 +5,15 @@ import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 
 
-const CreateLeave = () => {
+const HosteliteCreateLeave = () => {
     const [startDate, setStartDate] = useState(new Date());
 
-    return (
-        <div>
-            <h4 className='pt-4 borderBottom'>Create Staffs</h4>
+  return (
+    <div>
+            <h4 className='pt-4 borderBottom'>Create Hostelite</h4>
             <div className="breadcrumbs-wrapper mb-4 pt-2">
                 <div className='staff-createflex-container'>
                     <div className='flex flex-row items-center'>
-
-                        
-
                         <div className="breadcrumbs !border-0 ">
                             <ol className="flex items-center whitespace-nowrap min-w-0">
                                 <li className="text-sm">
@@ -30,8 +27,8 @@ const CreateLeave = () => {
                                     </Link>
                                 </li>
                                 <li className="text-sm">
-                                    <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}pages/leave/staffLeave`}>
-                                        Staff Leave
+                                    <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}pages/leave/hosteliteLeave`}>
+                                        Hostelite Outpasses
                                         <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-black-300 dark:text-white/10 rtl:rotate-180"
                                             width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14"
@@ -41,7 +38,7 @@ const CreateLeave = () => {
                                 </li>
 
                                 <li className="text-sm text-gray-500 dark:text-[#8c9097] dark:text-white/50 hover:text-primary truncate" aria-current="page">
-                                    Add Leave Staff
+                                 Add Hostelite Leave
                                 </li>
                             </ol>
                         </div>
@@ -52,8 +49,10 @@ const CreateLeave = () => {
             <div className='staff-form-create'>
                 <div className='box'>
                     <div className='p-4'>
+            <h4 className=''>Hostelite Add Leave</h4>
+
                         <div className='staffleave-details mb-4'>
-                            <h4 className=''>Staff Add Leave</h4>
+
                             <div className="leave-staff-div pt-4">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">Select Staff/Student*:</label>
                                 <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
@@ -96,7 +95,7 @@ const CreateLeave = () => {
                             <div className='flex justify-end'>
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Save</button>
                                 <div className='backButton'>
-                            <Link to={`${import.meta.env.BASE_URL}pages/leave/staffLeave`}>
+                            <Link to={`${import.meta.env.BASE_URL}pages/leave/hosteliteLeave`}>
 
                                 <button type="button" className="ti-btn ti-btn-info-full ml-15 !rounded-full ti-btn-wave">Back</button>
                             </Link>
@@ -108,7 +107,7 @@ const CreateLeave = () => {
                 {/* Student form create end */}
             </div>
         </div>
-    )
+  )
 }
 
-export default CreateLeave
+export default HosteliteCreateLeave

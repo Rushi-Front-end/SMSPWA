@@ -1,5 +1,6 @@
 {
   "name": "starterkit",
+  "homepage": "https://Rushi-Front-end/SMSPWA",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,6 +18,12 @@
     "@firebase/app-compat": "^0.2.39",
     "@firebase/auth-compat": "^0.5.12",
     "@firebase/firestore-compat": "^0.3.35",
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
+    "@hookform/resolvers": "^3.9.0",
     "@reduxjs/toolkit": "^1.9.7",
     "@simonwep/pickr": "^1.9.0",
     "@tailwindcss/forms": "^0.5.7",
@@ -30,6 +37,7 @@
     "react-datepicker": "^7.3.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.4",
+    "react-hook-form": "^7.53.0",
     "react-leaflet": "^4.2.1",
     "react-redux": "^8.1.3",
     "react-router-dom": "^6.22.3",
@@ -38,7 +46,8 @@
     "redux-thunk": "^2.4.2",
     "sass": "^1.72.0",
     "simplebar-react": "^3.2.4",
-    "tailwind-clip-path": "^1.0.0"
+    "tailwind-clip-path": "^1.0.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.64",
@@ -46,6 +55,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "autoprefixer": "^10.4.18",
+    "gh-pages": "^6.1.1",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "vite": "^5.1.6"
