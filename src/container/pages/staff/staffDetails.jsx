@@ -73,10 +73,7 @@ const StaffDetails = () => {
                                     </div>
 
                                 </div>
-                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                                </div>
-
+                              
                                 <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                     <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
                                 </div>
@@ -97,18 +94,18 @@ const StaffDetails = () => {
                                 <table className="table whitespace-nowrap table-sm min-w-full">
                                     <thead><tr className="border-b border-defaultborder">
                                         <th scope="col" className="text-start">#</th>
-                                        <th scope="col" className="text-start">Staff Code</th>
+                                        {/* <th scope="col" className="text-start">Staff Code</th> */}
                                         <th scope="col" className="text-start">Staff Name</th>
                                         <th scope="col" className="text-start">Mobile No.</th>
-                                        <th scope="col" className="text-start">Designation</th>
-                                        <th scope="col" className="text-start">Departments</th>
+                                        <th scope="col" className="text-start">Role</th>
+                                        {/* <th scope="col" className="text-start">Departments</th> */}
                                         <th scope="col" className="text-start">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                         <tr className="border-b border-defaultborder">
                                             <td>1</td>
-                                            <td>EMP005</td>
+                                            {/* <td>EMP005</td> */}
                                             <td>
                                                 <Link className='text-primary' to={`${import.meta.env.BASE_URL}pages/staff/staffList`}>
                                                     Priyanshu Kantale
@@ -116,7 +113,7 @@ const StaffDetails = () => {
                                             </td>
                                             <td>+91 6111111111</td>
                                             <td>Teacher</td>
-                                            <td><span className="badge bg-primary text-white">Staff</span></td>
+                                            {/* <td><span className="badge bg-primary text-white">Staff</span></td> */}
 
                                             <td>
                                             <div className="ti-dropdown hs-dropdown">

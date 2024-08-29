@@ -67,14 +67,7 @@ const HosteliteLeave = () => {
                                         </div>
 
                                     </div>
-                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                        <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                                    </div>
-
-                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                        <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                                    </div>
-
+                                  
                                 </div>
                             </div>
                             <div className="createstudent-btn">
@@ -113,8 +106,10 @@ const HosteliteLeave = () => {
                                                         <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                                     </button>
                                                     <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                        <li><Link className="ti-dropdown-item" to="#">Edit</Link></li>
-                                                        <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
+                                                    <li><Link className="ti-dropdown-item" to="#">Approve</Link></li>
+                                        <li><Link className="ti-dropdown-item" to="#">Reject</Link></li>
+                                        <li><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                        <li><Link className="ti-dropdown-item" to="#">Cancel</Link></li>
                                                     </ul>
                                                 </div>
                                             </td>

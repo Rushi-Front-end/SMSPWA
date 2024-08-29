@@ -1,8 +1,23 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+
+import axios from 'axios';
 
 const StudentMedical = (props) => {
     console.log(props,"setStudMedical")
+
+    const navigate = useNavigate()
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post('https://66c9968d59f4350f064ce86d.mockapi.io/students', props.values)
+            .then(res => {
+                console.log(res)
+                navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
+            })
+            .catch(err => console.log(err))
+    }
     return (
         <div className='student-medical-wrapper'>
             <div className='student-medical-innerwrap'>
@@ -217,7 +232,7 @@ const StudentMedical = (props) => {
 
                 <div className='student-create-btn'>
                     <div className='flex justify-end'>
-                        <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" >Save</button>
+                        <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave"  onClick={handleSubmit} >Save</button>
                         <div className='backButton'>
                                 <button onClick={()=>props.setStudMedical(false)} type="button" className="ti-btn ti-btn-info-full ml-15 !rounded-full ti-btn-wave">Reset</button>
                         </div>

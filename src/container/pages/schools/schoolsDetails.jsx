@@ -30,6 +30,7 @@ const SchoolsDetails = () => {
     //   console.log(dataFromChild, "dataFromChild", dataFromChildSubject)
 
     const updateForm = () => {
+        setAddSec(false);
         setUpdateClass(true);
     }
 
@@ -159,9 +160,9 @@ const SchoolsDetails = () => {
                                                                         <thead><tr className="border-b border-defaultborder">
                                                                             <th scope="col" className="text-start">#</th>
                                                                             <th scope="col" className="text-start">Section</th>
-                                                                            <th scope="col" className="text-start">Class Teacher</th>
+                                                                            {/* <th scope="col" className="text-start">Class Teacher</th> */}
                                                                             <th scope="col" className="text-start">Description</th>
-                                                                            <th scope="col" className="text-start">Status</th>
+                                                                            {/* <th scope="col" className="text-start">Status</th> */}
                                                                             <th scope="col" className="text-start">Action</th>
                                                                         </tr>
                                                                         </thead>
@@ -169,10 +170,10 @@ const SchoolsDetails = () => {
                                                                             <tr className="border-b border-defaultborder">
                                                                                 <td>1</td>
                                                                                 <td>A</td>
-                                                                                <td>Pratik Kale</td>
+                                                                                {/* <td>Pratik Kale</td> */}
                                                                                 <td>Test</td>
-                                                                                <td>
-                                                                                    <span className="badge bg-success text-white">Active</span></td>
+                                                                                {/* <td>
+                                                                                    <span className="badge bg-success text-white">Active</span></td> */}
                                                                                     <td>
                                                                                     <div className="hstack flex gap-3 
  text-[.9375rem]">
@@ -195,10 +196,10 @@ const SchoolsDetails = () => {
                                                                             <tr className="border-b border-defaultborder">
                                                                                 <td>2</td>
                                                                                 <td>5th Class</td>
-                                                                                <td>Pratik Kale</td>
+                                                                                {/* <td>Pratik Kale</td> */}
                                                                                 <td>Test</td>
-                                                                                <td>
-                                                                                    <span className="badge bg-success text-white">Active</span></td>
+                                                                                {/* <td>
+                                                                                    <span className="badge bg-success text-white">Active</span></td> */}
                                                                                 <td>
                                                                                     <div className="hstack flex gap-3 
  text-[.9375rem]">
@@ -238,9 +239,9 @@ const SchoolsDetails = () => {
                                                                         <thead><tr className="border-b border-defaultborder">
                                                                             <th scope="col" className="text-start">#</th>
                                                                             <th scope="col" className="text-start">Section</th>
-                                                                            <th scope="col" className="text-start">Class Teacher</th>
+                                                                            {/* <th scope="col" className="text-start">Class Teacher</th> */}
                                                                             <th scope="col" className="text-start">Description</th>
-                                                                            <th scope="col" className="text-start">Status</th>
+                                                                            {/* <th scope="col" className="text-start">Status</th> */}
                                                                             <th scope="col" className="text-start">Action</th>
                                                                         </tr>
                                                                         </thead>
@@ -248,10 +249,10 @@ const SchoolsDetails = () => {
                                                                             <tr className="border-b border-defaultborder">
                                                                                 <td>1</td>
                                                                                 <td>A</td>
-                                                                                <td>Pratik Kale</td>
+                                                                                {/* <td>Pratik Kale</td> */}
                                                                                 <td>Test</td>
-                                                                                <td>
-                                                                                    <span className="badge bg-success text-white">Active</span></td>
+                                                                                {/* <td>
+                                                                                    <span className="badge bg-success text-white">Active</span></td> */}
                                                                                     <td>
                                                                                     <div className="hstack flex gap-3 
  text-[.9375rem]">
@@ -274,10 +275,10 @@ const SchoolsDetails = () => {
                                                                             <tr className="border-b border-defaultborder">
                                                                                 <td>2</td>
                                                                                 <td>5th Class</td>
-                                                                                <td>Pratik Kale</td>
+                                                                                {/* <td>Pratik Kale</td> */}
                                                                                 <td>Test</td>
-                                                                                <td>
-                                                                                    <span className="badge bg-success text-white">Active</span></td>
+                                                                                {/* <td>
+                                                                                    <span className="badge bg-success text-white">Active</span></td> */}
                                                                                     <td>
                                                                                     <div className="hstack flex gap-3 
  text-[.9375rem]">

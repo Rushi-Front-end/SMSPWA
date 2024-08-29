@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { singleselect } from '../../forms/formelements/formselect/formselectdata'
+import { singleselect, schoolBoard, prakalpName } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { Controller, useForm, useController } from 'react-hook-form';
@@ -9,7 +9,7 @@ import * as yup from "yup";
 
 const schema = yup.object({
     schoolName: yup.string().required("Please enter School Name"),
-    schoolCode: yup.string().required("Please enter School Code"),
+    schoolEmail: yup.string().required("Please enter proper Email id"),
     schoolPhone: yup.string().required("Please enter Phone Number"),
     Addline1: yup.string().required("Please enter Address"),
     zipCode: yup.string().required("Please enter valid ZipCode"),
@@ -34,6 +34,8 @@ const CreateSchool = () => {
     const { field: { value: stateDropValue, onChange: stateDropOnChange, ...reststateDropField } } = useController({ name: 'stateDrop', control });
     
     const { errors } = formState;
+
+    // console.log(data,"SchoolData")
     
     const onSubmit = (formData) => {
         setData({ ...formData });
@@ -99,23 +101,23 @@ const CreateSchool = () => {
                                 <input type="text" {...register('schoolName')}  className="form-control" id="input-text" placeholder="Enter School Name" />
                                 {errors.schoolName && <p className='errorTxt'>{errors.schoolName.message}</p>}
                             </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label className="ti-form-select rounded-sm !p-0 mb-2">School Code*:</label>
-                                <input type="text" {...register('schoolCode')} className="form-control" id="input-text" placeholder="Enter School Code" />
-                                {errors.schoolCode && <p className='errorTxt'>{errors.schoolCode.message}</p>}
-                            </div>
+                           
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">School Board*:</label>
                                 <Select className="!p-0 place-holder" 
                                     isClearable
-                                    options={singleselect}
-                                    value={schoolBoardValue ? singleselect.find(x => x.value === schoolBoardValue) : schoolBoardValue}
+                                    options={schoolBoard}
+                                    value={schoolBoardValue ? schoolBoard.find(x => x.value === schoolBoardValue) : schoolBoardValue}
                                     onChange={option => schoolBoardOnChange(option ? option.value : option)}
                                     {...restschoolBoardField}
                                     classNamePrefix='react-select'  />
                                 {errors.schoolBoard && <p className='errorTxt'>{errors.schoolBoard.message}</p>}
                             </div>
-
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <label className="ti-form-select rounded-sm !p-0 mb-2">School Email*:</label>
+                                <input type="email" {...register('schoolEmail')} className="form-control" id="input-text" placeholder="Enter Email id" />
+                                {errors.schoolEmail && <p className='errorTxt'>{errors.schoolEmail.message}</p>}
+                            </div>
                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">School Category*:</label>
                                 <Select className="!p-0 place-holder" 
@@ -132,8 +134,8 @@ const CreateSchool = () => {
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">Prakalpa*:</label>
                                 <Select className="!p-0 place-holder" 
                                     isClearable
-                                    options={singleselect}
-                                    value={prakalpValue ? singleselect.find(x => x.value === prakalpValue) : prakalpValue}
+                                    options={prakalpName}
+                                    value={prakalpValue ? prakalpName.find(x => x.value === prakalpValue) : prakalpValue}
                                     onChange={option => prakalpOnChange(option ? option.value : option)}
                                     {...restPrakalpField}
                                     classNamePrefix='react-select'  />
@@ -142,7 +144,7 @@ const CreateSchool = () => {
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">School Phone/Mobile No.*</label>
-                                    <input type="text" {...register('schoolPhone')}  className="form-control input-group-control" id="input-text" placeholder="Enter Mobile No." />
+                                    <input type="text" maxLength={10} {...register('schoolPhone')}  className="form-control input-group-control" id="input-text" placeholder="Enter Mobile No." />
                                     {errors.schoolPhone && <p className='errorTxt'>{errors.schoolPhone.message}</p>}
                             </div>
 

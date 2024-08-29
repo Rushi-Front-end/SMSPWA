@@ -1,8 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Loader from '../loader/loader';
+
+
+
+
+
 const AllSchool = () => {
+    const [data, setData] = useState([])
+    const [spinner, setSpinner] = useState(false)
+
+    const getSchoolsDetails = () => {
+        setSpinner(true)
+        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School', {
+            method:'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "*",
+              
+            }
+        })
+            .then(res =>{ setData(res.data)
+                setSpinner(false)
+            })
+            .catch(err => console.log(err))
+    }
+    console.log(data, "Schiool")
+ 
+    useEffect(() => {
+        getSchoolsDetails()
+    }, [])
     return (
         <div>
             <h4 className='borderBottom pt-4'>Schools </h4>
@@ -53,19 +84,19 @@ const AllSchool = () => {
                                     <thead><tr className="border-b border-defaultborder">
                                         <th scope="col" className="text-start">#</th>
                                         <th scope="col" className="text-start">Name</th>
-                                        <th scope="col" className="text-start">Code</th>
+                                        <th scope="col" className="text-start">Email</th>
                                         <th scope="col" className="text-start">Mobile No.	</th>
                                         <th scope="col" className="text-start">Address</th>
                                         <th scope="col" className="text-start">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="border-b border-defaultborder">
+                                        {/* <tr className="border-b border-defaultborder">
                                             <td>1</td>
                                             <td>
                                                 <Link className='text-primary' to={`${import.meta.env.BASE_URL}pages/schools/schoolsDetails`}>Ekalavya Ashram School</Link>
                                             </td>
-                                            <td>27080615703</td>
+                                            <td>abc@gmail.com</td>
                                             <td>+91 7777788888</td>
                                             <td>Waigaon, Samudrapur, Wardha, Amaravati, Maharashtra, India</td>
 
@@ -84,8 +115,40 @@ const AllSchool = () => {
                                                 </div>
                                             </div>
                                             </td>
-                                        </tr>
+                                        </tr> */}
+ {
+                                            spinner ? <Loader /> :
+                                            data.map((dt, index) => {
+                                                return <tr key={dt.id}>
+                                                    <td>{++index}</td>
+                                                    {/* <td>{dt.id}</td> */}
+                                                    <td>
+                                                        <Link className='text-primary' to={`${import.meta.env.BASE_URL}pages/schools/schoolsDetails`}>
+                                                            {dt.schoolName}
+                                                        </Link>
+                                                    </td>
+                                                    <td>{dt.email}</td>
+                                                    <td>{dt.schoolMobileNum}</td>
+                                                    <td>{dt.city}</td>
+                                                    <td><div className="hstack flex gap-3 text-[.9375rem]">
+                                                    <div className="ti-dropdown hs-dropdown">
+                                                    <button type="button"
+                                                        className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                                        <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                    </button>
+                                                    <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                        <li ><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/schools/createSchool`}>Edit</Link></li>
+                                                        <li><Link className="ti-dropdown-item" onClick={()=>deleteDatahandler(dt.id)}
 
+>Delete</Link></li>
+
+                                                    </ul>
+                                                </div>
+                                                        </div></td>
+                                                </tr>
+                                            })
+
+                                        }
                                     </tbody>
                                 </table>
                             </div>

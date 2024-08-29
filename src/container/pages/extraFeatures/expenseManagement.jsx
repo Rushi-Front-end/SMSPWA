@@ -107,7 +107,7 @@ const ExpenseManagement = () => {
                         <table className="table   whitespace-nowrap table-sm min-w-full">
                             <thead><tr className="border-b border-defaultborder">
                                 <th scope="col" className="text-start">#</th>
-                                <th scope="col" className="text-start">Title	</th>
+                                {/* <th scope="col" className="text-start">Title	</th> */}
                                 <th scope="col" className="text-start">Category</th>
                                 <th scope="col" className="text-start"> Date</th>
                                 <th scope="col" className="text-start">Amount	</th>
@@ -119,7 +119,7 @@ const ExpenseManagement = () => {
                             <tbody>
                                         <tr>
                                             <td rowSpan="2">1</td>
-                                            <td>Uniform	</td>
+                                            {/* <td>Uniform	</td> */}
                                             <td>	Furniture</td>
                                             <td>01 Aug 2024</td>
                                             <td>INR 10000.00</td>
@@ -136,8 +136,10 @@ const ExpenseManagement = () => {
                                         <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                     </button>
                                     <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                        <li><Link className="ti-dropdown-item" to="#">Approve</Link></li>
+                                        <li><Link className="ti-dropdown-item" to="#">Reject</Link></li>
                                         <li><Link className="ti-dropdown-item" to="#">Edit</Link></li>
-                                        <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
+                                        <li><Link className="ti-dropdown-item" to="#">Cancel</Link></li>
                                     </ul>
                                 </div>
                                                     </td>

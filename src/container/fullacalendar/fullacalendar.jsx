@@ -138,7 +138,7 @@ const Fullacalendar = () => {
         <div className="xl:col-span-3 col-span-12">
           <div className="box custom-box">
             <div className="py-4 px-[1.25rem] border-b dark:border-defaultborder/10  !grid">
-              <button type="button" className="ti-btn ti-btn-primary"><i className="ri-add-line align-middle me-1 font-semibold inline-block"></i>Create New Event</button>
+              <button type="button" className="ti-btn ti-btn-primary">Create New Event</button>
             </div>
             <div className="box-body !p-0">
               <div id="external-events" className="border-b dark:border-defaultborder/10 p-4">

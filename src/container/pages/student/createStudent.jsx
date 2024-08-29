@@ -26,19 +26,19 @@ const CreateStudent = () => {
     const navigate = useNavigate()
 
     const profileImage = (e) => {
-        console.log(e.target.files);
+        console.log(e.target.files[0], "Image URL");
         setFile(URL.createObjectURL(e.target.files[0]));
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('https://66c9968d59f4350f064ce86d.mockapi.io/students', values)
-            .then(res => {
-                console.log(res)
-                navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
-            })
-            .catch(err => console.log(err))
-    }
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     axios.post('https://66c9968d59f4350f064ce86d.mockapi.io/students', values)
+    //         .then(res => {
+    //             console.log(res)
+    //             navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
+    //         })
+    //         .catch(err => console.log(err))
+    // }
     const NextPageOpen = (e) => {
         setStudMedical(true)
     }

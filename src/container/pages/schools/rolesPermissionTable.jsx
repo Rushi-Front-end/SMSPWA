@@ -16,7 +16,7 @@ const RolesPermissionTable = ({sendDataToParent}) => {
                         <th scope="col" className="text-start">	Role Name</th>
                         <th scope="col" className="text-start">Permissions</th>
                         <th scope="col" className="text-start">Description</th>
-                        <th scope="col" className="text-start">Status</th>
+                        {/* <th scope="col" className="text-start">Status</th> */}
                         <th scope="col" className="text-start">Action</th>
                     </tr>
                     </thead>
@@ -30,8 +30,8 @@ const RolesPermissionTable = ({sendDataToParent}) => {
                                 </Link>
                             </td>
                             <td>Testing</td>
-                            <td>
-                                <span className="badge bg-success text-white">Active</span></td>
+                            {/* <td>
+                                <span className="badge bg-success text-white">Active</span></td> */}
                             <td>
                                 <div className="hstack flex gap-3 
  text-[.9375rem]">

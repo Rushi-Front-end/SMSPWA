@@ -81,18 +81,18 @@ const CreateStaff = () => {
             <div className='employment-details mb-4'>
                 {/* <h6 className=' pb-2'>Academic Details</h6> */}
                 <div className='grid grid-cols-12 sm:gap-6'>
-                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Staff ID*:</label>
                             <input type="text" className="form-control" id="input-text" placeholder="Enter Staff ID" />
-                            </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            </div> */}
+                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Assign Roles*:</label>
                             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
                             </div>
-                           
+                            */}
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Designation*</label>
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Role*</label>
                                 <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
                             </div>
 
@@ -172,15 +172,15 @@ const CreateStaff = () => {
                 <h6 className=' pb-2'>Academic Details</h6>
                 <div className='grid grid-cols-12 sm:gap-6'>
                                                     
-                            <div className="xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Assign Subjects</label>
                             <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
                             </div>
-                            <div className="xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Departments*</label>
                             <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
                             </div>
-                            <div className="xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Shifts</label>
                             <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
                             </div>

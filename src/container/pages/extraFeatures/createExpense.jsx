@@ -55,10 +55,10 @@ const CreateExpense = () => {
                             <h4>Add Expense</h4>
 
                             <div className='grid grid-cols-12 sm:gap-6 pt-4'>
-                            <div className="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-12 col-span-12">
+                            {/* <div className="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-12 col-span-12">
             <label htmlFor="input-text" className="form-label">Title*</label>
             <input type="text" className="form-control" id="input-text" placeholder="Enter Role Name" />
-        </div>
+        </div> */}
                             <div className="leave-staff-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2"> Category*:</label>
                                 <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />

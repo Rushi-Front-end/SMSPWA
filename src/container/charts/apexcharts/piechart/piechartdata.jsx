@@ -48,7 +48,7 @@ export class Simpledonut extends Component {
         super(props);
 
         this.state = {
-            series: [44, 55],
+            female: [30000, 20000],
             options: {
                 chart: {
                     type: 'donut',
@@ -76,7 +76,7 @@ export class Simpledonut extends Component {
 
     render() {
         return (
-            <ReactApexChart options={this.state.options} series={this.state.series} type="donut" height={300} />
+            <ReactApexChart options={this.state.options} series={this.state.female} type="donut" height={300} />
 
         );
     }

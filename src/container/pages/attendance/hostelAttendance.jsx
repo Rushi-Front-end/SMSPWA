@@ -64,18 +64,26 @@ const HostelAttendance = () => {
                                 </div>
                             </div>
 
-                            <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                {/* <label className="form-label">Department</label> */}
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
+                           
 
-                            <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                {/* <label className="form-label">Role</label> */}
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
+                            <div className="xl:col-span-5 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                    {/* <input type="search" className="form-control" id="input-search" placeholder="Search" /> */}
+                                    <div className="flex rounded-sm search-box">
+                                        <input type="search" placeholder='Search'  id="hs-trailing-button-add-on-with-icon" name="hs-trailing-button-add-on-with-icon" className="ti-form-input rounded-none rounded-s-sm focus:z-10" />
+                                        <button aria-label="button"   type="button" className="inline-flex search-icon flex-shrink-0 justify-center items-center rounded-e-sm border border-transparent font-semibold bg-warning text-white hover:bg-warning focus:z-10 focus:outline-none focus:ring-0 focus:ring-warning transition-all text-sm">
+                                            <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                </div>
                            
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>
+                            </div>
+                            <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Mark All Present</button>
                             </div>
 
                         </div>
@@ -87,7 +95,7 @@ const HostelAttendance = () => {
                         <table className="table whitespace-nowrap table-bordered table-sm min-w-full">
                                 <thead><tr className="border-b  border-defaultborder">
                                 <th scope="col" className="text-start">#</th>
-                                    <th scope="col" className="text-start">Student ID</th>
+                                    {/* <th scope="col" className="text-start">Student ID</th> */}
                                     <th scope="col" className="text-start"> Name</th>
                                     <th scope="col" className="text-start">Mobile No.</th>
                                     <th scope="col" className="text-start">Class</th>
@@ -100,7 +108,7 @@ const HostelAttendance = () => {
                                 <tbody>
                                     <tr className="border-b border-defaultborder">
                                         <td>1</td>
-                                        <td>EMP001</td>
+                                        {/* <td>EMP001</td> */}
                                         <td>
                                             <Link className='text-primary'>
                                             Dr. Pravin Khonde

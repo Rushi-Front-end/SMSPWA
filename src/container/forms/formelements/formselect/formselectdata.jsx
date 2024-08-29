@@ -84,6 +84,24 @@ export const singleselect = [
   { id: 3, value: "Choice 2" ,label:"Choice 2"},
   { id: 4, value: "Choice 3" ,label:"Choice 3"},
 ]
+export const schoolBoard = [
+  { id: 1, value: "Select Board",label:"Select Board" },
+  { id: 2, value: "SSC" ,label:"SSC"},
+  { id: 3, value: "CBSC" ,label:"CBSC"},
+]
+
+export const prakalpName  = [
+  { id: 1, value: "Select Prakalp Name",label:"Prakalp Name" },
+  { id: 2, value: "Aheri" ,label:"Aheri"},
+  { id: 3, value: "Bhambaragad" ,label:"Bhambaragad"},
+  { id: 3, value: "Bhandara" ,label:"Bhandara"},
+  { id: 3, value: "Chandrapur" ,label:"Chandrapur"},
+  { id: 3, value: "Chimur" ,label:"Chimur"},
+  { id: 3, value: "Devari" ,label:"Devari"},
+  { id: 3, value: "Gadchiroli" ,label:"Gadchiroli"},
+  { id: 3, value: "Nagpur" ,label:"Nagpur"},
+  { id: 3, value: "Wardha" ,label:"Wardha"},
+]
 
 //
 export const Choosedata = [
