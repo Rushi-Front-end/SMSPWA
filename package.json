@@ -27,6 +27,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@simonwep/pickr": "^1.9.0",
     "@tailwindcss/forms": "^0.5.7",
+    "ag-grid-react": "^32.1.0",
     "apexcharts": "^3.52.0",
     "axios": "^1.7.4",
     "chart.js": "^4.4.4",

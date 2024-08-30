@@ -6,7 +6,7 @@ import { Controller, useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-import {postSchoolList } from '../../../redux/reducers/schoolReducer';
+import {fetchSchoolById, postSchoolList } from '../../../redux/reducers/schoolReducer';
 import { useNavigate } from "react-router-dom";
 
 
@@ -24,21 +24,48 @@ const schema = yup.object({
     
   });
 
-const CreateSchool = () => {
+const EditSchool = () => {
+    
     const [data, setData] = useState({
-        city:'',
-        district:'',
-        landmark:'',
-        area:'',
-        phone:'',
-        principalName:''
+        // city:'',
+        // district:'',
+        // landmark:'',
+        // area:''
         
     });
+    
+
+
 
     const navigate = useNavigate()
+    const params = useParams();
 
-    const schoolPostRes = useSelector((state) => state.schoolData.postRes)
+    // const schoolUpdateRes = useSelector((state) => state.schoolData.updateRes)
+    const schoolUpdData = useSelector((state) => state.schoolData)
+    console.log(schoolUpdData,'schollUpdateData')
     const dispatch = useDispatch()
+
+    console.log(params.id, "Updateeeeee")
+
+    useEffect((id) => {
+        dispatch(fetchSchoolById(params.id))
+      }, [dispatch, params.id])
+      
+      
+    // useEffect(() => {
+    //     if (id) {
+    //       const singleUser = schoolUpdateRes.filter((ele) => ele.id === id);
+    //       setUpdateData(singleUser[0]);
+    //     }
+    //   }, []);
+    
+    //   const newData = (e) => {
+    //     setUpdateData({ ...updateData, [e.target.name]: e.target.value });
+    //   };
+    
+    //   console.log("updated data", updateData);
+    
+
 
     const { register, handleSubmit, formState, control } = useForm({
         resolver: yupResolver(schema)
@@ -52,15 +79,16 @@ const CreateSchool = () => {
     const { errors } = formState;
 
     
-    console.log(data,"SchoolData")
+    // console.log(data,"SchoolData")
     const onSubmit = (formData) => {
-        console.log(formData, 'FormDATATTA')
-        setData({ ...formData });
-         dispatch(postSchoolList(formData))
-         navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
-         //dispatch(fetchSchoolList())
+        // console.log(formData, 'FormDATATTA')
+        // setData({ ...formData });
+        //  dispatch(postSchoolList(data))
+        // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
     }
 
+   
+    
 
     return (
         <div>
@@ -68,6 +96,13 @@ const CreateSchool = () => {
             <div className="breadcrumbs-wrapper mb-4">
                 <div className='school-flex-container'>
                     <div className='flex flex-row mb-4 items-center'>
+
+                        {/* <div className='backButton self-center '>
+                            <Link to={`${import.meta.env.BASE_URL}pages/schools/allSchools`}>
+
+                                <button type="button" className="ti-btn ti-btn-info-full ti-btn-wave">Back</button>
+                            </Link>
+                        </div> */}
 
                         <div className="breadcrumbs !border-0 ">
                             <ol className="flex items-center whitespace-nowrap min-w-0">
@@ -82,7 +117,7 @@ const CreateSchool = () => {
                                     </Link>
                                 </li>
                                 <li className="text-sm">
-                                    <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}pages/schools/allSchools`}  >
+                                    <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}pages/schools/allSchools`} >
                                         Schools
                                         <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-black-300 dark:text-white/10 rtl:rotate-180"
                                             width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,9 +138,10 @@ const CreateSchool = () => {
             {/* Student form create Start */}
             <div className='student-form-create'>
                 <div className='box p-4 ' >
-                    
+                    {/* {updateSchool ?  <h4 className='pt-2 pb-2'>Update School Form</h4> : 
                     <h4 className='pt-2 pb-2'>School Form</h4>
-
+} */}
+                    <h4 className='pt-2 pb-2'>Update School Form</h4> 
                     <form onSubmit={handleSubmit(onSubmit)}>
                     <div className='academic-details mb-4'>
                         {/* <h6 className=' pb-2'>Academic Details</h6> */}
@@ -162,25 +198,17 @@ const CreateSchool = () => {
                                     <input type="text" maxLength={10} {...register('schoolMobileNum')}  className="form-control input-group-control" id="input-text" placeholder="Enter Mobile No." />
                                     {errors.schoolMobileNum && <p className='errorTxt'>{errors.schoolMobileNum.message}</p>}
                             </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label className="ti-form-select rounded-sm !p-0 mb-2"> Phone No</label>
-                                    <input type="text" maxLength={10} {...register('phone')}  className="form-control input-group-control" id="input-text" name="phone" placeholder="Enter Mobile No." />
-                            </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label className="ti-form-select rounded-sm !p-0 mb-2"> Principal Name</label>
-                                    <input type="text"  {...register('principalName')}  className="form-control input-group-control" id="input-text" name="principalName" placeholder="Enter Principal Name" />
-                            </div>
 
                         </div>
                     </div>
                     <div className='aadharcard-details mb-4'>
                         <h6 className=' pb-2'>Address Details</h6>
                         <div className='grid grid-cols-12 sm:gap-6'>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label className="ti-form-select rounded-sm !p-0 mb-2">Address Line 1<span className='redText'>*</span>:</label>
+                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <label className="ti-form-select rounded-sm !p-0 mb-2">Address Line 1*:</label>
                                 <input type="text" {...register('area')} className="form-control" id="input-text" placeholder="Enter Building Name, Street Name" />
                                 {errors.area && <p className='errorTxt'>{errors.area.message}</p>}
-                            </div>
+                            </div> */}
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">Address Line 2:</label>
                                 <input type="text"  {...register('area')}  name='area' className="form-control" id="input-text" placeholder="Enter Address Line 2 (Optional)" />
@@ -224,8 +252,7 @@ const CreateSchool = () => {
                             <button type="submit" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" >Save</button>
                             <Link to={`${import.meta.env.BASE_URL}pages/schools/allSchools`}>
 
-                                {/* <button onClick={removeUpdateValue} type="button" className="ti-btn ti-btn-info-full ml-15 !rounded-full ti-btn-wave">Cancel</button> */}
-                                <button  type="button" className="ti-btn ti-btn-info-full ml-15 !rounded-full ti-btn-wave">Cancel</button>
+                                <button type="button" className="ti-btn ti-btn-info-full ml-15 !rounded-full ti-btn-wave">Cancel</button>
                             </Link>
                         </div>
                     </div>
@@ -237,4 +264,4 @@ const CreateSchool = () => {
     )
 }
 
-export default CreateSchool
+export default EditSchool

@@ -13,10 +13,10 @@ const CreateSection = (props) => {
             {/* <input type="text" className="form-control" id="input-text" placeholder="Enter Section Name" /> */}
             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
         </div>
-        <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
+        {/* <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
             <label className="ti-form-select rounded-sm !p-0 ">Section Class Teacher*</label>
             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-        </div>
+        </div> */}
 
         <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4 pb-2">
             <label htmlFor="input-text" className="form-label">Description</label>

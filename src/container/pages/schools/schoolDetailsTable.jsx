@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SchoolDetailsTable = () => {
+const SchoolDetailsTable = ({schoolIndData}) => {
     return (
         <div>
             <div className="table-responsive pt-2">
@@ -13,11 +13,13 @@ const SchoolDetailsTable = () => {
                     </tr>
                     </thead>
                     <tbody>
+                        
                         <tr className="border-b border-defaultborder">
                             {/* <td>Ashram School</td> */}
-                            <td>SDDSF34</td>
-                            <td>+91 23423423423</td>
-                            <td>Ashram School street, amaravathi, MH</td>
+                            <td>{schoolIndData.list.pinCode}</td>
+                            <td>{schoolIndData.list.schoolMobileNum}</td>
+                            <td>{schoolIndData.list.area}</td>
+                            
 
                         </tr>
 

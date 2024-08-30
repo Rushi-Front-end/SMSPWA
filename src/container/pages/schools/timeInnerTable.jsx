@@ -1,93 +1,207 @@
-import React, { useState } from 'react'
-import DatePicker from 'react-datepicker';
-import { singleselect } from '../../forms/formelements/formselect/formselectdata'
-import Select from 'react-select';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const TimeInnerTable = () => {
-    const [startDate4, setStartDate4] = useState(new Date());
-  return (
-    <div>
-          <div className="table-responsive pt-2">
-                <table className="table whitespace-nowrap table-sm min-w-full">
-                    <thead><tr className="border-b border-defaultborder">
-                        <th scope="col" className="text-start">Sl No.</th>
-                        <th scope="col" className="text-start">Type</th>
-                        <th scope="col" className="text-start">	Subject</th>
-                        <th scope="col" className="text-start">Teacher</th>
-                        <th scope="col" className="text-start">Start Time</th>
-                        <th scope="col" className="text-start">End Time</th>
-                        <th scope="col" className="text-start">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr className="border-b border-defaultborder">
-                            <td>1</td>
-                            <td>
-                                <div>
-                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                         <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                         </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                         <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                         </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                         <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                         </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                <div className="form-group">
-                                <div className="input-group !flex-nowrap">
-                                    <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-time-line"></i> </div>
-                                    <DatePicker className="ti-form-input  focus:z-10" selected={startDate4} onChange={(date) => setStartDate4(date)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" />
-                                </div>
-                            </div>
-                                </div>
-                            </td>
-                            
-                            <td>
-                                <div>
-                                <div className="form-group">
-                                <div className="input-group !flex-nowrap">
-                                    <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-time-line"></i> </div>
-                                    <DatePicker className="ti-form-input  focus:z-10" selected={startDate4} onChange={(date) => setStartDate4(date)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" />
-                                </div>
-                            </div>
-                                </div>
-                            </td>
-                            
-                            <td>
-                                <div className='action-button-delete'>
-                                Delete
-                                </div>
-                            </td>
+    const [hiddenRow, setHiddenRow] = useState(false);
+    const [addHiddenRow, setAddHiddenRow] = useState([]);
+    const [isDisabled, setIsDisabled] = useState(true);
+    const time = Date().slice(16, 21);
 
-                        </tr>
+    // Function to toggle visibility and add a new div
+    const AddIndRow = () => {
+        setHiddenRow(true); // Show the hidden div
+        setAddHiddenRow([...addHiddenRow, {}]); // Add a new empty object to the array
+    };
 
-                    </tbody>
-                </table>
+    // Function to enable the inputs
+    const enableInputs = () => {
+        setIsDisabled(false);
+    };
+
+    // Function to handle row deletion
+    const deleteRow = (indexToRemove) => {
+        const updatedRows = addHiddenRow.filter((_, index) => index !== indexToRemove);
+        setAddHiddenRow(updatedRows);
+    };
+
+    return (
+        <div>
+            <div className="timetable-deatils-wrapper">
+                <div className="table-responsive pt-2">
+                    <table className="table whitespace-nowrap table-sm min-w-full">
+                        <thead>
+                            <tr className="border-b border-defaultborder">
+                                <th scope="col" className="text-start">Sl No.</th>
+                                <th scope="col" className="text-start">Start Time</th>
+                                <th scope="col" className="text-start">End Time</th>
+                                <th scope="col" className="text-start">Type</th>
+                                <th scope="col" className="text-start">Subject</th>
+                                <th scope="col" className="text-start">Teacher</th>
+                                <th scope="col" className="text-start">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="border-b border-defaultborder">
+                                <td>{1}</td>
+                                <td>
+                                    <div className="timePicker-wrapper">
+                                        <input type="time" className="timePicker" id="startTime" name="startTime" value={time} disabled={isDisabled} />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="timePicker-wrapper">
+                                        <input type="time" className="timePicker" id="endTime" name="endTime" value={time} disabled={isDisabled} />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                        <select className="!p-0 place-holder timeTableSelect" disabled={isDisabled}>
+                                            <option value="volvo">Volvo</option>
+                                            <option value="saab">Saab</option>
+                                            <option value="opel">Opel</option>
+                                            <option value="audi">Audi</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                        <select className="!p-0 place-holder timeTableSelect" disabled={isDisabled}>
+                                            <option value="volvo">Volvo</option>
+                                            <option value="saab">Saab</option>
+                                            <option value="opel">Opel</option>
+                                            <option value="audi">Audi</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                        <select className="!p-0 place-holder timeTableSelect" disabled={isDisabled}>
+                                            <option value="volvo">Volvo</option>
+                                            <option value="saab">Saab</option>
+                                            <option value="opel">Opel</option>
+                                            <option value="audi">Audi</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="ti-dropdown hs-dropdown">
+                                        <button
+                                            type="button"
+                                            className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none"
+                                            aria-expanded="false"
+                                        >
+                                            <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                        </button>
+                                        <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                            <li>
+                                                <Link className="ti-dropdown-item" to="#" onClick={enableInputs}>
+                                                    Edit
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link className="ti-dropdown-item" to="#" >
+                                                    Delete
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
+            {hiddenRow && (
+                <div className="hidden-parent-div">
+                    {addHiddenRow.map((_, index) => (
+                        <div className="timetable-individual-wrapper" key={index}>
+                            <div className="table-responsive pt-2">
+                                <table className="table whitespace-nowrap table-sm min-w-full">
+                                    <tbody>
+                                        <tr className="border-b border-defaultborder">
+                                            <td>{index + 2}</td>
+                                            <td>
+                                                <div className="timePicker-wrapper">
+                                                    <input
+                                                        type="time"
+                                                        className="timePicker"
+                                                        id="startTime"
+                                                        name="startTime"
+                                                        value={time}
+                                                    />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="timePicker-wrapper">
+                                                    <input
+                                                        type="time"
+                                                        className="timePicker"
+                                                        id="endTime"
+                                                        name="endTime"
+                                                        value={time}
+                                                    />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                                    <select className="!p-0 place-holder timeTableSelect">
+                                                        <option value="volvo">Volvo</option>
+                                                        <option value="saab">Saab</option>
+                                                        <option value="opel">Opel</option>
+                                                        <option value="audi">Audi</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                                    <select className="!p-0 place-holder timeTableSelect">
+                                                        <option value="volvo">Volvo</option>
+                                                        <option value="saab">Saab</option>
+                                                        <option value="opel">Opel</option>
+                                                        <option value="audi">Audi</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                                    <select className="!p-0 place-holder timeTableSelect">
+                                                        <option value="volvo">Volvo</option>
+                                                        <option value="saab">Saab</option>
+                                                        <option value="opel">Opel</option>
+                                                        <option value="audi">Audi</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button
+                                                    className="action-button-delete"
+                                                    onClick={() => deleteRow(index)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
             <div className='time-button-group time-flex-container pt-4 pb-4'>
-                <div className='flex justify-between'>
-                    <div className='save-btn'>
-                    <button type="button" className="ti-btn ti-btn-success-full !rounded-full ti-btn-wave">Save</button>
-                    </div>
+                <div className='button-flex-wrapper'>
                     <div className='addNew-btn'>
-                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Add New</button>
+                        <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave" onClick={AddIndRow}>Add New</button>
+                    </div>
+                    <div className='save-btn flex justify-end '>
+                        <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Save</button>
                     </div>
                 </div>
             </div>
-    </div>
-  )
+        </div>
+    )
 }
 
-export default TimeInnerTable
+export default TimeInnerTable;

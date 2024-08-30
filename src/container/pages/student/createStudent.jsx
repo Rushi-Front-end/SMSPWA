@@ -6,7 +6,6 @@ import Pageheader from '../../../components/common/pageheader/pageheader';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import media50 from "../../../assets/images/media/media-50.jpg";
-import StudentMedical from './studentMedical';
 
 
 
@@ -21,7 +20,6 @@ const CreateStudent = () => {
 
     })
     const [file, setFile] = useState();
-    const [studMed, setStudMedical] = useState(false);
 
     const navigate = useNavigate()
 
@@ -30,19 +28,16 @@ const CreateStudent = () => {
         setFile(URL.createObjectURL(e.target.files[0]));
     }
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     axios.post('https://66c9968d59f4350f064ce86d.mockapi.io/students', values)
-    //         .then(res => {
-    //             console.log(res)
-    //             navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
-    //         })
-    //         .catch(err => console.log(err))
-    // }
-    const NextPageOpen = (e) => {
-        setStudMedical(true)
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post('https://66c9968d59f4350f064ce86d.mockapi.io/students', values)
+            .then(res => {
+                console.log(res)
+                navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
+            })
+            .catch(err => console.log(err))
     }
-
+   
     return (
         <div>
             {/* <Pageheader currentpage="Student" activepage="Student" mainpage="Create Student" /> */}
@@ -94,10 +89,7 @@ const CreateStudent = () => {
             <div className='student-form-create'>
                 <div className='box p-4 ' >
                     <h4 className=' pb-2'>Student Form</h4>
-                    {studMed ? <div className='student-medical-details-page'>
-                        <StudentMedical setStudMedical={setStudMedical} values={values} />
-                    </div>
-                        :
+                   
                         <div className='student-details-first-page'>
                             <div className='student-profile-uploads pt-4'>
                                 <div className='student-profile-wrap flex items-center'>
@@ -277,7 +269,7 @@ const CreateStudent = () => {
                             <div className='student-create-btn'>
                                 <div className='flex justify-end'>
                                     {/* <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSubmit} >Next</button> */}
-                                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={NextPageOpen} >Next</button>
+                                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave"  onClick={handleSubmit} >Save</button>
                                     <div className='backButton'>
                                         <Link to={`${import.meta.env.BASE_URL}pages/student/studentDetails`}>
 
@@ -288,7 +280,7 @@ const CreateStudent = () => {
                                 </div>
                             </div>
                         </div>
-                    }
+                    
                 </div>
             </div>
             {/* Student form create end */}

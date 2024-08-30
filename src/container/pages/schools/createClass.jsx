@@ -4,6 +4,9 @@ import { singleselect } from '../../forms/formelements/formselect/formselectdata
 import {  useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { useDispatch, useSelector } from 'react-redux';
+import { postClassList } from '../../../redux/reducers/classReducer';
+import { useNavigate } from 'react-router-dom';
 
 
 const schema = yup.object({
@@ -17,6 +20,10 @@ const CreateClass = (props) => {
     // console.log('updateClass',props)
 
     const [data, setData] = useState();
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+
     const { register, handleSubmit, formState, control } = useForm({
         resolver: yupResolver(schema)
     });
@@ -25,9 +32,14 @@ const CreateClass = (props) => {
     // const { field: { value: classTeacherValue, onChange: classTeacherOnChange, ...restclassTeacherField } } = useController({ name: 'classTeacher', control });
    
     const { errors } = formState;
+
+    const classPostRes = useSelector((state) => state.classData.postRes)
+    console.log(data,'classPostRes')
     
     const onSubmit = (formData) => {
         setData({ ...formData });
+        dispatch(postClassList(formData))
+       // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
     }
 
     // console.log(data, "Create Class")
@@ -67,7 +79,7 @@ const CreateClass = (props) => {
 
         <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4 pb-2">
             <label htmlFor="input-text" className="form-label">Description</label>
-            <textarea className="form-control" id="text-area" placeholder='Enter Description' rows="4" spellCheck="false"></textarea>
+            <textarea  {...register('description')} className="form-control" id="text-area" placeholder='Enter Description' rows="4" spellCheck="false" name='description' ></textarea>
         </div>
         <hr />
         <div className='createSchool-btn pt-4'>

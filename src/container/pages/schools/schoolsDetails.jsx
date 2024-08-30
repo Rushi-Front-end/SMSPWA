@@ -1,6 +1,6 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Pageheader from '../../../components/common/pageheader/pageheader';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata';
 import CreateClass from './createClass';
@@ -11,21 +11,36 @@ import CreateRole from './createRole';
 import TimeTableTabs from './timeTableTabs';
 import SubjectTable from './subjectTable';
 import SubjectCreateForm from './subjectCreateForm';
+import { fetchSchoolById } from '../../../redux/reducers/schoolReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchClassList } from '../../../redux/reducers/classReducer';
 
 
 const SchoolsDetails = () => {
     const [updateClass, setUpdateClass] = useState(false);
     const [addSec, setAddSec] = useState(false);
+    const [updateSchool, setUpdateSchool] = useState(true)
+
 
     const [dataFromChild, setDataFromChild] = useState("");
     const [dataFromChildSubject, setDataFromChildSubject] = useState("");
 
+    const params = useParams()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+
+    const schoolIndData = useSelector((state) => state.schoolData)
+    const classIndData = useSelector((state) => state.classData)
+    console.log(classIndData, 'classIndData')
+
+
     const handleDataFromChild = (data) => {
         setDataFromChild(data);
-      }
+    }
     const handleSubDataFromChild = (subData) => {
         setDataFromChildSubject(subData);
-      }
+    }
 
     //   console.log(dataFromChild, "dataFromChild", dataFromChildSubject)
 
@@ -37,6 +52,22 @@ const SchoolsDetails = () => {
     const addSection = () => {
         setAddSec(true)
     }
+
+    useEffect((id) => {
+        dispatch(fetchSchoolById(params.id))
+    }, [])
+
+    ///Class useEffect
+    useEffect(() => {
+
+        dispatch(fetchClassList())
+    }, [])
+
+    //navgaite and localstorage to edit
+    //   const navigateToEdit = (id) =>{
+    //     localStorage.setItem('updateSchool', JSON.stringify(updateSchool))
+    //     navigate(`${import.meta.env.BASE_URL}pages/schools/editSchool/${params.id}`)
+    // }
 
 
     return (
@@ -98,16 +129,16 @@ const SchoolsDetails = () => {
                                 <div className='box'>
                                     <div className='p-4'>
                                         <div className='flex justify-between school-detail-listing'>
-                                            <h4>Ashram School</h4>
+                                            <h4>{schoolIndData.list.schoolName}</h4>
                                             <div className="school-edit-button">
-                                                <Link to={`${import.meta.env.BASE_URL}pages/schools/createSchool`}>
-                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">Edit School</button>
+                                                <Link to={`${import.meta.env.BASE_URL}pages/schools/editSchool/${params.id}`}>
+                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"  >Edit School</button>
                                                 </Link>
                                             </div>
                                         </div>
 
                                         <div className='school-deatils-table pt-4'>
-                                            <SchoolDetailsTable />
+                                            <SchoolDetailsTable schoolIndData={schoolIndData} />
                                         </div>
                                     </div>
                                 </div>
@@ -143,176 +174,77 @@ const SchoolsDetails = () => {
 
 
                                             </div> */}
-                                            <div id="underline-2"  role="tabpanel" aria-labelledby="underline-item-2">
+                                            <div id="underline-2" role="tabpanel" aria-labelledby="underline-item-2">
                                                 <div className="grid grid-cols-12  gap-4">
                                                     <div className="col-span-12 xl:col-span-8">
-                                                        <div className='classes-sec-wrap'>
-                                                            <div className='classes-top-head flex justify-between'>
-                                                                <h4>Class 5th</h4>
-                                                                <div className='classes-add-secbtn'>
-                                                                    <button type="button" onClick={() => addSection()} className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
+                                                        {
+                                                            classIndData.list.map((dt, index) => {
+                                                                return <div className='classes-sec-wrap pb-4' key={index} id={dt.id} >
+                                                                   
+                                                                    <div className='classes-top-head flex justify-between'>
+                                                                        <h4>{dt.className}</h4>
+                                                                        <div className='classes-add-secbtn'>
+                                                                            <button type="button" onClick={() => addSection()} className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div className='p-5 border rounded-sm dark:border-white/10 border-gray-200'>
+                                                                        <div className="table-responsive">
+                                                                            <table className="table whitespace-nowrap table-sm min-w-full">
+                                                                                <thead><tr className="border-b border-defaultborder">
+                                                                                    <th scope="col" className="text-start">#</th>
+                                                                                    <th scope="col" className="text-start">Section</th>
+                                                                                    {/* <th scope="col" className="text-start">Class Teacher</th> */}
+                                                                                    <th scope="col" className="text-start">Description</th>
+                                                                                    {/* <th scope="col" className="text-start">Status</th> */}
+                                                                                    <th scope="col" className="text-start">Action</th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr className="border-b border-defaultborder" key={index} id={dt.id}>
+                                                                                        <td>{index + 1}</td>
+                                                                                        <td>{dt.className}</td>
+                                                                                        <td>{dt.description}</td>
+                                                                                        <td>
+                                                                                            <div className="hstack flex gap-3 
+text-[.9375rem]">
+                                                                                                <div className="ti-dropdown hs-dropdown">
+                                                                                                    <button type="button"
+                                                                                                        className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
+                                                                                                        <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                                                                    </button>
+                                                                                                    <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                                                                        <li onClick={() => updateForm()}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                                                                                        <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
+
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                                {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
+                            <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                  
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            })
 
-                                                            <div className='p-5 border rounded-sm dark:border-white/10 border-gray-200'>
-                                                                <div className="table-responsive">
-                                                                    <table className="table whitespace-nowrap table-sm min-w-full">
-                                                                        <thead><tr className="border-b border-defaultborder">
-                                                                            <th scope="col" className="text-start">#</th>
-                                                                            <th scope="col" className="text-start">Section</th>
-                                                                            {/* <th scope="col" className="text-start">Class Teacher</th> */}
-                                                                            <th scope="col" className="text-start">Description</th>
-                                                                            {/* <th scope="col" className="text-start">Status</th> */}
-                                                                            <th scope="col" className="text-start">Action</th>
-                                                                        </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr className="border-b border-defaultborder">
-                                                                                <td>1</td>
-                                                                                <td>A</td>
-                                                                                {/* <td>Pratik Kale</td> */}
-                                                                                <td>Test</td>
-                                                                                {/* <td>
-                                                                                    <span className="badge bg-success text-white">Active</span></td> */}
-                                                                                    <td>
-                                                                                    <div className="hstack flex gap-3 
- text-[.9375rem]">
-                                                                                        <div className="ti-dropdown hs-dropdown">
-                                                                                            <button type="button"
-                                                                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
-                                                                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
-                                                                                            </button>
-                                                                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                                                                <li  onClick={() => updateForm()}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
-                                                                                                <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
 
-                                                                                            </ul>
-                                                                                        </div>
-                                                                                        {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr className="border-b border-defaultborder">
-                                                                                <td>2</td>
-                                                                                <td>5th Class</td>
-                                                                                {/* <td>Pratik Kale</td> */}
-                                                                                <td>Test</td>
-                                                                                {/* <td>
-                                                                                    <span className="badge bg-success text-white">Active</span></td> */}
-                                                                                <td>
-                                                                                    <div className="hstack flex gap-3 
- text-[.9375rem]">
-                                                                                        <div className="ti-dropdown hs-dropdown">
-                                                                                            <button type="button"
-                                                                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
-                                                                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
-                                                                                            </button>
-                                                                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                                                                <li  onClick={() => updateForm()}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
-                                                                                                <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
-
-                                                                                            </ul>
-                                                                                        </div>
-                                                                                        {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        }
                                                         {/* End of the classes top sec wrap */}
-                                                        <div className='classes-sec-wrap pt-4'>
-                                                            <div className='classes-top-head flex justify-between'>
-                                                                <h4>Class 6th</h4>
-                                                                <div className='classes-add-secbtn'>
-                                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
-                                                                </div>
-                                                            </div>
 
-                                                            <div className='p-5 border rounded-sm dark:border-white/10 border-gray-200'>
-                                                                <div className="table-responsive">
-                                                                    <table className="table whitespace-nowrap table-sm min-w-full">
-                                                                        <thead><tr className="border-b border-defaultborder">
-                                                                            <th scope="col" className="text-start">#</th>
-                                                                            <th scope="col" className="text-start">Section</th>
-                                                                            {/* <th scope="col" className="text-start">Class Teacher</th> */}
-                                                                            <th scope="col" className="text-start">Description</th>
-                                                                            {/* <th scope="col" className="text-start">Status</th> */}
-                                                                            <th scope="col" className="text-start">Action</th>
-                                                                        </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr className="border-b border-defaultborder">
-                                                                                <td>1</td>
-                                                                                <td>A</td>
-                                                                                {/* <td>Pratik Kale</td> */}
-                                                                                <td>Test</td>
-                                                                                {/* <td>
-                                                                                    <span className="badge bg-success text-white">Active</span></td> */}
-                                                                                    <td>
-                                                                                    <div className="hstack flex gap-3 
- text-[.9375rem]">
-                                                                                        <div className="ti-dropdown hs-dropdown">
-                                                                                            <button type="button"
-                                                                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
-                                                                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
-                                                                                            </button>
-                                                                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                                                                <li  onClick={() => updateForm()}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
-                                                                                                <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
-
-                                                                                            </ul>
-                                                                                        </div>
-                                                                                        {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr className="border-b border-defaultborder">
-                                                                                <td>2</td>
-                                                                                <td>5th Class</td>
-                                                                                {/* <td>Pratik Kale</td> */}
-                                                                                <td>Test</td>
-                                                                                {/* <td>
-                                                                                    <span className="badge bg-success text-white">Active</span></td> */}
-                                                                                    <td>
-                                                                                    <div className="hstack flex gap-3 
- text-[.9375rem]">
-                                                                                        <div className="ti-dropdown hs-dropdown">
-                                                                                            <button type="button"
-                                                                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
-                                                                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
-                                                                                            </button>
-                                                                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                                                                <li  onClick={() => updateForm()}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
-                                                                                                <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
-
-                                                                                            </ul>
-                                                                                        </div>
-                                                                                        {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-                                                                                    <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        {/* End of the classes top sec wrap */}
                                                     </div>
                                                     <div className="col-span-12 xl:col-span-4">
 
-                                                      {
-                                                        addSec === true ? <CreateSection addSec={addSec} setAddSec={setAddSec}  /> : <CreateClass updateClassChild={setUpdateClass} updateClass={updateClass} />
-                                                      }                                      
-                                                    
+                                                        {
+                                                            addSec === true ? <CreateSection addSec={addSec} setAddSec={setAddSec} /> : <CreateClass updateClassChild={setUpdateClass} updateClass={updateClass} />
+                                                        }
 
-                                                    {/* <CreateSection/> */}
+
+                                                        {/* <CreateSection/> */}
                                                     </div>
                                                 </div>
 

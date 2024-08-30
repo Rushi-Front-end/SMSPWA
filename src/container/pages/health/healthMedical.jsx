@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 
-const StudentMedical = (props) => {
+const HealthMedical = (props) => {
     console.log(props,"setStudMedical")
 
     const navigate = useNavigate()
@@ -11,12 +11,12 @@ const StudentMedical = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('https://66c9968d59f4350f064ce86d.mockapi.io/students', props.values)
-            .then(res => {
-                console.log(res)
-                navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
-            })
-            .catch(err => console.log(err))
+        // axios.post('https://66c9968d59f4350f064ce86d.mockapi.io/students', props.values)
+        //     .then(res => {
+        //         console.log(res)
+        //         navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
+        //     })
+        //     .catch(err => console.log(err))
     }
     return (
         <div className='student-medical-wrapper'>
@@ -247,4 +247,4 @@ const StudentMedical = (props) => {
     )
 }
 
-export default StudentMedical
+export default HealthMedical

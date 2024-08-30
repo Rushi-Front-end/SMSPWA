@@ -10,6 +10,7 @@ import store from '../redux/store';
 import { Provider } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import Tabtotop from '../components/common/tabtotop/tabtotop';
+import storeSchool from '../redux/Store/storeSchool';
 
 
 function App() {
@@ -28,15 +29,15 @@ function App() {
   // }
 
 
- 
+
   useEffect(() => {
     import("preline");
 
   }, []);
   return (
     <Fragment>
-      <Loader/>
-      <Provider store={store}>
+      <Loader />
+      <Provider store={store} >
         <HelmetProvider>
           <Helmet
             htmlAttributes={{
@@ -54,17 +55,19 @@ function App() {
           <Switcher />
           <div className='page'>
             <Header />
-            <Sidebar/>
+            <Sidebar />
             <div className='content main-index'>
               <div className='main-content'
-                // onClick={Bodyclickk}
+              // onClick={Bodyclickk}
               >
-                <Outlet />
+                <Provider store={storeSchool}>
+                  <Outlet />
+                </Provider>
               </div>
             </div>
             <Footer />
           </div>
-          <Tabtotop/>
+          <Tabtotop />
         </HelmetProvider>
       </Provider>
     </Fragment>

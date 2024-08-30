@@ -94,9 +94,9 @@ background-color: orange;
     background-color: orange;
     }
 
-    .hs-dropdown.open > .ti-dropdown-menu{
-        top: -22px!important;
-    }
+    // .hs-dropdown.open > .ti-dropdown-menu{
+    //     top: -22px!important;
+    // }
     
     // .transition {
     //     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
@@ -120,6 +120,23 @@ background-color: orange;
     // .inset-0 {
     //     inset: 0px;
     // }
+
+    .timeTableSelect{
+        width:100%;height: 33px;padding: 0 10px!important;
+    }
+
+    .timePicker{
+        width:100%;height: 33px;padding: 0 10px;border-radius: 5px;
+    }
+    
+    .redText{
+        color: red;
+    }
+    .text-left{
+        text-align: left;
+    }
+
+
 @media (min-width:481px) and (max-width:767px){
     .time-tables-wrap{
         .timetable-navs{

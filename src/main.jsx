@@ -5,6 +5,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import './index.scss'
 import './school.scss'
+// import 'ag-grid-community/styles/ag-grid.css';
+// import { AgGridReact } from 'ag-grid-react';
+
 
 import Auth from './firebase/auth.jsx'
 import Login from './firebase/login.jsx'
@@ -50,6 +53,9 @@ import HosteliteCreateLeave from './container/pages/leave/hosteliteCreateLeave.j
 import EditStudent from './container/pages/student/editStudent.jsx'
 import Loader from './container/pages/loader/loader.jsx'
 import StudentIndDetails from './container/pages/student/studentIndDetails.jsx'
+import ExaminationList from './container/pages/examination/examinationList.jsx'
+import CreateExamination from './container/pages/examination/createExamination.jsx'
+import EditSchool from './container/pages/schools/editSchool.jsx'
 // import ErrorPage from './container/pages/404page/errorPage.jsx'
 
 
@@ -77,9 +83,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}pages/attendance/studentAttendance`} element={<StudentAttendance />} />
             <Route path={`${import.meta.env.BASE_URL}pages/attendance/hostelAttendance`} element={<HostelAttendance />} />
             <Route path={`${import.meta.env.BASE_URL}pages/schools/createSchool`} element={<CreateSchool />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/schools/editSchool/:id`} element={<EditSchool />}/>
+
             <Route path={`${import.meta.env.BASE_URL}pages/student/createStudent`} element={<CreateStudent />}/>
             <Route path={`${import.meta.env.BASE_URL}pages/student/editStudent/:studentid`} element={<EditStudent />}/>
-            <Route path={`${import.meta.env.BASE_URL}pages/schools/schoolsDetails`} element={<SchoolsDetails />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/schools/schoolsDetails/:id`} element={<SchoolsDetails />} />
             <Route path={`${import.meta.env.BASE_URL}pages/staff/staffList`} element={<StaffList />} />
             <Route path={`${import.meta.env.BASE_URL}pages/staff/createStaff`} element={<CreateStaff />} />
             <Route path={`${import.meta.env.BASE_URL}pages/staff/staffDetails`} element={<StaffDetails />} />
@@ -107,6 +115,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/createComplaints`} element={<CreateComplaint />} />
             <Route path={`${import.meta.env.BASE_URL}pages/appSettings/settings`} element={<Settings />} />
             <Route path={`${import.meta.env.BASE_URL}pages/changePassword/passwordChange`} element={<ChangePassword />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/examination/examinationList`} element={<ExaminationList />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/examination/createExamination`} element={<CreateExamination />} />
 
 
           </Route>
