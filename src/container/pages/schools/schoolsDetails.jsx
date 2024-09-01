@@ -14,6 +14,7 @@ import SubjectCreateForm from './subjectCreateForm';
 import { fetchSchoolById } from '../../../redux/reducers/schoolReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchClassList } from '../../../redux/reducers/classReducer';
+import SubjectUpdateForm from './subjectUpdateForm';
 
 
 const SchoolsDetails = () => {
@@ -21,10 +22,15 @@ const SchoolsDetails = () => {
     const [addSec, setAddSec] = useState(false);
     const [updateSchool, setUpdateSchool] = useState(true)
 
+    const [classId, setClassId]= useState()
+
+    
 
     const [dataFromChild, setDataFromChild] = useState("");
     const [dataFromChildSubject, setDataFromChildSubject] = useState("");
+    const updateId = dataFromChildSubject.id
 
+    console.log(dataFromChildSubject,'dataFromChildSubject')
     const params = useParams()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -34,43 +40,49 @@ const SchoolsDetails = () => {
     const classIndData = useSelector((state) => state.classData)
     console.log(classIndData, 'classIndData')
 
+   
 
+    
     const handleDataFromChild = (data) => {
         setDataFromChild(data);
     }
     const handleSubDataFromChild = (subData) => {
         setDataFromChildSubject(subData);
     }
-
+    
     //   console.log(dataFromChild, "dataFromChild", dataFromChildSubject)
-
+    
     const updateForm = () => {
         setAddSec(false);
         setUpdateClass(true);
     }
-
-    const addSection = () => {
+    
+    const addSection = (id) => {
         setAddSec(true)
+        
+        setClassId(id)
     }
-
+    console.log(classId,'classID')
+    
     useEffect((id) => {
         dispatch(fetchSchoolById(params.id))
     }, [])
-
+    
     ///Class useEffect
     useEffect(() => {
-
+        
         dispatch(fetchClassList())
+        
     }, [])
-
+    
     //navgaite and localstorage to edit
     //   const navigateToEdit = (id) =>{
-    //     localStorage.setItem('updateSchool', JSON.stringify(updateSchool))
-    //     navigate(`${import.meta.env.BASE_URL}pages/schools/editSchool/${params.id}`)
-    // }
-
-
-    return (
+        //     localStorage.setItem('updateSchool', JSON.stringify(updateSchool))
+        //     navigate(`${import.meta.env.BASE_URL}pages/schools/editSchool/${params.id}`)
+        // }
+        
+        
+        return (
         <Fragment>
 
 
@@ -184,7 +196,7 @@ const SchoolsDetails = () => {
                                                                     <div className='classes-top-head flex justify-between'>
                                                                         <h4>{dt.className}</h4>
                                                                         <div className='classes-add-secbtn'>
-                                                                            <button type="button" onClick={() => addSection()} className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
+                                                                            <button type="button" onClick={() => addSection(dt.id)} className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
                                                                         </div>
                                                                     </div>
 
@@ -281,8 +293,9 @@ text-[.9375rem]">
                                                         <SubjectTable sendSubDataToParent={handleSubDataFromChild} />
                                                     </div>
                                                     <div className="col-span-12 xl:col-span-4">
-
+                                                        {updateId?<SubjectUpdateForm dataFromChildSubject={dataFromChildSubject} setDataFromChildSubject={setDataFromChildSubject} />:
                                                         <SubjectCreateForm dataFromChildSubject={dataFromChildSubject} setDataFromChildSubject={setDataFromChildSubject} />
+                                                    }
                                                         {/* <CreateSection/> */}
                                                     </div>
                                                 </div>

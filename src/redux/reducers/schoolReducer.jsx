@@ -4,6 +4,7 @@ const BASE_URL = 'https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.ne
 
 export const fetchSchoolList   = createAsyncThunk("fetchSchoolList", async()=>{
     const response = await fetch(`${BASE_URL}`)
+    //response.json().then((res)=>{console.log(res,"FETTTTT")})
     return response.json();
 })
 
@@ -41,23 +42,37 @@ export const fetchSchoolById = createAsyncThunk('fetchSchoolById', async (id) =>
   }
 )
 
-export const updateSchoolRecord = createAsyncThunk('updateSchoolRecord', async (data) => {
-    const response = await fetch(`${BASE_URL}/${data.id}`, {
-        method:'PUT',
-        headers:{
-            "Content-Type":"application/json"
+// export const updateSchoolRecord = createAsyncThunk('updateSchoolRecord', async ({ id, data }) => {
+//     const response = await fetch(`${BASE_URL}/${id}`, {
+//         method:'PUT',
+//         headers:{
+//             "Content-Type":"application/json"
+//         },
+//         body:JSON.stringify(data)
+//     });
+//     return response.json()
+//     // try {
+//     //     const result = await response.json();
+//     //     return result;
+//     //   } catch (error) {
+//     //     console.log(error)
+//     //   }
+//   }
+// )
+export const updateSchoolRecord = createAsyncThunk('updateSchoolRecord', async ({ id, data }) => {
+    const response = await fetch(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School/${id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json"
         },
-        body:JSON.stringify(data)
+        body: JSON.stringify(data) // Send the updated data
+        
     });
-    return response.json()
-    // try {
-    //     const result = await response.json();
-    //     return result;
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-  }
-)
+
+
+    const result = await response.json(); // Get the response as JSON
+    return result; // Return the updated school data
+});
 
 
 const initialState = {
@@ -65,7 +80,7 @@ const initialState = {
     isLoading:false,
     isError:false,
     postRes:null,
-     deleteRes:null,
+    deleteRes:null,
     updateRes:null
 }
 
@@ -80,9 +95,9 @@ extraReducers:(builder)=>{
     })
 
     builder.addCase(fetchSchoolList.fulfilled,(state,action)=>{
-         console.log(state, "Sliccc")
         state.isLoading = false;
         state.list = action.payload;
+        console.log(action.payload, "Slicccddd")
     })
     
     builder.addCase(fetchSchoolList.rejected,(state,action)=>{

@@ -13,8 +13,8 @@ import { useNavigate } from "react-router-dom";
 const schema = yup.object({
     schoolName: yup.string().required("Please enter School Name"),
     email: yup.string().required("Please enter proper Email id"),
-    schoolMobileNum: yup.string().required("Please enter Phone Number"),
-    // area: yup.string().required("Please enter Address"),
+    schoolMobileNumber: yup.string().required("Please enter Phone Number"),
+     address: yup.string().required("Please enter Address"),
     pinCode: yup.string().required("Please enter valid pinCode"),
     
     schoolBoard: yup.string().nullable().required("Please select School Board"),
@@ -29,7 +29,7 @@ const CreateSchool = () => {
         city:'',
         district:'',
         landmark:'',
-        area:'',
+        address:'',
         phone:'',
         principalName:''
         
@@ -159,13 +159,13 @@ const CreateSchool = () => {
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">School Phone/Mobile No.<span className='redText'>*</span></label>
-                                    <input type="text" maxLength={10} {...register('schoolMobileNum')}  className="form-control input-group-control" id="input-text" placeholder="Enter Mobile No." />
-                                    {errors.schoolMobileNum && <p className='errorTxt'>{errors.schoolMobileNum.message}</p>}
+                                    <input type="text" maxLength={10} {...register('schoolMobileNumber')}  className="form-control input-group-control" id="input-text" placeholder="Enter Mobile No." />
+                                    {errors.schoolMobileNumber && <p className='errorTxt'>{errors.schoolMobileNumber.message}</p>}
                             </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2"> Phone No</label>
                                     <input type="text" maxLength={10} {...register('phone')}  className="form-control input-group-control" id="input-text" name="phone" placeholder="Enter Mobile No." />
-                            </div>
+                            </div> */}
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2"> Principal Name</label>
                                     <input type="text"  {...register('principalName')}  className="form-control input-group-control" id="input-text" name="principalName" placeholder="Enter Principal Name" />
@@ -178,12 +178,12 @@ const CreateSchool = () => {
                         <div className='grid grid-cols-12 sm:gap-6'>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">Address Line 1<span className='redText'>*</span>:</label>
-                                <input type="text" {...register('area')} className="form-control" id="input-text" placeholder="Enter Building Name, Street Name" />
-                                {errors.area && <p className='errorTxt'>{errors.area.message}</p>}
+                                <input type="text" {...register('address')} className="form-control" id="input-text" placeholder="Enter Building Name, Street Name" />
+                                {errors.address && <p className='errorTxt'>{errors.address.message}</p>}
                             </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">Address Line 2:</label>
-                                <input type="text"  {...register('area')}  name='area' className="form-control" id="input-text" placeholder="Enter Address Line 2 (Optional)" />
+                                <input type="text"  {...register('address')}  name='address' className="form-control" id="input-text" placeholder="Enter Address Line 2 (Optional)" />
                             </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">City:</label>

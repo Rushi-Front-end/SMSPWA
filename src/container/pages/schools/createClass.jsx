@@ -24,7 +24,7 @@ const CreateClass = (props) => {
     const navigate = useNavigate()
 
 
-    const { register, handleSubmit, formState, control } = useForm({
+    const { register, handleSubmit, formState, control,setValue } = useForm({
         resolver: yupResolver(schema)
     });
     
@@ -56,7 +56,7 @@ const CreateClass = (props) => {
             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
         </div> */}
         <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
-            <label htmlFor="input-text" className="form-label">Class Name*</label>
+            <label htmlFor="input-text" className="form-label">Class Name<span className='redText'>*</span></label>
             {/* <input type="text" className="form-control" id="input-text" placeholder="Text" /> */}
             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect}
             value={classNameSecValue ? singleselect.find(x => x.value === classNameSecValue) : classNameSecValue}

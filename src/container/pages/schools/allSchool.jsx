@@ -22,8 +22,10 @@ const AllSchool = () => {
     const navigate = useNavigate()
 
     const schoolListData = useSelector((state) => state.schoolData)
+    const isLoading = useSelector((state) => state.schoolData.isLoading);
     const schoolPostRes = useSelector((state) => state.schoolData.postRes)
     const schoolDeleteRes = useSelector((state) => state.schoolData.deleteRes)
+    const schoolUpdateRes = useSelector((state) => state.schoolData.updateRes) //Post
    
     console.log(schoolPostRes,'schoolListData')
 
@@ -48,8 +50,9 @@ const AllSchool = () => {
     const deleteDatahandler = (data)=>{
         console.log("deleteDatahandler", data)
         dispatch(deleteSchoolList(data))
-        
-     // dispatch(fetchSchoolList())
+        setTimeout(()=>{
+            dispatch(fetchSchoolList())
+        },500)
         
         
     }
@@ -66,7 +69,7 @@ const AllSchool = () => {
     useEffect(() => {
         
         dispatch(fetchSchoolList())
-      }, [schoolPostRes || schoolDeleteRes ])
+      }, [schoolPostRes || schoolDeleteRes || schoolUpdateRes ])
   
 
     return (
@@ -152,8 +155,9 @@ const AllSchool = () => {
                                             </td>
                                         </tr> */}
  {
-                                             spinner ? <Loader /> :
-                                            schoolListData.list.map((dt, index) => {
+                                             isLoading ||  spinner ? (<Loader />) :
+                                             Array.isArray(schoolListData?.list) && schoolListData.list.length > 0 ? (  
+                                                schoolListData.list.map((dt, index) => {
                                                 return <tr key={dt.id}>
                                                     <td>{++index}</td>
                                                     {/* <td>{dt.id}</td> */}
@@ -163,7 +167,7 @@ const AllSchool = () => {
                                                         </Link>
                                                     </td>
                                                     <td>{dt.email}</td>
-                                                    <td>{dt.schoolMobileNum}</td>
+                                                    <td>{dt.schoolMobileNumber}</td>
                                                     <td>{dt.city}</td>
                                                     <td><div className="hstack flex gap-3 text-[.9375rem]">
                                                     <div className="ti-dropdown hs-dropdown">
@@ -181,6 +185,11 @@ const AllSchool = () => {
                                                         </div></td>
                                                 </tr>
                                             })
+                                        ): (
+                                                <tr>
+                                                  <td colSpan="6">No schools available.</td>
+                                                </tr>
+                                        )
 
                                         }
                                     </tbody>
@@ -193,7 +202,7 @@ const AllSchool = () => {
             </div>
     {/* Modal popup Start */}
             <div id="hs-vertically-centered-modal" className="hs-overlay hidden ti-modal">
-                <div className="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
+                <div className="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex justify-center items-center">
                   <div className="ti-modal-content">
                     <div className="ti-modal-header">
                       <h6 className="modal-title" id="staticBackdropLabel2">Warning

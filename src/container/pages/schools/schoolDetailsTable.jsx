@@ -17,8 +17,8 @@ const SchoolDetailsTable = ({schoolIndData}) => {
                         <tr className="border-b border-defaultborder">
                             {/* <td>Ashram School</td> */}
                             <td>{schoolIndData.list.pinCode}</td>
-                            <td>{schoolIndData.list.schoolMobileNum}</td>
-                            <td>{schoolIndData.list.area}</td>
+                            <td>{schoolIndData.list.schoolMobileNumber}</td>
+                            <td>{schoolIndData.list.address}</td>
                             
 
                         </tr>

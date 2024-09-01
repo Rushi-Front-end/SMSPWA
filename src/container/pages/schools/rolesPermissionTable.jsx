@@ -1,11 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { fetchUserRoleList } from '../../../redux/reducers/userRoleReducer'
 
 const RolesPermissionTable = ({sendDataToParent}) => {
     const [data, setData] = useState(true)
     const handleClick = () =>{
         sendDataToParent(data);
     }
+
+    const dispatch = useDispatch();
+    const getUserRole = useSelector((state)=> state.userRoleData)
+
+    console.log(getUserRole,'getUserRole')
+
+
+    useEffect(()=>{
+        dispatch(fetchUserRoleList())
+    }, [])
 
     return (
         <div className='p-5 border rounded-sm dark:border-white/10 border-gray-200'>

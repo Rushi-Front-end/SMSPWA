@@ -6,15 +6,15 @@ import { Controller, useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-import {fetchSchoolById, postSchoolList } from '../../../redux/reducers/schoolReducer';
+import {fetchSchoolById, fetchSchoolList, updateSchoolRecord } from '../../../redux/reducers/schoolReducer';
 import { useNavigate } from "react-router-dom";
 
 
 const schema = yup.object({
     schoolName: yup.string().required("Please enter School Name"),
     email: yup.string().required("Please enter proper Email id"),
-    schoolMobileNum: yup.string().required("Please enter Phone Number"),
-    // area: yup.string().required("Please enter Address"),
+    schoolMobileNumber: yup.string().required("Please enter Phone Number"),
+     address: yup.string().required("Please enter Address"),
     pinCode: yup.string().required("Please enter valid pinCode"),
     
     schoolBoard: yup.string().nullable().required("Please select School Board"),
@@ -27,10 +27,12 @@ const schema = yup.object({
 const EditSchool = () => {
     
     const [data, setData] = useState({
-        // city:'',
-        // district:'',
-        // landmark:'',
-        // area:''
+        city:'',
+        district:'',
+        landmark:'',
+        address:'',
+        phone:'',
+        principalName:''
         
     });
     
@@ -40,8 +42,8 @@ const EditSchool = () => {
     const navigate = useNavigate()
     const params = useParams();
 
-    // const schoolUpdateRes = useSelector((state) => state.schoolData.updateRes)
-    const schoolUpdData = useSelector((state) => state.schoolData)
+    const schoolUpdData = useSelector((state) => state.schoolData) // Fetch by id
+    const schoolUpdateRes = useSelector((state) => state.schoolData.updateRes) //Post
     console.log(schoolUpdData,'schollUpdateData')
     const dispatch = useDispatch()
 
@@ -50,24 +52,8 @@ const EditSchool = () => {
     useEffect((id) => {
         dispatch(fetchSchoolById(params.id))
       }, [dispatch, params.id])
-      
-      
-    // useEffect(() => {
-    //     if (id) {
-    //       const singleUser = schoolUpdateRes.filter((ele) => ele.id === id);
-    //       setUpdateData(singleUser[0]);
-    //     }
-    //   }, []);
-    
-    //   const newData = (e) => {
-    //     setUpdateData({ ...updateData, [e.target.name]: e.target.value });
-    //   };
-    
-    //   console.log("updated data", updateData);
-    
 
-
-    const { register, handleSubmit, formState, control } = useForm({
+    const { register, handleSubmit, formState, control, setValue } = useForm({
         resolver: yupResolver(schema)
     });
     
@@ -78,13 +64,50 @@ const EditSchool = () => {
     
     const { errors } = formState;
 
+
+    useEffect(() => {
+        if (params.id) {
+            // Fetch individual record by ID
+            dispatch(fetchSchoolById(params.id)).then((response) => {
+                console.log(response,"EEEEEEEEE")
+                if (response.payload) {
+                    const schoolData = response.payload;
+
+                    // Populate form with fetched data
+                    setValue('id',schoolData.id)
+                    setValue('schoolName', schoolData.schoolName);
+                    setValue('email', schoolData.email);
+                    setValue('schoolMobileNumber', schoolData.schoolMobileNumber);
+                    setValue('pinCode', schoolData.pinCode);
+                    setValue('schoolBoard', schoolData.schoolBoard);
+                    setValue('schoolCategory', schoolData.schoolCategory);
+                    setValue('prakalpName', schoolData.prakalpName);
+                    setValue('city', schoolData.city);
+                    setValue('district', schoolData.district);
+                    setValue('landmark', schoolData.landmark);
+                    setValue('address', schoolData.address);
+                    setValue('phone', schoolData.phone);
+                    setValue('principalName', schoolData.principalName);
+                    setValue('state', schoolData.state);
+                    // Add more fields as needed
+                }
+            });
+        }
+    }, [params.id, dispatch, setValue]);
+
+
+
     
     // console.log(data,"SchoolData")
     const onSubmit = (formData) => {
-        // console.log(formData, 'FormDATATTA')
-        // setData({ ...formData });
-        //  dispatch(postSchoolList(data))
-        // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
+         console.log(formData, 'UPDATEFormDATATTA')
+       // setData({ ...formData });
+        //  dispatch(updateSchoolRecord(formData))
+        dispatch(updateSchoolRecord({ id: params.id, data: formData }))
+        setTimeout(()=>{
+            dispatch(fetchSchoolList())
+        },500)
+         navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
     }
 
    
@@ -149,7 +172,7 @@ const EditSchool = () => {
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">School Name 1<span className='redText'>*</span>:</label>
-                                <input type="text" {...register('schoolName')}  className="form-control" id="input-text" placeholder="Enter School Name" />
+                                <input type="text" {...register('schoolName')}  className="form-control" id="input-text" placeholder="Enter School Name"  />
                                 {errors.schoolName && <p className='errorTxt'>{errors.schoolName.message}</p>}
                             </div>
                            
@@ -195,8 +218,14 @@ const EditSchool = () => {
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">School Phone/Mobile No.<span className='redText'>*</span></label>
-                                    <input type="text" maxLength={10} {...register('schoolMobileNum')}  className="form-control input-group-control" id="input-text" placeholder="Enter Mobile No." />
-                                    {errors.schoolMobileNum && <p className='errorTxt'>{errors.schoolMobileNum.message}</p>}
+                                    <input type="text" maxLength={10} {...register('schoolMobileNumber')}  className="form-control input-group-control" id="input-text" placeholder="Enter Mobile No." />
+                                    {errors.schoolMobileNumber && <p className='errorTxt'>{errors.schoolMobileNumber.message}</p>}
+                            </div>
+
+                           
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <label className="ti-form-select rounded-sm !p-0 mb-2"> Principal Name</label>
+                                    <input type="text"  {...register('principalName')}  className="form-control input-group-control" id="input-text" name="principalName" placeholder="Enter Principal Name" />
                             </div>
 
                         </div>
@@ -204,14 +233,14 @@ const EditSchool = () => {
                     <div className='aadharcard-details mb-4'>
                         <h6 className=' pb-2'>Address Details</h6>
                         <div className='grid grid-cols-12 sm:gap-6'>
-                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">Address Line 1*:</label>
-                                <input type="text" {...register('area')} className="form-control" id="input-text" placeholder="Enter Building Name, Street Name" />
-                                {errors.area && <p className='errorTxt'>{errors.area.message}</p>}
-                            </div> */}
+                                <input type="text" {...register('address')} className="form-control" id="input-text" placeholder="Enter Building Name, Street Name" />
+                                {errors.address && <p className='errorTxt'>{errors.address.message}</p>}
+                            </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">Address Line 2:</label>
-                                <input type="text"  {...register('area')}  name='area' className="form-control" id="input-text" placeholder="Enter Address Line 2 (Optional)" />
+                                <input type="text"  {...register('address')}  name='address' className="form-control" id="input-text" placeholder="Enter Address Line 2 (Optional)" />
                             </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">City:</label>
