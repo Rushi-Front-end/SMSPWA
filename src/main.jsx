@@ -7,7 +7,8 @@ import './index.scss'
 import './school.scss'
 // import 'ag-grid-community/styles/ag-grid.css';
 // import { AgGridReact } from 'ag-grid-react';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Auth from './firebase/auth.jsx'
 import Login from './firebase/login.jsx'
@@ -56,12 +57,14 @@ import StudentIndDetails from './container/pages/student/studentIndDetails.jsx'
 import ExaminationList from './container/pages/examination/examinationList.jsx'
 import CreateExamination from './container/pages/examination/createExamination.jsx'
 import EditSchool from './container/pages/schools/editSchool.jsx'
+import UpdateLeave from './container/pages/leave/updateLeave.jsx'
 // import ErrorPage from './container/pages/404page/errorPage.jsx'
 
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.Fragment>
+    <ToastContainer />
     <BrowserRouter>
       <React.Suspense>
       <ScrollToTop/>
@@ -103,6 +106,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}pages/leave/createStudentLeave`} element={<CreateStudentLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/hosteliteCreateLeave`} element={<HosteliteCreateLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/createLeave`} element={<CreateLeave />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/leave/updateLeave/:id`} element={<UpdateLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/hosteliteLeave`} element={<HosteliteLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/reports`} element={<Reports />} />
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/eventManagement`} element={<EventManagement />} />

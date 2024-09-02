@@ -84,6 +84,17 @@ export const singleselect = [
   { id: 3, value: "Choice 2" ,label:"Choice 2"},
   { id: 4, value: "Choice 3" ,label:"Choice 3"},
 ]
+export const classDropDown = [
+  { id: 1, value: "Select Class Name",label:"Select Class Name" },
+  { id: 2, value: "5th Class" ,label:"5th Class"},
+  { id: 3, value: "6th Class" ,label:"6th Class"},
+  { id: 3, value: "7th Class" ,label:"7th Class"},
+  { id: 3, value: "8th Class" ,label:"8th Class"},
+  { id: 3, value: "9th Class" ,label:"9th Class"},
+  { id: 3, value: "10th Class" ,label:"10th Class"},
+  { id: 3, value: "11th Class" ,label:"11th Class"},
+  { id: 3, value: "12th Class" ,label:"12th Class"},
+]
 export const schoolBoard = [
   { id: 1, value: "Select Board",label:"Select Board" },
   { id: 2, value: "SSC" ,label:"SSC"},
@@ -101,6 +112,18 @@ export const prakalpName  = [
   { id: 3, value: "Gadchiroli" ,label:"Gadchiroli"},
   { id: 3, value: "Nagpur" ,label:"Nagpur"},
   { id: 3, value: "Wardha" ,label:"Wardha"},
+]
+
+export const leaveType  = [
+  { id: 1, value: "Select Leave Type",label:"Leave Type" },
+  { id: 2, value: "Casual" ,label:"Casual"},
+  { id: 3, value: "Sick" ,label:"Sick"},
+  { id: 4, value: "Annual" ,label:"Annual"},
+  { id: 5, value: "Maternity" ,label:"Maternity"},
+  { id: 6, value: "Paternity" ,label:"Paternity"},
+  { id: 7, value: "Child Development Leave" ,label:"Child Development Leave"},
+  { id: 8, value: "Unpaid" ,label:"Unpaid"},
+  { id: 9, value: "Other" ,label:"Other"},
 ]
 
 //

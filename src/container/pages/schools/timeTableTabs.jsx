@@ -1,7 +1,8 @@
 import React from 'react'
 import TimeInnerTable from './timeInnerTable'
 
-const TimeTableTabs = () => {
+const TimeTableTabs = ({selectedOption}) => {
+console.log("TimeTableTabs", selectedOption)
   return (
     <div>
       <div className='box'>
@@ -45,7 +46,7 @@ const TimeTableTabs = () => {
               <div className="">
                 <div id="hs-tab-to-select-1" role="tabpanel" aria-labelledby="hs-tab-to-select-item-1">
                  <h3 className='pt-4 pb-4'>MONDAY</h3>
-                 <TimeInnerTable/>
+                 <TimeInnerTable  selectedOption={selectedOption} />
                 </div>
                 <div id="hs-tab-to-select-2" className="hidden" role="tabpanel" aria-labelledby="hs-tab-to-select-item-2">
                 <h3 className='pt-4 pb-4'>TUESDAY</h3>

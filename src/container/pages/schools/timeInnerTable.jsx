@@ -1,24 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-const TimeInnerTable = () => {
+const TimeInnerTable = ({ selectedOption }) => {
     const [hiddenRow, setHiddenRow] = useState(false);
     const [addHiddenRow, setAddHiddenRow] = useState([]);
     const [isDisabled, setIsDisabled] = useState(true);
     const time = Date().slice(16, 21);
 
-    // Function to toggle visibility and add a new div
+    useEffect(() => {
+        // Reset the states when selectedOption changes
+        setHiddenRow(false);
+        setAddHiddenRow([]);
+        setIsDisabled(true);
+    }, [selectedOption]);
+
     const AddIndRow = () => {
-        setHiddenRow(true); // Show the hidden div
-        setAddHiddenRow([...addHiddenRow, {}]); // Add a new empty object to the array
+        if (selectedOption === null) {
+            toast.error('Please select the Class', {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        } else {
+            setHiddenRow(true);
+            setAddHiddenRow([...addHiddenRow, {}]);
+        }
     };
 
-    // Function to enable the inputs
     const enableInputs = () => {
         setIsDisabled(false);
     };
 
-    // Function to handle row deletion
     const deleteRow = (indexToRemove) => {
         const updatedRows = addHiddenRow.filter((_, index) => index !== indexToRemove);
         setAddHiddenRow(updatedRows);
@@ -99,7 +111,7 @@ const TimeInnerTable = () => {
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link className="ti-dropdown-item" to="#" >
+                                                <Link className="ti-dropdown-item" to="#">
                                                     Delete
                                                 </Link>
                                             </li>

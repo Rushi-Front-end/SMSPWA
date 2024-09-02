@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import TimeTableTabs from '../schools/timeTableTabs';
 import Select from 'react-select';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata';
 
 const TimeTable = () => {
+
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const handleSelectChange = (selectedOption) => {
+        setSelectedOption(selectedOption);
+    };
+
+    console.log(selectedOption, 'selectedOption')
+
     return (
         <div>
             <h4 className='textUpperCase pt-4 borderBottom'>Timetable</h4>
@@ -40,14 +49,14 @@ const TimeTable = () => {
                         <h4>Timetable Details</h4>
                             <div className="xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-6 col-span-12 pt-4">
                                 {/* <label className="ti-form-select rounded-sm !p-0 ">Section Class Teacher</label> */}
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                                <Select   onChange={handleSelectChange} className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
                             </div>
                         {/* <div className='box p-4'>
                             <h6>Select Criteria</h6>
                         </div> */}
                     </div>
                     <div className='time-tables-wrap'>
-                        <TimeTableTabs />
+                        <TimeTableTabs selectedOption={selectedOption} />
                     </div>
                 </div>
 

@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select';
 import { classDropDown } from '../../forms/formelements/formselect/formselectdata';
 import {  useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClassList, postClassList } from '../../../redux/reducers/classReducer';
+import { fetchClassList, fetchClassListById, postClassList } from '../../../redux/reducers/classReducer';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -13,20 +13,23 @@ import axios from 'axios';
 
 const schema = yup.object({
     className: yup.string().nullable().required("Please select Class Name"),
-    // classTeacher: yup.string().nullable().required("Please select Class Teacher"),
+    description: yup.string().nullable(),
   });
 
 
 
-const CreateClass = (props) => {
+const UpdateClass = (props) => {
     console.log('updateClass',props)
+   const updateClassBoolean = props.updateClass.value
+    const updateClassID = props.updateClass.id
 
     const [data, setData] = useState();
+    const[classEditData, setClassEditData]=useState();
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
 
-    const { register, handleSubmit, formState, control,setValue, reset } = useForm({
+    const { register, handleSubmit, formState, control,setValue } = useForm({
         resolver: yupResolver(schema)
     });
     
@@ -35,24 +38,38 @@ const CreateClass = (props) => {
    
     const { errors } = formState;
 
-    const classPostRes = useSelector((state) => state.classData.postRes)
-    console.log(data,'classPostRes')
-    
-    
-    const onSubmit = (formData) => {
-        setData({ ...formData });
-        //dispatch(postClassList(formData))
-        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/create', formData)
-        .then(res => {
-            console.log(res)
-          dispatch(fetchClassList())
+    // const classPostRes = useSelector((state) => state.classData.postRes)
+    // const classIndGetData = useSelector((state) => state.classData.singleClass)
+    // console.log(classIndGetData,'classPostRes')
+
+useEffect(() => {
+    if (updateClassID) {
+      axios
+        .get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/${updateClassID}`)
+        .then((res) => {
+          if (res.data) {
+            const classData = res.data;
+            console.log(classData,'classData')
+            setValue('id', classData.id);
+            setValue('className', classData.className);
+            setValue('description', classData.description);
+          }
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          console.error('Error fetching class data:', err);
+        });
+    }
+  }, [updateClassID, setValue]);
+    const onSubmit = (formData) => {
+        // setData({ ...formData });
+        // //dispatch(postClassList(formData))
+        // axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/create', formData)
+        // .then(res => {
+        //     console.log(res)
+        //   dispatch(fetchClassList())
+        // })
+        // .catch(err => console.log(err))
        // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
-       reset({
-        className: '',
-        description: '',
-    });
     }
 
 
@@ -61,8 +78,7 @@ const CreateClass = (props) => {
 
   return (
     <div className='p-5 !pt-0 rounded-sm dark:border-white/10 border-gray-200'>
-        <h3>Create Class</h3>
-    {/* {props.updateClass === true ? <h3>Update Class</h3> : <h3>Create Class</h3>} */}
+         <h3>Update Class</h3>
     <hr />
     <div className='form-handling-sec pt-4'>
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -101,10 +117,9 @@ const CreateClass = (props) => {
         <div className='createSchool-btn pt-4'>
             <div className='flex justify-end'>
                 {/* <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave">Cancel</button> */}
-                <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave" >Cancel</button>
+                <button type="button" className="ti-btn ti-btn-ghost-orange !rounded-full ti-btn-wave" onClick={()=> props.updateClassChild(false)}>Cancel</button>
                 <button type="submit" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">
-                {/* {props.updateClass === true ? 'Update' : 'Create'} */}
-                Create
+                    Update
                 </button>
             </div>
         </div>
@@ -114,4 +129,4 @@ const CreateClass = (props) => {
   )
 }
 
-export default CreateClass
+export default UpdateClass

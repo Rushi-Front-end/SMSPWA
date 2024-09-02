@@ -1,9 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Loader from '../loader/loader';
 
 const StaffLeave = () => {
+    const [data, setData] = useState([])
+    const [search, setSearch] = useState('')
+    const [spinner, setSpinner] = useState(false)
+    const getStaffList = () => {
+        setSpinner(true)
+        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/GetAllStaffLeave')
+            .then(res => {
+                setData(res.data)
+                setSpinner(false)
+            })
+            .catch(err => console.log(err))
+    }
+
+    useEffect(() => {
+        getStaffList()
+    }, [])
     return (
         <div>
             <h4 className='pt-4 borderBottom'>Staff Leave </h4>
@@ -86,14 +104,17 @@ const StaffLeave = () => {
                                         <th scope="col" className="text-start">Action</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    {
+                                        spinner ? <Loader /> :
+                                        data.map((dt, index) => {
+                                   return <tbody>
+                                        
                                         <tr>
                                             <td rowSpan="2">1</td>
-                                            <td>
-                                               <Link className='text-primary'> Mohan Kale </Link></td>
+                                            <td>Mohan Kale </td>
                                             <td>Teacher</td>
-                                            <td>Sick Leave</td>
-                                            <td>02 Aug 2024 - 03 Aug 2024</td>
+                                            <td>{dt.leaveType}</td>
+                                            <td>{`${dt.fromDate} - ${dt.toDate}`}</td>
                                             <td rowSpan="2">
                                             <div className="ti-dropdown hs-dropdown">
                                             <button type="button"
@@ -103,15 +124,17 @@ const StaffLeave = () => {
                                             <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
   <li><Link className="ti-dropdown-item" to="#">Approve</Link></li>
                                         <li><Link className="ti-dropdown-item" to="#">Reject</Link></li>
-                                        <li><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                        <li><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/leave/updateLeave/${dt.id}`}>Edit</Link></li>
                                         <li><Link className="ti-dropdown-item" to="#">Cancel</Link></li>
                                             </ul>
                                         </div>
                                                     </td>
                                                     </tr>
-                                                    <tr><td colSpan="6" className="text-normal"><p>Reason: Sick Lave</p></td>
+                                                    <tr><td colSpan="6" className="text-normal"><p>Reason: {dt.comments}</p></td>
                                                     </tr>
                                             </tbody>
+                                            })
+                                        }
                                 </table>
                             </div>
                         </div>

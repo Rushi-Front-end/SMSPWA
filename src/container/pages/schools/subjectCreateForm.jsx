@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchSubjectList, postSubjectList } from '../../../redux/reducers/subjectReducer';
+import { toast } from 'react-toastify';
 
 
 const schema = yup.object({
@@ -41,6 +42,10 @@ const SubjectCreateForm = (props) => {
         dispatch(postSubjectList(formData))
         
         setTimeout(() => {
+            toast.success("Subject Created Successfuly",{
+                position: "top-right",
+                autoClose: 3000,
+            })
             dispatch(fetchSubjectList())
         }, 500);
         

@@ -77,20 +77,20 @@ export const MENUITEMS = [
       {
         menutitle: "STUDENT MANAGEMENT",
       },
-          {
-            icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
-            path: `${import.meta.env.BASE_URL}pages/admissionQuery/admissionQueryDetails`,
-            type: "link",
-            Name: '',
-            active: false,
-            selected: false, 
-            dirchange: false,
-            title: "Admission Queries",
-            badge: '',
-            badgetxt: '',
-            class: ' text-secondary text-[0.75em] rounded-sm !py-[0.25rem] !px-[0.45rem] badge !bg-secondary/10 ms-2',
+          // {
+          //   icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
+          //   path: `${import.meta.env.BASE_URL}pages/admissionQuery/admissionQueryDetails`,
+          //   type: "link",
+          //   Name: '',
+          //   active: false,
+          //   selected: false, 
+          //   dirchange: false,
+          //   title: "Admission Queries",
+          //   badge: '',
+          //   badgetxt: '',
+          //   class: ' text-secondary text-[0.75em] rounded-sm !py-[0.25rem] !px-[0.45rem] badge !bg-secondary/10 ms-2',
            
-          },
+          // },
           {
             icon: (<i className="bx bx-task side-menu__icon"></i>),
             path: `${import.meta.env.BASE_URL}pages/student/studentDetails`,
