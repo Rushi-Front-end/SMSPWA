@@ -1,47 +1,94 @@
 import React, { useEffect, useState } from 'react'
-import { singleselect } from '../../forms/formelements/formselect/formselectdata'
+import { academicYearDrop, singleselect, classIdselect, sectionselect } from '../../forms/formelements/formselect/formselectdata'
+
 import Select from 'react-select';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Pageheader from '../../../components/common/pageheader/pageheader';
-import { useDispatch } from 'react-redux';
-import axios from 'axios';
+import { Controller, useForm, useController } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import { useDispatch, useSelector } from 'react-redux';
 import media50 from "../../../assets/images/media/media-50.jpg";
+import axios from 'axios';
+
+
+const schema = yup.object({
+    registrationNumber: yup.string().required("Please enter Register Number"),
+    rollNumber: yup.string().required("Please enter Roll Number"),
+    enrolmentDate: yup.string().required("Please enter Enrollment Date"),
+    aadharcardNumber: yup.string().required("Please enter Adhar Card Number"),
+    nameOnAadharcard: yup.string().required("Please enter Name as per Adhar card."),
+    fullName: yup.string().required("Please enter Full Name"),
+    dob: yup.string().required("Please enter DOB"),
+    
+    academicYear: yup.string().nullable().required("Please select Academic Year"),
+    classID: yup.string().nullable().required("Please select Class"),
+    section: yup.string().nullable().required("Please select Section"),
+    bloodGroup: yup.string().nullable(),
+    gender: yup.string().nullable(),
+    state: yup.string().nullable(),
+    mobileNumber: yup.string().nullable()
+
+  });
+
 
 
 const EditStudent = () => {
 
-  const navigate = useNavigate()
-  const {studentid} = useParams()
-  const [student, setStudent] = useState({})
-
-  useEffect(()=>{
-    axios.get('https://66c9968d59f4350f064ce86d.mockapi.io/students/'+studentid)
-    .then((res)=>{
-      console.log(res.data)
-      setStudent(res.data)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  },[studentid])
+    const navigate = useNavigate()
+    const {studentid} = useParams()
+    const [student, setStudent] = useState({})
+    const { register, handleSubmit,  formState, control, setValue } = useForm({
+        resolver: yupResolver(schema)
+    });
 
 
+    useEffect(()=>{
+        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+studentid)
+        .then((res)=>{
+          console.log(res.data)
+         // setStudent(res.data)
+         Object.keys(res.data).forEach(key => {
+            setValue(key, res.data[key]);
+          });
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      },[studentid, setValue])
 
-    const handleSubmit = (e) => {
-        setTimeout(() => {
-            //alert(JSON.stringify(values, null, 2));
 
-            axios.put('https://66c9968d59f4350f064ce86d.mockapi.io/students/'+studentid, student)
-            .then(res=>{
-              console.log(res)
-              navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
-            })
-            .catch((err)=>{
-              console.log(err)
-            })   
+    
+  
+    const { field: { value: academicYear, onChange: academicYearOnChange , ...restacademicYearField } } = useController({ name: 'academicYear', control });
+    const { field: { value: classValue, onChange: classSelectOnChange, ...restclassSelectField } } = useController({ name: 'classID', control });
+    const { field: { value: sectionValue, onChange: sectionOnChange, ...restsectionField } } = useController({ name: 'section', control });
+    const { field: { value: bloodGroupValue, onChange: bloodGroupOnChange, ...bloodGroupField } } = useController({ name: 'bloodGroup', control });
+    const { field: { value: genderValue, onChange: genderOnChange, ...restgenderField } } = useController({ name: 'gender', control });
+    const { field: { value: stateValue, onChange: stateOnChange, ...reststateField } } = useController({ name: 'state', control });
+   
 
-          }, 400);
-    }
+   const { errors } = formState;
+  
+   const onSubmit = (formData) => {
+    setTimeout(() => {
+        //alert(JSON.stringify(values, null, 2));
+
+        axios.put('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+studentid, student)
+        .then(res=>{
+          console.log(res)
+          navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
+        })
+        .catch((err)=>{
+          console.log(err)
+        })   
+
+      }, 400);
+}
+
+
+
+
 
     return (
         <div>
@@ -113,173 +160,286 @@ const EditStudent = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='academic-details mb-4 pt-4'>
-                        <h6 className=' pb-2'>Academic Details</h6>
-                        {/* <div className='grid grid-cols-12 sm:gap-6'>
+                   
+                   
+                    <form onSubmit={handleSubmit(onSubmit)}>    
+                            <div className='academic-details mb-4 pt-4'>
+                                <h6 className=' pb-2'>Academic Details</h6>
+                                 <div className='grid grid-cols-12 sm:gap-6 mb-4'>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Academic Year:</label>
-                            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} name='academicYear' />
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Academic Year <span className="redText">*</span></label>
+                            <Controller
+                      name="academicYear"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          isClearable
+                          options={academicYearDrop}
+                          classNamePrefix='react-select'
+                        />
+                      )}
+                    />
+                                {errors.academicYear && <p className='errorTxt'>{errors.academicYear.message}</p>}
+                            
                             </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Class:</label>
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect}  name='class'/>
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Class <span className="redText">*</span></label>
+                                <Select className="!p-0 place-holder"  
+                                     isClearable
+                                     options={classIdselect}
+                                     value={student.classID}
+                                     onChange={option => classSelectOnChange(option ? option.value : option)}
+                                     {...restclassSelectField}
+                                     classNamePrefix='react-select'  />
+                                    {errors.classID && <p className='errorTxt'>{errors.classID.message}</p>}
+                                
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Section</label>
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Section <span className="redText">*</span></label>
+                            
+                            <Select className="!p-0 place-holder"  
+                                     isClearable
+                                     options={sectionselect}
+                                     value={student.section}
+                                     onChange={option => sectionOnChange(option ? option.value : option)}
+                                     {...restsectionField}
+                                     classNamePrefix='react-select'  />
+                                    {errors.section && <p className='errorTxt'>{errors.section.message}</p>}
+                                
+                                </div>
+
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Student Registration Number <span className="redText">*</span></label>
+                            <input type="text" className="form-control" id="input-text" value={student.registrationNumber} placeholder="Enter Registration Number" {...register('registrationNumber')}  name='registrationNumber' />
+                            {errors.registrationNumber && <p className='errorTxt'>{errors.registrationNumber.message}</p>}
                             </div>
 
-                        </div> */}
-                    </div>
-                    <div className='aadharcard-details mb-4'>
-                        <h6 className=' pb-2'>Student Aadhar Card Details</h6>
-                        <div className='grid grid-cols-12 sm:gap-6'>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label className="ti-form-select rounded-sm !p-0 mb-2">Aadhar Card Number:</label>
-                                <input type="text" className="form-control" id="input-text" placeholder="Enter Aadhar Card Number" value={student.aadhar} onChange={(e) => setStudent({ ...student, aadhar: e.target.value })} name='aadhar' />
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Roll Number <span className="redText">*</span></label>
+                            <input type="text" className="form-control" id="input-text" value={student.rollNumber} placeholder="Enter Roll Number" {...register('rollNumber')}  name='rollNumber' />
+                            {errors.rollNumber && <p className='errorTxt'>{errors.rollNumber.message}</p>}
                             </div>
+
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label className="ti-form-select rounded-sm !p-0 mb-2">Name of Aadhar Card</label>
-                                <input type="text" className="form-control" id="input-text" placeholder="Enter Aadhar Card Number" value={student.name} />
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Enrollment Date <span className="redText">*</span></label>
+                            <input type="date" className="form-control" id="input-datetime-local" value={student.enrolmentDate} {...register('enrolmentDate')}  name='enrolmentDate' />
+                            {errors.enrolmentDate && <p className='errorTxt'>{errors.enrolmentDate.message}</p>}       
                             </div>
 
 
+                            </div> 
+                      
+                            </div>
+                            <div className='aadharcard-details mb-4'>
+                                <h6 className=' pb-2'>Student Aadhar Card Details</h6>
+                                <div className='grid grid-cols-12 sm:gap-6'>
+                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Aadhar Card Number <span className="redText">*</span></label>
+                                        <input type="text" className="form-control" id="input-text" value={student.aadharcardNumber} placeholder="Enter Aadhar Card Number"  {...register('aadharcardNumber')}  name='aadharcardNumber' />
+                                        {errors.aadharcardNumber && <p className='errorTxt'>{errors.aadharcardNumber.message}</p>}       
 
-                        </div>
-                    </div>
-                    <div className='personal-details mb-4'>
-                        <h6 className=' pb-2'>Personal Details</h6>
-                        <div className='grid grid-cols-12 sm:gap-6'>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label className="ti-form-select rounded-sm !p-0 mb-2">Full Name:</label>
-                                <div className='flex rounded-sm'>
-                                    <input type="text" className="form-control input-group-control" id="input-text" placeholder="Enter Full Name" value={student.name} onChange={(e) => setStudent({ ...student, name: e.target.value })} name='name' />
+                                    </div>
+                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Name of Aadhar Card <span className="redText">*</span></label>
+                                        <input type="text" className="form-control" id="input-text" value={student.nameOnAadharcard} placeholder="Enter Aadhar Card Number" {...register('nameOnAadharcard')}  name='nameOnAadharcard'/>
+                                        {errors.nameOnAadharcard && <p className='errorTxt'>{errors.nameOnAadharcard.message}</p>}       
+                                    </div>
                                 </div>
                             </div>
+                            <div className='personal-details mb-4'>
+                                <h6 className=' pb-2'>Personal Details</h6>
+                                <div className='grid grid-cols-12 sm:gap-6'>
+                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Full Name <span className="redText">*</span> </label>
+                                            {/* <Select className="place-holder" classNamePrefix='react-select' options={singleselect} /> */}
+                                            <input type="text" className="form-control input-group-control" value={student.fullName} id="input-text" placeholder="Enter Full Name" {...register('fullName')} name='fullName' />
+                                            {errors.fullName && <p className='errorTxt'>{errors.fullName.message}</p>} 
+                                        
+                                    </div>
 
-                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Mobile No.</label>
+
+                                 <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Mobile No. </label>
                             <div className='flex rounded-sm'>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            <input type="text" className="form-control input-group-control" id="input-text" placeholder="Enter Full Name" />
+                            {/* <Select className="place-holder" classNamePrefix='react-select' options={singleselect} /> */}
+                            <input type="text" className="form-control input-group-control" id="input-text" value={student.mobileNumber} placeholder="Enter Mobile Number" {...register('mobileNumber')} name='mobileNumber'   />
                             </div>
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Email:</label>
-                            <input type="text" className="form-control" id="input-text" placeholder="Enter Email ID" />
-                            </div> */}
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Email </label>
+                            <input type="text" className="form-control" id="input-text" value={student.email} placeholder="Enter Email ID" {...register('email')} name='email'/>
+                            </div> 
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label htmlFor="input-datetime-local" className="form-label">DOB</label>
-                                <input type="date" className="form-control" id="input-datetime-local" value={student.dob} onChange={(e) => setStudent({ ...student, dob: e.target.value })} name='dob' />
+                                <label htmlFor="input-datetime-local" className="form-label">DOB <span className="redText">*</span></label>
+                                <input type="date" className="form-control" id="input-datetime-local" value={student.dob} {...register('dob')}  name='dob' />
+                                {errors.dob && <p className='errorTxt'>{errors.dob.message}</p>} 
                             </div>
 
 
-                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+
+                                    <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Blood Group:</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
+                            <Select 
+                                isClearable
+                                options={singleselect}
+                                value={student.bloodGroup}
+                                onChange={option => bloodGroupOnChange(option ? option.value : option)}
+                                {...bloodGroupField}
+                                classNamePrefix='react-select'
+                            />
                             </div>
+
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Gender:</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
+                            <Select 
+                                 isClearable
+                                 options={singleselect}
+                                 value={student.gender}
+                                 onChange={option => genderOnChange(option ? option.value : option)}
+                                 {...restgenderField}
+                                 classNamePrefix='react-select'
+                            />
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Father/Guardian Name:</label>
-                            <input type="text" className="form-control" id="input-text" placeholder="" />
+                            <input type="text" className="form-control" id="input-text" value={student.fatherName} placeholder="" {...register('fatherName')} name='fatherName'  />
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Father/Guardian Mobile No.</label>
                             <div className='flex rounded-sm'>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            <input type="text" className="form-control input-group-control" id="input-text" placeholder="Enter Full Name" />
+                            {/* <Select className="place-holder" classNamePrefix='react-select' options={singleselect} /> */}
+                            <input type="text" className="form-control input-group-control" value={student.fatherMobileNumber} id="input-text" placeholder="Enter Full Name" {...register('fatherMobileNumber')} name='fatherMobileNumber'  />
                             </div>
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Mother Name:</label>
-                            <input type="text" className="form-control" id="input-text" placeholder="" />
+                            <input type="text" className="form-control" id="input-text" value={student.motherName} placeholder="" {...register('motherName')} name='motherName' />
                             </div>
-                            
+ 
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Height:</label>
+                            <input type="text" className="form-control" id="input-text" value={student.height} placeholder=""  {...register('height')} name='height' />
+                            </div>
+
+
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Weight:</label>
+                            <input type="text" className="form-control" id="input-text" value={student.weight} placeholder="" {...register('weight')} name='weight'/>
+                            </div>
+ 
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Religion:</label>
+                            <input type="text" className="form-control" id="input-text" value={student.religion} placeholder=""  {...register('religion')} name='religion'/>
+                            </div>
+ 
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Caste:</label>
+                            <input type="text" className="form-control" id="input-text" value={student.caste} placeholder="" {...register('caste')} name='caste'/>
+                            </div>                           
+
+
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Emergency Mobile No.:</label>
-                            <input type="text" className="form-control" id="input-text" placeholder="" />
-                            </div> */}
+                            <input type="text" className="form-control" id="input-text" value={student.emergencyMobileNumber} placeholder=""  {...register('emergencyMobileNumber')} name='emergencyMobileNumber' />
+                            </div> 
 
-                        </div>
-                    </div>
+                                </div>
+                            </div>
 
-                    {/* <div className='permanentAddr-details mb-4'>
+                             <div className='permanentAddr-details mb-4'>
                 <h6 className=' pb-2'>Student Permanent Address Details</h6>
                 <div className='grid grid-cols-12 sm:gap-6'>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Address Line 1:</label>
-                            <input type="text" className="form-control" id="input-text" placeholder="Enter Door No., Street, Area..." />
+                            <input type="text" className="form-control" id="input-text" value={student.addressLine} placeholder="Enter Door No., Street, Area..." {...register('addressLine')} name='addressLine' />
                             </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">City</label>
-                            <input type="text" className="form-control" id="input-text" placeholder="" />
+                            <input type="text" className="form-control" id="input-text" value={student.city} placeholder="" {...register('city')} name='city'  />
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">District</label>
-                            <input type="text" className="form-control" id="input-text" placeholder="" />
+                            <input type="text" className="form-control" id="input-text" value={student.district} placeholder="" {...register('district')} name='district'  />
                             </div>
-                            
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+
+                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Select State/Province</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
+                            <Select 
+                                isClearable
+                                options={singleselect}
+                                value={student.state}
+                                onChange={option => stateOnChange(option ? option.value : option)}
+                                {...reststateField}
+                                classNamePrefix='react-select'
+                            />
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Pincode:</label>
-                            <input type="text" className="form-control" id="input-text" placeholder="Enter Pincode" />
+                            <input type="text" className="form-control" id="input-text" value={student.pinCode} placeholder="Enter Pincode" {...register('pinCode')} name='pinCode' />
+                            </div>
+
+
+
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Pincode:</label>
+                            <input type="text" className="form-control" id="input-text" value={student.adolescentSpecificQuestionnaireInstruction} placeholder="Enter Pincode" {...register('adolescentSpecificQuestionnaireInstruction')} name='adolescentSpecificQuestionnaireInstruction' />
+                            </div>
+                            
+                            
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Pincode:</label>
+                            <input type="text" className="form-control" id="input-text" value={student.developmentalDelayAndDisability} placeholder="Enter Pincode" {...register('developmentalDelayAndDisability')} name='developmentalDelayAndDisability' />
+                            </div>
+                            
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Pincode:</label>
+                            <input type="text" className="form-control" id="input-text" value={student.defectAtBirth} placeholder="Enter Pincode" {...register('defectAtBirth')} name='defectAtBirth' />
+                            </div>
+                            
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Pincode:</label>
+                            <input type="text" className="form-control" id="input-text" value={student.deficiencies} placeholder="Enter Pincode" {...register('deficiencies')} name='deficiencies' />
+                            </div>
+                            
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Pincode:</label>
+                            <input type="text" className="form-control" id="input-text" value={student.childhoodDiseases} placeholder="Enter Pincode" {...register('childhoodDiseases')} name='childhoodDiseases' />
                             </div>
                             
                         </div>
-            </div> */}
+                            </div> 
 
-                    {/* <div className='medical-details mb-4'>
-                <h6 className=' pb-2'>Student Medical Details</h6>
-                <div className='grid grid-cols-12 sm:gap-6'>
-                                                    
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Defects At Birth</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Deficiencies</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Childhood Diseases</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Developmental delay & Disability</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
+                           
 
-                          
-                        </div>
-            </div> */}
+                            <div className='student-create-btn'>
+                                <div className='flex justify-end'>
+                                    {/* <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSubmit} >Next</button> */}
+                                    <button type="submit" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" >Save</button>
+                                    <div className='backButton'>
+                                        <Link to={`${import.meta.env.BASE_URL}pages/student/studentDetails`}>
 
-                    <div className='student-create-btn'>
-                        <div className='flex justify-end'>
-                            <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSubmit} >Save</button>
-                      
+                                            <button type="button" className="ti-btn ti-btn-info-full ml-15 !rounded-full ti-btn-wave">Reset</button>
+                                        </Link>
+                                    </div>
 
-                        </div>
+                                </div>
+                            </div>
+                            </form>
+
+                
                     </div>
-                    </div>
-                    <div className='student-medical-details-page'>
-                        
-                        </div>
+
                 </div>
             </div>
             {/* Student form create end */}

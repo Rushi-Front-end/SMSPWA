@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import { academicYearDrop, singleselect, classIdselect, sectionselect } from '../../forms/formelements/formselect/formselectdata'
+import React, { useEffect, useState } from 'react'
+import { academicYearDrop, singleselect } from '../../forms/formelements/formselect/formselectdata'
+
 import Select from 'react-select';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Pageheader from '../../../components/common/pageheader/pageheader';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import { Controller, useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-
+import { useDispatch, useSelector } from 'react-redux';
+import {fetchStudentById, fetchStudentList, updateStudentRecord } from '../../../redux/reducers/studentReducer';
+import media50 from "../../../assets/images/media/media-50.jpg";
 
 
 const schema = yup.object({
@@ -29,59 +30,24 @@ const schema = yup.object({
 
   });
 
-                             
 
-const CreateStudent = () => {
 
-    const [data, setData] = useState({
-    id: "",
-    academicYear: "",
-    classID: "",
-    section: "",
-    rollNumber: "",
-    registrationNumber: "",
-    enrolmentDate: "",
-    aadharcardNumber: "",
-    nameOnAadharcard: "",
-    fullName: "",
-    dob: "",
-    adolescentSpecificQuestionnaireInstruction: "",
-    mobileNumber: "",
-    email: "",
-    gender: "",
-    religion: "",
-    caste: "",
-    bloodGroup: "",
-    height: "",
-    weight: "",
-    fatherName: "",
-    fatherMobileNumber: "",
-    motherName: "",
-    emergencyMobileNumber: "",
-    addressLine: "",
-    city: "",
-    district: "",
-    state: "",
-    pinCode: "",
-    defectAtBirth: "",
-    deficiencies: "",
-    childhoodDiseases: "",
-    developmentalDelayAndDisability: ""
-
-    })
-    const [file, setFile] = useState();
+const EditStudent = () => {
 
     const navigate = useNavigate()
+    const params = useParams();
 
-    //const studentPostRes = useSelector((state) => state.studentData.postRes)
+    const studentUpdData = useSelector((state) => state.studentData) // Fetch by id
+    const studentUpdateRes = useSelector((state) => state.studentData.updateRes) //Post
+    console.log(studentUpdData,'schollUpdateData')
     const dispatch = useDispatch()
 
-    const profileImage = (e) => {
-        console.log(e.target.files[0], "Image URL");
-        setFile(URL.createObjectURL(e.target.files[0]));
-    }
+    useEffect((id) => {
+        dispatch(fetchStudentById(params.id))
+      }, [dispatch, params.id])
 
-    const { register, handleSubmit,  formState, control } = useForm({
+    
+      const { register, handleSubmit,  formState, control, setValue } = useForm({
         resolver: yupResolver(schema)
     });
 
@@ -93,37 +59,74 @@ const CreateStudent = () => {
     const { field: { value: stateValue, onChange: stateOnChange, ...reststateField } } = useController({ name: 'state', control });
    
 
+   const { errors } = formState;
+  
+    
+   useEffect(() => {
+    if (params.id) {
+        // Fetch individual record by ID
+        dispatch(fetchStudentById(params.id)).then((response) => {
+            console.log(response,"EEEEEEEEE")
+            if (response.payload) {
+                const studentData = response.payload;
 
-
-    const { errors } = formState;
-
-    console.log(data,"StudentData")
-    const onSubmit = (formData) => {
-        // axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students', values)
-        //     .then(res => {
-        //         console.log(res)
-        //         navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
-        //     })
-        //     .catch(err => console.log(err))
-        setData({ ...formData });
-         dispatch(postStudentList(formData))
-        // navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
-        console.log(formData, "Lates Filed added")
-
+                // Populate form with fetched data
+                setValue('id',studentData.id)
+                setValue('academicYear', studentData.academicYear);
+                setValue('classID', studentData.classID);
+                setValue('section', studentData.section);
+                setValue('registrationNumber', studentData.registrationNumber);
+                setValue('rollNumber', studentData.rollNumber);
+                setValue('enrolmentDate', studentData.enrolmentDate);
+                setValue('aadharcardNumber', studentData.aadharcardNumber);
+                setValue('nameOnAadharcard', studentData.nameOnAadharcard);
+                setValue('fullName', studentData.fullName);
+                setValue('mobileNumber', studentData.mobileNumber);
+                setValue('email', studentData.email);
+                setValue('dob', studentData.dob);
+                setValue('bloodGroup', studentData.bloodGroup);
+                setValue('gender', studentData.gender);
+                setValue('fatherName', studentData.fatherName);
+                setValue('fatherMobileNumber', studentData.fatherMobileNumber);
+                setValue('motherName', studentData.motherName);
+                setValue('height', studentData.height);
+                setValue('weight', studentData.weight);
+                setValue('religion', studentData.religion);
+                setValue('caste', studentData.caste);
+                setValue('emergencyMobileNumber', studentData.emergencyMobileNumber);
+                setValue('addressLine', studentData.addressLine);
+                setValue('city', studentData.city);
+                setValue('district', studentData.district);
+                setValue('state', studentData.state);
+                setValue('pinCode', studentData.pinCode);
+                setValue('adolescentSpecificQuestionnaireInstruction', studentData.adolescentSpecificQuestionnaireInstruction);
+                setValue('developmentalDelayAndDisability', studentData.developmentalDelayAndDisability);
+                setValue('defectAtBirth', studentData.defectAtBirth);
+                setValue('deficiencies', studentData.deficiencies);
+                setValue('childhoodDiseases', studentData.childhoodDiseases);
+                // Add more fields as needed
+            }
+        });
     }
+}, [params.id, dispatch, setValue]);
 
-    // const onSubmit = (formData) => {
-    //     console.log(formData, 'FormDATATTA')
-    //     setData({ ...formData });
-    //      dispatch(postSchoolList(formData))
-    //      navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
-    //      //dispatch(fetchSchoolList())
-    // }
-   
+
+const onSubmit = (formData) => {
+    console.log(formData, 'UPDATEFormDATATTA')
+  // setData({ ...formData });
+   dispatch(updateStudentRecord({ id: params.id, data: formData }))
+   setTimeout(()=>{
+       dispatch(fetchStudentList())
+   },500)
+    navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
+}
+
+
+
     return (
         <div>
             {/* <Pageheader currentpage="Student" activepage="Student" mainpage="Create Student" /> */}
-            <h4 className='pt-4 borderBottom'>Create Student</h4>
+            <h4 className='pt-4 borderBottom'>Update Student</h4>
 
             <div className="breadcrumbs-wrapper mb-4">
                 <div className='createstud-flex-container'>
@@ -171,28 +174,28 @@ const CreateStudent = () => {
             <div className='student-form-create'>
                 <div className='box p-4 ' >
                     <h4 className=' pb-2'>Student Form</h4>
-                   
-                        <div className='student-details-first-page'>
-                            <div className='student-profile-uploads pt-4'>
-                                <div className='student-profile-wrap flex items-center'>
-                                    <div className='left-side-profile-pic'>
-                                        <img src={file} className="img-fluid !rounded-full !inline-flex profile-image" />
-                                    </div>
-                                    <div className='right-side-upload-pic'>
-                                        <p>Upload Student Photo (150px X 150px)</p>
-                                        <div>
-                                            <label htmlFor="file-input" className="sr-only">Choose file</label>
-                                            <input type="file" onChange={profileImage} name="file-input" id="file-input" className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/50
+                    <div className='student-details-first-page'>
+                    <div className='student-profile-uploads pt-4'>
+                        <div className='student-profile-wrap flex items-center'>
+                            <div className='left-side-profile-pic'>
+                        <img src={media50} style={{width: "150px",height:"150px", background:'gray', marginRight:'50px' }}  className="img-fluid !rounded-full !inline-flex profileImage"  />
+                            </div>
+                            <div className='right-side-upload-pic'>
+                                <p>Upload Student Photo (150px X 150px)</p>
+                                <div>
+                                <label htmlFor="file-input" className="sr-only">Choose file</label>
+                                <input type="file"  name="file-input" id="file-input" className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/50
                                        file:border-0
                                       file:bg-light file:me-4
                                       file:py-3 file:px-4
                                       dark:file:bg-black/20 dark:file:text-white/50"/>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-
-                            <form onSubmit={handleSubmit(onSubmit)}>    
+                            </div>
+                        </div>
+                    </div>
+                   
+                   
+                    <form onSubmit={handleSubmit(onSubmit)}>    
                             <div className='academic-details mb-4 pt-4'>
                                 <h6 className=' pb-2'>Academic Details</h6>
                                  <div className='grid grid-cols-12 sm:gap-6 mb-4'>
@@ -212,8 +215,8 @@ const CreateStudent = () => {
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Select Class <span className="redText">*</span></label>
                                 <Select className="!p-0 place-holder"  
                                      isClearable
-                                     options={classIdselect}
-                                     value={classValue ? classIdselect.find(x => x.value === classValue) : classValue}
+                                     options={singleselect}
+                                     value={classValue ? singleselect.find(x => x.value === classValue) : classValue}
                                      onChange={option => classSelectOnChange(option ? option.value : option)}
                                      {...restclassSelectField}
                                      classNamePrefix='react-select'  />
@@ -226,8 +229,8 @@ const CreateStudent = () => {
                             
                             <Select className="!p-0 place-holder"  
                                      isClearable
-                                     options={sectionselect}
-                                     value={sectionValue ? sectionselect.find(x => x.value === sectionValue) : sectionValue}
+                                     options={singleselect}
+                                     value={sectionValue ? singleselect.find(x => x.value === sectionValue) : sectionValue}
                                      onChange={option => sectionOnChange(option ? option.value : option)}
                                      {...restsectionField}
                                      classNamePrefix='react-select'  />
@@ -318,10 +321,6 @@ const CreateStudent = () => {
                             />
                             </div>
 
-
-                        
-    
-    
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Gender:</label>
@@ -449,30 +448,7 @@ const CreateStudent = () => {
                         </div>
                             </div> 
 
-                             {/* <div className='medical-details mb-4'>
-                <h6 className=' pb-2'>Student Medical Details</h6>
-                <div className='grid grid-cols-12 sm:gap-6'>
-                                                    
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Defects At Birth</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Deficiencies</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Childhood Diseases</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
-                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Developmental delay & Disability</label>
-                            <Select className="place-holder" classNamePrefix='react-select' options={singleselect} />
-                            </div>
-
-                          
-                        </div>
-                            </div>  */}
+                           
 
                             <div className='student-create-btn'>
                                 <div className='flex justify-end'>
@@ -489,8 +465,9 @@ const CreateStudent = () => {
                             </div>
                             </form>
 
-                        </div>
-                    
+                
+                    </div>
+
                 </div>
             </div>
             {/* Student form create end */}
@@ -498,4 +475,4 @@ const CreateStudent = () => {
     )
 }
 
-export default CreateStudent
+export default EditStudent

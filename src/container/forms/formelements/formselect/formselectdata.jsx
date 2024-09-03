@@ -126,6 +126,28 @@ export const leaveType  = [
   { id: 9, value: "Other" ,label:"Other"},
 ]
 
+
+export const academicYearDrop = [  
+  { id: 1, value: "2024-2025", label:"2024-2025" },
+  { id: 2, value: "2025-2026" ,label:"2025-2026"},
+  { id: 3, value: "2026-2027" ,label:"2026-2027"},
+]
+ 
+export const classIdselect = [  
+  { id: 1, value: "1", label:"1" },
+  { id: 2, value: "2" ,label:"2"},
+  { id: 3, value: "3" ,label:"3"},
+]
+ 
+export const sectionselect = [  
+  { id: 1, value: "A", label:"A" },
+  { id: 2, value: "B" ,label:"B"},
+  { id: 3, value: "C" ,label:"C"},
+  { id: 4, value: "D" ,label:"D"},
+]
+ 
+
+
 //
 export const Choosedata = [
   { id: 1, value: "Choice 1" },

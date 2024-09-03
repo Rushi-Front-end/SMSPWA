@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../../redux/action';
 import axios from 'axios';
 import Loader from '../loader/loader';
+import { deleteStudentList, fetchStudentList } from '../../../redux/reducers/studentReducer';
 
 
 const Student = () => {
@@ -13,72 +14,96 @@ const Student = () => {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
     const [spinner, setSpinner] = useState(false)
+
+    
     const [deleteStudent, setDeleteStudent] = useState()
-    
-    
+    const [updateStudent, setUpdateStudent] = useState(true)
+
+     
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    
-    const getStudentDetails = () => {
-        setSpinner(true)
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
-            .then(res =>{ 
-                setData(res.data)
-                setSpinner(false)
-            })
-            .catch(err => console.log(err))
-    }
+    const studentListData = useSelector((state) => state.studentData)
+    const studentPostRes = useSelector((state) => state.studentData.postRes)
+    const studentDeleteRes = useSelector((state) => state.studentData.deleteRes)
+   
+    console.log(studentListData,'schoolListData')
+    console.log(studentPostRes,'schoolListPostData')
 
-    useEffect(() => {
-        getStudentDetails()
-    }, [])
+    // const getStudentDetails = () => {
+    //     setSpinner(true)
+    //     axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
+    //         .then(res =>{ 
+    //             setData(res.data)
+    //             console.log(res.data)
+    //             setSpinner(false)
+    //         })
+    //         .catch(err => console.log(err))
+    // }
 
-
-    const handleChange = value => {
-        setSearch(value);
-        filterData(value);
-    }
+    console.log(studentListData, "Schiool")
  
-    const filterData = value => {
-        const lowerCaseValue = value.toLowerCase().trim();
-        if (!lowerCaseValue) {
-            //setData(data);
-            getStudentDetails()
-        }
-        else {
-            const filteredData = data.filter(item => {
-                return Object.keys(item).some(key => {
-                    return item[key].toString().toLowerCase().includes(lowerCaseValue)
-                })
-            });
-            setData(filteredData);
-        }
+    const deleteDatahandler = (data)=>{
+        console.log("deleteDatahandler", data)
+        dispatch(deleteStudentList(data))
+        setTimeout(()=>{
+            dispatch(fetchStudentList())
+        },1000)
+        
+        
     }
- 
+
     const openDelete = (id)=>{
         setDeleteStudent(id)
     }
-     
+ 
+    useEffect(() => {
+        dispatch(fetchStudentList())
+    }, [studentPostRes || studentDeleteRes ])
+ 
+    const handleChange = value => {
+        // setSearch(value);
+        // filterData(value);
+        console.log(value,"SSSSSS", value.length)
+        if (!value || value.length === 0 ) {
+            getStudentDetails()
+        }
+    }
+    
+    const filterData = value => {
+        // alert(value)
+        const lowerCaseValue = value.toLowerCase().trim();
+        console.log(search,"dsdsdsd")
+        // console.log(lowerCaseValue, "Lowerrrr" ,lowerCaseValue.length)
+        // if (!lowerCaseValue || lowerCaseValue.length === 0 ) {
+        //     getStudentDetails()
+        // }
+        // else {
+            const filteredData = data.filter(item => {
+                // return Object.keys(item).some(key => {
+                //     return item[key].toString().toLowerCase().includes(lowerCaseValue)
+                // })
+                return Object.values(item).join('').toLowerCase().includes(search.toLowerCase())
+
+            });
+            setData(filteredData);
+        // }
+    }
+
+    const [deleteRow, setDeleteRow] = useState()
+ 
+    const getDeleteId =(id)=>{
+        setDeleteRow(id)
+    }
+ 
     // const deleteDatahandler = (id) =>{
-    //     axios.delete('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+id)
+    //     console.log(deleteRow, "useState id")
+    //     axios.delete('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+deleteRow)
     //     .then((res)=>{
-    //         console.log(id, 'Pleae Check it')
     //         getStudentDetails()
     //     })
     //     .catch(err=>console.log(err))
     //   }
-
-      const deleteDatahandler = async (id) => {
-        try {
-            await axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${id}`);
-            console.log(`Student with ID ${id} deleted`);
-            getStudentDetails(); // Refresh the student list
-        } catch (err) {
-            console.error("Error deleting student:", err);
-        }
-    }
-
 
 
     return (
@@ -187,7 +212,7 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                         </tr> */}
                                         {
                                             spinner ? <Loader /> :
-                                            data.map((dt, index) => {
+                                            studentListData.list.map((dt, index) => {
                                                 return <tr key={dt.id}>
                                                     <td>{++index}</td>
                                                     <td>{dt.id}</td>

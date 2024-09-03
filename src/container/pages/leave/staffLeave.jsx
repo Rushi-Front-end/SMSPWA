@@ -107,7 +107,7 @@ const StaffLeave = () => {
                                     {
                                         spinner ? <Loader /> :
                                         data.map((dt, index) => {
-                                   return <tbody>
+                                   return <tbody key={index}>
                                         
                                         <tr>
                                             <td rowSpan="2">1</td>
