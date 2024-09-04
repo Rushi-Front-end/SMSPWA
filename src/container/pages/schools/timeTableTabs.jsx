@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TimeInnerTable from './timeInnerTable'
 
 const TimeTableTabs = ({selectedOption}) => {
 console.log("TimeTableTabs", selectedOption)
+const [selectedDay, setSelectedDay] = useState('Monday'); // Default to 'Monday' or any starting day
+const handleDayChange = (day) => {
+    setSelectedDay(day);
+};
+
+const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   return (
     <div>
       <div className='box'>

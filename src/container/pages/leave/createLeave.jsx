@@ -194,7 +194,7 @@ const CreateLeave = () => {
                                             {/* <DatePicker {...register('toDate')} placeholderText="Choose date" className="ti-form-input  focus:z-10" showIcon selected={startDate1} onChange={(date) => setStartDate1(date)} /> */}
 
                                         </div>
-                                        {errors.toDate && <p className='errorTxt'>{errors.toDate.message}</p>}
+                                        {/* {errors.toDate && <p className='errorTxt'>{errors.toDate.message}</p>} */}
                                     </div>
 
                                 </div>

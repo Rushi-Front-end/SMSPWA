@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
-import { classDropDown } from '../../forms/formelements/formselect/formselectdata';
+import { className } from '../../forms/formelements/formselect/formselectdata';
 import {  useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -74,8 +74,8 @@ const CreateClass = (props) => {
         <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
             <label htmlFor="input-text" className="form-label">Class Name<span className='redText'>*</span></label>
             {/* <input type="text" className="form-control" id="input-text" placeholder="Text" /> */}
-            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={classDropDown}
-            value={classNameValue ? classDropDown.find(x => x.value === classNameValue) : classNameValue}
+            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={className}
+            value={classNameValue ? className.find(x => x.value === classNameValue) : classNameValue}
             onChange={option => classNameOnChange(option ? option.value : option)}
             {...restclassNameField}
             />

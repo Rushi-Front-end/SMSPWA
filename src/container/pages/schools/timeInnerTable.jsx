@@ -17,10 +17,7 @@ const TimeInnerTable = ({ selectedOption }) => {
 
     const AddIndRow = () => {
         if (selectedOption === null) {
-            toast.error('Please select the Class', {
-                position: "top-right",
-                autoClose: 3000,
-            });
+            toast.error('Please select the Class');
         } else {
             setHiddenRow(true);
             setAddHiddenRow([...addHiddenRow, {}]);

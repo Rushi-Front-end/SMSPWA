@@ -1,9 +1,17 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Link, useParams } from 'react-router-dom';
 import StaffCardDetails from './staffCardDetails';
 import StaffRolesPermission from './staffRolesPermission';
 
 const StaffList = () => {
+
+    const [staffEditRole, setStaffRole] = useState(false)
+    const params = useParams()
+    const editSaffRole = () => {
+        setStaffRole(true)
+    }
+    
+
     return (
         <div>
             <div className="grid grid-cols-12 gap-x-6">
@@ -85,13 +93,25 @@ const StaffList = () => {
                                                 </div>
                                                 <div className='school-deatils-table'>
                                                     <h6 className='pb-4'>Staff  Details</h6>
-                                                    <StaffCardDetails />
+                                                    <StaffCardDetails id={params.id} />
                                                 </div>
 
                                             </div>
                                             <div id="underline-2" className="hidden" role="tabpanel" aria-labelledby="underline-item-2">
+                                                <div className='flex-container'>
+                                                    {
+                                                        staffEditRole ? null :
+
+                                                            <div className="flex justify-end">
+                                                                <Link to="#">
+
+                                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave pr-2" onClick={editSaffRole}>Edit Staff</button>
+                                                                </Link>
+                                                            </div>
+                                                    }
+                                                </div>
                                                 <div className='staffRoles-wrapper'>
-                                                    <StaffRolesPermission />
+                                                    <StaffRolesPermission staffEditRole={staffEditRole} setStaffRole={setStaffRole} />
                                                 </div>
 
                                             </div>

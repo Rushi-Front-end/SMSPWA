@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { setHours, setMinutes } from "date-fns";
 import { useForm, useController, Controller } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+
 
 
 const schema = yup.object({
@@ -24,7 +25,9 @@ const schema = yup.object({
 
 });
 
-const CreateExamination = () => {
+
+const UpdateExamination = () => {
+
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
 const [data, setData] = useState([]);
@@ -33,6 +36,8 @@ const [data, setData] = useState([]);
     });
 
     const navigate = useNavigate()
+    const params = useParams()
+    console.log(params, "UpdateExam")
 
     const { field: { value: examTypeValue, onChange: examTypeOnChange, ...restexamTypeField } } = useController({ name: 'examType', control });
     // const { field: { value: mealTypeValue, onChange: mealTypeOnChange, ...restmealTypeField } } = useController({ name: 'mealType', control });
@@ -40,20 +45,22 @@ const [data, setData] = useState([]);
     const { errors } = formState;
 
     const onSubmit = (formData) => {
-        setData({...formData})
-        axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam`, formData)
-        .then((res)=>{
-            console.log(res)
-            if(res.status === 200){
-                navigate(`${import.meta.env.BASE_URL}pages/examination/examinationList`)
-                toast.success("Diet Data Created Successfuly")
-            }
+        // setData({...formData})
+        // axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam`, formData)
+        // .then((res)=>{
+        //     console.log(res)
+        //     if(res.status === 200){
+        //         navigate(`${import.meta.env.BASE_URL}pages/examination/examinationList`)
+        //         toast.success("Diet Data Created Successfuly")
+        //     }
 
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+        // })
+        // .catch((err) => {
+        //     console.log(err)
+        // })
     }
+
+
 
   return (
     <div>
@@ -88,7 +95,7 @@ const [data, setData] = useState([]);
                         </li>
 
                         <li className="text-sm text-gray-500 dark:text-[#8c9097] dark:text-white/50 hover:text-primary truncate" aria-current="page">
-                            Create Exam
+                            Update Exam
                         </li>
                     </ol>
                 </div>
@@ -99,7 +106,7 @@ const [data, setData] = useState([]);
     <div className='exam-form-create'>
         <div className='box'>
             <div className='p-4'>
-                    <h4 className=''>Create Exam</h4>
+                    <h4 className=''>Update Exam</h4>
                     <h6 className='pt-4'>Exam Details</h6>
                     <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -212,4 +219,4 @@ const [data, setData] = useState([]);
   )
 }
 
-export default CreateExamination
+export default UpdateExamination

@@ -1,9 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
+import axios from 'axios';
+import Loader from '../loader/loader';
 
 const ExaminationList = () => {
+    const [examData, setExamData] = useState([])
+    const [spinner, setSpinner] = useState(false)
+    
+    // Calculate percentages
+    const calculatePercentage = (part, total) => {
+      if (total === 0) return 0;
+      return ((part / total) * 100).toFixed(2); // Rounded to 2 decimal places
+    };
+  
+    
+    const getExamDataList = () => {
+        setSpinner(true)
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam`)
+            .then(res => {
+                setExamData(res.data)
+                
+                 setSpinner(false)
+            })
+            .catch(err => console.log(err))
+    }
+    useEffect(()=>{
+        getExamDataList()
+    },[])
+
   return (
     <div>
     <h4 className='pt-4 borderBottom'>Examination</h4>
@@ -83,19 +109,26 @@ const ExaminationList = () => {
                             </tr>
                             </thead>
                             <tbody>
-                                <tr className="border-b border-defaultborder">
-                                    <td>1</td>
+                            {
+                                        spinner ? <Loader /> :
+                                       // Array.isArray(examData?.list) && examData.list.length > 0 ? (
+                                            examData.map((dt, index) => {
+                                                const passedPercentage = calculatePercentage(dt.passedStudent, dt.totalAppearedStudent);
+                                                const failedPercentage = calculatePercentage(dt.failedStudent, dt.totalAppearedStudent);
+
+                              return  <tr key={index} className="border-b border-defaultborder">
+                                    <td>{index + 1}</td>
                                     {/* <td>EMP005</td> */}
                                     <td>      
-                                        Internal                            
+                                        {dt.examType}                            
                                     </td>
-                                    <td>Nayoday</td>
-                                    <td>From:02 Aug 2024
-                                        <br/> To:03 Aug 2024
+                                    <td>{dt.examName}</td>
+                                    <td>From:{dt.fromDate.slice(0,10)}
+                                        <br/> To:{dt.toDate.slice(0,10)}
                                     </td>
-                                    <td>500</td>
-                                    <td>450(90%)</td>
-                                    <td>50(10%)</td>
+                                    <td>{dt.totalAppearedStudent}</td>
+                                    <td>{dt.passedStudent}({passedPercentage}%)</td>
+                                    <td>{dt.failedStudent}({failedPercentage}%)</td>
 
                                     <td>
                                     <div className="ti-dropdown hs-dropdown">
@@ -104,13 +137,21 @@ const ExaminationList = () => {
                                                 <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                             </button>
                                             <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                <li><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                                <li><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/examination/updateExamination/${dt.id}`}>Edit</Link></li>
                                                 <li><Link className="ti-dropdown-item" to="#">Delete</Link></li>
 
                                             </ul>
                                         </div>
                                     </td>
                                 </tr>
+                                  })
+                                // ) : (
+                                        //     <tr>
+                                        //         <td colSpan="6">No Data available.</td>
+                                        //     </tr>
+                                        // )
+
+                                    }
 
                             </tbody>
                         </table>

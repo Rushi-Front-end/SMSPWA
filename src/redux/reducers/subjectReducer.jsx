@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const BASE_URL = 'https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Subjects'
 
@@ -16,6 +17,8 @@ export const postSubjectList = createAsyncThunk('postSubjectList', async (data) 
         },
         body:JSON.stringify(data)
     });
+    if(!response.ok) throw new Error(`Error :${response.status}`);
+
     return response.json()
 
 
@@ -29,6 +32,7 @@ export const deleteSubjectList = createAsyncThunk('deleteSubjectList', async (id
             "Content-Type":"application/json"
         },
     });
+    if(!response.ok) throw new Error(`Error :${response.status}`);
     return response.json()
   }
 )
@@ -42,6 +46,8 @@ export const fetchSubjectById = createAsyncThunk('fetchSubjectById', async (id) 
             "Content-Type":"application/json"
         },
     });
+    if(!response.ok) throw new Error(`Error :${response.status}`);
+
     return response.json()
   }
 )
@@ -56,6 +62,7 @@ export const updateSubjectRecord = createAsyncThunk('updateSubjectRecord', async
         
     });
 
+    if(!response.ok) throw new Error(`Error :${response.status}`);
 
     const result = await response.json(); // Get the response as JSON
     return result; // Return the updated school data
@@ -109,6 +116,8 @@ const  subjectSlice = createSlice ({
     
     builder.addCase(fetchSubjectById.rejected,(state,action)=>{
         state.isError = true;
+        toast.error(`Error: ${action.error.message}`); // Error notification
+
     })
     
       //POST API Sec
@@ -120,10 +129,14 @@ const  subjectSlice = createSlice ({
          console.log(state, "Sliccc")
         state.isLoading = false;
         state.list = action.payload;
+        toast.success("Subject Created Successfuly")
+
     })
     
     builder.addCase(postSubjectList.rejected,(state,action)=>{
         state.isError = true;
+        toast.error(`Error: ${action.error.message}`); // Error notification
+
     })
 
     //DELETE API School Data
@@ -134,10 +147,13 @@ const  subjectSlice = createSlice ({
     builder.addCase(deleteSubjectList.fulfilled,(state,action)=>{
         state.isLoading = false;
         state.deleteRes = action.payload;
+        toast.success("Subject Deleted Successfuly")
+
     })
     
     builder.addCase(deleteSubjectList.rejected,(state,action)=>{
         state.isError = true;
+        toast.error(`Error: ${action.error.message}`); // Error notification
     })
 
 
@@ -154,12 +170,15 @@ const  subjectSlice = createSlice ({
         state.list = state.list.map((ele)=>{
             ele.id === action.payload.id ? action.payload : ele
         })
+        toast.success("Subject Updated Successfuly")
+
         //state.updateRes = action.payload;
     })
     builder.addCase(updateSubjectRecord.rejected, (state, action)=>{
         state.isError = true 
         state.isLoading = false;
         state.errorMessage = action.error.message || 'An error occurred';
+
 
     })
 

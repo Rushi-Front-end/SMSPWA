@@ -75,6 +75,27 @@
         opacity: 0.5;
 }
 
+input[type=checkbox]:checked:hover, input[type=checkbox]:checked:focus{
+    border-color: orange;
+background-color: orange;
+}
+
+.roles-individual-row .form-check-input:disabled ~  .form-check-label,.roles-individual-row .form-check-input[disabled] ~ .form-check-label{
+    opacity: 1;
+    cursor: no-drop;
+
+}
+
+.roles-individual-row .form-check-input[disabled], .roles-individual-row .form-check-input[disabled]:hover{
+    color: gray;
+    background-color: gray;
+    border-color: gray;
+    opacity: 0.5;
+    cursor: no-drop;
+}
+.roles-individual-row {padding-top: 10px;padding-bottom: 10px}
+
+
 
 .medical-answer-row {
     .form-check-input{

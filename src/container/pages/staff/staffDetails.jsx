@@ -130,7 +130,7 @@ const StaffDetails = () => {
                                                     <td>{index + 1}</td>
                                                     {/* <td>EMP005</td> */}
                                                     <td>
-                                                        <Link className='text-primary' to={`${import.meta.env.BASE_URL}pages/staff/staffList`}>
+                                                        <Link className='text-primary' to={`${import.meta.env.BASE_URL}pages/staff/staffList/${dt.id}`}>
                                                            {dt.fullName}
                                                         </Link>
                                                     </td>

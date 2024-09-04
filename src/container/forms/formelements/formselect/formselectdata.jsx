@@ -84,21 +84,27 @@ export const singleselect = [
   { id: 3, value: "Choice 2" ,label:"Choice 2"},
   { id: 4, value: "Choice 3" ,label:"Choice 3"},
 ]
-export const classDropDown = [
+export const className = [
   { id: 1, value: "Select Class Name",label:"Select Class Name" },
   { id: 2, value: "5th Class" ,label:"5th Class"},
   { id: 3, value: "6th Class" ,label:"6th Class"},
-  { id: 3, value: "7th Class" ,label:"7th Class"},
-  { id: 3, value: "8th Class" ,label:"8th Class"},
-  { id: 3, value: "9th Class" ,label:"9th Class"},
-  { id: 3, value: "10th Class" ,label:"10th Class"},
-  { id: 3, value: "11th Class" ,label:"11th Class"},
-  { id: 3, value: "12th Class" ,label:"12th Class"},
+  { id: 4, value: "7th Class" ,label:"7th Class"},
+  { id: 5, value: "8th Class" ,label:"8th Class"},
+  { id: 6, value: "9th Class" ,label:"9th Class"},
+  { id: 7, value: "10th Class" ,label:"10th Class"},
+  { id: 8, value: "11th Class" ,label:"11th Class"},
+  { id: 9, value: "12th Class" ,label:"12th Class"},
 ]
 export const schoolBoard = [
   { id: 1, value: "Select Board",label:"Select Board" },
   { id: 2, value: "SSC" ,label:"SSC"},
   { id: 3, value: "CBSC" ,label:"CBSC"},
+]
+export const mealType = [
+  { id: 1, value: "Select Meal",label:"Select Meal" },
+  { id: 2, value: "Breakfast" ,label:"Breakfast"},
+  { id: 3, value: "Lunch" ,label:"Lunch"},
+  { id: 4, value: "Dinner" ,label:"Dinner"},
 ]
 
 export const prakalpName  = [
@@ -127,16 +133,47 @@ export const leaveType  = [
 ]
 
 
-export const academicYearDrop = [  
+export const academicYear = [  
   { id: 1, value: "2024-2025", label:"2024-2025" },
   { id: 2, value: "2025-2026" ,label:"2025-2026"},
   { id: 3, value: "2026-2027" ,label:"2026-2027"},
 ]
  
-export const classIdselect = [  
-  { id: 1, value: "1", label:"1" },
-  { id: 2, value: "2" ,label:"2"},
-  { id: 3, value: "3" ,label:"3"},
+export const classIDSelect = [  
+  { id: 1, value: 1, label:1 },
+  { id: 2, value: 2 ,label:2},
+  { id: 3, value: 3 ,label:3},
+  { id: 4, value: 4 ,label:4},
+  { id: 5, value: 5 ,label:5},
+  { id: 6, value: 6 ,label:6},
+  { id: 7, value: 7 ,label:7},
+]
+export const genderSelect = [  
+  { id: 1, value: "Male", label:"Male" },
+  { id: 2, value: "Female" ,label:"Female"},
+  { id: 2, value: "Transgender" ,label:"Transgender"},
+  { id: 3, value: "Others" ,label:"Others"},
+]
+ 
+export const stateSelect = [  
+  { id: 1, value: "Sample State", label:"Sample State" },
+  { id: 2, value: "Maharashtra" ,label:"Maharashtra"},
+  { id: 2, value: "Goa" ,label:"Goa"},
+  { id: 3, value: "Gujarat" ,label:"Gujarat"},
+  { id: 4, value: "Tamil Nadu" ,label:"Tamil Nadu"},
+  { id: 5, value: "Punjab" ,label:"Punjab"},
+]
+ 
+export const bloodGroupSelect = [  
+  { id: 1, value: "O+", label:"O+" },
+  { id: 2, value: "O-" ,label:"O-"},
+  { id: 3, value: "A+", label:"A+" },
+  { id: 4, value: "A-" ,label:"A-"},
+  { id: 5, value: "B+", label:"B+" },
+  { id: 6, value: "B-" ,label:"B-"},
+  { id: 7, value: "AB+", label:"AB+" },
+  { id: 8, value: "AB-" ,label:"AB-"},
+
 ]
  
 export const sectionselect = [  
@@ -144,6 +181,16 @@ export const sectionselect = [
   { id: 2, value: "B" ,label:"B"},
   { id: 3, value: "C" ,label:"C"},
   { id: 4, value: "D" ,label:"D"},
+]
+ 
+export const dietDay = [  
+  { id: 1, value: "Monday", label:"Monday" },
+  { id: 2, value: "Tuesday" ,label:"Tuesday"},
+  { id: 3, value: "Wednesday" ,label:"Wednesday"},
+  { id: 4, value: "Thursday" ,label:"Thursday"},
+  { id: 5, value: "Friday" ,label:"Friday"},
+  { id: 6, value: "Saturday" ,label:"Saturday"},
+  { id: 7, value: "Sunday" ,label:"Sunday"},
 ]
  
 

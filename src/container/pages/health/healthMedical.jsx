@@ -39,8 +39,8 @@ const HealthMedical = (props) => {
                     <h6>B. Deficiency</h6>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault1" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault1">
                                 Default checkbox
                             </label>
                         </div>
@@ -48,8 +48,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault2" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault2">
                                 Default checkbox
                             </label>
                         </div>
@@ -57,8 +57,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault3" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault3">
                                 Default checkbox
                             </label>
                         </div>
@@ -66,8 +66,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault4" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault4">
                                 Default checkbox
                             </label>
                         </div>
@@ -75,8 +75,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault5" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault5">
                                 Default checkbox
                             </label>
                         </div>
@@ -88,8 +88,8 @@ const HealthMedical = (props) => {
                     <h6>C. Diseases</h6>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault6" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault6">
                                 Default checkbox
                             </label>
                         </div>
@@ -97,8 +97,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault7" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault7">
                                 Default checkbox
                             </label>
                         </div>
@@ -106,8 +106,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault8" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault8">
                                 Default checkbox
                             </label>
                         </div>
@@ -115,8 +115,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault9" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault9">
                                 Default checkbox
                             </label>
                         </div>
@@ -124,8 +124,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault10" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault10">
                                 Default checkbox
                             </label>
                         </div>
@@ -136,8 +136,8 @@ const HealthMedical = (props) => {
                     <h6>D. Development Delays for  6-9 years only</h6>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault11" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault11">
                                 Default checkbox
                             </label>
                         </div>
@@ -145,8 +145,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault12" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault12">
                                 Default checkbox
                             </label>
                         </div>
@@ -154,8 +154,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault13" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault13">
                                 Default checkbox
                             </label>
                         </div>
@@ -163,8 +163,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault14" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault14">
                                 Default checkbox
                             </label>
                         </div>
@@ -172,8 +172,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault15" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault15">
                                 Default checkbox
                             </label>
                         </div>
@@ -184,8 +184,8 @@ const HealthMedical = (props) => {
                     <h6>E. Adolescent Specific Questionnarie (10-18years)</h6>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault16" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault16">
                                 Default checkbox
                             </label>
                         </div>
@@ -193,8 +193,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault17" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault17">
                                 Default checkbox
                             </label>
                         </div>
@@ -202,8 +202,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault18" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault18">
                                 Default checkbox
                             </label>
                         </div>
@@ -211,8 +211,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault19" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault19">
                                 Default checkbox
                             </label>
                         </div>
@@ -220,8 +220,8 @@ const HealthMedical = (props) => {
                     </div>
                     <div className='medical-answer-row pt-2'>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                            <input className="form-check-input" type="checkbox" defaultValue="" id="flexCheckDefault20" />
+                            <label className="form-check-label" htmlFor="flexCheckDefault20">
                                 Default checkbox
                             </label>
                         </div>

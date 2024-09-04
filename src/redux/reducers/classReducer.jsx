@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const BASE_URL = 'https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class'
 export const fetchClassList   = createAsyncThunk("fetchClassList", async()=>{
@@ -15,6 +16,8 @@ export const postClassList = createAsyncThunk('postClassList', async (data) => {
         },
         body:JSON.stringify(data)
     });
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+
     return response.json()
 
 
@@ -29,6 +32,8 @@ export const fetchClassListById = createAsyncThunk('fetchClassListById', async (
             "Content-Type":"application/json"
         },
     });
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+
     return response.json()
   }
 )
@@ -41,6 +46,8 @@ export const deleteClassList = createAsyncThunk('deleteClassList', async (id) =>
             "Content-Type":"application/json"
         },
     });
+console.log(response,"DDDDDDD")
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
     return response.json()
   }
 )
@@ -91,6 +98,8 @@ const  classSlice = createSlice ({
     
     builder.addCase(fetchClassListById.rejected,(state,action)=>{
         state.isError = true;
+        toast.error(`Error: ${action.error.message}`); // Error notification
+
     })
 
     
@@ -103,10 +112,14 @@ const  classSlice = createSlice ({
          console.log(state, "Sliccc")
         state.isLoading = false;
         state.list = action.payload;
+        toast.success("Class created successfully!"); // Success notification
+
     })
     
     builder.addCase(postClassList.rejected,(state,action)=>{
         state.isError = true;
+        toast.error(`Error: ${action.error.message}`); // Error notification
+
     })
 
     
@@ -119,10 +132,12 @@ const  classSlice = createSlice ({
         state.isLoading = false;
         state.deleteRes = action.payload;
         state.list = state.list.filter(item => item.id !== action.payload);
+        toast.success("Class deleted successfully!"); // Success notification
     })
     
     builder.addCase(deleteClassList.rejected,(state,action)=>{
         state.isError = true;
+        toast.error(`Error: ${action.error.message}`); // Error notification
     })
     
     

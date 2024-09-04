@@ -94,10 +94,7 @@ const UpdateLeave = () => {
         .then(res => {
             console.log(res, 'StaffLeave')
             navigate(`${import.meta.env.BASE_URL}pages/leave/staffLeave`)
-            toast.success("Staff Data Updated Successfuly",{
-                        position: "top-right",
-                        autoClose: 3000,
-                    })
+            toast.success("Staff Data Updated Successfuly")
         })
         .catch(err => console.log(err))
         // setTimeout(() => {

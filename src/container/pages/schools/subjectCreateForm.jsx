@@ -42,10 +42,7 @@ const SubjectCreateForm = (props) => {
         dispatch(postSubjectList(formData))
         
         setTimeout(() => {
-            toast.success("Subject Created Successfuly",{
-                position: "top-right",
-                autoClose: 3000,
-            })
+            toast.success("Subject Created Successfuly")
             dispatch(fetchSubjectList())
         }, 500);
         

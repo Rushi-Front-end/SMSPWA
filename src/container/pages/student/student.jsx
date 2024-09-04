@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../../redux/action';
 import axios from 'axios';
 import Loader from '../loader/loader';
+import { toast } from 'react-toastify';
 
 
 const Student = () => {
@@ -74,6 +75,7 @@ const Student = () => {
             await axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${id}`);
             console.log(`Student with ID ${id} deleted`);
             getStudentDetails(); // Refresh the student list
+            toast.success("Student Data Deleted Successfuly")
         } catch (err) {
             console.error("Error deleting student:", err);
         }

@@ -60,7 +60,7 @@ const CreateHealth = () => {
                             <HealthMedical setStudMedical={setStudMedical} />
                         </div>
                             :
-                            <div class='health-details-wrapper'>
+                            <div className='health-details-wrapper'>
                                 <div className='academic-details mb-4'>
                                     <h6 className=' pb-2'>Student Details</h6>
                                     <div className='grid grid-cols-12 sm:gap-6'>

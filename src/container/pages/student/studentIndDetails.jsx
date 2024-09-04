@@ -59,44 +59,11 @@ const StudentIndDetails = () => {
 
                                 <div id="sessions">
                                     {/*  */}
-                                    <div className="box-body">
-                                        <div className="border-b-2 border-gray-200 dark:border-white/10">
-                                            <nav className="-mb-0.5 flex space-x-6 rtl:space-x-reverse">
-                                                <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning active" to="#" id="underline-item-1" data-hs-tab="#underline-1" aria-controls="underline-1">
-                                                    Student Details
-                                                </Link>
-                                                <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning " to="#" id="underline-item-2" data-hs-tab="#underline-2" aria-controls="underline-2">
-                                                  Student Medical Details
-                                                </Link>
-
-                                            </nav>
-                                        </div>
-
-                                        <div className="mt-3">
-                                            <div id="underline-1" role="tabpanel" aria-labelledby="underline-item-1">
-                                                {/* <div className='flex-container'>
-                                                    <div className="flex justify-end">
-                                                        <Link to={`${import.meta.env.BASE_URL}pages/student/editStudent`}>
-
-                                                            <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave pr-2">Edit Student</button>
-                                                        </Link>
-                                                    </div>
-                                                </div> */}
-                                                <div className='studentInd-deatils-table'>
-                                                    <h6 className='pb-4'>Staff  Details</h6>
+                                    <div className='studentInd-deatils-table box-body'>
+                                                    <h3 className='pb-4'>Student  Details</h3>
                                                     <StudentCardDetails />
                                                 </div>
-
-                                            </div>
-                                            <div id="underline-2" className="hidden" role="tabpanel" aria-labelledby="underline-item-2">
-                                                <div className='studIndMedical-wrapper'>
-                                                    {/* <StaffRolesPermission /> */}
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
+                                  
                                     {/*  */}
 
                                 </div>

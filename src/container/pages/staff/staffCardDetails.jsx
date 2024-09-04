@@ -1,6 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import media37 from "../../../assets/images/media/media-37.jpg";
-const StaffCardDetails = () => {
+import axios from 'axios';
+const StaffCardDetails = ({id}) => {
+    console.log(id, "StaffList PARAMS")
+const [staffCardList, setStaffCardList] = useState([])
+
+    const [staffIndDetails, setStaffIndDeatils] = useState([])
+    const [spinner, setSpinner] = useState(false)
+
+    const getStaffCardList = () => {
+        setSpinner(true)
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff/${id}`)
+            .then(res => {
+                setStaffCardList(res.data)
+                 setSpinner(false)
+            })
+            .catch(err => console.log(err))
+    }
+
+    useEffect(() => {
+        getStaffCardList()
+    }, [id])
+
   return (
     <div>
         <div className="xl:col-span-4 col-span-12">
@@ -13,13 +34,14 @@ const StaffCardDetails = () => {
                             <div className="md:col-span-8 col-span-12">
                                
                                 <div className="box-body">
-                                    <h6 className="box-title font-semibold"> Employee 1</h6>
-                                    <p className="card-text">Mobile No.: +91 453453453</p>
-                                    <p className="card-text">Email Id: asdfasdf@gmail.com</p>
-                                    <p className="card-text">Alternate Mobile No.: 234324324</p>
-                                    <p className="card-text">Date of Joining: 01 Jan 2022</p>
-                                    <p className="card-text">Gender:</p>
-                                    <p className="card-text">Address:</p>
+                                    <h6 className="box-title font-semibold"> {staffCardList.fullName}</h6>
+                                    <p className="card-text pt-2">Mobile No.: {staffCardList.mobileNumber}</p>
+                                    <p className="card-text pt-2">Email Id:{staffCardList.emailID}</p>
+                                    <p className="card-text pt-2">Department:{staffCardList.department}</p>
+                                    <p className="card-text pt-2">Alternate Mobile No.: {staffCardList.alternateMobileNumber}</p>
+                                    <p className="card-text pt-2">Date of Joining: {staffCardList.dateOfJoining}</p>
+                                    <p className="card-text pt-2">Gender:{staffCardList.gender}</p>
+                                    <p className="card-text pt-2">Address:{staffCardList.address}</p>
                                 </div>
                                
                             </div>

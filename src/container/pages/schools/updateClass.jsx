@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Select from 'react-select';
-import { classDropDown } from '../../forms/formelements/formselect/formselectdata';
+import { className } from '../../forms/formelements/formselect/formselectdata';
 import {  useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchClassList, fetchClassListById, postClassList } from '../../../redux/reducers/classReducer';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 
@@ -27,9 +28,16 @@ const UpdateClass = (props) => {
     const[classEditData, setClassEditData]=useState();
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    // useEffect((id) => {
+    //   dispatch(fetchClassListById(updateClassID))
+    // }, [dispatch, updateClassID])
+
+    useEffect((id) => {
+     axios.get((`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/${updateClassID}`))
+    }, [ updateClassID])
 
 
-    const { register, handleSubmit, formState, control,setValue } = useForm({
+    const { register, handleSubmit, formState, control,setValue, reset } = useForm({
         resolver: yupResolver(schema)
     });
     
@@ -48,11 +56,17 @@ useEffect(() => {
         .get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/${updateClassID}`)
         .then((res) => {
           if (res.data) {
-            const classData = res.data;
+            const classData = res.data[0];
             console.log(classData,'classData')
             setValue('id', classData.id);
             setValue('className', classData.className);
             setValue('description', classData.description);
+               // Preselect the dropdown value
+              //  const selectedOption = className.find(option => option.value === classData.className);
+              //  console.log(selectedOption,'selectedOption')
+              //  if (selectedOption) {
+              //    setValue('className', selectedOption);
+              //  }
           }
         })
         .catch((err) => {
@@ -60,16 +74,58 @@ useEffect(() => {
         });
     }
   }, [updateClassID, setValue]);
+
+
+// const schoolClassUpdData = useSelector((state) => state.classData) // Fetch by id
+//     const schoolClassUpdateRes = useSelector((state) => state.classData.updateRes) //Post
+
+  
+// useEffect(() => {
+//   if (updateClassID) {
+//       // Fetch individual record by ID
+//       dispatch(fetchClassListById(updateClassID)).then((response) => {
+//           console.log(response,"EEEEEEEEE")
+//           if (response.payload) {
+//               const classData = response.payload[0];
+
+//               // Populate form with fetched data
+//               setValue('id', classData.id);
+//             setValue('className', classData.className);
+//             setValue('description', classData.description);
+              
+//               // Add more fields as needed
+//               // const selectedOption = className.find(option => option.value === classData.className);
+//               //  console.log(selectedOption,'selectedOption')
+//               //  if (selectedOption) {
+//               //    setValue('className', selectedOption);
+//               //  }
+//           }
+//       });
+//   }
+// }, [updateClassID, dispatch, setValue]);
+
+
     const onSubmit = (formData) => {
-        // setData({ ...formData });
-        // //dispatch(postClassList(formData))
-        // axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/create', formData)
-        // .then(res => {
-        //     console.log(res)
-        //   dispatch(fetchClassList())
-        // })
-        // .catch(err => console.log(err))
-       // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
+        setData({ ...formData });
+        //dispatch(postClassList(formData))
+        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/${updateClassID}`, formData)
+        .then(res => {
+            console.log(res)
+            if(res.status === 200){
+              props.updateClassChild(false)
+              toast.success('Class Data Updated Successfully')
+              setTimeout(() => {
+                dispatch(fetchClassList())
+              }, 500);
+            }
+        })
+        .catch(err => console.log(err))
+          // Reset the form fields after submission
+          reset({
+            className: '',
+            description: '',
+        });
+      // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
     }
 
 
@@ -90,8 +146,8 @@ useEffect(() => {
         <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
             <label htmlFor="input-text" className="form-label">Class Name<span className='redText'>*</span></label>
             {/* <input type="text" className="form-control" id="input-text" placeholder="Text" /> */}
-            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={classDropDown}
-            value={classNameValue ? classDropDown.find(x => x.value === classNameValue) : classNameValue}
+            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={className}
+            value={classNameValue ? className.find(x => x.value === classNameValue) : classNameValue}
             onChange={option => classNameOnChange(option ? option.value : option)}
             {...restclassNameField}
             />
