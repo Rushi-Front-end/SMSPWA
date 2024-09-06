@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import Tabtotop from '../components/common/tabtotop/tabtotop';
 import storeSchool from '../redux/Store/storeSchool';
+import { IdProvider } from '../components/common/context/idContext';
 
 
 function App() {
@@ -60,9 +61,11 @@ function App() {
               <div className='main-content'
               // onClick={Bodyclickk}
               >
+                <IdProvider>
                 <Provider store={storeSchool}>
                   <Outlet />
                 </Provider>
+                </IdProvider>
               </div>
             </div>
             <Footer />

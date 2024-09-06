@@ -24,6 +24,14 @@ const schema = yup.object({
 
 });
 
+const formatDate = (date) => {
+    if (!date) return '';
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+};
+
 const CreateExamination = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -41,7 +49,11 @@ const [data, setData] = useState([]);
 
     const onSubmit = (formData) => {
         setData({...formData})
-        axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam`, formData)
+        axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam`, {
+            ...formData,
+            fromDate: formatDate(startDate), // Ensure format is correct
+            toDate: formatDate(endDate)
+        })
         .then((res)=>{
             console.log(res)
             if(res.status === 200){
@@ -130,9 +142,11 @@ const [data, setData] = useState([]);
                                                     <DatePicker
                                                         {...field}
                                                         selected={startDate}
+                                                dateFormat="dd/MM/yyyy"  
+
                                                         onChange={(date) => {
                                                             setStartDate(date);
-                                                            field.onChange(date);
+                                                            field.onChange(formatDate(date));
                                                         }}
                                                         
                                                     />
@@ -153,9 +167,11 @@ const [data, setData] = useState([]);
                                                     <DatePicker
                                                         {...field}
                                                         selected={endDate}
+                                                dateFormat="dd/MM/yyyy"  
+
                                                         onChange={(date) => {
                                                             setEndDate(date);
-                                                            field.onChange(date);
+                                                            field.onChange(formatDate(date));
                                                         }}
                                                     />
                                                 )}

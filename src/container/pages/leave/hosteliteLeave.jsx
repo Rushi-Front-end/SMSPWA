@@ -88,6 +88,7 @@ const HosteliteLeave = () => {
                                         <th scope="col" className="text-start"> Leave Type</th>
                                         <th scope="col" className="text-start">Class</th>
                                         <th scope="col" className="text-start">Outpass Duration</th>
+                                        <th scope="col" className="text-start">Status</th>
                                         <th scope="col" className="text-start">Action</th>
                                     </tr>
                                     </thead>
@@ -99,6 +100,8 @@ const HosteliteLeave = () => {
                                             <td>	Sick Leave</td>
                                             <td>Class I, Section A</td>
                                             <td>	01 Sep 2021 - 02 Sep 2021</td>
+                                            <td><span className="badge bg-danger/10 text-danger">Rejected</span></td>
+
                                             <td rowSpan="2">
                                                 <div className="ti-dropdown hs-dropdown">
                                                     <button type="button"

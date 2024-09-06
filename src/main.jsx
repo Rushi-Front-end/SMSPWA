@@ -61,6 +61,7 @@ import UpdateLeave from './container/pages/leave/updateLeave.jsx'
 import DietList from './container/pages/diet/dietList.jsx'
 import CreateDiet from './container/pages/diet/createDiet.jsx'
 import UpdateExamination from './container/pages/examination/updateExamination.jsx'
+import { IdProvider } from './components/common/context/idContext.jsx'
 // import ErrorPage from './container/pages/404page/errorPage.jsx'
 
 
@@ -68,6 +69,7 @@ import UpdateExamination from './container/pages/examination/updateExamination.j
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.Fragment>
     <ToastContainer theme='colored' autoClose={2000} position='top-right' />
+          <IdProvider>
     <BrowserRouter>
       <React.Suspense>
       <ScrollToTop/>
@@ -77,6 +79,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path={`${import.meta.env.BASE_URL}firebase/login`} element={<Login />} />
               <Route path={`${import.meta.env.BASE_URL}firebase/signup`} element={<Signup />} />
           </Route>    
+
+          
           <Route path={`${import.meta.env.BASE_URL}`} element={<App />}>   
           <Route path='*' element={<ErrorPage />}></Route>        
             <Route path={`${import.meta.env.BASE_URL}dashboard`} element={<Analytics />} />
@@ -133,5 +137,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </Routes>
       </React.Suspense>
     </BrowserRouter>
+          </IdProvider>
   </React.Fragment>
 )

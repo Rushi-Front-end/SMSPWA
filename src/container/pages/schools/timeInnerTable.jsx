@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const TimeInnerTable = ({ selectedOption }) => {
+const TimeInnerTable = ({ selectedOption, selectedDay }) => {
+    console.log(selectedDay, 'SelectedDDDD')
     const [hiddenRow, setHiddenRow] = useState(false);
     const [addHiddenRow, setAddHiddenRow] = useState([]);
     const [isDisabled, setIsDisabled] = useState(true);

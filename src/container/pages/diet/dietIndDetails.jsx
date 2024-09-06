@@ -57,8 +57,8 @@ const DietIndDetails = ({ selectedDay }) => {
                                             <th scope="col" className="text-start">Time</th>
                                             <th scope="col" className="text-start">Menu</th>
                                             <th scope="col" className="text-start">Total Calories <br /> (Kcal)</th>
-                                            <th scope="col" className="text-start">Created By</th>
-                                            <th scope="col" className="text-start">Created At</th>
+                                            {/* <th scope="col" className="text-start">Created By</th>
+                                            <th scope="col" className="text-start">Created At</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -68,8 +68,8 @@ const DietIndDetails = ({ selectedDay }) => {
                                                 <td>{dt.time || '8am-10am'}</td>
                                                 <td>{dt.menuItems}</td>
                                                 <td>{dt.totalCalories}</td>
-                                                <td>{dt.createdBy || 'John Smith'}</td>
-                                                <td>{dt.createdAt}</td>
+                                                {/* <td>{dt.createdBy || 'John Smith'}</td>
+                                                <td>{dt.createdAt}</td> */}
                                             </tr>
                                         ))}
                                     </tbody>

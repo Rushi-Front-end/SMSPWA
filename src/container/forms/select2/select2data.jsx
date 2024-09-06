@@ -6,8 +6,8 @@
 //Basic Select2
 
 export const Selectoption1 = [
-    { value: 'Selection-1', label: 'Test 1' },
-    { value: 'Selection-2', label: 'Test 2' },
+    { id:1,value: 'Selection-1', label: 'Test 1' },
+    { id:2, value: 'Selection-2', label: 'Test 2' },
   ];
 
   //Multiple Select2

@@ -17,10 +17,11 @@ import axios from 'axios';
 const schema = yup.object({
     dayOfWeek: yup.string().nullable().required("Please Select Day"),
     mealType: yup.string().nullable().required("Please Select Meal Type "),
-    fromDate: yup.string().nullable().required("Please Select From Date "),
-    toDate: yup.string().nullable().required("Please Select To Date "),
+    // fromDate: yup.string().nullable().required("Please Select From Date "),
+    // toDate: yup.string().nullable().required("Please Select To Date "),
     menuItems: yup.string().nullable().required("Please Enter Menu Items "),
     totalCalories: yup.string().nullable().required("Please Enter Calories Intake "),
+    mealTime: yup.string().nullable().required("Please Enter meal Time "),
 
 });
 
@@ -45,7 +46,9 @@ const [data, setData] = useState([]);
 
     const onSubmit = (formData) => {
         setData({...formData})
-        axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/CreateDietPlan`, formData)
+        axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/CreateDietPlan`, {...formData,
+            "schoolId":4
+        })
         .then((res)=>{
             console.log(res)
             if(res.status === 200){
@@ -122,8 +125,13 @@ const [data, setData] = useState([]);
                                             {...restmealTypeField} />
                                         {errors.mealType && <p className='errorTxt'>{errors.mealType.message}</p>}
                                 </div>
+                                <div className="day-type-div pt-4 xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
+                                    <label className="ti-form-select rounded-sm !p-0 mb-2">Meal Time<span className='redText'>*</span></label>
+                                    <input type="text" {...register('mealTime')} name='mealTime'  className="form-control" id="input-text" placeholder="" />
+                                    {errors.mealTime && <p className='errorTxt'>{errors.mealTime.message}</p>}
+                                </div>
                             </div>
-                            <div className='grid grid-cols-12 sm:gap-6 pt-4'>
+                            {/* <div className='grid grid-cols-12 sm:gap-6 pt-4'>
                                 <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                     <label className="ti-form-select rounded-sm !p-0 mb-2">Time(From)<span className='redText'>*</span></label>
                                     <div className="input-group !flex-nowrap">
@@ -178,7 +186,7 @@ const [data, setData] = useState([]);
                                     </div>
                                 </div>
 
-                            </div>
+                            </div> */}
                             {/* End of the grid */}
                             <div className='grid grid-cols-12 sm:gap-6 pt-4'>
 

@@ -20,6 +20,14 @@ const schema = yup.object({
     comments: yup.string().nullable(),
 });
 
+const formatDate = (date) => {
+    if (!date) return '';
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+};
+
 const CreateLeave = () => {
 
     // let currentDate = new Date(Date.now()).toJSON().slice(0, 10);
@@ -45,24 +53,23 @@ const CreateLeave = () => {
 
     const handleChange = (dateChange) => {
         
-        setValue("fromDate", dateChange, {
-          shouldDirty: true
-        });
         setStartDate(dateChange);
+        setValue("fromDate", formatDate(dateChange), { shouldDirty: true });
       };
     const handleChangeToDate = (dateChange) => {
-        setValue("toDate", dateChange, {
-          shouldDirty: true
-        });
-    
         setStartDate1(dateChange);
+        setValue("toDate", formatDate(dateChange), { shouldDirty: true });
       };
 
     const onSubmit = (formData) => {
        // console.log(formData, "Leave Form")
         // setData({ ...formData });
         // dispatch(postSubjectList(formData))
-        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/CreateStaffLeave', formData)
+        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/CreateStaffLeave', {
+            ...formData,
+            fromDate: formatDate(startDate), // Ensure format is correct
+            toDate: formatDate(startDate1)
+        })
         .then(res => {
             console.log(res, 'StaffLeave')
           //  navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
@@ -166,6 +173,7 @@ const CreateLeave = () => {
                                                 <DatePicker
                                                 className="ti-form-input  focus:z-10" 
                                                 selected={startDate}
+                                                dateFormat="dd/MM/yyyy"  
                                                 placeholderText="Select date"
                                                 onChange={handleChange}
                                                 />
@@ -187,6 +195,8 @@ const CreateLeave = () => {
                                                 <DatePicker
                                                 className="ti-form-input  focus:z-10" 
                                                 selected={startDate1}
+                                                dateFormat="dd/MM/yyyy"  
+
                                                 placeholderText="Select date"
                                                 onChange={handleChangeToDate}
                                                 />

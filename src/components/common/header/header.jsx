@@ -1,4 +1,4 @@
-import {  Fragment, useEffect, useState } from 'react';
+import {  Fragment, useContext, useEffect, useState } from 'react';
 import Modalsearch from '../modalsearch/modalsearch';
 import product1 from "../../../assets/images/ecommerce/jpg/1.jpg";
 import product3 from "../../../assets/images/ecommerce/jpg/3.jpg";
@@ -17,6 +17,7 @@ import desktopwhite from "../../../assets/images/brand-logos/desktop-white.png";
 import togglewhite from "../../../assets/images/brand-logos/toggle-white.png";
 import Select from 'react-select';
 import {  Selectmaxoption, Selectoption1, Selectoption2, Selectoption3, Selectoption4, Selectoption5 } from '../../../container/forms/select2/select2data';
+import { IdContext } from '../../common/context/idContext';
 
 
 const Header = ({ local_varaiable, ThemeChanger }) => {
@@ -46,7 +47,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   }, []);
   //
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-
+  const { setId } = useContext(IdContext);
   const handleToggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
@@ -99,7 +100,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   ];
   const [cartItems, setCartItems] = useState([...cartProduct]);
   const [cartItemCount, setCartItemCount] = useState(cartProduct.length);
-
+  const [selectedValue, setSelectedValue] = useState('');
   const handleRemove = (e, itemId) => {
     e.stopPropagation(); // Prevents the event from reaching the button click event
     const updatedCart = cartItems.filter((item) => item.id !== itemId);
@@ -278,6 +279,12 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
   };
 
+  const schoolDropDown = (e)  =>{
+    setSelectedValue(e.value); // Get selected value
+    console.log('Selected value:', e); // Display selected value
+    setId(e.id)
+  }
+
 
   
   return (
@@ -307,7 +314,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
               </div>
 
               <div className="header-element md:px-[0.325rem] !items-center" >
-                <Select name="state" options={Selectoption1} className="js-example-basic-single w-full" isSearchable
+                <Select name="state" options={Selectoption1} onChange={schoolDropDown} className="js-example-basic-single w-full" isSearchable
                                 menuPlacement='auto' classNamePrefix="Select2" defaultValue={[Selectoption1[0]]}
                             />
                </div>             
@@ -317,7 +324,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
             <div className="header-content-right">
             <div className="header-element md:px-[0.325rem] !items-center" >
-                <Select name="state" options={Selectoption1} className="js-example-basic-single w-full" isSearchable
+                <Select value={selectedValue}  name="state" options={Selectoption1} className="js-example-basic-single w-full" isSearchable
                                 menuPlacement='auto' classNamePrefix="Select2" defaultValue={[Selectoption1[0]]}
                             />
                </div> 
