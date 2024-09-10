@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { dietDay, mealType, singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { IdContext } from '../../../components/common/context/idContext';
 
 
 
@@ -30,11 +31,14 @@ const CreateDiet = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
 const [data, setData] = useState([]);
+const [schoolIdCont, setSchoolIdCont] = useState([])
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema)
     });
 
     const navigate = useNavigate()
+    const schoolIdDrop = useContext(IdContext);
+    console.log(schoolIdDrop.id,"UseCONTEXT")
 
     const { field: { value: dayOfWeekValue, onChange: dayOfWeekOnChange, ...restdayOfWeekField } } = useController({ name: 'dayOfWeek', control });
     const { field: { value: mealTypeValue, onChange: mealTypeOnChange, ...restmealTypeField } } = useController({ name: 'mealType', control });
@@ -47,7 +51,7 @@ const [data, setData] = useState([]);
     const onSubmit = (formData) => {
         setData({...formData})
         axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/CreateDietPlan`, {...formData,
-            "schoolId":4
+            "schoolId":schoolIdDrop.id
         })
         .then((res)=>{
             console.log(res)

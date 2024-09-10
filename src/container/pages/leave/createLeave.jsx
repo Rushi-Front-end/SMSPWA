@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { basicselect, leaveType } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,7 @@ import axios from 'axios';
 
 
 const schema = yup.object({
-    staffName: yup.string().nullable().required("Please Select Staff Name"),
+    fullName: yup.string().nullable().required("Please Select Staff Name"),
     leaveType: yup.string().nullable().required("Please Select Leave Type "),
     fromDate: yup.string().nullable().required("Please Select From Date "),
     toDate: yup.string().nullable().required("Please Select To Date "),
@@ -36,15 +36,16 @@ const CreateLeave = () => {
     
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
-
+const [staffId, setStaffID] = useState(null);
+const [staffNameDrop, setStaffNameDrop] = useState([]);
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema)
     });
 
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
-
-    const { field: { value: staffNameValue, onChange: staffNameOnChange, ...reststaffNameField } } = useController({ name: 'staffName', control });
+    const { field: { value: fullNameValue, onChange: fullNameOnChange, ...restfullNameField } } = useController({ name: 'fullName', control });
     const { field: { value: leaveTypeValue, onChange: leaveTypeOnChange, ...restleaveTypeField } } = useController({ name: 'leaveType', control });
     // const { field: { value: fromDateValue, onChange: fromDateOnChange, ...restfromDateField } } = useController({ name: 'fromDate', control });
     // const { field: { value: toDateValue, onChange: toDateOnChange, ...resttoDateField } } = useController({ name: 'toDate', control });
@@ -61,18 +62,40 @@ const CreateLeave = () => {
         setValue("toDate", formatDate(dateChange), { shouldDirty: true });
       };
 
+      const getStaffName = () => {
+        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+            .then(res => {
+                console.log(res, 'classDATA')
+                const staffOptions = res.data.map(staff => ({
+                    value: staff.id,
+                    label: staff.fullName
+                }));
+                setStaffNameDrop(staffOptions);
+            })
+            .catch(err => console.log(err));
+      }
+      useEffect(()=>{
+        getStaffName()
+      },[])
+
+
     const onSubmit = (formData) => {
        // console.log(formData, "Leave Form")
         // setData({ ...formData });
         // dispatch(postSubjectList(formData))
         axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/CreateStaffLeave', {
             ...formData,
-            fromDate: formatDate(startDate), // Ensure format is correct
-            toDate: formatDate(startDate1)
+            staffId:staffId,
+          //  fromDate: formatDate(startDate), // Ensure format is correct
+           // toDate: formatDate(startDate1)
         })
         .then(res => {
             console.log(res, 'StaffLeave')
-          //  navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
+            if(res.status === 200){
+                axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/GetAllStaffLeave')
+                navigate(`${import.meta.env.BASE_URL}pages/leave/staffLeave`)
+                toast.success('Staff leave created successfully')
+            }
         })
         .catch(err => console.log(err))
         // setTimeout(() => {
@@ -91,6 +114,10 @@ const CreateLeave = () => {
         // });
     }
 
+    const staffchange = (e) =>{
+        console.log(e, "STADDDD")
+        setStaffID(e.value);
+    }
 
 
     return (
@@ -144,10 +171,10 @@ const CreateLeave = () => {
 
                                     <div className="leave-staff-div xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                         <label className="ti-form-select rounded-sm !p-0 mb-2">Select Staff/Student<span className='redText'>*</span>:</label>
-                                        <Select className="!p-0 place-holder" classNamePrefix='react-select' options={basicselect} value={staffNameValue ? basicselect.find(x => x.value === staffNameValue) : staffNameValue}
-                                            onChange={option => staffNameOnChange(option ? option.value : option)}
-                                            {...reststaffNameField} />
-                                        {errors.staffName && <p className='errorTxt'>{errors.staffName.message}</p>}
+                                        <Select className="!p-0 place-holder" classNamePrefix='react-select' options={staffNameDrop} value={fullNameValue ? staffNameDrop.find(x => x.label === fullNameValue) : fullNameValue}
+                                            onChange={option =>{ fullNameOnChange(option ? option.label : option); staffchange(option) }}
+                                            {...restfullNameField} />
+                                        {errors.fullName && <p className='errorTxt'>{errors.fullName.message}</p>}
 
                                     </div>
                                     <div className="leave-staff-div xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">

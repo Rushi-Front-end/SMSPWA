@@ -1,12 +1,34 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Loader from '../loader/loader';
+import { toast } from 'react-toastify';
+
 import DatePicker from 'react-datepicker';
 
 const StaffAttendance = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [startDate3, setStartDate3] = useState(new Date());
+    const [data, setData] = useState([])
+    const [search, setSearch] = useState('')
+    const [spinner, setSpinner] = useState(false)
+
+    const getStaffAttandance = () => {
+        setSpinner(true)
+        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance')
+            .then(res => {
+                console.log(res, 'StaffAttendance')
+                setData(res.data)
+                setSpinner(false)
+            })
+            .catch(err => console.log(err))
+        }
+
+        useEffect(() => {
+            getStaffAttandance()
+        }, [])
     return (
         <div>
             <h4 className='pt-4 borderBottom'>Staff Attendance </h4>
@@ -108,32 +130,27 @@ const StaffAttendance = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className="border-b border-defaultborder">
+                                {
+                                        spinner ? <Loader /> :
+                                            data.map((dt, index) => {
+                               return     <tr key={index} className="border-b border-defaultborder">
                                         <td>1</td>
                                         {/* <td>EMP001</td> */}
                                         <td>
-                                            <Link className='text-primary'>
-                                            Dr. Pravin Khonde
-                                            </Link>
+                                            {dt.staffID}
                                         </td>
                                         <td>91 7777777777</td>
                                         <td>Teacher</td>
 
                                         <td className='xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12'>
-                                            <div className="form-group ">
-                                                <div className="input-group !flex-nowrap">
-                                                    <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-time-line"></i> </div>
-                                                    <DatePicker className="ti-form-input  focus:z-10" selected={startDate3} onChange={(date) => setStartDate3(date)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" />
-                                                </div>
-                                            </div>
+                                        <div className="timePicker-wrapper">
+                                        <input type="time" value={dt.inTime} className="timePicker" id="startTime" name="startTime"  />
+                                    </div>
                                         </td>
                                         <td className='xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12'>
-                                            <div className="form-group ">
-                                                <div className="input-group !flex-nowrap">
-                                                    <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-time-line"></i> </div>
-                                                    <DatePicker className="ti-form-input  focus:z-10" selected={startDate3} onChange={(date) => setStartDate3(date)} showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="h:mm aa" />
-                                                </div>
-                                            </div>
+                                        <div className="timePicker-wrapper">
+                                        <input type="time" value={dt.outTime} className="timePicker" id="endTime" name="endTime" />
+                                    </div>
                                         </td>
                                         <td><span className="badge bg-danger/10 text-danger">Absent</span></td>
                                         <td>
@@ -147,10 +164,13 @@ const StaffAttendance = () => {
                                             </button>
                                             <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
                                                 <li><Link className="ti-dropdown-item" to="#">Save</Link></li>
+                                                <li><Link className="ti-dropdown-item" to="#">Edit</Link></li>
                                             </ul>
                                         </div>
                                         </td>
                                     </tr>
+                                     })
+                                    }
 
                                 </tbody>
                             </table>

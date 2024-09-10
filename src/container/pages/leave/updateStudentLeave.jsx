@@ -28,12 +28,11 @@ const formatDate = (date) => {
     return `${day}/${month}/${year}`;
 };
 
-const UpdateLeave = () => {
+const UpdateStudentLeave = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
-    const [staffNameDrop, setStaffNameDrop] = useState([]);
-const [staffId, setStaffID] = useState(null);
-
+    const [studentNameDrop, setstudentNameDrop] = useState([]);
+    const [studentId, setStudentID] = useState(null);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -43,33 +42,34 @@ const [staffId, setStaffID] = useState(null);
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema),
     });
+
     const { field: { value: fullNameValue, onChange: fullNameOnChange, ...restfullNameField } } = useController({ name: 'fullName', control });
     const { field: { value: leaveTypeValue, onChange: leaveTypeOnChange, ...restleaveTypeField } } = useController({ name: 'leaveType', control });
+
     
     const { errors } = formState;
 
     // Fetch staff names
-    const getStaffName = () => {
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+    const getStudentName = () => {
+        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
             .then(res => {
-                const staffOptions = res.data.map(staff => ({
-                    value: staff.id,
-                    label: staff.fullName
+                const studentOptions = res.data.map(student => ({
+                    value: student.id,
+                    label: student.fullName
                 }));
-                setStaffNameDrop(staffOptions);
+                setstudentNameDrop(studentOptions);
             })
             .catch(err => console.log(err));
     };
 
     useEffect(() => {
-        getStaffName();
+        getStudentName();
     }, []);
 
     useEffect(() => {
         if (params.id) {
-            axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/GetStaffLeaveById/${params.id}`)
+            axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentLeave/GetStudentLeaveById/${params.id}`)
                 .then((res) => {
-                    console.log(res,"StaffUDP")
                     if (res.data) {
                         const classData = res.data;
                         // Format dates before setting values
@@ -97,27 +97,30 @@ const [staffId, setStaffID] = useState(null);
         setValue("toDate", formatDate(date), { shouldDirty: true });
     };
 
+    
+
     // Submit form
     const onSubmit = (formData) => {
-        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/UpdatetStaffLeave/${params.id}`, {
+        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentLeave/UpdateStudentLeave/${params.id}`, {
             ...formData,
             fromDate: formatDate(new Date(formData.fromDate)),
             toDate: formatDate(new Date(formData.toDate)),
         })
         .then(res => {
             if (res.status === 200) {
-                navigate(`${import.meta.env.BASE_URL}pages/leave/staffLeave`);
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
-
-                toast.success("Staff Data Updated Successfully");
+                navigate(`${import.meta.env.BASE_URL}pages/leave/studentLeave`);
+                axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentLeave/GetAllStudentLeave')
+                toast.success("Student Data Updated Successfully");
             }
         })
         .catch(err => console.log(err));
     };
-const staffchange = (id) => {
-    console.log("StaffChange", id)
-    setStaffID(id.value);
-}
+
+    const studentchange = (id) => {
+        console.log("StaffChange", id)
+        setStudentID(id.value);
+    }
+
     return (
         <div>
             <h4 className='pt-4 borderBottom'>Update Staffs</h4>
@@ -137,8 +140,8 @@ const staffchange = (id) => {
                                     </Link>
                                 </li>
                                 <li className="text-sm">
-                                    <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}pages/leave/staffLeave`}>
-                                        Staff Leave
+                                    <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}pages/leave/studentLeave`}>
+                                        Student Leave
                                         <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-black-300 dark:text-white/10 rtl:rotate-180"
                                             width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14"
@@ -159,22 +162,31 @@ const staffchange = (id) => {
                 <div className='box'>
                     <div className='p-4'>
                         <div className='staffleave-details mb-4'>
-                            <h4 className=''>Staff Update Leave</h4>
+                            <h4 className=''>Student Update Leave</h4>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className='grid grid-cols-12 sm:gap-6 pt-4'>
                                     <div className="leave-staff-div xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                         <label className="ti-form-select rounded-sm !p-0 mb-2">Select Staff/Student<span className='redText'>*</span>:</label>
-                                        <Select className="!p-0 place-holder" classNamePrefix='react-select' options={staffNameDrop}
-                                         value={fullNameValue ? staffNameDrop.find(x => x.label === fullNameValue) : fullNameValue}
-                                            onChange={option =>{ fullNameOnChange(option ? option.label : option); staffchange(option) }}
-                                            {...restfullNameField} />
+                                        <Select
+                                        className="!p-0 place-holder"
+                                        classNamePrefix='react-select'
+                                        options={studentNameDrop}
+                                        value={fullNameValue ? studentNameDrop.find(x => x.label === fullNameValue) : fullNameValue}
+                                        onChange={option => {fullNameOnChange(option ? option.label : option); studentchange(option) }}
+                                        {...restfullNameField}
+                                    />
                                         {errors.fullName && <p className='errorTxt'>{errors.fullName.message}</p>}
                                     </div>
                                     <div className="leave-staff-div xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                         <label className="ti-form-select rounded-sm !p-0 mb-2">Select Leave Type<span className='redText'>*</span></label>
-                                        <Select className="!p-0 place-holder" classNamePrefix='react-select' options={leaveType} value={leaveTypeValue ? leaveType.find(x => x.value === leaveTypeValue) : leaveTypeValue}
-                                            onChange={option => leaveTypeOnChange(option ? option.value : option)}
-                                            {...restleaveTypeField} />
+                                        <Select
+                                        className="!p-0 place-holder"
+                                        classNamePrefix='react-select'
+                                        options={leaveType}
+                                        value={leaveTypeValue ? leaveType.find(x => x.value === leaveTypeValue) : null}
+                                        onChange={option => leaveTypeOnChange(option ? option.value : null)}
+                                        {...restleaveTypeField}
+                                    />
                                         {errors.leaveType && <p className='errorTxt'>{errors.leaveType.message}</p>}
                                     </div>
                                 </div>
@@ -235,7 +247,7 @@ const staffchange = (id) => {
                                 <div className='grid grid-cols-12 sm:gap-6 pt-4'>
                                     <div className='leave-staff-comment pb-2 xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12'>
                                         <label className="ti-form-select rounded-sm !p-0 mb-2">Comments</label>
-                                        <textarea {...register('comments')} name='comments' className="form-control" id="text-area" rows="5"></textarea>
+                                        <textarea {...register('comment')} name='comment' className="form-control" id="text-area" rows="5"></textarea>
                                     </div>
                                 </div>
                                 <hr />
@@ -243,7 +255,7 @@ const staffchange = (id) => {
                                     <div className='flex justify-end'>
                                         <button type="submit" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Update</button>
                                         <div className='backButton'>
-                                            <Link to={`${import.meta.env.BASE_URL}pages/leave/staffLeave`}>
+                                            <Link to={`${import.meta.env.BASE_URL}pages/leave/studentLeave`}>
                                                 <button type="button" className="ti-btn ti-btn-info-full ml-15 !rounded-full ti-btn-wave">Back</button>
                                             </Link>
                                         </div>
@@ -258,4 +270,4 @@ const staffchange = (id) => {
     );
 };
 
-export default UpdateLeave;
+export default UpdateStudentLeave;

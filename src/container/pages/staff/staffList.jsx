@@ -85,7 +85,7 @@ const StaffList = () => {
                                             <div id="underline-1" role="tabpanel" aria-labelledby="underline-item-1">
                                                 <div className='flex-container'>
                                                     <div className="flex justify-end">
-                                                        <Link to={`${import.meta.env.BASE_URL}pages/staff/createStaff`}>
+                                                        <Link to={`${import.meta.env.BASE_URL}pages/staff/updateStaff/${params.id}`}>
 
                                                             <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave pr-2">Edit Staff</button>
                                                         </Link>

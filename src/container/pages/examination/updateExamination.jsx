@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { singleselect } from '../../forms/formelements/formselect/formselectdata'
+import React, { useEffect, useState } from 'react'
+import { examType } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -37,27 +37,76 @@ const [data, setData] = useState([]);
 
     const navigate = useNavigate()
     const params = useParams()
-    console.log(params, "UpdateExam")
+    console.log(params.id, "UpdateExam")
 
     const { field: { value: examTypeValue, onChange: examTypeOnChange, ...restexamTypeField } } = useController({ name: 'examType', control });
     // const { field: { value: mealTypeValue, onChange: mealTypeOnChange, ...restmealTypeField } } = useController({ name: 'mealType', control });
 
     const { errors } = formState;
 
-    const onSubmit = (formData) => {
-        // setData({...formData})
-        // axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam`, formData)
-        // .then((res)=>{
-        //     console.log(res)
-        //     if(res.status === 200){
-        //         navigate(`${import.meta.env.BASE_URL}pages/examination/examinationList`)
-        //         toast.success("Diet Data Created Successfuly")
-        //     }
 
-        // })
-        // .catch((err) => {
-        //     console.log(err)
-        // })
+    useEffect((id)=>{
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam/${params.id}`)
+    },[params.id])
+
+
+    const handleChange = (dateChange) => {
+        
+        setValue("fromDate", dateChange, {
+          shouldDirty: true
+        });
+        setStartDate(dateChange);
+      };
+    const handleChangeToDate = (dateChange) => {
+        setValue("toDate", dateChange, {
+          shouldDirty: true
+        });
+    
+        setEndDate(dateChange);
+      };
+
+      useEffect(() => {
+        if (params.id) {
+          axios
+            .get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam/${params.id}`)
+            .then((res) => {
+              if (res.data) {
+                const classData = res.data;
+                console.log(classData,'classData')
+                Object.keys(classData).forEach(key => {
+                    setValue(key, classData[key]);
+                });
+                // setValue('id', classData.id);
+                // setValue('staffName', classData.staffName);
+                // setValue('leaveType', classData.leaveType);
+                // setValue('fromDate', new Date(classData.fromDate));
+                // setValue('toDate', new Date(classData.toDate));
+                // setValue('comments', classData.comments);
+                // setStartDate(new Date(classData.fromDate));
+                // setStartDate1(new Date(classData.toDate));
+              }
+            })
+            .catch((err) => {
+              console.error('Error fetching class data:', err);
+            });
+        }
+      }, [params.id, setValue]);
+
+    const onSubmit = (formData) => {
+        console.log(formData, "UPDATEEDXAM");
+        setData({...formData})
+        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam/${params.id}`, formData)
+        .then((res)=>{
+            console.log(res)
+            if(res.status === 200){
+                navigate(`${import.meta.env.BASE_URL}pages/examination/examinationList`)
+                toast.success("Diet Data Updated Successfuly")
+            }
+
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
 
@@ -114,7 +163,7 @@ const [data, setData] = useState([]);
                     <div className='grid grid-cols-12 sm:gap-6 pt-4'>
                     <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                         <label className="ti-form-select rounded-sm !p-0 mb-2">Exam Type<span className='redText'>*</span></label>
-                        <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} value={examTypeValue ? singleselect.find(x => x.value === examTypeValue) : examTypeValue}
+                        <Select className="!p-0 place-holder" classNamePrefix='react-select' options={examType} value={examTypeValue ? examType.find(x => x.value === examTypeValue) : examTypeValue}
                                             onChange={option => examTypeOnChange(option ? option.value : option)}
                                             {...restexamTypeField} />
                                         {errors.examType && <p className='errorTxt'>{errors.examType.message}</p>}
@@ -130,21 +179,23 @@ const [data, setData] = useState([]);
                             <label className="ti-form-select rounded-sm !p-0 mb-2">From Date<span className='redText'>*</span></label>
                             <div className="input-group !flex-nowrap">
                                 <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
-                                <Controller
-                                                name="fromDate"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <DatePicker
-                                                        {...field}
-                                                        selected={startDate}
-                                                        onChange={(date) => {
-                                                            setStartDate(date);
-                                                            field.onChange(date);
-                                                        }}
-                                                        
-                                                    />
-                                                )}
-                                            />
+                                <Controller name="fromDate"
+                                    control={control}
+                                    {...register('fromDate')}
+                                    defaultValue={startDate}
+                                    render={({ field }) => (
+                                        <DatePicker
+                                        {...field}
+                                        className="ti-form-input  focus:z-10" 
+                                        selected={ startDate}
+                                        dateFormat="dd/MM/yyyy"  
+                                        placeholderText="Select date"
+                                        onChange={(date) => {
+                                            handleChange(date);
+                                            field.onChange(date);
+                                        }}
+                                        />
+                                    )} />
                                 {/* <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10" showIcon selected={startDate} onChange={(date) => setStartDate(date)} /> */}
                             </div>
                         </div>
@@ -153,20 +204,23 @@ const [data, setData] = useState([]);
                             <label className="ti-form-select rounded-sm !p-0 mb-2">To Date<span className='redText'>*</span></label>
                             <div className="input-group !flex-nowrap">
                                 <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
-                                <Controller
-                                                name="toDate"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <DatePicker
-                                                        {...field}
-                                                        selected={endDate}
-                                                        onChange={(date) => {
-                                                            setEndDate(date);
-                                                            field.onChange(date);
-                                                        }}
-                                                    />
-                                                )}
-                                            />
+                                <Controller name="toDate"
+                                    control={control}
+                                    {...register('toDate')}
+                                    defaultValue={endDate}
+                                    render={({ field }) => (
+                                        <DatePicker
+                                        {...field}
+                                        className="ti-form-input  focus:z-10" 
+                                        selected={ endDate}
+                                        dateFormat="dd/MM/yyyy"  
+                                        placeholderText="Select date"
+                                        onChange={(date) => {
+                                            handleChangeToDate(date);
+                                            field.onChange(date);
+                                        }}
+                                        />
+                                    )} />
                                 {/* <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10" showIcon selected={startDate} onChange={(date) => setStartDate(date)} /> */}
                             </div>
                         </div>
