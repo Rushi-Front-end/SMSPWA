@@ -7,6 +7,8 @@ export const IdContext = createContext();
 export const IdProvider = ({ children }) => {
   const [id, setId] = useState(null); // This will hold the `id`
 
+  localStorage.setItem("schoolId", id)
+
   return (
     <IdContext.Provider value={{ id, setId }}>
       {children}

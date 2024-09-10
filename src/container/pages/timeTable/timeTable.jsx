@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import TimeTableTabs from '../schools/timeTableTabs';
 import Select from 'react-select';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata';
-import { IdContext } from '../../../components/common/context/idContext';
 import axios from 'axios';
 
 const TimeTable = () => {
 
     const [selectedOption, setSelectedOption] = useState(null);
-    const {id} = useContext(IdContext)
 
     const handleSelectChange = (selectedOption) => {
         setSelectedOption(selectedOption);
@@ -21,7 +19,8 @@ const TimeTable = () => {
         const fetchData = async () => {
         try {
             const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class');
-            const schoolId = id ?? 0;
+            const schoolId = localStorage.getItem("schoolId");
+            if(schoolId == null) throw Error()
             
             const classList = response.data.filter(classData => classData.schoolID === schoolId)
             const classListOptions = classList.map((classData) => ({id: classData.id, value: classData.id, label: classData.className, schoolId: schoolId}))
@@ -33,7 +32,7 @@ const TimeTable = () => {
         };
 
         fetchData();
-    }, [id]);
+    }, []);
 
     console.log(selectedOption, 'selectedOption')
 
