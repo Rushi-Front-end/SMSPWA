@@ -294,7 +294,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
         const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
         const schoolListOptions = response.data.map((schoolData) => ({id: schoolData.id, label: schoolData.schoolName, value: schoolData.id}))
 
-        setSelectedValue(schoolListOptions.filter(schoolData => schoolData.id === id)[0] ?? schoolListOptions[0])
+        schoolDropDown(schoolListOptions.filter(schoolData => schoolData.id === id)[0] ?? schoolListOptions[0])
         setSchoolDataList(schoolListOptions);
       } catch (err) {
         setSchoolDataList([])

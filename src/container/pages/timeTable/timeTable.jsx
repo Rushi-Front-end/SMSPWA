@@ -1,16 +1,39 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import TimeTableTabs from '../schools/timeTableTabs';
 import Select from 'react-select';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata';
+import { IdContext } from '../../../components/common/context/idContext';
+import axios from 'axios';
 
 const TimeTable = () => {
 
     const [selectedOption, setSelectedOption] = useState(null);
+    const {id} = useContext(IdContext)
 
     const handleSelectChange = (selectedOption) => {
         setSelectedOption(selectedOption);
     };
+
+    const [classDataList, setClassDataList] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class');
+            const schoolId = id ?? 0;
+            
+            const classList = response.data.filter(classData => classData.schoolID === schoolId)
+            const classListOptions = classList.map((classData) => ({id: classData.id, value: classData.id, label: classData.className, schoolId: schoolId}))
+
+            setClassDataList(classListOptions);
+        } catch (err) {
+            setClassDataList([])
+        }
+        };
+
+        fetchData();
+    }, [id]);
 
     console.log(selectedOption, 'selectedOption')
 
@@ -49,7 +72,7 @@ const TimeTable = () => {
                         <h4>Timetable Details</h4>
                             <div className="xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-6 col-span-12 pt-4">
                                 {/* <label className="ti-form-select rounded-sm !p-0 ">Section Class Teacher</label> */}
-                                <Select   onChange={handleSelectChange} className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                                <Select   onChange={handleSelectChange} className="!p-0 place-holder" classNamePrefix='react-select' options={classDataList} />
                             </div>
                         {/* <div className='box p-4'>
                             <h6>Select Criteria</h6>
