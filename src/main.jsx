@@ -65,6 +65,7 @@ import { IdProvider } from './components/common/context/idContext.jsx'
 import UpdateStudentLeave from './container/pages/leave/updateStudentLeave.jsx'
 import UpdateHosteliteLeave from './container/pages/leave/updateHosteliteLeave.jsx'
 import UpdateStaff from './container/pages/staff/updateStaff.jsx'
+import UpdateExpense from './container/pages/extraFeatures/updateExpense.jsx'
 // import ErrorPage from './container/pages/404page/errorPage.jsx'
 
 
@@ -125,6 +126,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/eventManagement`} element={<EventManagement />} />
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/expenseManagement`} element={<ExpenseManagement />} />
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/createExpense`} element={<CreateExpense />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/updateExpense/:id`} element={<UpdateExpense />} />
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/annoucement`} element={<Announcement />} />
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/visitor`} element={<Visitor />} />
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/createVisitor`} element={<CreateVisitor />} />

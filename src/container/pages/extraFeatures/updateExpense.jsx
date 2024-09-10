@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { category } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { useForm, useController, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -30,15 +30,18 @@ const schema = yup.object({
 });
 
 
-const CreateExpense = () => {
+const UpdateExpense = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [data, setData] = useState([]);
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema)
     });
-    const [otherField, setOtherField] = useState(false)
 
     const navigate = useNavigate()
+    const params = useParams()
+    console.log(params.id, "UpdateExam")
+    const [otherField, setOtherField] = useState(false)
+
     const schoolIdDrop = useContext(IdContext);
     console.log(schoolIdDrop.id,"UseCONTEXT")
 
@@ -52,10 +55,50 @@ const CreateExpense = () => {
     // const { field: { value: messageValue, onChange: messageOnChange, ...restmessageField } } = useController({ name: 'message', control });
     // const { field: { value: invoiceValue, onChange: invoiceOnChange, ...restinvoiceField } } = useController({ name: 'invoice', control });
 
+
+    useEffect((id)=>{
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/GetExpensesById/${params.id}`)
+    },[params.id])
+
+    useEffect(() => {
+        if (params.id) {
+          axios
+            .get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/GetExpensesById/${params.id}`)
+            .then((res) => {
+              if (res.data) {
+                const classData = res.data;
+                console.log(classData,'classData')
+                Object.keys(classData).forEach(key => {
+                    setValue(key, classData[key]);
+                });
+                // setValue('id', classData.id);
+                // setValue('staffName', classData.staffName);
+                // setValue('leaveType', classData.leaveType);
+                // setValue('fromDate', new Date(classData.fromDate));
+                // setValue('toDate', new Date(classData.toDate));
+                // setValue('comments', classData.comments);
+                // setStartDate(new Date(classData.fromDate));
+                // setStartDate1(new Date(classData.toDate));
+              }
+            })
+            .catch((err) => {
+              console.error('Error fetching class data:', err);
+            });
+        }
+      }, [params.id, setValue]);
+
+      const handleCategoryChange = (option) => {
+        if (option && option.value === 'Other') { // Adjust 'Other' to match the actual value for the other option
+            setOtherField(true);
+        } else {
+            setOtherField(false);
+        }
+    };
+
     const onSubmit = (formData) => {
         setData({...formData})
         console.log(formData, "ExpensesFormData")
-        axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/CreateExpenses`, {
+        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/UpdatetExpenses/${params.id}`, {
             ...formData,
             schoolId:4,
             // fromDate: formatDate(startDate), // Ensure format is correct
@@ -76,18 +119,12 @@ const CreateExpense = () => {
         })
     }
 
-    const handleCategoryChange = (option) => {
-        if (option && option.value === 'Other') { // Adjust 'Other' to match the actual value for the other option
-            setOtherField(true);
-        } else {
-            setOtherField(false);
-        }
-    };
+
 
 
     return (
         <div>
-            <h4 className="pt-4 borderBottom">Create Expense Request</h4>
+            <h4 className="pt-4 borderBottom">Update Expense Request</h4>
             <div className="breadcrumbs-wrapper mb-4 pt-2">
                 <div className='expenseflex-container'>
                     <div className='flex flex-row  items-center'>
@@ -118,7 +155,7 @@ const CreateExpense = () => {
                                 </li>
 
                                 <li className="text-sm text-gray-500 dark:text-[#8c9097] dark:text-white/50 hover:text-primary truncate" aria-current="page">
-                                 Add Expenses
+                                 Update Expenses
                                 </li>
                             </ol>
                         </div>
@@ -215,7 +252,7 @@ const CreateExpense = () => {
 
                         <div className='student-create-btn pt-4'>
                             <div className='flex justify-end'>
-                                <button type="submit" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create</button>
+                                <button type="submit" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Update</button>
                                 <div className='backButton'>
                             <Link to={`${import.meta.env.BASE_URL}pages/extraFeatures/expenseManagement`}>
 
@@ -235,4 +272,4 @@ const CreateExpense = () => {
     )
 }
 
-export default CreateExpense
+export default UpdateExpense
