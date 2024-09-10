@@ -1,4 +1,4 @@
-import React, {  useContext, useState } from 'react'
+import React, {  useContext, useEffect, useState } from 'react'
 import { enableLogin, genderSelect, roleID, shift, singleselect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import media50 from "../../../assets/images/media/media-50.jpg";
@@ -50,7 +50,7 @@ const CreateStaff = () => {
 
     const [data, setData] = useState({})
     const [file, setFile] = useState();
-    const [staffRoleID, setStaffRoleID] = useState()
+    const [staffRole, setStaffRole] = useState()
 
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(new Date());
@@ -83,6 +83,23 @@ const CreateStaff = () => {
       };
     const { errors } = formState;
 
+    const [roleList, setRoleList] = useState([]);
+
+    useEffect(() => {
+        const fetchUserRoles = async () => {
+          try {
+            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/UserRoles');
+            const roleData = response.data;
+            const roleOptions = roleData.map(role => ({id:role.id, value: role.id, label: role.roleName}))
+            setRoleList(roleOptions)
+          } catch (error) {
+            console.error('Error fetching user roles:', error);
+          }
+        };
+    
+        fetchUserRoles();
+    }, []);
+
 
     const { field: { value: roleIDValue, onChange: roleIDOnChange , ...restroleIDField } } = useController({ name: 'roleID', control });
     const { field: { value: enableLoginValue, onChange: enableLoginOnChange , ...restenableLoginSelectField } } = useController({ name: 'enableLogin', control });
@@ -92,13 +109,14 @@ const CreateStaff = () => {
     const { field: { value: genderValue, onChange: genderOnChange, ...restgenderField } } = useController({ name: 'gender', control });
     const { field: { value: stateValue, onChange: stateOnChange, ...reststateField } } = useController({ name: 'state', control });
    
-    const onSubmit = (formData) => {
+    const onSubmit = async (formData) => {
 
         console.log(formData,"StudentData")
-        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff', 
+        await axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff', 
             {
                 ...formData,
-                roleID:staffRoleID,
+                enableLogin: formData.enableLogin === "Yes",
+                roleID:staffRole.value,
                 schoolId:schoolIdDrop.id,
                // enableLogin:staffEnableLogin
                 
@@ -117,7 +135,7 @@ const CreateStaff = () => {
 
     const roleChange = (option) => {
         console.log(option,"RoleChange")
-        setStaffRoleID(option.id)
+        setStaffRole(option)
     }
     const enableLoginChange = (e)=>{
         console.log("enableLogin",e.target.checked)
@@ -204,9 +222,9 @@ const CreateStaff = () => {
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Role<span className="redText">*</span></label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
-                                    options={roleID}
-                                    value={roleIDValue ? roleID.find(x => x.value === roleIDValue) : roleIDValue}
-                                    onChange={(option) => {roleIDOnChange(option ? option.value : option), roleChange(option)}}
+                                    options={roleList}
+                                    value={staffRole}
+                                    onChange={(option) => {roleIDOnChange(option.id), roleChange(option)}}
                                     {...restroleIDField}
                                     classNamePrefix='react-select'  />
                                 {errors.roleID && <p className='errorTxt'>{errors.roleID.message}</p>}
@@ -418,7 +436,7 @@ const CreateStaff = () => {
                 <h6 className=' pb-2'>System Login</h6>
                 <div className='grid grid-cols-12 sm:gap-6'>
                                                     
-                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Enable Login</label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
@@ -427,15 +445,15 @@ const CreateStaff = () => {
                                     onChange={option => enableLoginOnChange(option ? option.value : option)}
                                     {...restenableLoginSelectField}
                                     classNamePrefix='react-select'  />
-                            </div> */}
-                              <div className='staff-answer-row pt-2 xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12'>
+                            </div>
+                              {/* <div className='staff-answer-row pt-2 xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12'>
                         <div className="form-check">
                             <input className="form-check-input"  onChange={enableLoginChange}  type="checkbox" id="flexCheckDefault20" />
                             <label className="form-check-label" htmlFor="flexCheckDefault20">
                             Enable Login
                             </label>
                         </div>
-                       </div>
+                       </div> */}
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Password</label>

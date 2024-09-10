@@ -12,6 +12,7 @@ const StaffDetails = () => {
     const [search, setSearch] = useState('')
     const [spinner, setSpinner] = useState(false)
     const [deleteStudent, setDeleteStudent] = useState()
+    const [roleList, setRoleList] = useState([])
 
     const getStaffList = () => {
         setSpinner(true)
@@ -26,6 +27,20 @@ const StaffDetails = () => {
     useEffect(() => {
         getStaffList()
     }, [])
+
+    useEffect(() => {
+        const fetchUserRoles = async () => {
+          try {
+            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/UserRoles');
+            const roleData = response.data;
+            setRoleList(roleData)
+          } catch (error) {
+            console.error('Error fetching user roles:', error);
+          }
+        };
+    
+        fetchUserRoles();
+    }, []);
 
     const openDelete = (id)=>{
         setDeleteStudent(id)
@@ -154,7 +169,7 @@ const StaffDetails = () => {
                                                         </Link>
                                                     </td>
                                                     <td>{dt.mobileNumber}</td>
-                                                    <td>{dt.department}</td>
+                                                    <td>{roleList.find(role => role.id === dt.roleID)?.roleName}</td>
                                                     {/* <td><span className="badge bg-primary text-white">Staff</span></td> */}
 
                                                     <td>

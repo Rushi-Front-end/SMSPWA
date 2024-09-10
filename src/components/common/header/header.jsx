@@ -18,6 +18,7 @@ import togglewhite from "../../../assets/images/brand-logos/toggle-white.png";
 import Select from 'react-select';
 import {  Selectmaxoption, Selectoption1, Selectoption2, Selectoption3, Selectoption4, Selectoption5 } from '../../../container/forms/select2/select2data';
 import { IdContext } from '../../common/context/idContext';
+import axios from 'axios';
 
 
 const Header = ({ local_varaiable, ThemeChanger }) => {
@@ -47,7 +48,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   }, []);
   //
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const { setId } = useContext(IdContext);
+  const { id, setId } = useContext(IdContext);
   const handleToggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
@@ -280,11 +281,28 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   };
 
   const schoolDropDown = (e)  =>{
-    setSelectedValue(e.value); // Get selected value
+    setSelectedValue(e); // Get selected value
     console.log('Selected value:', e); // Display selected value
     setId(e.id)
   }
 
+  const [schoolDataList, setSchoolDataList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
+        const schoolListOptions = response.data.map((schoolData) => ({id: schoolData.id, label: schoolData.schoolName, value: schoolData.id}))
+
+        schoolDropDown(schoolListOptions.filter(schoolData => schoolData.id === id)[0] ?? schoolListOptions[0])
+        setSchoolDataList(schoolListOptions);
+      } catch (err) {
+        setSchoolDataList([])
+      }
+    };
+
+    fetchData();
+  }, []);
 
   
   return (
@@ -314,8 +332,8 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
               </div>
 
               <div className="header-element md:px-[0.325rem] !items-center" >
-                <Select name="state" options={Selectoption1} onChange={schoolDropDown} className="js-example-basic-single w-full" isSearchable
-                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[Selectoption1[0]]}
+                <Select value={selectedValue} name="state" options={schoolDataList} onChange={schoolDropDown} className="js-example-basic-single w-full" isSearchable
+                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolDataList[0]]}
                             />
                </div>             
             </div>
@@ -324,8 +342,8 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
             <div className="header-content-right">
             <div className="header-element md:px-[0.325rem] !items-center" >
-                <Select value={selectedValue}  name="state" options={Selectoption1} className="js-example-basic-single w-full" isSearchable
-                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[Selectoption1[0]]}
+                <Select value={selectedValue}  name="state" options={schoolDataList} className="js-example-basic-single w-full" isSearchable
+                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolDataList[0]]}
                             />
                </div> 
                <div className="header-element md:!px-[0.65rem] px-2 hs-dropdown !items-center ti-dropdown [--placement:bottom-left]">
