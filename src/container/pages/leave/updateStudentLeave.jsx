@@ -27,6 +27,13 @@ const formatDate = (date) => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 };
+const formatDate2 = (date) => {
+    let [day, month, year] = date.split("/");
+
+    // Convert to the format "YYYY-MM-DD"
+    let formattedDate = `${year}-${month}-${day}`;
+    return formattedDate
+}
 
 const UpdateStudentLeave = () => {
     const [startDate, setStartDate] = useState(new Date());
@@ -103,8 +110,8 @@ const UpdateStudentLeave = () => {
     const onSubmit = (formData) => {
         axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentLeave/UpdateStudentLeave/${params.id}`, {
             ...formData,
-            fromDate: formatDate(new Date(formData.fromDate)),
-            toDate: formatDate(new Date(formData.toDate)),
+            fromDate: formatDate(new Date(formatDate2(formData.fromDate))),
+            toDate: formatDate(new Date(formatDate2(formData.toDate))),
         })
         .then(res => {
             if (res.status === 200) {
