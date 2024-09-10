@@ -14,6 +14,7 @@ const StaffLeave = () => {
   const [deleteLeav, setDeleteLeav] = useState();
   const [statusMap, setStatusMap] = useState({});
   const [roleName, setRoleName] = useState({})
+  const [staffList, setStaffList] = useState([])
 
   const getStaffList = () => {
     setSpinner(true);
@@ -58,20 +59,22 @@ const StaffLeave = () => {
       .catch((err) => console.log(err));
   };
 
-  useEffect(()=>{
-    axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
-    .then((res)=>{
-      const initialStatusMap = res.data.reduce((acc, leave) => {
-        acc[leave.roleID] = leave.department;
-        return acc;
-      }, {});
-      setRoleName(initialStatusMap)
-      console.log(res,"GTSATFF", initialStatusMap)
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
-  },[])
+  useEffect(() => {
+    const fetchStaffWithUserRoles = async () => {
+      try {
+        const roleRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/UserRoles');
+        const roleData = roleRes.data;
+        const staffRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+        const staffData = staffRes.data;
+        const updatedStaffData = staffData.map(staff => ({...staff, roleName: roleData.filter(role => staff.roleID === role.id)[0].roleName}));
+        setStaffList(updatedStaffData)
+      } catch (error) {
+        console.error('Error fetching user roles:', error);
+      }
+    };
+
+    fetchStaffWithUserRoles();
+}, []);
 
   useEffect(() => {
     getStaffList();
@@ -244,7 +247,7 @@ const StaffLeave = () => {
                           <tr>
                             <td rowSpan="2">{index + 1}</td>
                             <td>{dt.fullName}</td>
-                                    <td>{roleName[dt.staffID] || 'Unknown'}</td> {/* Display role name */}
+                                    <td>{staffList.filter(staff => staff.id === dt.staffID)[0]?.roleName || 'Unknown'}</td> {/* Display role name */}
                             <td>{dt.leaveType}</td>
                             <td>{`${dt.fromDate} - ${dt.toDate}`}</td>
                             <td>

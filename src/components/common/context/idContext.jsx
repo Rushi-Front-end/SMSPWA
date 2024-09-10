@@ -7,9 +7,11 @@ export const IdProvider = ({ children }) => {
     const [id, setId] = useState(1);
     console.log(id, "IDCONTENT")
 
-    return (
-        <IdContext.Provider value={{ id, setId }}>
-            {children}
-        </IdContext.Provider>
-    );
+  localStorage.setItem("schoolId", id)
+
+  return (
+    <IdContext.Provider value={{ id, setId }}>
+      {children}
+    </IdContext.Provider>
+  );
 };

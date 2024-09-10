@@ -14,6 +14,27 @@ const TimeTable = () => {
         setSelectedOption(selectedOption);
     };
 
+    const [classDataList, setClassDataList] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class');
+            const schoolId = localStorage.getItem("schoolId");
+            if(schoolId == null) throw Error()
+            
+            const classList = response.data.filter(classData => classData.schoolID === schoolId)
+            const classListOptions = classList.map((classData) => ({id: classData.id, value: classData.id, label: classData.className, schoolId: schoolId}))
+
+            setClassDataList(classListOptions);
+        } catch (err) {
+            setClassDataList([])
+        }
+        };
+
+        fetchData();
+    }, []);
+
     console.log(selectedOption, 'selectedOption')
 
     const getClassTimeTable = () => {

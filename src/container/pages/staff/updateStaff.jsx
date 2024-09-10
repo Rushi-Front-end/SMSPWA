@@ -50,7 +50,7 @@ const UpdateStaff = () => {
 
     const [data, setData] = useState({})
     const [file, setFile] = useState();
-    const [staffRoleID, setStaffRoleID] = useState()
+    const [staffRole, setStaffRole] = useState()
 
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(new Date());
@@ -82,6 +82,24 @@ const UpdateStaff = () => {
       };
     const { errors } = formState;
     const params = useParams()
+
+    const [roleList, setRoleList] = useState([]);
+
+    useEffect(() => {
+        const fetchUserRoles = async () => {
+          try {
+            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/UserRoles');
+            const roleData = response.data;
+            const roleOptions = roleData.map(role => ({id:role.id, value: role.id, label: role.roleName}))
+            setRoleList(roleOptions)
+          } catch (error) {
+            console.error('Error fetching user roles:', error);
+          }
+        };
+    
+        fetchUserRoles();
+    }, []);
+
 
 
     const { field: { value: roleIDValue, onChange: roleIDOnChange , ...restroleIDField } } = useController({ name: 'roleID', control });
@@ -148,13 +166,14 @@ useEffect(()=>{
 
 
 
-    const onSubmit = (formData) => {
+    const onSubmit = async (formData) => {
 
         console.log(formData,"StudentData")
-        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff', 
+        await axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff?id=${formData.id}`, 
             {
                 ...formData,
-                roleID:staffRoleID,
+                enableLogin: formData.enableLogin === "Yes",
+                roleID:staffRole.value,
                 schoolId:schoolIdDrop.id
                 
                // enrolmentDate:  formatDate(new Date(formData.enrolmentDate)),
@@ -172,7 +191,7 @@ useEffect(()=>{
 
     const roleChange = (option) => {
         console.log(option,"RoleChange")
-        setStaffRoleID(option.id)
+        setStaffRole(option)
     }
 
 
@@ -255,9 +274,9 @@ useEffect(()=>{
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Role<span className="redText">*</span></label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
-                                    options={roleID}
-                                    value={roleIDValue ? roleID.find(x => x.value === roleIDValue) : roleIDValue}
-                                    onChange={(option) => {roleIDOnChange(option ? option.value : option), roleChange(option)}}
+                                    options={roleList}
+                                    value={staffRole}
+                                    onChange={(option) => {roleIDOnChange(option.id), roleChange(option)}}
                                     {...restroleIDField}
                                     classNamePrefix='react-select'  />
                                 {errors.roleID && <p className='errorTxt'>{errors.roleID.message}</p>}
