@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
-import { singleselect } from '../../forms/formelements/formselect/formselectdata';
+import { className, singleselect } from '../../forms/formelements/formselect/formselectdata';
 import {  useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object({
     sectionClassTeacher: yup.string().nullable().required("Please select Section Name"),
+    className: yup.string().nullable().required("Please select Class Name"),
+
     // classTeacher: yup.string().nullable().required("Please select Class Teacher"),
   });
 
@@ -21,11 +23,13 @@ const CreateSection = (props) => {
         resolver: yupResolver(schema)
     });
     
+    const { field: { value: classNameValue, onChange: classNameOnChange, ...restclassNameField } } = useController({ name: 'className', control });
     const { field: { value: sectionClassTeacherValue, onChange: sectionNameOnChange, ...restSectionNameField } } = useController({ name: 'sectionClassTeacher', control });
     // const { field: { value: classTeacherValue, onChange: classTeacherOnChange, ...restclassTeacherField } } = useController({ name: 'classTeacher', control });
    
     const { errors } = formState;
     const onSubmit = (formData) => {
+        console.log(formData, "FormData")
         setData({ ...formData });
        // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
     }
@@ -36,6 +40,18 @@ const CreateSection = (props) => {
     <hr />
     <div className='form-handling-sec pt-4'>
     <form onSubmit={handleSubmit(onSubmit)}>
+
+    <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
+            <label htmlFor="input-text" className="form-label">Class Name<span className='redText'>*</span></label>
+            {/* <input type="text" className="form-control" id="input-text" placeholder="Text" /> */}
+            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={className}
+            value={classNameValue ? className.find(x => x.value === classNameValue) : classNameValue}
+            onChange={option => classNameOnChange(option ? option.value : option)}
+            {...restclassNameField}
+            />
+              {errors.className && <p className='errorTxt'>{errors.className.message}</p>}
+        </div>
+
         
         <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
             <label htmlFor="input-text" className="form-label">Section Name<span className='redText'>*</span></label>
@@ -51,7 +67,7 @@ const CreateSection = (props) => {
             <label className="ti-form-select rounded-sm !p-0 ">Section Class Teacher*</label>
             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
         </div> */}
-
+       
         <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4 pb-2">
             <label htmlFor="input-text" className="form-label">Description</label>
             <textarea className="form-control" {...register('description')} name='description' id="text-area" placeholder='Enter Description' rows="4" spellCheck="false"></textarea>

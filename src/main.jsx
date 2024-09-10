@@ -62,6 +62,9 @@ import DietList from './container/pages/diet/dietList.jsx'
 import CreateDiet from './container/pages/diet/createDiet.jsx'
 import UpdateExamination from './container/pages/examination/updateExamination.jsx'
 import { IdProvider } from './components/common/context/idContext.jsx'
+import UpdateStudentLeave from './container/pages/leave/updateStudentLeave.jsx'
+import UpdateHosteliteLeave from './container/pages/leave/updateHosteliteLeave.jsx'
+import UpdateStaff from './container/pages/staff/updateStaff.jsx'
 // import ErrorPage from './container/pages/404page/errorPage.jsx'
 
 
@@ -100,6 +103,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}pages/schools/schoolsDetails/:id`} element={<SchoolsDetails />} />
             <Route path={`${import.meta.env.BASE_URL}pages/staff/staffList/:id`} element={<StaffList />} />
             <Route path={`${import.meta.env.BASE_URL}pages/staff/createStaff`} element={<CreateStaff />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/staff/updateStaff/:id`} element={<UpdateStaff />} />
             <Route path={`${import.meta.env.BASE_URL}pages/staff/staffDetails`} element={<StaffDetails />} />
             <Route path={`${import.meta.env.BASE_URL}pages/timeTable/timeTable`} element={<TimeTable />} />
             <Route path={`${import.meta.env.BASE_URL}pages/admissionQuery/admissionQueryDetails`} element={ <AdmissionQueryDetails />} />
@@ -114,6 +118,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}pages/leave/hosteliteCreateLeave`} element={<HosteliteCreateLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/createLeave`} element={<CreateLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/updateLeave/:id`} element={<UpdateLeave />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/leave/updateStudentLeave/:id`} element={<UpdateStudentLeave />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/leave/updateHosteliteLeave/:id`} element={<UpdateHosteliteLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/hosteliteLeave`} element={<HosteliteLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/reports`} element={<Reports />} />
             <Route path={`${import.meta.env.BASE_URL}pages/extraFeatures/eventManagement`} element={<EventManagement />} />

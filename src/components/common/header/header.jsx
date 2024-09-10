@@ -101,7 +101,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   ];
   const [cartItems, setCartItems] = useState([...cartProduct]);
   const [cartItemCount, setCartItemCount] = useState(cartProduct.length);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState();
   const handleRemove = (e, itemId) => {
     e.stopPropagation(); // Prevents the event from reaching the button click event
     const updatedCart = cartItems.filter((item) => item.id !== itemId);

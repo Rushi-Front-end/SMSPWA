@@ -1,11 +1,11 @@
+// IdContext.js
 import React, { createContext, useState } from 'react';
 
-// Create the context
 export const IdContext = createContext();
 
-// Create the provider component
 export const IdProvider = ({ children }) => {
-  const [id, setId] = useState(null); // This will hold the `id`
+    const [id, setId] = useState(1);
+    console.log(id, "IDCONTENT")
 
   localStorage.setItem("schoolId", id)
 

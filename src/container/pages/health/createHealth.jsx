@@ -1,15 +1,30 @@
-import React, { useState } from 'react'
-import { singleselect } from '../../forms/formelements/formselect/formselectdata'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import HealthMedical from './healthMedical';
+import axios from 'axios';
 
 const CreateHealth = () => {
 
     const [studMed, setStudMedical] = useState(false);
+    const [studNameDrop, setStudNameDrop] = useState([]);
     const NextPageOpen = (e) => {
         setStudMedical(true)
     }
+    const getStudNameDrop = () => {
+        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
+            .then(res => {
+                const studDropOptions = res.data.map(staff => ({
+                    value: staff.id,
+                    label: staff.fullName
+                }));
+                setStudNameDrop(studDropOptions);
+            })
+            .catch(err => console.log(err));
+      }
+      useEffect(()=>{
+        getStudNameDrop()
+      },[])
 
     return (
         <div>
@@ -67,8 +82,8 @@ const CreateHealth = () => {
 
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Student*:</label>
-                                            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Student<span className='redText'>*</span>:</label>
+                                            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={studNameDrop} />
                                         </div>
 
 
@@ -76,84 +91,61 @@ const CreateHealth = () => {
                                 </div>
                                 <div className='aadharcard-details mb-4'>
                                     <h4 className='pt-2 pb-2'>Health Declaration Form</h4>
-                                    <h6 className=' pb-2'>Student Medical Details</h6>
-                                    <div className='grid grid-cols-12 sm:gap-6'>
-
-                                        <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Defects At Birth</label>
-                                            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                                        </div>
-
-                                        <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Deficiencies</label>
-                                            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                                        </div>
-
-                                        <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Childhood Diseases</label>
-                                            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                                        </div>
-
-                                        <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Developmental delay & Disability</label>
-                                            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
-                                        </div>
-
-                                    </div>
+                                  
 
                                     <div className='grid grid-cols-12 sm:gap-6 pt-4'>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Height*:</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Height<span className='redText'>*</span>:</label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Weight*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Weight<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Blood Pressure*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Blood Pressure<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Dental Checkup*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Dental Checkup<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">BMI Classification*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">BMI Classification<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">MCTS Number(Mother & Child Tracking)*</label>
-                                            <input type="text" className="form-control" id="input-text" placeholder="" />
-                                        </div>
-
-                                        <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Acuity of Vision(Left Eye)*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">MCTS Number(Mother & Child Tracking)<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Acuity of Vision(Right Eye)*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Acuity of Vision(Left Eye)<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Description of Diseases/Conditions*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Acuity of Vision(Right Eye)<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Suggested Solutions & Treatments*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Description of Diseases/Conditions<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Remarks*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Suggested Solutions & Treatments<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label htmlFor="input-datetime-local" className="form-label">Enrolment Date*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Remarks<span className='redText'>*</span></label>
+                                            <input type="text" className="form-control" id="input-text" placeholder="" />
+                                        </div>
+
+                                        <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                            <label htmlFor="input-datetime-local" className="form-label">Enrolment Date<span className='redText'>*</span></label>
                                             <input type="datetime-local" className="form-control" id="input-datetime-local" />
                                         </div>
 
@@ -163,7 +155,7 @@ const CreateHealth = () => {
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Name of the Hospital*</label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Name of the Hospital<span className='redText'>*</span></label>
                                             <input type="text" className="form-control" id="input-text" placeholder="" />
                                         </div>
 

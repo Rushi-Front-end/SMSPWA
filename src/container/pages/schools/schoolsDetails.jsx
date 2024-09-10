@@ -216,6 +216,9 @@ const SchoolsDetails = () => {
                                             <div id="underline-2" role="tabpanel" aria-labelledby="underline-item-2">
                                                 <div className="grid grid-cols-12  gap-4">
                                                     <div className="col-span-12 xl:col-span-8">
+                                                    <div className='classes-add-secbtn'>
+                                                       <button type="button" onClick={() => addSection(classId)} className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
+                                                    </div>
                                                         {
                                                              isLoading || spinner ? (<Loader />) :
                                                              Array.isArray(classIndData?.list) && classIndData.list.length > 0 ? (
@@ -225,9 +228,9 @@ const SchoolsDetails = () => {
                                                                        
                                                                         <div className='classes-top-head flex justify-between'>
                                                                             <h4>{dt.className}</h4>
-                                                                            <div className='classes-add-secbtn'>
+                                                                            {/* <div className='classes-add-secbtn'>
                                                                                 <button type="button" onClick={() => addSection(dt.id)} className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
-                                                                            </div>
+                                                                            </div> */}
                                                                         </div>
     
                                                                         <div className='p-5 border rounded-sm dark:border-white/10 border-gray-200'>
@@ -276,7 +279,9 @@ const SchoolsDetails = () => {
                                                                 })
                                                              ) : (
                                                                 <tr>
-                                                                    <td colSpan="6">No schools available.</td>
+                                                                    <td colSpan="6">
+                                                                        <h3 className='text-center'>No schools available.</h3>
+                                                                    </td>
                                                                 </tr>
                                                             )
 

@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, {  useState } from 'react'
 import { Link } from 'react-router-dom';
 import DietIndDetails from './dietIndDetails';
-import { IdContext } from '../../../components/common/context/idContext';
 
 
 const DietList = () => {
@@ -9,8 +8,7 @@ const DietList = () => {
     const handleDayChange = (day) => {
         setSelectedDay(day);
     };
-    const { id } = useContext(IdContext);
-    console.log(id,"dddd")
+   
     const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
     return (
@@ -105,9 +103,8 @@ const DietList = () => {
 
                                         <div className="mt-3">
                                                 <div className='dietInd-deatils-table'>
-                                                <IdContext.Provider value={ id }>
+                                                
                                                 <DietIndDetails selectedDay={selectedDay} />
-                                                </IdContext.Provider>
                                                 </div>
                                             {/* <div id="underline-1" role="tabpanel" aria-labelledby="underline-item-1">
 

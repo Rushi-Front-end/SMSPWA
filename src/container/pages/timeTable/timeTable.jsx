@@ -8,6 +8,7 @@ import axios from 'axios';
 const TimeTable = () => {
 
     const [selectedOption, setSelectedOption] = useState(null);
+    const [timeClassDrop, setTimeClassDrop] = useState([]);
 
     const handleSelectChange = (selectedOption) => {
         setSelectedOption(selectedOption);
@@ -35,6 +36,22 @@ const TimeTable = () => {
     }, []);
 
     console.log(selectedOption, 'selectedOption')
+
+    const getClassTimeTable = () => {
+        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
+            .then(res => {
+                const classTimeOption = res.data.map(staff => ({
+                    value: staff.id,
+                    label: staff.className
+                }));
+                setTimeClassDrop(classTimeOption);
+            })
+            .catch(err => console.log(err));
+      }
+      useEffect(()=>{
+        getClassTimeTable()
+      },[])
+
 
     return (
         <div>
@@ -71,7 +88,7 @@ const TimeTable = () => {
                         <h4>Timetable Details</h4>
                             <div className="xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-6 col-span-12 pt-4">
                                 {/* <label className="ti-form-select rounded-sm !p-0 ">Section Class Teacher</label> */}
-                                <Select   onChange={handleSelectChange} className="!p-0 place-holder" classNamePrefix='react-select' options={classDataList} />
+                                <Select   onChange={handleSelectChange} className="!p-0 place-holder" classNamePrefix='react-select' options={timeClassDrop} />
                             </div>
                         {/* <div className='box p-4'>
                             <h6>Select Criteria</h6>

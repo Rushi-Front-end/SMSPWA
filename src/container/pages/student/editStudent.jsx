@@ -13,7 +13,14 @@ import media50 from "../../../assets/images/media/media-50.jpg";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-
+// Date Formatting Function
+const formatDate = (date) => {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+};
+ 
 const schema = yup.object({
     registrationNumber: yup.string().required("Please enter Register Number"),
     rollNumber: yup.string().required("Please enter Roll Number"),
@@ -71,13 +78,13 @@ const EditStudent = () => {
   
     const handleChange = (dateChange) => {
         
-        setValue("dob", dateChange, {
+        setValue("dob",  formatDate(dateChange), {
           shouldDirty: true
         });
         setStartDate(dateChange);
       };
     const handleChangeToDate = (dateChange) => {
-        setValue("enrolmentDate", dateChange, {
+        setValue("enrolmentDate",  formatDate(dateChange), {
           shouldDirty: true
         });
     
@@ -103,6 +110,8 @@ useEffect(()=>{
       console.log(res.data)
       if(res.data){
         const editStudent = res.data
+      //  setStartDate(new Date(editStudent.dob));
+       // setStartDate1(new Date(editStudent.enrolmentDate));
           // setStudent(res.data)
           Object.keys(editStudent).forEach(key => {
             setValue(key, editStudent[key]);
@@ -145,7 +154,13 @@ useEffect(()=>{
    const onSubmit = (formData) => {
        //alert(JSON.stringify(values, null, 2));
        setStudent({...formData})
-       axios.put('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+studentid, formData)
+       axios.put('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+studentid, 
+        {
+            ...formData,
+            enrolmentDate:  formatDate(new Date(formData.enrolmentDate)),
+            toDate:  formatDate(new Date(formData.toDate)),
+        }
+    )
        .then(res=>{
            console.log(res, "StudentPut")
            if(res.status === 200){
@@ -301,8 +316,10 @@ useEffect(()=>{
                                     defaultValue={startDate1}
                                     render={({ field }) => (
                                         <DatePicker
+                                        {...field}
                                         className="ti-form-input  focus:z-10" 
-                                        selected={field.value || startDate1}
+                                        dateFormat="dd/MM/yyyy"  
+                                        selected={startDate1}
                                         placeholderText="Select date"
                                         onChange={(date) => {
                                             handleChangeToDate(date);
@@ -374,8 +391,10 @@ useEffect(()=>{
                                     defaultValue={startDate}
                                     render={({ field }) => (
                                         <DatePicker
+                                        {...field}
                                         className="ti-form-input  focus:z-10" 
-                                        selected={field.value || startDate}
+                                        dateFormat="dd/MM/yyyy"  
+                                        selected={ startDate}
                                         placeholderText="Select date"
                                         onChange={(date) => {
                                             handleChange(date);

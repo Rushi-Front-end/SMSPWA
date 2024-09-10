@@ -45,7 +45,14 @@ const schema = yup.object({
 
   });
 
-                             
+   // Date Formatting Function
+const formatDate = (date) => {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+};
+                           
 
 const CreateStudent = () => {
 
@@ -114,13 +121,13 @@ const CreateStudent = () => {
 
     const handleChange = (dateChange) => {
         
-        setValue("dob", dateChange, {
+        setValue("dob", formatDate(dateChange), {
           shouldDirty: true
         });
         setStartDate(dateChange);
       };
     const handleChangeToDate = (dateChange) => {
-        setValue("enrolmentDate", dateChange, {
+        setValue("enrolmentDate", formatDate(dateChange), {
           shouldDirty: true
         });
     
@@ -129,9 +136,15 @@ const CreateStudent = () => {
 
     const { errors } = formState;
 
-    console.log(data,"StudentData")
     const onSubmit = (formData) => {
-        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students', formData)
+        console.log(formData,"StudentData")
+        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students', 
+            {
+                ...formData,
+               // enrolmentDate:  formatDate(new Date(formData.enrolmentDate)),
+                //toDate:  formatDate(new Date(formData.toDate)),
+            }
+        )
             .then(res => {
                 console.log(res)
                 navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
@@ -289,6 +302,8 @@ const CreateStudent = () => {
                                             defaultValue={startDate1}
                                             render={() => (
                                                 <DatePicker
+                                                dateFormat="dd/MM/yyyy"  
+
                                                 className="ti-form-input  focus:z-10" 
                                                 selected={startDate1}
                                                 placeholderText="Select date"
@@ -360,6 +375,8 @@ const CreateStudent = () => {
                                             render={() => (
                                                 <DatePicker
                                                 className="ti-form-input  focus:z-10" 
+                                                dateFormat="dd/MM/yyyy"  
+
                                                 selected={startDate}
                                                 placeholderText="Select date"
                                                 onChange={handleChange}

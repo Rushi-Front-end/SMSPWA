@@ -1,9 +1,9 @@
-import React, {  useContext, useState } from 'react'
+import React, {  useContext, useEffect, useState } from 'react'
 import { enableLogin, genderSelect, roleID, shift, singleselect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import media50 from "../../../assets/images/media/media-50.jpg";
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import Pageheader from '../../../components/common/pageheader/pageheader';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,7 +46,7 @@ const schema = yup.object({
 };
 
 
-const CreateStaff = () => {
+const UpdateStaff = () => {
 
     const [data, setData] = useState({})
     const [file, setFile] = useState();
@@ -55,7 +55,6 @@ const CreateStaff = () => {
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
-    const [staffEnableLogin, setStaffEnableLogin] = useState(false);
     const profileImage = (e) => {
         console.log(e.target.files[0], "Image URL");
         setFile(URL.createObjectURL(e.target.files[0]));
@@ -82,6 +81,7 @@ const CreateStaff = () => {
         setStartDate1(dateChange);
       };
     const { errors } = formState;
+    const params = useParams()
 
 
     const { field: { value: roleIDValue, onChange: roleIDOnChange , ...restroleIDField } } = useController({ name: 'roleID', control });
@@ -92,6 +92,62 @@ const CreateStaff = () => {
     const { field: { value: genderValue, onChange: genderOnChange, ...restgenderField } } = useController({ name: 'gender', control });
     const { field: { value: stateValue, onChange: stateOnChange, ...reststateField } } = useController({ name: 'state', control });
    
+
+    useEffect((id)=>{
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff/${params.id}`)  
+    },[params.id])
+
+    
+useEffect(()=>{
+    if (params.id) {
+    axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff/${params.id}`)
+    .then((res)=>{
+      console.log(res.data)
+      if(res.data){
+        const editStaff = res.data
+      //  setStartDate(new Date(editStudent.dob));
+       // setStartDate1(new Date(editStudent.enrolmentDate));
+          // setStudent(res.data)
+          Object.keys(editStaff).forEach(key => {
+            setValue(key, editStaff[key]);
+        });
+
+        // setValue('id', editStudent.id);
+        // setValue('academicYear', editStudent.academicYear);
+        // setValue('addressLine', editStudent.addressLine);
+        // setValue('bloodGroup', editStudent.bloodGroup);
+        // setValue('caste', editStudent.caste);
+        // setValue('city', editStudent.city);
+        // setValue('classID', editStudent.classID);
+        // setValue('district', editStudent.district);
+        // setValue('dob', editStudent.dob);
+        // setValue('email', editStudent.email);
+        // setValue('emergencyMobileNumber', editStudent.emergencyMobileNumber);
+        // setValue('fatherMobileNumber', editStudent.fatherMobileNumber);
+        // setValue('fatherName', editStudent.fatherName);
+        // setValue('fullName', editStudent.fullName);
+        // setValue('gender', editStudent.gender);
+        // setValue('height', editStudent.height);
+        // setValue('mobileNumber', editStudent.mobileNumber);
+        // setValue('motherName', editStudent.motherName);
+        // setValue('nameOnAadharcard', editStudent.nameOnAadharcard);
+        // setValue('pinCode', editStudent.pinCode);
+        // setValue('registrationNumber', editStudent.registrationNumber);
+        // setValue('religion', editStudent.religion);
+        // setValue('rollNumber', editStudent.rollNumber);
+        // setValue('section', editStudent.section);
+        // setValue('state', editStudent.state);
+        // setValue('weight', editStudent.weight);
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+}
+  },[params.id, setValue])
+
+
+
     const onSubmit = (formData) => {
 
         console.log(formData,"StudentData")
@@ -99,8 +155,7 @@ const CreateStaff = () => {
             {
                 ...formData,
                 roleID:staffRoleID,
-                schoolId:schoolIdDrop.id,
-               // enableLogin:staffEnableLogin
+                schoolId:schoolIdDrop.id
                 
                // enrolmentDate:  formatDate(new Date(formData.enrolmentDate)),
                 //toDate:  formatDate(new Date(formData.toDate)),
@@ -119,15 +174,11 @@ const CreateStaff = () => {
         console.log(option,"RoleChange")
         setStaffRoleID(option.id)
     }
-    const enableLoginChange = (e)=>{
-        console.log("enableLogin",e.target.checked)
-        setStaffEnableLogin(e.target.checked)
-    }
 
 
   return (
     <div>
-       <h4 className='pt-4 borderBottom'>Create Staffs</h4>
+       <h4 className='pt-4 borderBottom'>Update Staffs</h4>
        <div className="breadcrumbs-wrapper mb-4 pt-2">
         <div className='create-flex-container'>
             <div className='flex flex-row mb-4 items-center'>
@@ -166,7 +217,7 @@ const CreateStaff = () => {
                             </li>
 
                             <li className="text-sm text-gray-500 dark:text-[#8c9097] dark:text-white/50 hover:text-primary truncate" aria-current="page">
-                                Create Staff
+                                Update Staff
                             </li>
                         </ol>
                     </div>
@@ -219,7 +270,7 @@ const CreateStaff = () => {
                 <div className='grid grid-cols-12 sm:gap-6'>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Full Name<span className="redText">*</span>:</label>
-                            <input type="text"  {...register('fullName')}  name='fullName'  className="form-control"  placeholder="Enter Staff Full Name" />
+                            <input type="text"  {...register('fullName')}  name='fullName'  className="form-control" id="input-text" placeholder="Enter Staff Full Name" />
                             {errors.fullName && <p className='errorTxt'>{errors.fullName.message}</p>}
                             </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
@@ -241,7 +292,7 @@ const CreateStaff = () => {
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Email:</label>
-                            <input type="text" {...register('emailID')}  name='emailID' className="form-control"  placeholder="Enter Email ID" />
+                            <input type="text" {...register('emailID')}  name='emailID' className="form-control" id="input-text" placeholder="Enter Email ID" />
                             {/* {errors.emailID && <p className='errorTxt'>{errors.emailID.message}</p>} */}
 
                             </div>
@@ -265,30 +316,21 @@ const CreateStaff = () => {
                                             <Controller
                                                 name="dob"
                                                 control={control}
+                                                defaultValue={startDate}
                                                 render={({ field }) => (
                                                     <DatePicker
                                                         {...field}
+                                                        className="ti-form-input focus:z-10"
                                                         selected={startDate}
-                                                dateFormat="dd/MM/yyyy"  
-
-                                                onChange={handleChange}
-                                                        
+                                                        dateFormat="dd/MM/yyyy"
+                                                        placeholderText="Select date"
+                                                        onChange={(date) => {
+                                                            handleChange(date);
+                                                            field.onChange(date);
+                                                        }}
                                                     />
                                                 )}
                                             />
-                                            {/* <Controller name="dob"
-                                            control={control}
-                                            {...register('dob')}
-                                            render={() => (
-                                                <DatePicker
-                                                className="ti-form-input  focus:z-10" 
-                                                dateFormat="dd/MM/yyyy"  
-
-                                                selected={startDate}
-                                                placeholderText="Select date"
-                                                onChange={handleChange}
-                                                />
-                                            )} /> */}
                                         </div>
                                 {/* <input type="date" className="form-control" id="input-datetime-local" {...register('dob')}  name='dob' /> */}
                                 {errors.dob && <p className='errorTxt'>{errors.dob.message}</p>} 
@@ -297,60 +339,52 @@ const CreateStaff = () => {
                             <label htmlFor="input-datetime-local" className="form-label">Date of Joining<span className="redText">*</span></label>
                             <div className="input-group !flex-nowrap">
                                             <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
-
                                             <Controller
                                                 name="dateOfJoining"
                                                 control={control}
+                                                defaultValue={startDate1}
                                                 render={({ field }) => (
                                                     <DatePicker
                                                         {...field}
+                                                        className="ti-form-input focus:z-10"
                                                         selected={startDate1}
-                                                dateFormat="dd/MM/yyyy"  
-
-                                                onChange={handleChangeToDate}
+                                                        dateFormat="dd/MM/yyyy"
+                                                        placeholderText="Select date"
+                                                        onChange={(date) => {
+                                                            handleChange(date);
+                                                            field.onChange(date);
+                                                        }}
                                                     />
                                                 )}
                                             />
-                                            {/* <Controller name="dateOfJoining"
-                                            control={control}
-                                            {...register('dateOfJoining')}
-                                           
-                                            render={() => (
-                                                <DatePicker
-                                                dateFormat="dd/MM/yyyy"  
-                                                className="ti-form-input  focus:z-10" 
-                                                selected={startDate1}
-                                                placeholderText="Select date"
-                                                onChange={handleChangeToDate}
-                                                />
-                                            )} /> */}
-
+                                            
+                                          
                                         </div>
                             {/* <input type="date" className="form-control" id="input-datetime-local" {...register('enrolmentDate')}  name='enrolmentDate' /> */}
                             {errors.dateOfJoining && <p className='errorTxt'>{errors.dateOfJoining.message}</p>}    
                             </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Alternate Mobile No.:</label>
-                            <input type="text" {...register('alternateMobileNumber')}  name='alternateMobileNumber'  className="form-control"  placeholder="Enter Alternate Mobile Number" />
+                            <input type="text" {...register('alternateMobileNumber')}  name='alternateMobileNumber'  className="form-control" id="input-text" placeholder="Enter Alternate Mobile Number" />
                             {/* {errors.alternateMobileNumber && <p className='errorTxt'>{errors.alternateMobileNumber.message}</p>} */}
 
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Address Line<span className="redText">*</span>:</label>
-                            <input type="text" {...register('address')}  name='address'  className="form-control"  placeholder="Enter Door No., Street, Area..." />
+                            <input type="text" {...register('address')}  name='address'  className="form-control" id="input-text" placeholder="Enter Door No., Street, Area..." />
                             {errors.address && <p className='errorTxt'>{errors.address.message}</p>}
 
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">City</label>
-                            <input type="text" {...register('city')}  name='city' className="form-control"  placeholder="" />
+                            <input type="text" {...register('city')}  name='city' className="form-control" id="input-text" placeholder="" />
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">District</label>
-                            <input type="text" {...register('district')}  name='district' className="form-control"  placeholder="" />
+                            <input type="text" {...register('district')}  name='district' className="form-control" id="input-text" placeholder="" />
                             </div>
                             
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
@@ -418,7 +452,7 @@ const CreateStaff = () => {
                 <h6 className=' pb-2'>System Login</h6>
                 <div className='grid grid-cols-12 sm:gap-6'>
                                                     
-                            {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Enable Login</label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
@@ -427,19 +461,10 @@ const CreateStaff = () => {
                                     onChange={option => enableLoginOnChange(option ? option.value : option)}
                                     {...restenableLoginSelectField}
                                     classNamePrefix='react-select'  />
-                            </div> */}
-                              <div className='staff-answer-row pt-2 xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12'>
-                        <div className="form-check">
-                            <input className="form-check-input"  onChange={enableLoginChange}  type="checkbox" id="flexCheckDefault20" />
-                            <label className="form-check-label" htmlFor="flexCheckDefault20">
-                            Enable Login
-                            </label>
-                        </div>
-                       </div>
-
+                            </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Password</label>
-                            <input type="password" {...register('password')} name='password'  className="form-control"  placeholder="" />
+                            <input type="password" {...register('password')} name='password'  className="form-control" id="input-text" placeholder="" />
                             </div>
                             {/* <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Confirm Password</label>
@@ -472,4 +497,4 @@ const CreateStaff = () => {
   )
 }
 
-export default CreateStaff
+export default UpdateStaff

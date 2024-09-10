@@ -131,6 +131,25 @@ export const leaveType  = [
   { id: 8, value: "Unpaid" ,label:"Unpaid"},
   { id: 9, value: "Other" ,label:"Other"},
 ]
+ 
+export const shift = [
+  {id:1, value:"Morning shift", label:"Morning shift"},
+  {id:2, value:"Afternoon shift", label:"Afternoon shift"},
+]
+
+export const roleID = [
+  
+  {id:1, value:"Principal", label:"Principal" },
+  {id:2, value:"Vice-Principal", label:"Vice-Principal" },
+  {id:3, value:"Teacher", label:"Teacher" },
+  {id:4, value:"Warden", label:"Warden" },
+  {id:5, value:"Librarian", label:"Librarian" },
+  {id:6, value:"Labortory assistant", label:"Labortory assistant" },
+  {id:7, value:"Accountant", label:"Accountant" },
+  {id:8, value:"Security guard", label:"Security guard" },
+  {id:9, value:"Other", label:"Other" },
+]
+
 
 
 export const academicYear = [  
@@ -154,14 +173,52 @@ export const genderSelect = [
   { id: 2, value: "Transgender" ,label:"Transgender"},
   { id: 3, value: "Others" ,label:"Others"},
 ]
+export const enableLogin = [  
+  { id: 1, value: "Yes", label:"Yes" },
+  { id: 2, value: "No" ,label:"No"},
+  
+]
+ 
+export const examType = [  
+  { id: 1, value: "Internal", label:"Internal" },
+  { id: 2, value: "External" ,label:"External"},
+  
+]
  
 export const stateSelect = [  
-  { id: 1, value: "Sample State", label:"Sample State" },
-  { id: 2, value: "Maharashtra" ,label:"Maharashtra"},
-  { id: 2, value: "Goa" ,label:"Goa"},
-  { id: 3, value: "Gujarat" ,label:"Gujarat"},
-  { id: 4, value: "Tamil Nadu" ,label:"Tamil Nadu"},
-  { id: 5, value: "Punjab" ,label:"Punjab"},
+  { id: 1, value: "Andhra Pradesh", label:"Andhra Pradesh" },
+  { id: 2, value: "Arunachal Pradesh" ,label:"Arunachal Pradesh"},
+  { id: 3, value: "Assam Bihar" ,label:"Assam Bihar"},
+  { id: 4, value: "Chhattisgarh" ,label:"Chhattisgarh"},
+  { id: 5, value: "Goa" ,label:"Goa"},
+  { id: 6, value: "Gujarat" ,label:"Gujarat"},
+  { id: 7, value: "Haryana" ,label:"Haryana"},
+  { id: 8, value: "Himachal Pradesh" ,label:"Himachal Pradesh"},
+  { id: 9, value: "Jharkhand" ,label:"Jharkhand"},
+  { id: 10, value: "Karnataka" ,label:"Karnataka"},
+  { id: 11, value: "Kerala" ,label:"Kerala"},
+  { id: 12, value: "Maharashtra" ,label:"Maharashtra"},
+  { id: 13, value: "Madhya Pradesh" ,label:"Madhya Pradesh"},
+  { id: 14, value: "Manipur" ,label:"Manipur"},
+  { id: 15, value: "Meghalaya" ,label:"Meghalaya"},
+  { id: 16, value: "Mizoram" ,label:"Mizoram"},
+  { id: 17, value: "Nagaland" ,label:"Nagaland"},
+  { id: 18, value: "Odisha" ,label:"Odisha"},
+  { id: 19, value: "Rajasthan" ,label:"Rajasthan"},
+  { id: 20, value: "Sikkim" ,label:"Sikkim"},
+  { id: 21, value: "Tamil Nadu" ,label:"Tamil Nadu"},
+  { id: 22, value: "Tripura" ,label:"Tripura"},
+  { id: 23, value: "Telangana" ,label:"Telangana"},
+  { id: 24, value: "Uttar Pradesh" ,label:"Uttar Pradesh"},
+  { id: 25, value: "Uttarakhand" ,label:"Uttarakhand"},
+  { id: 26, value: "West Bengal" ,label:"West Bengal"},
+  { id: 27, value: "Andaman & Nicobar" ,label:"Andaman & Nicobar"},
+  { id: 28, value: "(UT) Chandigarh" ,label:"(UT) Chandigarh"},
+  { id: 29, value: "(UT) Dadra & Nagar Haveli and Daman & Diu" ,label:"(UT) Dadra & Nagar Haveli and Daman & Diu"},
+  { id: 30, value: "(UT) Delhi [National Capital Territory (NCT)]" ,label:"(UT) Delhi [National Capital Territory (NCT)]"},
+  { id: 31, value: "(UT) Ladakh" ,label:"(UT) Ladakh"},
+  { id: 32, value: "(UT) Lakshadweep" ,label:"(UT) Lakshadweep"},
+  { id: 33, value: "(UT) Puducherry" ,label:"(UT) Puducherry"},
 ]
  
 export const bloodGroupSelect = [  
@@ -191,6 +248,22 @@ export const dietDay = [
   { id: 5, value: "Friday" ,label:"Friday"},
   { id: 6, value: "Saturday" ,label:"Saturday"},
   { id: 7, value: "Sunday" ,label:"Sunday"},
+]
+ 
+ 
+export const category = [  
+  { id: 1, value: "Furniture", label:"Furniture" },
+  { id: 2, value: "Electronics" ,label:"Electronics"},
+  { id: 3, value: "Electricity bill" ,label:"Electricity bill"},
+  { id: 4, value: "Water bill" ,label:"Water bill"},
+  { id: 5, value: "Muncipal corporation tax" ,label:"Muncipal corporation tax"},
+  { id: 6, value: "Gram panchayat Tax" ,label:"Gram panchayat Tax"},
+  { id: 7, value: "Stationary" ,label:"Stationary"},
+  { id: 7, value: "Transport" ,label:"Transport"},
+  { id: 7, value: "Groceries" ,label:"Groceries"},
+  { id: 7, value: "Plumber" ,label:"Plumber"},
+  { id: 7, value: "Cleaner" ,label:"Cleaner"},
+  { id: 7, value: "Other" ,label:"Other"},
 ]
  
 
