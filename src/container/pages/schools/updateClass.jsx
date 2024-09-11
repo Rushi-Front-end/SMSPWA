@@ -165,10 +165,10 @@ useEffect(() => {
 
         </div> */}
 
-        <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4 pb-2">
+        {/* <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4 pb-2">
             <label htmlFor="input-text" className="form-label">Description</label>
             <textarea  {...register('description')} className="form-control" id="text-area" placeholder='Enter Description' rows="4" spellCheck="false" name='description' ></textarea>
-        </div>
+        </div> */}
         <hr />
         <div className='createSchool-btn pt-4'>
             <div className='flex justify-end'>

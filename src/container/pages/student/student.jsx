@@ -15,7 +15,8 @@ const Student = () => {
     const [search, setSearch] = useState('')
     const [spinner, setSpinner] = useState(false)
     const [deleteStudent, setDeleteStudent] = useState()
-    
+    const [healthStudName, setHealthStudName] = useState([]);
+    const [healthClassName, setHealthClassName] = useState([]);
     
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -60,6 +61,25 @@ const Student = () => {
     const openDelete = (id)=>{
         setDeleteStudent(id)
     }
+
+    const getStudentName = async () => {
+        try {
+            const roleRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
+            const roleData = roleRes.data;
+            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
+            const classNameData = classRes.data
+            // Assuming roleData is an array of students
+            setHealthStudName(roleData);
+            setHealthClassName(classNameData)
+            console.log(roleData, "StudentNAMein helath", classRes);
+        } catch (error) {
+            console.error('Error fetching user roles:', error);
+        }
+    }
+    useEffect(() => {
+        getStudentName();
+    }, []);
+
      
     // const deleteDatahandler = (id) =>{
     //     axios.delete('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+id)
@@ -200,7 +220,7 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                                         </Link>
                                                     </td>
                                                     {/* <td>{dt.dob}</td> */}
-                                                    <td>{dt.classID}</td>
+                                                    <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.section || 'Unknown'}</td>
                                                     {/* <td>{dt.aadhar}</td> */}
                                                     <td><div className="hstack flex gap-3 text-[.9375rem]">
                                                     <div className="ti-dropdown hs-dropdown">

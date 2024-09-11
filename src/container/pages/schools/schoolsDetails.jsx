@@ -240,7 +240,7 @@ const SchoolsDetails = () => {
                                                                                         <th scope="col" className="text-start">#</th>
                                                                                         <th scope="col" className="text-start">Section</th>
                                                                                         {/* <th scope="col" className="text-start">Class Teacher</th> */}
-                                                                                        <th scope="col" className="text-start">Description</th>
+                                                                                        {/* <th scope="col" className="text-start">Description</th> */}
                                                                                         {/* <th scope="col" className="text-start">Status</th> */}
                                                                                         <th scope="col" className="text-start">Action</th>
                                                                                     </tr>
@@ -249,7 +249,7 @@ const SchoolsDetails = () => {
                                                                                         <tr className="border-b border-defaultborder" key={index} id={dt.id}>
                                                                                             <td>{index + 1}</td>
                                                                                             <td>{dt.className}</td>
-                                                                                            <td>{dt.description}</td>
+                                                                                            {/* <td>{dt.description}</td> */}
                                                                                             <td>
                                                                                                 <div className="hstack flex gap-3 
     text-[.9375rem]">

@@ -19,6 +19,7 @@ import Select from 'react-select';
 import {  Selectmaxoption, Selectoption1, Selectoption2, Selectoption3, Selectoption4, Selectoption5 } from '../../../container/forms/select2/select2data';
 import { IdContext } from '../../common/context/idContext';
 import axios from 'axios';
+import { singleselect } from '../../../container/forms/formelements/formselect/formselectdata';
 
 
 const Header = ({ local_varaiable, ThemeChanger }) => {
@@ -342,8 +343,8 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
             <div className="header-content-right">
             <div className="header-element md:px-[0.325rem] !items-center" >
-                <Select value={selectedValue}  name="state" options={schoolDataList} className="js-example-basic-single w-full" isSearchable
-                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolDataList[0]]}
+                <Select  name="state" options={singleselect} className="js-example-basic-single w-full" isSearchable
+                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[singleselect[0]]}
                             />
                </div> 
                <div className="header-element md:!px-[0.65rem] px-2 hs-dropdown !items-center ti-dropdown [--placement:bottom-left]">

@@ -137,6 +137,12 @@ export const shift = [
   {id:2, value:"Afternoon shift", label:"Afternoon shift"},
 ]
 
+export const description = [
+  { id: 1, value: "A",label:"A" },
+  { id: 2, value: "B" ,label:"B"},
+  { id: 3, value: "C" ,label:"C"},
+]
+
 export const roleID = [
   
   {id:1, value:"Principal", label:"Principal" },

@@ -145,8 +145,8 @@ const CreateHealth = () => {
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label htmlFor="input-datetime-local" className="form-label">Enrolment Date<span className='redText'>*</span></label>
-                                            <input type="datetime-local" className="form-control" id="input-datetime-local" />
+                                            <label htmlFor="input-date" className="form-label">Enrolment Date<span className='redText'>*</span></label>
+                                            <input type="date" className="form-control" id="input-date" />
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">

@@ -1,6 +1,53 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Loader from '../loader/loader';
+import { toast } from 'react-toastify';
+
 const HealthDetails = () => {
+    const [data, setData] = useState([]);
+    const [spinner, setSpinner] = useState(false);
+    const [healthStudName, setHealthStudName] = useState([]);
+    const [healthClassName, setHealthClassName] = useState([]);
+
+    const getHealthList = () => {
+        setSpinner(true);
+        axios
+            .get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/GetAllStudentHealthCheckup')
+            .then((res) => {
+                console.log(res, "GTHEALTH SL")
+                setData(res.data);
+                setSpinner(false);
+                // const initialStatusMap = res.data.reduce((acc, leave) => {
+                //   acc[leave.id] = leave.status;
+                //   return acc;
+                // }, {});
+                // setStatusMap(initialStatusMap);
+            })
+            .catch((err) => {
+                console.log(err);
+                setSpinner(false);
+            });
+    };
+    const getStudentName = async () => {
+        try {
+            const roleRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
+            const roleData = roleRes.data;
+            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
+            const classNameData = classRes.data
+            // Assuming roleData is an array of students
+            setHealthStudName(roleData);
+            setHealthClassName(classNameData)
+            console.log(roleData, "StudentNAMein helath", classRes);
+        } catch (error) {
+            console.error('Error fetching user roles:', error);
+        }
+    }
+    useEffect(() => {
+        getHealthList();
+        getStudentName();
+    }, []);
+
     return (
         <div>
             <h4 className='textUpperCase pt-4 borderBottom'>Health</h4>
@@ -32,12 +79,12 @@ const HealthDetails = () => {
 
             <div className='create-stud-table'>
                 <div className='box p-4'>
-                        <div className="createstudent-btn flex justify-between w-100">
-                            <h4>Health Document Details</h4>
-                            <Link to={`${import.meta.env.BASE_URL}pages/health/createHealth`}>
-                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave"> Create Health Document</button>
-                            </Link>
-                        </div>
+                    <div className="createstudent-btn flex justify-between w-100">
+                        <h4>Health Document Details</h4>
+                        <Link to={`${import.meta.env.BASE_URL}pages/health/createHealth`}>
+                            <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave"> Create Health Document</button>
+                        </Link>
+                    </div>
                     {/* Top section end */}
                     {/* Table section start */}
                     <div className="student-table-details pt-4">
@@ -49,26 +96,43 @@ const HealthDetails = () => {
                                         <th scope="col" className="text-start">	Document Date</th>
                                         <th scope="col" className="text-start">Student Name</th>
                                         <th scope="col" className="text-start">	Section & Class Name	</th>
-                                        <th scope="col" className="text-start">Age</th>
                                         <th scope="col" className="text-start">	Created At</th>
                                         <th scope="col" className="text-start">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="border-b border-defaultborder">
-                                            <td>1</td>
-                                            <td> 15 Jul 2024 </td>
-                                            <td>Rahul Patil </td>
-                                            <td>Class A - Section A</td>
-                                            <td>13 Oct 2011</td>
-                                            <td>01 August 2024 11:03 pm</td>
-                                            <td>
-                                                <Link to={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument`}>
-                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">View</button>
-                                                </Link>
-                                            </td>
-                                        </tr>
+                                        {spinner ? (
+                                            <Loader />
+                                        ) : (
+                                            data.length > 0 ? (
+                                                data.map((dt, index) => {
+                                                    return (
+                                                        <tr className="border-b border-defaultborder" key={index}>
+                                                            <td>{index + 1}</td>
+                                                            <td>{dt.healthCheckupDate} </td>
+                                                            <td>{Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.fullName || 'Unknown'}</td> {/* Display student name */}
 
+                                                            <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.studentID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.section || 'Unknown'}</td>
+                                                            <td>{dt.createdAt}</td>
+                                                            <td>
+                                                                <Link to={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument`}>
+                                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">View</button>
+                                                                </Link>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="6">
+                                                        <h3 className='text-center'>
+                                                            No Data available.
+                                                        </h3>
+                                                    </td>
+                                                </tr>
+                                            )
+
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
