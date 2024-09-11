@@ -20,6 +20,7 @@ const formatDate = (date) => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 };
+
  
 const schema = yup.object({
     registrationNumber: yup.string().required("Please enter Register Number"),

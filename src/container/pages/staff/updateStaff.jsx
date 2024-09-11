@@ -169,7 +169,7 @@ useEffect(()=>{
     const onSubmit = async (formData) => {
 
         console.log(formData,"StudentData")
-        await axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff?id=${formData.id}`, 
+        await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff?id=${formData.id}`, 
             {
                 ...formData,
                 enableLogin: formData.enableLogin === "Yes",
