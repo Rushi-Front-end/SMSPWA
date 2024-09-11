@@ -12,6 +12,8 @@ const StaffDetails = () => {
     const [search, setSearch] = useState('')
     const [spinner, setSpinner] = useState(false)
     const [deleteStudent, setDeleteStudent] = useState()
+    const [roleFilter, setRoleFilter] = useState(null);
+    const [roleOptions, setRoleOptions] = useState([])
     const [roleList, setRoleList] = useState([])
 
     const getStaffList = () => {
@@ -33,6 +35,12 @@ const StaffDetails = () => {
           try {
             const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/UserRoles');
             const roleData = response.data;
+            const roleOptionsList = roleData.map(role => ({
+                id: role.id,
+                value: role.id,
+                label: role.roleName
+            }));
+            setRoleOptions(roleOptionsList)
             setRoleList(roleData)
           } catch (error) {
             console.error('Error fetching user roles:', error);
@@ -128,7 +136,7 @@ const StaffDetails = () => {
                                 </div>
 
                                 <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' value={roleFilter} options={roleOptions} onChange={(option) => setRoleFilter(option)} />
                                 </div>
                                 <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>

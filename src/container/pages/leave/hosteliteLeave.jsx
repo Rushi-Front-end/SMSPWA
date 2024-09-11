@@ -11,6 +11,9 @@ const HosteliteLeave = () => {
     const [spinner, setSpinner] = useState(false)
     const [deleteLeav, setDeleteLeav] = useState()
     const [statusMap, setStatusMap] = useState({}); // Store status for each leave
+
+    const [searchFilter, setSearchFilter] = useState(null);
+    
     const getHosteliteList = () => {
         setSpinner(true)
         axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelOutPass/GetAllHostelOutPass')
@@ -65,6 +68,38 @@ const HosteliteLeave = () => {
     useEffect(() => {
         getHosteliteList()
     }, [])
+
+    const handleFilter = async () => {
+        let params = [];
+    
+        if (searchFilter) {
+            params.push(`Name=${encodeURIComponent(searchFilter)}`);
+        }
+
+        if (params.length === 0) {
+            toast.error("Choose a Filter");
+            return;
+        }
+    
+        const queryString = params.join("&");
+        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelOutPass/GetHostelOutPassByFilter?${queryString}`;
+    
+        try {
+            const result = await axios.get(url);
+            const filteredData = result.data;
+    
+            if (!filteredData?.length) {
+                toast.error("No data found");
+            }
+
+            
+            setData(filteredData);
+        } catch (error) {
+            toast.error("An error occurred while fetching data");
+            console.error("Error fetching data:", error);
+        }
+    }
+    
     return (
         <div>
             <h4 className='pt-4 borderBottom'>Hostelite Outpasses</h4>
@@ -118,7 +153,7 @@ const HosteliteLeave = () => {
                                     <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                         {/* <input type="search" className="form-control" id="input-search" placeholder="Search" /> */}
                                         <div className="flex rounded-sm search-box">
-                                            <input type="search" placeholder='Search' id="hs-trailing-button-add-on-with-icon" name="hs-trailing-button-add-on-with-icon" className="ti-form-input rounded-none rounded-s-sm focus:z-10" />
+                                            <input type="search" placeholder='Search' id="hs-trailing-button-add-on-with-icon" name="hs-trailing-button-add-on-with-icon" className="ti-form-input rounded-none rounded-s-sm focus:z-10" value={searchFilter} onChange={(e) => setSearchFilter(e.target.value)} />
                                             <button aria-label="button" type="button" className="inline-flex search-icon flex-shrink-0 justify-center items-center rounded-e-sm border border-transparent font-semibold bg-warning text-white hover:bg-warning focus:z-10 focus:outline-none focus:ring-0 focus:ring-warning transition-all text-sm">
                                                 <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
@@ -128,7 +163,7 @@ const HosteliteLeave = () => {
 
                                     </div>
                                     <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
                             </div>
                                   
                                 </div>
@@ -160,7 +195,7 @@ const HosteliteLeave = () => {
                                  return   <tbody key={index}>
                                         <tr>
                                             <td rowSpan="2">1</td>
-                                            <td>{dt.id}</td>
+                                            <td>{dt.fullName}</td>
                                             <td>student</td>
                                             <td>{dt.outpassType}</td>
                                             <td>{`${dt.fromDate} - ${dt.toDate}`}</td>

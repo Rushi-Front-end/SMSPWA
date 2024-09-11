@@ -15,6 +15,28 @@ const StaffAttendance = () => {
     const [search, setSearch] = useState('')
     const [spinner, setSpinner] = useState(false)
 
+    const [roleFilter, setRoleFilter] = useState(null);
+    const [roleOptions, setRoleOptions] = useState([])
+
+    useEffect(() => {
+        const fetchUserRoles = async () => {
+          try {
+            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/UserRoles');
+            const roleData = response.data;
+            const roleOptionsList = roleData.map(role => ({
+                id: role.id,
+                value: role.id,
+                label: role.roleName
+            }));
+            setRoleOptions(roleOptionsList)
+          } catch (error) {
+            console.error('Error fetching user roles:', error);
+          }
+        };
+    
+        fetchUserRoles();
+    }, []);
+
     const getStaffAttandance = () => {
         setSpinner(true)
         axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance')
@@ -90,7 +112,7 @@ const StaffAttendance = () => {
 
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 {/* <label className="form-label">Department</label> */}
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                                <Select className="!p-0 place-holder" classNamePrefix='react-select' value={roleFilter} options={roleOptions} onChange={(option) => setRoleFilter(option)} />
                             </div>
                             <div className="xl:col-span-3 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                     {/* <input type="search" className="form-control" id="input-search" placeholder="Search" /> */}

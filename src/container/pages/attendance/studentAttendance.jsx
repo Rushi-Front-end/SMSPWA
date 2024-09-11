@@ -14,20 +14,47 @@ const StudentAttendance = () => {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
     const [spinner, setSpinner] = useState(false)
-    const getStudentAttandance = () => {
-        setSpinner(true)
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance')
-            .then(res => {
-                console.log(res, 'StaffAttendance')
-                setData(res.data)
-                setSpinner(false)
-            })
-            .catch(err => console.log(err))
-    }
+
+    const [classFilter, setClassFilter] = useState(null);
+    const [classOptions, setClassOptions] = useState([]);
 
     useEffect(() => {
-        getStudentAttandance()
-    }, [])
+        const fetchStudentAndClass = async () => {
+          try {
+            const studentAttendanceRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance')
+            const studentAttendanceData = studentAttendanceRes.data
+            
+            const studentRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
+            const studentData = studentRes.data;
+
+            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
+            const classNameData = classRes.data
+
+            const studentClassIDs = studentAttendanceData.map(attendance => {
+                const student = studentData.find(student => student.id === attendance.studentID);
+                return student ? student.classID : null;
+            }).filter(Boolean); // Remove null values
+            
+            // Filter classData based on the classID from students
+            const filteredClassData = classNameData
+                .filter(classDataItem => studentClassIDs.includes(classDataItem.id))
+                .map(classDataItem => ({
+                    id: classDataItem.id,
+                    value: classDataItem.id,
+                    label: classDataItem.className
+                }));
+            
+            setData(studentAttendanceData)
+            setClassOptions(filteredClassData);
+            
+
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+    
+        fetchStudentAndClass();
+    }, []);
 
     return (
         <div>
@@ -90,7 +117,7 @@ const StudentAttendance = () => {
 
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 {/* <label className="form-label">Department</label> */}
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                                <Select className="!p-0 place-holder" classNamePrefix='react-select' value={classFilter} options={classOptions} onChange={(option) => setClassFilter(option)} />
                             </div>
 
                             <div className="xl:col-span-3 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">

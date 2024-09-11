@@ -1,3 +1,4 @@
+import * as XLSX from 'xlsx';
 import React, { useEffect, useState } from 'react'
 import { category, singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
@@ -13,6 +14,8 @@ const ExpenseManagement = () => {
     const [startDate1, setStartDate1] = useState(new Date());
     const [spinner, setSpinner] = useState(false);
     const [deleteLeav, setDeleteLeav] = useState();
+    const [categoryFilter, setCategoryFilter] = useState(null)
+    const [categoryOptions, setCategoryOptions] = useState([])
 
     const getExpenseList = () => {
         setSpinner(true);
@@ -21,6 +24,15 @@ const ExpenseManagement = () => {
             .then((res) => {
                 console.log(res, "GTSATFF SL")
                 setData(res.data);
+
+                const categoryOptionsList = res.data.map(el => ({
+                    id: el.id,
+                    value: el.id,
+                    label: el.category
+                }))
+
+                setCategoryOptions(categoryOptionsList)
+                
                 setSpinner(false);
                 // const initialStatusMap = res.data.reduce((acc, leave) => {
                 //   acc[leave.id] = leave.status;
@@ -54,6 +66,59 @@ const ExpenseManagement = () => {
     useEffect(() => {
         getExpenseList();
     }, []);
+
+    const formatDate = (inputDate) => {
+        const date = new Date(inputDate);
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        const formattedDate = `${day}/${month}/${year}`;
+        
+        return formattedDate
+    }
+
+    const handleFilter = async () => {
+        const startDateFilter = formatDate(new Date(startDate));
+        const endDateFilter = formatDate(new Date(startDate1))
+
+        let params = [];
+    
+        if (startDateFilter) {
+            params.push(`FromDate=${encodeURIComponent(startDateFilter)}`);
+        }
+    
+        if (endDateFilter) {
+            params.push(`ToDate=${encodeURIComponent(endDateFilter)}`);
+        }
+    
+        if (categoryFilter) {
+            params.push(`Category=${encodeURIComponent(categoryFilter.label)}`);
+        }
+    
+        if (params.length === 0) {
+            toast.error("Choose a Filter");
+            return;
+        }
+    
+        const queryString = params.join("&");
+        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/GetExpensesByFilter?${queryString}`;
+    
+        try {
+            const result = await axios.get(url);
+            const filteredData = result.data;
+    
+            if (!filteredData?.length) {
+                toast.error("No data found");
+            }
+
+            setData(filteredData);
+        } catch (error) {
+            toast.error("An error occurred while fetching data");
+            console.error("Error fetching data:", error);
+        }
+    }
 
     return (
         <div>
@@ -116,14 +181,14 @@ const ExpenseManagement = () => {
                                             <ul className="hs-dropdown-menu ti-dropdown-menu hidden"
                                                 aria-labelledby="dropdownMenuButton2">
                                                 <li><Link className="ti-dropdown-item" to="#">
-                                                    <div id="export_1724247195639" className="dropdown-item">Excel (.xls)</div>
+                                                    <div id="export_1724247195639" className="dropdown-item"onClick={() => exportData(data, 'xls')}>Excel (.xls)</div>
                                                 </Link>
                                                 </li>
                                                 <li><Link className="ti-dropdown-item" to="#">
-                                                    <div id="export_1724247195639" className="dropdown-item">Excel (.xlsx)</div>
+                                                    <div id="export_1724247195639" className="dropdown-item" onClick={() => exportData(data, 'xlsx')}>Excel (.xlsx)</div>
                                                 </Link></li>
                                                 <li><Link className="ti-dropdown-item" to="#">
-                                                    <div id="export_1724247195639" className="dropdown-item">Excel (.csv)</div>
+                                                    <div id="export_1724247195639" className="dropdown-item" onClick={() => exportData(data, 'csv')}>Excel (.csv)</div>
                                                 </Link></li>
                                             </ul>
                                         </div>
@@ -162,11 +227,10 @@ const ExpenseManagement = () => {
                                 <div className="expense-category-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                     <label className="ti-form-select rounded-sm !p-0 mb-2"> Category:</label>
 
-                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' options={category}
-                                    />
+                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' value={categoryFilter} options={categoryOptions} onChange={(option) => setCategoryFilter(option)} />
                                 </div>
                                 <div className="expenseFilter-btn xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>
+                                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
                                 </div>
 
                             </div>
@@ -331,5 +395,40 @@ const ExpenseManagement = () => {
         </div>
     )
 }
+
+export const exportData = (jsonData, fileType) => {
+    // Convert JSON data to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(jsonData);
+  
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+  
+    // Determine file extension and book type based on the fileType argument
+    let fileExtension;
+    let bookType;
+  
+    switch (fileType) {
+      case 'csv':
+        fileExtension = '.csv';
+        bookType = 'csv';
+        break;
+      case 'xls':
+        fileExtension = '.xls';
+        bookType = 'xls';
+        break;
+      case 'xlsx':
+        fileExtension = '.xlsx';
+        bookType = 'xlsx';
+        break;
+      default:
+        console.error('Unsupported file type');
+        return;
+    }
+  
+    // Trigger the download of the file
+    XLSX.writeFile(workbook, `exported_data${fileExtension}`, { bookType });
+  };
+
 
 export default ExpenseManagement

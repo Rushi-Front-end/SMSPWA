@@ -9,11 +9,12 @@ import { toast } from 'react-toastify';
 const StaffLeave = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
-  const [selectedRoleId, setSelectedRoleId] = useState(null);
   const [spinner, setSpinner] = useState(false);
   const [deleteLeav, setDeleteLeav] = useState();
   const [statusMap, setStatusMap] = useState({});
   const [roleName, setRoleName] = useState({})
+  const [roleFilter, setRoleFilter] = useState(null)
+  const [roleOptions, setRoleOptions] = useState([])
   const [staffList, setStaffList] = useState([])
 
   const getStaffList = () => {
@@ -67,6 +68,12 @@ const StaffLeave = () => {
         const staffRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
         const staffData = staffRes.data;
         const updatedStaffData = staffData.map(staff => ({...staff, roleName: roleData.filter(role => staff.roleID === role.id)[0].roleName}));
+        const roleOptionsList = roleData.map(role => ({
+          id: role.id,
+          value: role.id,
+          label: role.roleName
+      }));
+      setRoleOptions(roleOptionsList)
         setStaffList(updatedStaffData)
       } catch (error) {
         console.error('Error fetching user roles:', error);
@@ -79,13 +86,12 @@ const StaffLeave = () => {
   useEffect(() => {
     getStaffList();
   }, []);
-  console.log(selectedRoleId,"selectedRoleId")
 
   const dataFilter = () => {
     setSpinner(true);
     const params = {};
     if (search) params.fullname = search;
-    if (selectedRoleId) params.roleid = selectedRoleId.id;
+    if (roleFilter) params.roleid = roleFilter.id;
 
     axios
       .get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/GetStaffLeaveByFilter', { params })
@@ -183,8 +189,9 @@ const StaffLeave = () => {
                   <Select
                     className="!p-0 place-holder"
                     classNamePrefix="react-select"
-                    options={roleID}
-                    onChange={(selectedOption) => setSelectedRoleId(selectedOption)}
+                    value={roleFilter}
+                    options={roleOptions}
+                    onChange={(option) => setRoleFilter(option)}
                     isClearable
                   />
                 </div>
