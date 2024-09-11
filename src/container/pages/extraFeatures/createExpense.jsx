@@ -173,7 +173,9 @@ const CreateExpense = () => {
                                                     <DatePicker
                                                         {...field}
                                                         selected={startDate}
-                                                dateFormat="dd/MM/yyyy"  
+                                                        dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true"   
 
                                                         onChange={(date) => {
                                                             setStartDate(date);

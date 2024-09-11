@@ -106,7 +106,9 @@ const ExpenseManagement = () => {
                                     <label className="ti-form-select rounded-sm !p-0 mb-2"> From:</label>
                                     <div className="input-group !flex-nowrap">
                                         <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
-                                        <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10" showIcon selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" />
+                                        <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10" dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true"  showIcon selected={startDate} onChange={(date) => setStartDate(date)}  />
                                     </div>
                                 </div>
                                 <div className='expense-datepicker'>
@@ -114,7 +116,9 @@ const ExpenseManagement = () => {
                                     <div className="input-group !flex-nowrap">
 
                                         <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
-                                        <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10" showIcon selected={startDate1} onChange={(date) => setStartDate1(date)} dateFormat="dd/MM/yyyy" />
+                                        <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10" 
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true"  showIcon selected={startDate1} onChange={(date) => setStartDate1(date)} dateFormat="dd/MM/yyyy" />
                                     </div>
                                 </div>
                                 <div className="expense-category-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">

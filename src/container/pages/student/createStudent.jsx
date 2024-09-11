@@ -302,7 +302,9 @@ const CreateStudent = () => {
                                             defaultValue={startDate1}
                                             render={() => (
                                                 <DatePicker
-                                                dateFormat="dd/MM/yyyy"  
+                                                dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true"   
 
                                                 className="ti-form-input  focus:z-10" 
                                                 selected={startDate1}
@@ -375,7 +377,9 @@ const CreateStudent = () => {
                                             render={() => (
                                                 <DatePicker
                                                 className="ti-form-input  focus:z-10" 
-                                                dateFormat="dd/MM/yyyy"  
+                                                dateFormat="dd/MM/yyyy"
+                                                showMonthDropdown="true"
+                                                showYearDropdown="true"   
 
                                                 selected={startDate}
                                                 placeholderText="Select date"

@@ -52,7 +52,7 @@ const RolesPermissionTable = ({sendDataToParent}) => {
                     <thead><tr className="border-b border-defaultborder">
                         <th scope="col" className="text-start">Sl No.</th>
                         <th scope="col" className="text-start">	Role Name</th>
-                        <th scope="col" className="text-start">Permissions</th>
+                        {/* <th scope="col" className="text-start">Permissions</th> */}
                         <th scope="col" className="text-start">Description</th>
                         {/* <th scope="col" className="text-start">Status</th> */}
                         <th scope="col" className="text-start">Action</th>
@@ -68,11 +68,11 @@ const RolesPermissionTable = ({sendDataToParent}) => {
                                     return <tr className="border-b border-defaultborder" key={index}>
                                          <td>{index + 1}</td>
                                          <td>{dt.roleName}</td>
-                                         <td>
+                                         {/* <td>
                                              <Link>
                                                  <button type="button" className="ti-btn ti-btn-danger-full ti-btn-wave">Assign Permission</button>
                                              </Link>
-                                         </td>
+                                         </td> */}
                                          <td><p>
                                               {dt.description}
                                              </p>

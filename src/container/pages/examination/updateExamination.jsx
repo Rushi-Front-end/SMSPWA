@@ -188,7 +188,9 @@ const [data, setData] = useState([]);
                                         {...field}
                                         className="ti-form-input  focus:z-10" 
                                         selected={ startDate}
-                                        dateFormat="dd/MM/yyyy"  
+                                        dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true"   
                                         placeholderText="Select date"
                                         onChange={(date) => {
                                             handleChange(date);
@@ -213,7 +215,9 @@ const [data, setData] = useState([]);
                                         {...field}
                                         className="ti-form-input  focus:z-10" 
                                         selected={ endDate}
-                                        dateFormat="dd/MM/yyyy"  
+                                        dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true" 
                                         placeholderText="Select date"
                                         onChange={(date) => {
                                             handleChangeToDate(date);

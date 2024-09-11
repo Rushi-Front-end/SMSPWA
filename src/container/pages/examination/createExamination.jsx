@@ -149,7 +149,9 @@ const [data, setData] = useState([]);
                                                     <DatePicker
                                                         {...field}
                                                         selected={startDate}
-                                                dateFormat="dd/MM/yyyy"  
+                                                        dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true" 
 
                                                         onChange={(date) => {
                                                             setStartDate(date);
@@ -174,7 +176,9 @@ const [data, setData] = useState([]);
                                                     <DatePicker
                                                         {...field}
                                                         selected={endDate}
-                                                dateFormat="dd/MM/yyyy"  
+                                                        dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true" 
 
                                                         onChange={(date) => {
                                                             setEndDate(date);

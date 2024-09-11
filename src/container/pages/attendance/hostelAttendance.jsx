@@ -112,7 +112,9 @@ console.log(editedData,"formattedToday")
                             <div className="xl:col-span-3 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <div className="input-group !flex-nowrap">
                                     <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
-                                    <DatePicker placeholderText="Choose date" className="ti-form-input focus:z-10" showIcon selected={startDate} onChange={(date) => setStartDate(date)} />
+                                    <DatePicker placeholderText="Choose date" className="ti-form-input focus:z-10" dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true"  showIcon selected={startDate} onChange={(date) => setStartDate(date)} />
                                 </div>
                             </div>
                             <div className="xl:col-span-5 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">

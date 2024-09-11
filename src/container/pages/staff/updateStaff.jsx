@@ -182,8 +182,11 @@ useEffect(()=>{
         )
             .then(res => {
                 console.log(res, "Staffffffffff")
-
-                //navigate(`${import.meta.env.BASE_URL}pages/staff/staffList`)
+                if(res.status === 200){
+                    navigate(`${import.meta.env.BASE_URL}pages/staff/staffDetails`)
+                    axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+                    toast.success('Staff Updated Successfully')
+                }
             })
             .catch(err => console.log(err))
 
@@ -342,6 +345,8 @@ useEffect(()=>{
                                                         className="ti-form-input focus:z-10"
                                                         selected={startDate}
                                                         dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true" 
                                                         placeholderText="Select date"
                                                         onChange={(date) => {
                                                             handleChange(date);
@@ -368,9 +373,11 @@ useEffect(()=>{
                                                         className="ti-form-input focus:z-10"
                                                         selected={startDate1}
                                                         dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true" 
                                                         placeholderText="Select date"
                                                         onChange={(date) => {
-                                                            handleChange(date);
+                                                            handleChangeToDate(date);
                                                             field.onChange(date);
                                                         }}
                                                     />

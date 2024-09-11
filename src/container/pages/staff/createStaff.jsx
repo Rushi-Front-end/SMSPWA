@@ -12,6 +12,7 @@ import { Controller, useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { IdContext } from '../../../components/common/context/idContext';
+import { toast } from 'react-toastify';
 
 
 const schema = yup.object({
@@ -126,8 +127,11 @@ const CreateStaff = () => {
         )
             .then(res => {
                 console.log(res, "Staffffffffff")
-
-                //navigate(`${import.meta.env.BASE_URL}pages/staff/staffList`)
+                if(res.status === 200){
+                    navigate(`${import.meta.env.BASE_URL}pages/staff/staffDetails`)
+                    axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+                    toast.success('Staff Created Successfully')
+                }
             })
             .catch(err => console.log(err))
 
@@ -288,7 +292,8 @@ const CreateStaff = () => {
                                                         {...field}
                                                         selected={startDate}
                                                 dateFormat="dd/MM/yyyy"  
-
+                                                showMonthDropdown="true"
+                                                showYearDropdown="true" 
                                                 onChange={handleChange}
                                                         
                                                     />
@@ -324,7 +329,8 @@ const CreateStaff = () => {
                                                         {...field}
                                                         selected={startDate1}
                                                 dateFormat="dd/MM/yyyy"  
-
+                                                showMonthDropdown="true"
+                                                showYearDropdown="true" 
                                                 onChange={handleChangeToDate}
                                                     />
                                                 )}

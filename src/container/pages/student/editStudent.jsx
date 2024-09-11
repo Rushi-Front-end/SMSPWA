@@ -318,7 +318,9 @@ useEffect(()=>{
                                         <DatePicker
                                         {...field}
                                         className="ti-form-input  focus:z-10" 
-                                        dateFormat="dd/MM/yyyy"  
+                                        dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true"  
                                         selected={startDate1}
                                         placeholderText="Select date"
                                         onChange={(date) => {
@@ -393,7 +395,9 @@ useEffect(()=>{
                                         <DatePicker
                                         {...field}
                                         className="ti-form-input  focus:z-10" 
-                                        dateFormat="dd/MM/yyyy"  
+                                        dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true"  
                                         selected={ startDate}
                                         placeholderText="Select date"
                                         onChange={(date) => {

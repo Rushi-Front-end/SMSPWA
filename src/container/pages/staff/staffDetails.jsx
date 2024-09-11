@@ -160,7 +160,7 @@ const StaffDetails = () => {
                                         spinner ? <Loader /> :
                                        // Array.isArray(data?.list) && data.list.length > 0 ? (
                                             data.map((dt, index) => {
-                                              return  <tr className="border-b border-defaultborder">
+                                              return  <tr className="border-b border-defaultborder" key={index}>
                                                     <td>{index + 1}</td>
                                                     {/* <td>EMP005</td> */}
                                                     <td>

@@ -200,7 +200,9 @@ const [staffNameDrop, setStaffNameDrop] = useState([]);
                                                 <DatePicker
                                                 className="ti-form-input  focus:z-10" 
                                                 selected={startDate}
-                                                dateFormat="dd/MM/yyyy"  
+                                                dateFormat="dd/MM/yyyy" 
+                                                showMonthDropdown="true"
+                                                showYearDropdown="true" 
                                                 placeholderText="Select date"
                                                 onChange={handleChange}
                                                 />
@@ -223,7 +225,8 @@ const [staffNameDrop, setStaffNameDrop] = useState([]);
                                                 className="ti-form-input  focus:z-10" 
                                                 selected={startDate1}
                                                 dateFormat="dd/MM/yyyy"  
-
+                                                showMonthDropdown="true"
+                                                showYearDropdown="true" 
                                                 placeholderText="Select date"
                                                 onChange={handleChangeToDate}
                                                 />
