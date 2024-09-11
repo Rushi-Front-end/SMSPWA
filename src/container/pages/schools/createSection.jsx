@@ -43,6 +43,13 @@ const CreateSection = (props) => {
             if(res.status===201){
                 dispatch(fetchClassList())
                 toast.success('Section Added Successfully')
+                setTimeout(() => {
+                    
+                    reset({
+                        description:'',
+                        classID:''
+                    })
+                }, 2000);
             }
         })
         .catch((error)=>{
