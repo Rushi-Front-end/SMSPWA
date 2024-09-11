@@ -98,17 +98,55 @@ const ExpenseManagement = () => {
             <div className='create-stud-table'>
                 <div className='box p-4'>
                     <div className='expenses-wrapper'>
+                        <div className='flex justify-between'>
                         <h4>Expense List</h4>
+                        <div className='expense-export-create-sec flex  justify-end'>
+
+
+                            <div className='export-button'>
+                                <div className="ti-btn-list">
+                                    <div className="ti-btn-group" >
+                                        <div className="hs-dropdown ti-dropdown">
+                                            <button className={'ti-btn ti-btn-outline-warning ti-dropdown-toggle !rounded-full me-2'} type="button"
+                                                id="dropdownMenuButton2"
+                                                aria-expanded="false">
+                                                Export<i
+                                                    className="ri-arrow-down-s-line align-middle ms-1 inline-block"></i>
+                                            </button>
+                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden"
+                                                aria-labelledby="dropdownMenuButton2">
+                                                <li><Link className="ti-dropdown-item" to="#">
+                                                    <div id="export_1724247195639" className="dropdown-item">Excel (.xls)</div>
+                                                </Link>
+                                                </li>
+                                                <li><Link className="ti-dropdown-item" to="#">
+                                                    <div id="export_1724247195639" className="dropdown-item">Excel (.xlsx)</div>
+                                                </Link></li>
+                                                <li><Link className="ti-dropdown-item" to="#">
+                                                    <div id="export_1724247195639" className="dropdown-item">Excel (.csv)</div>
+                                                </Link></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="createstudent-btn">
+                                <Link to={`${import.meta.env.BASE_URL}pages/extrafeatures/createExpense`}>
+                                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create Expense</button>
+                                </Link>
+                            </div>
+                        </div>
+                        </div>
                         <div className='expenses-top-wrapper flex justify-between pt-4'>
 
-                            <div className='flex left-expense-date'>
+                            <div className='flex left-expense-date align-center'>
                                 <div className='expense-datepicker'>
                                     <label className="ti-form-select rounded-sm !p-0 mb-2"> From:</label>
                                     <div className="input-group !flex-nowrap">
                                         <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
                                         <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10" dateFormat="dd/MM/yyyy"
-                                                        showMonthDropdown="true"
-                                                        showYearDropdown="true"  showIcon selected={startDate} onChange={(date) => setStartDate(date)}  />
+                                            showMonthDropdown="true"
+                                            showYearDropdown="true" showIcon selected={startDate} onChange={(date) => setStartDate(date)} />
                                     </div>
                                 </div>
                                 <div className='expense-datepicker'>
@@ -116,56 +154,25 @@ const ExpenseManagement = () => {
                                     <div className="input-group !flex-nowrap">
 
                                         <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
-                                        <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10" 
-                                                        showMonthDropdown="true"
-                                                        showYearDropdown="true"  showIcon selected={startDate1} onChange={(date) => setStartDate1(date)} dateFormat="dd/MM/yyyy" />
+                                        <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10"
+                                            showMonthDropdown="true"
+                                            showYearDropdown="true" showIcon selected={startDate1} onChange={(date) => setStartDate1(date)} dateFormat="dd/MM/yyyy" />
                                     </div>
                                 </div>
                                 <div className="expense-category-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
-                                <label className="ti-form-select rounded-sm !p-0 mb-2"> Category:</label>
+                                    <label className="ti-form-select rounded-sm !p-0 mb-2"> Category:</label>
 
-                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' options={category} 
-                                       />
+                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' options={category}
+                                    />
                                 </div>
-                            </div>
-                            <div className='expense-export-create-sec flex'>
+                                <div className="expenseFilter-btn xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>
+                                </div>
 
-
-                                <div className='export-button'>
-                                    <div className="ti-btn-list">
-                                        <div className="ti-btn-group" >
-                                            <div className="hs-dropdown ti-dropdown">
-                                                <button className={'ti-btn ti-btn-outline-warning ti-dropdown-toggle !rounded-full me-2'} type="button"
-                                                    id="dropdownMenuButton2"
-                                                    aria-expanded="false">
-                                                    Export<i
-                                                        className="ri-arrow-down-s-line align-middle ms-1 inline-block"></i>
-                                                </button>
-                                                <ul className="hs-dropdown-menu ti-dropdown-menu hidden"
-                                                    aria-labelledby="dropdownMenuButton2">
-                                                    <li><Link className="ti-dropdown-item" to="#">
-                                                        <div id="export_1724247195639" className="dropdown-item">Excel (.xls)</div>
-                                                    </Link>
-                                                    </li>
-                                                    <li><Link className="ti-dropdown-item" to="#">
-                                                        <div id="export_1724247195639" className="dropdown-item">Excel (.xlsx)</div>
-                                                    </Link></li>
-                                                    <li><Link className="ti-dropdown-item" to="#">
-                                                        <div id="export_1724247195639" className="dropdown-item">Excel (.csv)</div>
-                                                    </Link></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="createstudent-btn">
-                                    <Link to={`${import.meta.env.BASE_URL}pages/extrafeatures/createExpense`}>
-                                        <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create Expense</button>
-                                    </Link>
-                                </div>
                             </div>
 
                         </div>
+
                     </div>
                     {/* Top section end */}
                     {/* Table section start */}

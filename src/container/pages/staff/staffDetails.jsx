@@ -130,6 +130,9 @@ const StaffDetails = () => {
                                 <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                     <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
                                 </div>
+                                <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>
+                            </div>
 
                             </div>
                         </div>

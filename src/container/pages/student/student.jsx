@@ -143,7 +143,7 @@ const Student = () => {
 
                         <div className='student-top-grid'>
                             <div className='grid grid-cols-12 sm:gap-6'>
-                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <div className="xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12">
                                     {/* <input type="search" onChange={(e) => handleChange(e.target.value)} value={search} className="form-control" id="input-search" placeholder="Search" /> */}
                                     <div className="flex rounded-sm search-box">
                                         <input type="search" onBlur={(e)=>handleChange(search)}  onChange={(e) =>  setSearch(e.target.value)} value={search}  id="hs-trailing-button-add-on-with-icon" name="hs-trailing-button-add-on-with-icon" className="ti-form-input rounded-none rounded-s-sm focus:z-10" />
@@ -156,12 +156,15 @@ const Student = () => {
                                 </div>
                                 
 
-                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <div className="xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12">
                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
                                 </div> 
-                                <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <div className="xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12">
                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
                                 </div> 
+                            <div className="stud-create-btn xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>
+                            </div>
 
                             </div>
                         </div>
