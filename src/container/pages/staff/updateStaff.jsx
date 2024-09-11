@@ -126,6 +126,7 @@ useEffect(()=>{
       //  setStartDate(new Date(editStudent.dob));
        // setStartDate1(new Date(editStudent.enrolmentDate));
           // setStudent(res.data)
+          setStaffRole(roleList.filter(role => role.id === editStaff.roleID)[0])
           Object.keys(editStaff).forEach(key => {
             setValue(key, editStaff[key]);
         });
@@ -162,7 +163,7 @@ useEffect(()=>{
       console.log(err)
     })
 }
-  },[params.id, setValue])
+  },[params.id, setValue, roleList])
 
 
 
@@ -483,7 +484,7 @@ useEffect(()=>{
                             <Select className="!p-0 place-holder"   
                                     isClearable
                                     options={enableLogin}
-                                    value={enableLoginValue ? enableLogin.find(x => x.value === enableLoginValue) : enableLoginValue}
+                                    value={enableLoginValue  ? enableLogin.find(x => x.value === (enableLoginValue? "Yes" : "No")) : {id: 2, value: 'No', label: 'No'}}
                                     onChange={option => enableLoginOnChange(option ? option.value : option)}
                                     {...restenableLoginSelectField}
                                     classNamePrefix='react-select'  />
