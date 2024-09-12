@@ -9,6 +9,7 @@ const TimeInnerTable = ({ selectedOption, selectedDay }) => {
 
 	useEffect(() => {
 		(async () => await fetchTimeTableData())();
+		setNewTimeTableRow([]);
 	}, [selectedOption, selectedDay]);
 
 	const fetchTimeTableData = async () => {
@@ -22,9 +23,9 @@ const TimeInnerTable = ({ selectedOption, selectedDay }) => {
 
 			const timeTableListData = timeTableResponse.data.filter(
 				(timeTableData) =>
-					timeTableData.schoolID === schoolId &&
-					timeTableData.classID === classId &&
-					timeTableData.day === day
+					timeTableData.schoolID == schoolId &&
+					timeTableData.classID == classId &&
+					timeTableData.day == day
 			);
 
 			setTimeTableList(timeTableListData);
@@ -82,6 +83,7 @@ const TimeInnerTable = ({ selectedOption, selectedDay }) => {
 							{timeTableList?.map((timeTableItem, ind) => {
 								return (
 									<TimeTableEntry
+										key={timeTableItem.id}
 										isSaved={true}
 										data={timeTableItem}
 										index={ind}
@@ -356,7 +358,12 @@ const TimeTableEntry = ({
 				</td>
 			) : (
 				<td>
-					<button className="action-button-delete p-1">Delete</button>
+					<button
+						className="action-button-delete p-1"
+						onClick={() => removeAddNew(newIndex)}
+					>
+						Delete
+					</button>
 					<button
 						className="action-button-save p-1"
 						onClick={handleSave}

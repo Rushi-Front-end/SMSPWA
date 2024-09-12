@@ -12,11 +12,17 @@ import { toast } from 'react-toastify';
 const Student = () => {
 
     const [data, setData] = useState([])
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState(null)
     const [spinner, setSpinner] = useState(false)
     const [deleteStudent, setDeleteStudent] = useState()
     const [healthStudName, setHealthStudName] = useState([]);
     const [healthClassName, setHealthClassName] = useState([]);
+
+    const [classFilter, setClassFilter] = useState(null);
+    const [classOptions, setClassOptions] = useState([]);
+
+    const [sectionFilter, setSectionFilter] = useState(null);
+    const [sectionOptions, setSectionOptions] = useState([])
     
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -64,14 +70,34 @@ const Student = () => {
 
     const getStudentName = async () => {
         try {
-            const roleRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
-            const roleData = roleRes.data;
+            const studentsRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
+            const studentsData = studentsRes.data;
             const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
             const classNameData = classRes.data
-            // Assuming roleData is an array of students
-            setHealthStudName(roleData);
+            // Assuming studentsData is an array of students
+            setHealthStudName(studentsData);
             setHealthClassName(classNameData)
-            console.log(roleData, "StudentNAMein helath", classRes);
+
+            const classIDs = [...new Set(studentsData.map(student => student.classID))];
+            const filteredClasses = classNameData.filter(cls => classIDs.includes(cls.id));
+
+            const classOptionsList = filteredClasses.map(classData => ({
+                id: classData.id,
+                value: classData.id,
+                label: classData.className
+            }))
+            setClassOptions(classOptionsList)
+
+            const sectionOptionsList = studentsData.map(student => {
+                return {
+                    id: student.classID,
+                    value: student.section,
+                    label: student.section
+                };
+            });
+            setSectionOptions(sectionOptionsList)
+            
+            console.log(studentsData, "StudentNAMein helath", classRes);
         } catch (error) {
             console.error('Error fetching user roles:', error);
         }
@@ -100,7 +126,59 @@ const Student = () => {
             console.error("Error deleting student:", err);
         }
     }
+    
+    const handleFilter = async () => {
+        let params = [];
+    
+        if (search) {
+            params.push(`Name=${encodeURIComponent(search)}`);
+        }
+    
+        if (classFilter) {
+            params.push(`ClassId=${classFilter.value}`);
+        }
 
+        if(sectionFilter) {
+            params.push(`Section=${sectionFilter.value}`)
+        }
+    
+        if (params.length === 0) {
+            toast.error("Choose a Filter");
+            return;
+        }
+    
+        const queryString = params.join("&");
+        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/GetAllStudentHealthDataByFilter?${queryString}`;
+    
+        try {
+            const result = await axios.get(url);
+            const filteredData = result.data;
+    
+            if (!filteredData?.length) {
+                toast.error("No data found");
+            }
+
+            const filteredStudentDataRes = filteredData.map(async (el) => {
+                try {
+                    const studentRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${el.studentID}`)
+                    const studentData = studentRes.data;
+
+                    return studentData
+                    
+                } catch (error) {
+                    toast.error("An error occurred while fetching student data")
+                    console.error("Error in fetching student by ID", error)
+                }
+            })
+
+            const filteredStudentData = await Promise.all(filteredStudentDataRes)
+
+            setData(filteredStudentData);
+        } catch (error) {
+            toast.error("An error occurred while fetching data");
+            console.error("Error fetching data:", error);
+        }
+    }
 
 
     return (
@@ -146,7 +224,7 @@ const Student = () => {
                                 <div className="xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12">
                                     {/* <input type="search" onChange={(e) => handleChange(e.target.value)} value={search} className="form-control" id="input-search" placeholder="Search" /> */}
                                     <div className="flex rounded-sm search-box">
-                                        <input type="search" onBlur={(e)=>handleChange(search)}  onChange={(e) =>  setSearch(e.target.value)} value={search}  id="hs-trailing-button-add-on-with-icon" name="hs-trailing-button-add-on-with-icon" className="ti-form-input rounded-none rounded-s-sm focus:z-10" />
+                                        <input type="search" onChange={(e) =>  setSearch(e.target.value)} value={search}  id="hs-trailing-button-add-on-with-icon" name="hs-trailing-button-add-on-with-icon" className="ti-form-input rounded-none rounded-s-sm focus:z-10" />
                                         <button aria-label="button"  onClick={()=>filterData(search)} type="button" className="inline-flex search-icon flex-shrink-0 justify-center items-center rounded-e-sm border border-transparent font-semibold bg-warning text-white hover:bg-warning focus:z-10 focus:outline-none focus:ring-0 focus:ring-warning transition-all text-sm">
                                             <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
@@ -157,13 +235,13 @@ const Student = () => {
                                 
 
                                 <div className="xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12">
-                                   <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                                    <Select className="!p-0 place-holder" classNamePrefix='react-select' value={classFilter} options={classOptions} onChange={(option) => setClassFilter(option)} />
                                 </div> 
                                 <div className="xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12">
-                                   <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect} />
+                                   <Select className="!p-0 place-holder" classNamePrefix='react-select' value={sectionFilter} options={sectionOptions} onChange={(option) => setSectionFilter(option)} />
                                 </div> 
                             <div className="stud-create-btn xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
                             </div>
 
                             </div>

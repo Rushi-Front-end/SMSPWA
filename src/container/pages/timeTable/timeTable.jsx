@@ -22,7 +22,7 @@ const TimeTable = () => {
             const schoolId = localStorage.getItem("schoolId");
             if(schoolId == null) throw Error()
             
-            const classList = response.data.filter(classData => classData.schoolID === schoolId)
+            const classList = response.data.filter(classData => classData.schoolID == schoolId)
             const classListOptions = classList.map((classData) => ({id: classData.id, value: classData.id, label: classData.className, schoolId: schoolId}))
 
             setClassDataList(classListOptions);
