@@ -139,7 +139,7 @@ const TimeTableEntry = ({
 	selectedDay,
 }) => {
 	const [isDisabled, setIsDisabled] = useState(isSaved);
-	const [key, setKey] = useState("");
+	const [id, setId] = useState("");
 	const [startTime, setStartTime] = useState("");
 	const [endTime, setEndTime] = useState("");
 	const [subjectType, setSubjectType] = useState("");
@@ -158,7 +158,7 @@ const TimeTableEntry = ({
 
 	useEffect(() => {
 		if (isSaved) {
-			setKey(data.id);
+			setId(data.id);
 			setStartTime(data.startTime);
 			setEndTime(data.endTime);
 			setSubjectType(data.subjectType);
@@ -210,13 +210,17 @@ const TimeTableEntry = ({
 		setIsDisabled(false);
 	};
 
+	const disableInputs = () => {
+		setIsDisabled(true);
+	}
+
 	const handleSave = async () => {
 		const schoolId = selectedOption?.schoolId;
 		const classId = selectedOption.id;
 		const day = selectedDay;
 		if (isSaved) {
 			const response = await axios.put(
-				`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/TimeTable?schoolId=${schoolId}&classId=${classId}`,
+				`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/TimeTable?id=${id}`,
 				{
 					schoolID: schoolId,
 					classID: classId,
@@ -228,6 +232,7 @@ const TimeTableEntry = ({
 					teacherID: staff.roleID,
 				}
 			);
+			disableInputs()
 			await fetchTimeTableData();
 		} else {
 			const response = await axios.post(
@@ -248,8 +253,18 @@ const TimeTableEntry = ({
 		}
 	};
 
+	const handleDelete = async () => {
+		if(isSaved) {
+			console.debug("delete saved", id)
+			const response = await axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/TimeTable?id=${id}`)
+			await fetchTimeTableData()
+		} else {
+			removeAddNew(newIndex)
+		}
+	}
+
 	return (
-		<tr className="border-b border-defaultborder" key={key}>
+		<tr className="border-b border-defaultborder">
 			<td>{isSaved ? index + 1 : newIndex + 1}</td>
 			<td>
 				<div className="timePicker-wrapper">
@@ -349,7 +364,7 @@ const TimeTableEntry = ({
 								</Link>
 							</li>
 							<li>
-								<Link className="ti-dropdown-item" to="#">
+								<Link className="ti-dropdown-item" to="#" onClick={handleDelete}>
 									Delete
 								</Link>
 							</li>
@@ -360,7 +375,7 @@ const TimeTableEntry = ({
 				<td>
 					<button
 						className="action-button-delete p-1"
-						onClick={() => removeAddNew(newIndex)}
+						onClick={handleDelete}
 					>
 						Delete
 					</button>
