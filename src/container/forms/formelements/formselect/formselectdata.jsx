@@ -155,6 +155,15 @@ export const roleID = [
   {id:8, value:"Security guard", label:"Security guard" },
   {id:9, value:"Other", label:"Other" },
 ]
+export const reportType = [
+  
+  {id:1, value:"Exam Report", label:"Exam Report" },
+  {id:2, value:"Expense Report", label:"Expense Report" },
+  {id:3, value:"Hostel Attendance Report", label:"Hostel Attendance Report" },
+  {id:4, value:"Student Health Report", label:"Student Health Report" },
+  {id:5, value:"Student Attendance Report", label:"Student Attendance Report" },
+  {id:6, value:"Staff Attendance Report", label:"Staff Attendance Report" },
+]
 
 
 

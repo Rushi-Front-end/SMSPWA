@@ -3,18 +3,27 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 
+import { useForm, useController, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import { toast } from 'react-toastify';
 const HealthMedical = (props) => {
     console.log(props,"setStudMedical")
 
     const navigate = useNavigate()
+    const { register, handleSubmit, formState, control, setValue, reset } = useForm({
+        resolver: yupResolver()
+    });
+    const { errors, isValid } = formState;
 
     const healthCheck = (e) =>{ 
-        console.log(e.target.value, "healthCheck")
+        const medicalHealthValue = e.target
+        console.log(medicalHealthValue, "healthCheck")
+
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(e,"dsaddasdasdasdasd")
+    const onSubmit = (formData) => {
+        console.log(formData,"dsaddasdasdasdasd")
         // axios.post('https://66c9968d59f4350f064ce86d.mockapi.io/students', props.values)
         //     .then(res => {
         //         console.log(res)
@@ -26,6 +35,7 @@ const HealthMedical = (props) => {
         <div className='student-medical-wrapper'>
             <div className='student-medical-innerwrap'>
                 <h4>Student Medical Details</h4>
+                <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='individual-med-row pt-4'>
                     <h6>A. Defects at Birth</h6>
                     <div className='medical-answer-row pt-2'>
@@ -236,7 +246,7 @@ const HealthMedical = (props) => {
 
                 <div className='student-create-btn'>
                     <div className='flex justify-end'>
-                        <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave"  onClick={handleSubmit} >Save</button>
+                        <button type="submit" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave"  >Save</button>
                         <div className='backButton'>
                                 <button onClick={()=>props.setStudMedical(false)} type="button" className="ti-btn ti-btn-info-full ml-15 !rounded-full ti-btn-wave">Reset</button>
                         </div>
@@ -244,6 +254,7 @@ const HealthMedical = (props) => {
                     </div>
                 </div>
                 {/* End of the button */}
+                </form>
             </div>
             {/* // End of the student medical innerwrapper */}
         </div>

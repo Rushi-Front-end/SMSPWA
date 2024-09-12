@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { prakalpName, singleselect } from '../../forms/formelements/formselect/formselectdata';
+import { prakalpName, reportType, singleselect } from '../../forms/formelements/formselect/formselectdata';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -190,8 +190,8 @@ const Reports = () => {
                                     <Select
                                         className="!p-0 place-holder"
                                         classNamePrefix='react-select'
-                                        options={singleselect}
-                                        value={reportTypeValue ? singleselect.find(x => x.value === reportTypeValue) : null}
+                                        options={reportType}
+                                        value={reportTypeValue ? reportType.find(x => x.value === reportTypeValue) : null}
                                         onChange={option => reportTypeOnChange(option ? option.value : '')}
                                         {...restreportTypeField}
                                     />
