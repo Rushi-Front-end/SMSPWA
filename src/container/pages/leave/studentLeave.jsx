@@ -18,6 +18,8 @@ const StudentLeave = () => {
     const [classOptions, setClassOptions] = useState([]);
 
     const [statusMap, setStatusMap] = useState({}); // Store status for each leave
+    const [healthStudName, setHealthStudName] = useState([]);
+    const [healthClassName, setHealthClassName] = useState([]);
 
     useEffect(() => {
         const fetchStudentAndClass = async () => {
@@ -140,7 +142,25 @@ const StudentLeave = () => {
             console.error("Error fetching data:", error);
         }
     }
-    
+    const getStudentName = async () => {
+        try {
+            const studentsRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
+            const studentsData = studentsRes.data;
+            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
+            const classNameData = classRes.data
+            // Assuming studentsData is an array of students
+            setHealthStudName(studentsData);
+            setHealthClassName(classNameData)
+            const classIDs = [...new Set(studentsData.map(student => student.classID))];
+            console.log(studentsData, "StudentNAMein helath", classRes);
+        } catch (error) {
+            console.error('Error fetching user roles:', error);
+        }
+    }
+    useEffect(() => {
+        getStudentName();
+    }, []);
+
 
 
   return (
@@ -224,8 +244,9 @@ const StudentLeave = () => {
                                 
                                 <tr className="border-b border-defaultborder">
                                 <th scope="col" className="text-start">#</th>
+                                <th scope="col" className="text-start">Roll Number</th>
                                 <th scope="col" className="text-start">Student Name</th>
-                                <th scope="col" className="text-start">	Designation</th>
+                                <th scope="col" className="text-start">	Class</th>
                                 <th scope="col" className="text-start">Leave Type</th>
                                 <th scope="col" className="text-start">Duration	</th>
                                 <th scope="col" className="text-start">Status	</th>
@@ -238,9 +259,10 @@ const StudentLeave = () => {
                         return    <tbody key={index}>
                                 <tr>
                                     <td rowSpan="2">{index + 1}</td>
+                                       <td>{Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.rollNumber || 'Unknown'}</td>
                                     <td>
                                        <Link className='text-primary'> {dt.fullName} </Link></td>
-                                    <td>Teacher</td>
+                                       <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.studentID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.section || 'Unknown'}</td>
                                     <td>{dt.leaveType}</td>
                                                         <td>{`${dt.fromDate} - ${dt.toDate}`}</td>
                                                         <td>  <span className={`badge ${statusMap[dt.id] === 'Approved' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>

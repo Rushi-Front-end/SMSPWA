@@ -1,10 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import AdmissionStudentBasicDetails from '../admissionQuery/admissionStudentBasicDetails';
 import HealthAcademicDetails from './healthAcademicDetails';
 import HealthDocumentDetails from './healthDocumentDetails';
+import axios from 'axios';
+import Loader from '../loader/loader';
+import { toast } from 'react-toastify';
 
 const ViewHealthDocument = () => {
+
+    const [data, setData] = useState([])
+    const [spinner, setSpinner] = useState(false)
+
+    // const getStaffList = () => {
+    //     setSpinner(true)
+    //     try {
+    //     axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+    //         .then(res => {
+    //             console.log("VIEWDOC", res.data)
+    //             setData(res.data)
+    //             setSpinner(false)
+    //         })
+    //     }
+    //     catch (error) {
+    //         console.error('Error fetching user roles:', error);
+    //       }
+    // }
+
+    // useEffect(() => {
+    //     getStaffList()
+    // }, [])
+
+
+
     return (
         <div className="viewdoc-wrapper pt-4">
                         <div className="viewdoc-inner-wrapper">

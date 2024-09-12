@@ -1,6 +1,53 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import media37 from "../../../assets/images/media/media-37.jpg";
+
+import axios from 'axios';
+import Loader from '../loader/loader';
+import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+
 const StudentCardDetails = () => {
+    const [data, setData] = useState([])
+    const [spinner, setSpinner] = useState(false)
+
+    const params = useParams()
+    useEffect((id)=>{
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${params.id}`)
+    },[params.id])
+    
+    
+useEffect(()=>{
+    setSpinner(true)
+    if (params.id) {
+    axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${params.id}`)
+    .then((res)=>{
+      console.log(res.data)
+      if(res.data){
+        setData(res.data)
+        setSpinner(false)
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+}
+  },[params.id])
+
+
+    const getStudentDetails = () => {
+        setSpinner(true)
+        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
+            .then(res =>{ 
+                setData(res.data)
+                setSpinner(false)
+            })
+            .catch(err => console.log(err))
+    }
+
+    useEffect(() => {
+        getStudentDetails()
+    }, [])
+
   return (
     <div>
     <div className="xl:col-span-4 col-span-12">
@@ -13,13 +60,18 @@ const StudentCardDetails = () => {
                         <div className="md:col-span-8 col-span-12">
                            
                             <div className="box-body">
-                                <h6 className="box-title font-semibold"> Employee 1</h6>
-                                <p className="card-text">Mobile No.: +91 453453453</p>
-                                <p className="card-text">Email Id: asdfasdf@gmail.com</p>
-                                <p className="card-text">Alternate Mobile No.: 234324324</p>
-                                <p className="card-text">Date of Joining: 01 Jan 2022</p>
-                                <p className="card-text">Gender:</p>
-                                <p className="card-text">Address:</p>
+                            {
+                                        spinner ? <Loader /> :
+                                 <div> 
+                                <h6 className="box-title font-semibold"> {data.fullName}</h6>
+                                <p className="card-text pt-4"><b>Mobile No:</b> {data.mobileNumber}</p>
+                                <p className="card-text pt-4"><b>Email Id:</b> {data.email}</p>
+                                <p className="card-text pt-4"><b>Alternate Mobile No:</b> {data.emergencyMobileNumber}</p>
+                                <p className="card-text pt-4"><b>Date of Joining:</b> {data.enrolmentDate}</p>
+                                <p className="card-text pt-4"><b>Gender:</b> {data.gender}</p>
+                                <p className="card-text pt-4"><b>Address:</b> {data.addressLine}</p>
+                                </div>       
+                            }
                             </div>
                            
                         </div>

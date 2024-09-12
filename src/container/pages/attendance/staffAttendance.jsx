@@ -8,6 +8,15 @@ import { toast } from 'react-toastify';
 
 import DatePicker from 'react-datepicker';
 
+const getFormattedToday = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    return dd + '/' + mm + '/' + yyyy;
+};
 const StaffAttendance = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [startDate3, setStartDate3] = useState(new Date());
@@ -17,7 +26,12 @@ const StaffAttendance = () => {
 
     const [roleFilter, setRoleFilter] = useState(null);
     const [roleOptions, setRoleOptions] = useState([])
+    const [staffList, setStaffList] = useState([])
 
+    const [isEditingIndex, setIsEditingIndex] = useState(null);
+    const [editedData, setEditedData] = useState({});
+    const formattedToday = getFormattedToday();
+    
     useEffect(() => {
         const fetchUserRoles = async () => {
           try {
@@ -37,6 +51,25 @@ const StaffAttendance = () => {
         fetchUserRoles();
     }, []);
 
+    useEffect(() => {
+        const fetchStaffWithUserRoles = async () => {
+          try {
+           
+            const roleRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/UserRoles');
+            const roleData = roleRes.data;
+            const staffRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+            const staffData = staffRes.data;
+            const updatedStaffData = staffData.map(staff => ({...staff, roleName: roleData.filter(role => staff.roleID === role.id)[0].roleName}));
+            setStaffList(updatedStaffData)
+          } catch (error) {
+            console.error('Error fetching user roles:', error);
+          }
+        };
+    
+        fetchStaffWithUserRoles();
+    }, []);
+    
+
     const getStaffAttandance = () => {
         setSpinner(true)
         axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance')
@@ -51,6 +84,50 @@ const StaffAttendance = () => {
         useEffect(() => {
             getStaffAttandance()
         }, [])
+
+
+        const handleEdit = (index) => {
+            setIsEditingIndex(index);
+            setEditedData(data[index]);
+        };
+    
+        const handleSave = (index) => {
+                // Ensure inTime and outTime are in the correct format (hh:mm:ss)
+        const formattedInTime = editedData.inTime.length === 5 ? `${editedData.inTime}:00` : editedData.inTime;
+        const formattedOutTime = editedData.outTime.length === 5 ? `${editedData.outTime}:00` : editedData.outTime;
+    
+            axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/${editedData.id}`, {
+                ...editedData,
+                inTime: formattedInTime,
+                outTime: formattedOutTime,
+                attendanceDate: formattedToday
+            })
+                .then((res) => {
+                    if(res.status === 200 || res.status === 204){
+                    getStaffAttandance();
+                    setIsEditingIndex(null);
+                    toast.success('Data updated successfully');
+                    }
+                })
+                .catch(err => console.log(err));
+        };
+    
+        const handleCancel = () => {
+            setIsEditingIndex(null);
+        };
+    
+        const handleChange = (e, field) => {
+            setEditedData({
+                ...editedData,
+                [field]: e.target.value,
+            });
+        };
+    
+        const getStatus = (inTime, outTime) => {
+            return inTime && outTime ? 'Present' : 'Absent';
+        };
+
+
     return (
         <div>
             <h4 className='pt-4 borderBottom'>Staff Attendance </h4>
@@ -146,7 +223,7 @@ const StaffAttendance = () => {
                                     {/* <th scope="col" className="text-start">Staff Code</th> */}
                                     <th scope="col" className="text-start"> Name</th>
                                     <th scope="col" className="text-start">Mobile No.</th>
-                                    <th scope="col" className="text-start">Designation</th>
+                                    <th scope="col" className="text-start">Role</th>
                                     <th scope="col" className="text-start">In Time</th>
                                     <th scope="col" className="text-start">Out Time</th>
                                     <th scope="col" className="text-start">Status</th>
@@ -157,43 +234,59 @@ const StaffAttendance = () => {
                                 {
                                         spinner ? <Loader /> :
                                             data.map((dt, index) => {
-                               return     <tr key={index} className="border-b border-defaultborder">
-                                        <td>1</td>
-                                        {/* <td>EMP001</td> */}
-                                        <td>
-                                            {dt.staffID}
-                                        </td>
-                                        <td>91 7777777777</td>
-                                        <td>Teacher</td>
+                                                const isEditing = index === isEditingIndex;
+                                                const status = getStatus(isEditing ? editedData.inTime : dt.inTime, isEditing ? editedData.outTime : dt.outTime);
 
-                                        <td className='xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12'>
-                                        <div className="timePicker-wrapper">
-                                        <input type="time" value={dt.inTime} className="timePicker" id="startTime" name="startTime"  />
-                                    </div>
-                                        </td>
-                                        <td className='xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12'>
-                                        <div className="timePicker-wrapper">
-                                        <input type="time" value={dt.outTime} className="timePicker" id="endTime" name="endTime" />
-                                    </div>
-                                        </td>
-                                        <td><span className="badge bg-danger/10 text-danger">Absent</span></td>
-                                        <td>
-                                            {/* <div className='save-btn'>
-                                                <button type="button" className="ti-btn ti-btn-secondary-full ti-btn-wave">Save</button>
-                                            </div> */}
-                                             <div className="ti-dropdown hs-dropdown">
-                                            <button type="button"
-                                                className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
-                                                <i className="ri-arrow-down-s-line align-middle inline-block"></i>
-                                            </button>
-                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                <li><Link className="ti-dropdown-item" to="#">Save</Link></li>
-                                                <li><Link className="ti-dropdown-item" to="#">Edit</Link></li>
-                                            </ul>
-                                        </div>
-                                        </td>
-                                    </tr>
-                                     })
+                                                return (
+                                                    <tr className="border-b border-defaultborder" key={index}>
+                                                        <td>{index + 1}</td>
+                                                        <td>{dt.fullName}</td>
+                                                        <td>91 7777777777</td>
+                                                        <td>{staffList.filter(staff => staff.id === dt.staffID)[0]?.roleName || 'Unknown'}</td> {/* Display role name */}
+                                                        <td>
+                                                            <input
+                                                                type="time"
+                                                                value={isEditing ? editedData.inTime || '' : dt.inTime}
+                                                                className="timePicker"
+                                                                id="startTime"
+                                                                name="startTime"
+                                                                disabled={!isEditing}
+                                                                onChange={(e) => handleChange(e, 'inTime')}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                type="time"
+                                                                value={isEditing ? editedData.outTime || '' : dt.outTime}
+                                                                className="timePicker"
+                                                                id="endTime"
+                                                                name="endTime"
+                                                                disabled={!isEditing}
+                                                                onChange={(e) => handleChange(e, 'outTime')}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <span className={`badge ${status === 'Present' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
+                                                                {status}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <div className="ti-dropdown hs-dropdown">
+                                                                <button type="button"
+                                                                    className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none"
+                                                                    aria-expanded="false">
+                                                                    <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                                </button>
+                                                                <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                                    <li><button className="ti-dropdown-item" onClick={() => handleEdit(index)}>Edit</button></li>
+                                                                    <li> <button type="button" className="ti-dropdown-item" onClick={() => handleSave(index)}>Save</button></li>
+                                                                    <li> <button type="button" className="ti-dropdown-item" onClick={handleCancel}>Cancel</button></li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
                                     }
 
                                 </tbody>

@@ -12,7 +12,7 @@ const StudentIndDetails = () => {
 
                             <h4 className='pt-4'>Student Details</h4>
                             <div className="studentind-flex-container">
-                                <div className='flex flex-row items-center'>
+                                <div className='flex flex-row items-center pt-2'>
                                     {/* <div className='backButton'>
                                         <Link to={`${import.meta.env.BASE_URL}pages/staff/staffDetails`}>
 

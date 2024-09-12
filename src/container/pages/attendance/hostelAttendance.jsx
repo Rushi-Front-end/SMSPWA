@@ -22,6 +22,11 @@ const HostelAttendance = () => {
     const [isEditingIndex, setIsEditingIndex] = useState(null);
     const [editedData, setEditedData] = useState({});
     const formattedToday = getFormattedToday();
+
+    const [healthStudName, setHealthStudName] = useState([]);
+    const [healthClassName, setHealthClassName] = useState([]);
+
+
     const getHosteliteAttandance = () => {
         setSpinner(true);
         axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelAttendance')
@@ -52,10 +57,12 @@ console.log(editedData,"formattedToday")
             outTime: formattedOutTime,
             attendanceDate: formattedToday
         })
-            .then(() => {
+            .then((res) => {
+                if(res.status === 200 || res.status === 204){
                 getHosteliteAttandance();
                 setIsEditingIndex(null);
                 toast.success('Data updated successfully');
+                }
             })
             .catch(err => console.log(err));
     };
@@ -74,6 +81,30 @@ console.log(editedData,"formattedToday")
     const getStatus = (inTime, outTime) => {
         return inTime && outTime ? 'Present' : 'Absent';
     };
+
+    const getStudentName = async () => {
+        try {
+            const studentsRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
+            const studentsData = studentsRes.data;
+            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
+            const classNameData = classRes.data
+            // Assuming studentsData is an array of students
+            setHealthStudName(studentsData);
+            setHealthClassName(classNameData)
+
+            const classIDs = [...new Set(studentsData.map(student => student.classID))];
+         
+         
+          
+            console.log(studentsData, "StudentNAMein helath", classRes);
+        } catch (error) {
+            console.error('Error fetching user roles:', error);
+        }
+    }
+    useEffect(() => {
+        getStudentName();
+    }, []);
+
 
     return (
         <div>
@@ -142,7 +173,6 @@ console.log(editedData,"formattedToday")
                                     <tr className="border-b border-defaultborder">
                                         <th scope="col" className="text-start">#</th>
                                         <th scope="col" className="text-start">Name</th>
-                                        <th scope="col" className="text-start">Mobile No.</th>
                                         <th scope="col" className="text-start">Class</th>
                                         <th scope="col" className="text-start">In Time</th>
                                         <th scope="col" className="text-start">Out Time</th>
@@ -160,9 +190,8 @@ console.log(editedData,"formattedToday")
                                                 return (
                                                     <tr className="border-b border-defaultborder" key={index}>
                                                         <td>{index + 1}</td>
-                                                        <td>{dt.studentID}</td>
-                                                        <td>91 7777777777</td>
-                                                        <td>Teacher</td>
+                                                        <td>{dt.fullName}</td>
+                                                        <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.studentID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.section || 'Unknown'}</td>
                                                         <td>
                                                             <input
                                                                 type="time"

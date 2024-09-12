@@ -296,7 +296,7 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                                     <td>{dt.id}</td>
                                                     <td>{dt.academicYear}</td>
                                                     <td>
-                                                        <Link className='text-primary' to={`${import.meta.env.BASE_URL}pages/student/studentIndDetails`}>
+                                                        <Link className='text-primary' to={`${import.meta.env.BASE_URL}pages/student/studentIndDetails/${dt.id}`}>
                                                             {dt.fullName}
                                                         </Link>
                                                     </td>

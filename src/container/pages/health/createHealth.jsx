@@ -35,14 +35,16 @@ const schema = yup.object({
     nameOfHospital: yup.string().nullable().required("Please Enter Name of  the Hospital "),
     //invoice: yup.string().nullable().required("Please Upload Invoice File "),
 
-});
+}).required();
 
 
 const CreateHealth = () => {
     const [startDate, setStartDate] = useState(new Date());
+    const [startDate1, setStartDate1] = useState(new Date());
     const [data, setData] = useState([]);
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(schema),
+        mode: 'onChange' // Optional: ensures validation runs on each change
     });
 
     const [studMed, setStudMedical] = useState(false);
@@ -249,7 +251,29 @@ const CreateHealth = () => {
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Date of Health Record Entry</label>
-                                            <input {...register('healthCheckupDate')} name='healthCheckupDate' type="text" className="form-control" id="input-text" placeholder="" />
+                                            {/* <input {...register('healthCheckupDate')} name='healthCheckupDate' type="text" className="form-control" id="input-text" placeholder="" /> */}
+                                            <div className="input-group !flex-nowrap">
+                                            <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
+                                            <Controller
+                                                name="healthCheckupDate"
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <DatePicker
+                                                        {...field}
+                                                        selected={startDate1}
+                                                        dateFormat="dd/MM/yyyy"
+                                                        showMonthDropdown="true"
+                                                        showYearDropdown="true"   
+
+                                                        onChange={(date) => {
+                                                            setStartDate1(date);
+                                                            field.onChange(formatDate(date));
+                                                        }}
+                                                        
+                                                    />
+                                                )}
+                                            />
+                                            </div>
                                             {errors.healthCheckupDate && <p className='errorTxt'>{errors.healthCheckupDate.message}</p>}
 
                                         </div>

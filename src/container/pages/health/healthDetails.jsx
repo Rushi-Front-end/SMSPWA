@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
@@ -9,6 +9,8 @@ const HealthDetails = () => {
     const [spinner, setSpinner] = useState(false);
     const [healthStudName, setHealthStudName] = useState([]);
     const [healthClassName, setHealthClassName] = useState([]);
+
+    const {healthID} = useParams();
 
     const getHealthList = () => {
         setSpinner(true);
@@ -46,7 +48,17 @@ const HealthDetails = () => {
     useEffect(() => {
         getHealthList();
         getStudentName();
+        
     }, []);
+
+    const handleDocUrl = async() => {
+        // let params = []
+        // const id = {healthID}
+        // const healthCheckupDate = data.healthCheckupDate
+        // // const queryString = params.join("&");
+        // const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/GetStudentHealthCheckupById?id=${healthID}&healthCheckupDate=${data.healthCheckupDate}`;
+       
+    }
 
     return (
         <div>
@@ -115,8 +127,8 @@ const HealthDetails = () => {
                                                             <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.studentID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.section || 'Unknown'}</td>
                                                             <td>{dt.createdAt}</td>
                                                             <td>
-                                                                <Link to={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument`}>
-                                                                    <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">View</button>
+                                                                <Link to={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument/`}>
+                                                                    <button onClick={handleDocUrl} type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">View</button>
                                                                 </Link>
                                                             </td>
                                                         </tr>

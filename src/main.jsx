@@ -91,7 +91,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             {/* <Route path={`${import.meta.env.BASE_URL}pages/404page/pageNotFound`} element={<ErrorPage />} /> */}
             <Route path={`${import.meta.env.BASE_URL}pages/loader/loader`} element={<Loader />} />
             <Route path={`${import.meta.env.BASE_URL}pages/student/studentDetails`} element={<Student />} />
-            <Route path={`${import.meta.env.BASE_URL}pages/student/studentIndDetails`} element={<StudentIndDetails />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/student/studentIndDetails/:id`} element={<StudentIndDetails />} />
             <Route path={`${import.meta.env.BASE_URL}pages/schools/allSchools`} element={<AllSchool />} />
             <Route path={`${import.meta.env.BASE_URL}pages/attendance/staffAttendance`} element={<StaffAttendance />} />
             <Route path={`${import.meta.env.BASE_URL}pages/attendance/studentAttendance`} element={<StudentAttendance />} />
