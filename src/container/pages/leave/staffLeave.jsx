@@ -90,8 +90,8 @@ const StaffLeave = () => {
   const dataFilter = () => {
     setSpinner(true);
     const params = {};
-    if (search) params.fullname = search;
-    if (roleFilter) params.roleid = roleFilter.id;
+    if (search) params.Name = search;
+    if (roleFilter) params.Roleid = roleFilter.id;
 
     axios
       .get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/GetStaffLeaveByFilter', { params })
