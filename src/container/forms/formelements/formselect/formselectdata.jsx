@@ -108,7 +108,7 @@ export const mealType = [
 ]
 
 export const prakalpName  = [
-  { id: 1, value: "Select Prakalp Name",label:"Prakalp Name" },
+  { id: 1, value: "Prakalp Name",label:"Prakalp Name" },
   { id: 2, value: "Aheri" ,label:"Aheri"},
   { id: 3, value: "Bhambaragad" ,label:"Bhambaragad"},
   { id: 3, value: "Bhandara" ,label:"Bhandara"},
