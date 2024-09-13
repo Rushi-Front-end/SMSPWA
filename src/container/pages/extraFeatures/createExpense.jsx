@@ -39,8 +39,9 @@ const CreateExpense = () => {
     const [otherField, setOtherField] = useState(false)
 
     const navigate = useNavigate()
-    const schoolIdDrop = useContext(IdContext);
-    console.log(schoolIdDrop.id,"UseCONTEXT")
+    // const schoolIdDrop = useContext(IdContext);
+    const schoolIdDrop = localStorage.getItem('schoolId');
+    console.log(schoolIdDrop,"UseCONTEXT")
 
     const { errors } = formState;
 
@@ -57,7 +58,7 @@ const CreateExpense = () => {
         console.log(formData, "ExpensesFormData")
         axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/CreateExpenses`, {
             ...formData,
-            schoolId:4,
+            schoolId:schoolIdDrop,
             // fromDate: formatDate(startDate), // Ensure format is correct
             // toDate: formatDate(endDate),
             // createdBy:4

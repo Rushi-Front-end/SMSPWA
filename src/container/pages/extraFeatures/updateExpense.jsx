@@ -42,8 +42,10 @@ const UpdateExpense = () => {
     console.log(params.id, "UpdateExam")
     const [otherField, setOtherField] = useState(false)
 
-    const schoolIdDrop = useContext(IdContext);
-    console.log(schoolIdDrop.id,"UseCONTEXT")
+    // const schoolIdDrop = useContext(IdContext);
+    const schoolIdDrop = localStorage.getItem('schoolId');
+
+    console.log(schoolIdDrop,"UseCONTEXT")
 
     const { errors } = formState;
 
@@ -100,7 +102,7 @@ const UpdateExpense = () => {
         console.log(formData, "ExpensesFormData")
         axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/UpdatetExpenses/${params.id}`, {
             ...formData,
-            schoolId:4,
+            schoolId:schoolIdDrop,
             // fromDate: formatDate(startDate), // Ensure format is correct
             // toDate: formatDate(endDate),
             // createdBy:4
