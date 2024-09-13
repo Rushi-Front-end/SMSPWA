@@ -17,6 +17,13 @@ const formatDate = (date) => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 };
+const formatDate2 = (date) => {
+    let [day, month, year] = date.split("/");
+
+    // Convert to the format "YYYY-MM-DD"
+    let formattedDate = `${year}-${month}-${day}`;
+    return formattedDate
+}
 
 const schema = yup.object({
     reportType: yup.string().nullable().required("Please Enter Report Type"),
@@ -31,6 +38,15 @@ const Reports = () => {
     const [startDate1, setStartDate1] = useState(new Date());
     const [schoolDataList, setSchoolDataList] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [reportName, setReportName] = useState()
+
+    // const [examReportCont, setExamReportCont] = useState([]);
+    // const [expenseReportCont, setEReportCont] = useState([]);
+    // const [examReportCont, setExamReportCont] = useState([]);
+    // const [examReportCont, setExamReportCont] = useState([]);
+    // const [examReportCont, setExamReportCont] = useState([]);
+    // const [examReportCont, setExamReportCont] = useState([]);
+
 
     const { register, handleSubmit, formState, control } = useForm({
         resolver: yupResolver(schema),
@@ -63,15 +79,57 @@ const Reports = () => {
         fetchData();
     }, []);
 
-    const onSubmit = (formData) => {
+    const onReportTypeChange = (option) => {
+       // alert(option.value)
+       setReportName(option.value)
+    }
+
+    const onSubmit = async (formData) => {
         if (isValid) {
-            console.log(formData, "Reports Data");
-            setModalIsOpen(true);
+            try {
+                const { prakalpName, schoolName, fromDate, toDate, reportType } = formData;
+    
+                // Format dates for API request
+                const formattedFromDate = formatDate(new Date(formatDate2(fromDate)));
+                const formattedToDate = formatDate(new Date(formatDate2(toDate)));
+              
+    
+                // Determine URL based on reportType
+                let url;
+                switch (reportType) {
+                    case 'Exam Report':
+                        url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetExamReport');
+                        break;
+                    case 'Expense Report':
+                        url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetExpenseReports');
+                        break;
+                    default:
+                        url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetHostelAttendanceReports');
+                }
+    
+                url.searchParams.append('prakalpName', prakalpName);
+                url.searchParams.append('schoolName', schoolName);
+                url.searchParams.append('fromDate', formattedFromDate);
+                url.searchParams.append('toDate', formattedToDate);
+    
+                // Fetch report data
+                const response = await axios.get(url.toString());
+                
+                // Handle the response data
+                console.log(response.data, "Generated Report Data");
+    
+                // Open modal to show success message
+                setModalIsOpen(true);
+            } catch (error) {
+                console.error('Error generating report:', error);
+                toast.error("Failed to generate the report. Please try again.");
+            }
         } else {
             toast.error("Please fix the errors before submitting.");
         }
     };
-
+    
+console.log(reportName, 'reportName')
     const closeModal = () => {
         setModalIsOpen(false);
     };
@@ -192,7 +250,7 @@ const Reports = () => {
                                         classNamePrefix='react-select'
                                         options={reportType}
                                         value={reportTypeValue ? reportType.find(x => x.value === reportTypeValue) : null}
-                                        onChange={option => reportTypeOnChange(option ? option.value : '')}
+                                        onChange={option =>{ reportTypeOnChange(option ? option.value : ''); onReportTypeChange(option)}}
                                         {...restreportTypeField}
                                     />
                                     {errors.reportType && <p className='errorTxt'>{errors.reportType.message}</p>}
@@ -212,6 +270,7 @@ const Reports = () => {
             {modalIsOpen && (
                 <div id="hs-vertically-centered-modal" className="hs-overlay reports-modal-popup ti-modal">
                     <div className="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
+                        
                         <div className="ti-modal-content">
                             <div className="ti-modal-header">
                                 <h6 className="modal-title" id="staticBackdropLabel2">Success</h6>

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 const TimeInnerTable = ({ selectedOption, selectedDay }) => {
 	const [timeTableList, setTimeTableList] = useState([]);
 	const [newTimeTableRow, setNewTimeTableRow] = useState([]);
-
+	const [classDataList, setClassDataList] = useState([]);
 	useEffect(() => {
 		(async () => await fetchTimeTableData())();
 		setNewTimeTableRow([]);
