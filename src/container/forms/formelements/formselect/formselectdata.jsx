@@ -106,6 +106,14 @@ export const mealType = [
   { id: 3, value: "Lunch" ,label:"Lunch"},
   { id: 4, value: "Dinner" ,label:"Dinner"},
 ]
+export const department = [
+  { id: 1, value: "Academic department",label:"Academic department" },
+  { id: 2, value: "Admistrative department " ,label:"Admistrative department "},
+  { id: 3, value: "Sport department" ,label:"Sport department"},
+  { id: 4, value: "Computer department" ,label:"Computer department"},
+  { id: 5, value: "Librar  department" ,label:"Library department"},
+  { id: 6, value: "Laboratory department" ,label:"Laboratory department"},
+]
 
 export const prakalpName  = [
   { id: 1, value: "Prakalp Name",label:"Prakalp Name" },

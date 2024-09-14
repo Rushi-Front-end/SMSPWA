@@ -189,7 +189,7 @@ const StaffAttendance = () => {
 
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 {/* <label className="form-label">Department</label> */}
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' value={roleFilter} options={roleOptions} onChange={(option) => setRoleFilter(option)} />
+                                <Select  placeholder='Select Role' className="!p-0 place-holder" classNamePrefix='react-select' value={roleFilter} options={roleOptions} onChange={(option) => setRoleFilter(option)} />
                             </div>
                             <div className="xl:col-span-3 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                     {/* <input type="search" className="form-control" id="input-search" placeholder="Search" /> */}

@@ -58,6 +58,9 @@
     height: 38px;
     .search-icon{
         width:40px;
+        cursor: not-allowed;
+    background: gray;
+    opacity: 0.3;
     }
 }
 .loader-css{

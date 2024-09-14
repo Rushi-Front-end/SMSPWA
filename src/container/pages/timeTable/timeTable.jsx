@@ -70,7 +70,7 @@ const TimeTable = () => {
                         <h4>Timetable Details</h4>
                             <div className="xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-6 col-span-12 pt-4">
                                 {/* <label className="ti-form-select rounded-sm !p-0 ">Section Class Teacher</label> */}
-                                <Select   onChange={handleSelectChange} className="!p-0 place-holder" classNamePrefix='react-select' options={classDataList} />
+                                <Select placeholder="Select Class"  onChange={handleSelectChange} className="!p-0 place-holder" classNamePrefix='react-select' options={classDataList} />
                             </div>
                         {/* <div className='box p-4'>
                             <h6>Select Criteria</h6>

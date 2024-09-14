@@ -37,8 +37,9 @@ const [schoolIdCont, setSchoolIdCont] = useState([])
     });
 
     const navigate = useNavigate()
-    const schoolIdDrop = useContext(IdContext);
-    console.log(schoolIdDrop.id,"UseCONTEXT")
+    const schoolIdDrop = localStorage.getItem('schoolId');
+    // const schoolIdDrop = useContext(IdContext);
+    console.log(schoolIdDrop,"UseCONTEXT")
 
     const { field: { value: dayOfWeekValue, onChange: dayOfWeekOnChange, ...restdayOfWeekField } } = useController({ name: 'dayOfWeek', control });
     const { field: { value: mealTypeValue, onChange: mealTypeOnChange, ...restmealTypeField } } = useController({ name: 'mealType', control });
@@ -51,7 +52,7 @@ const [schoolIdCont, setSchoolIdCont] = useState([])
     const onSubmit = (formData) => {
         setData({...formData})
         axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/CreateDietPlan`, {...formData,
-            "schoolId":schoolIdDrop.id
+            "schoolId":schoolIdDrop
         })
         .then((res)=>{
             console.log(res)

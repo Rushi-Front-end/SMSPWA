@@ -182,7 +182,7 @@ console.log(editedData,"formattedToday")
                                 </thead>
                                 <tbody>
                                     {
-                                        spinner ? <Loader /> :
+                                        // spinner ? <Loader /> :
                                             data.map((dt, index) => {
                                                 const isEditing = index === isEditingIndex;
                                                 const status = getStatus(isEditing ? editedData.inTime : dt.inTime, isEditing ? editedData.outTime : dt.outTime);

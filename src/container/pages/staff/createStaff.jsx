@@ -1,5 +1,5 @@
 import React, {  useContext, useEffect, useState } from 'react'
-import { enableLogin, genderSelect, roleID, shift, singleselect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
+import { department, enableLogin, genderSelect, roleID, shift, singleselect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import media50 from "../../../assets/images/media/media-50.jpg";
 
@@ -412,8 +412,8 @@ const CreateStaff = () => {
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Departments<span className="redText">*</span></label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
-                                    options={singleselect}
-                                    value={departmentValue ? singleselect.find(x => x.value === departmentValue) : departmentValue}
+                                    options={department}
+                                    value={departmentValue ? department.find(x => x.value === departmentValue) : departmentValue}
                                     onChange={option => departmentOnChange(option ? option.value : option)}
                                     {...restdepartmentField}
                                     classNamePrefix='react-select'  />

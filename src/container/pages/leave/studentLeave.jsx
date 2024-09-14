@@ -216,7 +216,7 @@ const StudentLeave = () => {
 
                         </div>
                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <Select className="!p-0 place-holder" classNamePrefix='react-select' value={classFilter} options={classOptions} onChange={(option) => setClassFilter(option)} />
+                            <Select placeholder='Select Class' className="!p-0 place-holder" classNamePrefix='react-select' value={classFilter} options={classOptions} onChange={(option) => setClassFilter(option)} />
                         </div>
                         <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12 leaveFilter-common-btn">
                             

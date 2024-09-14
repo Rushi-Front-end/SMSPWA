@@ -189,6 +189,7 @@ const StaffLeave = () => {
                   <Select
                     className="!p-0 place-holder"
                     classNamePrefix="react-select"
+                    placeholder="Select Role"
                     value={roleFilter}
                     options={roleOptions}
                     onChange={(option) => setRoleFilter(option)}
