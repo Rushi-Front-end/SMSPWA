@@ -17,7 +17,7 @@ const formatDate = (date) => {
     return `${day}/${month}/${year}`;
 };
 const schema = yup.object({
-    studentName: yup.string().nullable().required("Please Select student Name"),
+    studentID: yup.string().nullable().required("Please Select student Name"),
     height: yup.string().nullable().required("Please Enter Height "),
     weight: yup.string().nullable().required("Please Enter Weight "),
     bloodPressure: yup.string().nullable().required("Please Enter Blood Pressure "),
@@ -53,7 +53,7 @@ const CreateHealth = () => {
 
     const { errors, isValid } = formState;
 
-    const { field: { value: studentNameValue, onChange: studentNameOnChange, ...reststudentNameField } } = useController({ name: 'studentName', control });
+    const { field: { value: studentNameValue, onChange: studentNameOnChange, ...reststudentNameField } } = useController({ name: 'studentID', control });
     
 
 
