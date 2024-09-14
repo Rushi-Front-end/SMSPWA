@@ -33,6 +33,14 @@ const StudentAttendance = () => {
     const [healthStudName, setHealthStudName] = useState([]);
     const [healthClassName, setHealthClassName] = useState([]);
 
+    const formatDate = (date) => {
+        if (!date) return '';
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
 
     useEffect(() => {
         const fetchStudentAndClass = async () => {
@@ -139,6 +147,39 @@ const StudentAttendance = () => {
         getStudentName();
     }, []);
 
+    const handleFilter = async () => {
+        let params = [];
+
+        if(startDate) {
+            params.push(`AttendanceDate=${formatDate(startDate)}`)
+        }
+    
+        if (classFilter) {
+            params.push(`classId=${classFilter.value}`);
+        }
+    
+        if (params.length === 0) {
+            toast.error("Choose a Filter");
+            return;
+        }
+    
+        const queryString = params.join("&");
+        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/GetStudentattendanceBySearchFilter?${queryString}`;
+    
+        try {
+            const result = await axios.get(url);
+            const filterData = result.data;
+    
+            if (!filterData?.length) {
+                toast.error("No data found");
+            }
+    
+            setData(filterData);
+        } catch (error) {
+            toast.error("An error occurred while fetching data");
+            console.error("Error fetching data:", error);
+        }
+    }
 
 
     return (
@@ -218,7 +259,7 @@ const StudentAttendance = () => {
 
                             </div>
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Filter</button>
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
                             </div>
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Mark All Present</button>
