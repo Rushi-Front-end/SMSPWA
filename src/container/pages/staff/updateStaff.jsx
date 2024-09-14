@@ -19,21 +19,21 @@ const schema = yup.object({
     fullName: yup.string().required("Please enter Full Name"),
     dob: yup.string().required("Please enter Date of birth"),
     mobileNumber: yup.string().required("Please enter mobile number"),
-    emailID: yup.string().required("Please enter mobile number"),
+    emailID: yup.string(),
     dateOfJoining: yup.string().required("Please enter date Of joining"),
-    alternateMobileNumber: yup.string().required("Please enter mobile number"),
+    alternateMobileNumber: yup.string(),
     address: yup.string().required("Please enter address Line"),
-    city: yup.string().required("Please enter mobile number"),
-    district: yup.string().required("Please enter mobile number"),
-    password: yup.string().required("Please enter mobile number"),
+    city: yup.string(),
+    district: yup.string(),
+    password: yup.string(),
     
     roleID: yup.string().nullable().required("Please select Role"),
-    enableLogin: yup.string().nullable().required("Please enter mobile number"),
-    assignedSubject: yup.string().nullable().required("Please enter mobile number"),
+    enableLogin: yup.string().nullable(),
+    assignedSubject: yup.string().nullable().required("Please select Subject"),
     department: yup.string().nullable().required("Please select department"),
-    shift: yup.string().required("Please enter mobile number"),
+    shift: yup.string().required("Please select Shift"),
     gender: yup.string().nullable().required("Please select Gender"),
-    state: yup.string().nullable().required("Please enter mobile number")
+    state: yup.string().nullable().required("Please select State")
 
   });
 
@@ -415,7 +415,7 @@ useEffect(()=>{
                             </div>
                             
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select State/Province</label>
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select State/Province<span className="redText">*</span></label>
                              <Select className="!p-0 place-holder"   
                                     isClearable
                                     options={stateSelect}
@@ -423,7 +423,7 @@ useEffect(()=>{
                                     onChange={option => stateOnChange(option ? option.value : option)}
                                     {...reststateField}
                                     classNamePrefix='react-select'  />
-                                {/* {errors.stateValue && <p className='errorTxt'>{errors.stateValue.message}</p>} */}
+                                {errors.stateValue && <p className='errorTxt'>{errors.stateValue.message}</p>}
                             </div>
 
 
@@ -436,7 +436,7 @@ useEffect(()=>{
                 <div className='grid grid-cols-12 sm:gap-6'>
                                                     
                             <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Assign Subjects</label>
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Assign Subjects<span className="redText">*</span></label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
                                     options={singleselect}
@@ -444,6 +444,8 @@ useEffect(()=>{
                                     onChange={option => assignedSubjectOnChange(option ? option.value : option)}
                                     {...restassignedSubjectField}
                                     classNamePrefix='react-select'  />
+                                {errors.assignedSubject && <p className='errorTxt'>{errors.assignedSubject.message}</p>}
+
                             </div>
                             <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Departments<span className="redText">*</span></label>
@@ -458,7 +460,7 @@ useEffect(()=>{
 
                             </div>
                             <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Shifts</label>
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Shifts<span className="redText">*</span></label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
                                     options={shift}
@@ -466,6 +468,8 @@ useEffect(()=>{
                                     onChange={option => shiftOnChange(option ? option.value : option)}
                                     {...restshiftField}
                                     classNamePrefix='react-select'  />
+                                {errors.shift && <p className='errorTxt'>{errors.shift.message}</p>}
+
                             </div>
                             
 
