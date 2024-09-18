@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AdmissionStudentBasicDetails = () => {
+const AdmissionStudentBasicDetails = ({data}) => {
   return (
     <div className="pt-4">
     <h6  className="pb-4">Student Basic Details </h6>
@@ -19,12 +19,12 @@ const AdmissionStudentBasicDetails = () => {
                                    </thead>
                                    <tbody>
                                        <tr className="border-b border-defaultborder">
-                                           <td></td>
-                                           <td></td>
-                                           <td>2024-01-01</td>
-                                           <td>John Doe Sr.</td>
-                                           <td>Jane Doe</td>
-                                           <td> 123, Main Street, City, State, Country</td>
+                                           <td>{data?.registrationNumber}</td>
+                                           <td>{data?.fullName}</td>
+                                           <td>{data?.dob}</td>
+                                           <td>{data?.fatherName}</td>
+                                           <td>{data?.motherName}</td>
+                                           <td>{[data?.addressLine, data?.city, data?.district, data?.state, data?.pinCode].filter(el => el).join(", ")}</td>
                                        </tr>
 
                                    </tbody>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const HealthAcademicDetails = () => {
+const HealthAcademicDetails = ({data, classData}) => {
   return (
     <div className="pt-5">
     <h6>Admission Details </h6>
@@ -18,10 +18,10 @@ const HealthAcademicDetails = () => {
                                    </thead>
                                    <tbody>
                                        <tr className="border-b border-defaultborder">
-                                           <td>2024-2025</td>
-                                           <td>001</td>
-                                           <td>	Class A</td>
-                                           <td>	Section A</td>
+                                           <td>{data?.academicYear}</td>
+                                           <td>{data?.rollNumber}</td>
+                                           <td>{classData?.className}</td>
+                                           <td>{data?.section}</td>
                                          
                                        </tr>
 

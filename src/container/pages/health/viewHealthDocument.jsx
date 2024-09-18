@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AdmissionStudentBasicDetails from '../admissionQuery/admissionStudentBasicDetails';
 import HealthAcademicDetails from './healthAcademicDetails';
 import HealthDocumentDetails from './healthDocumentDetails';
@@ -9,27 +9,48 @@ import { toast } from 'react-toastify';
 
 const ViewHealthDocument = () => {
 
-    const [data, setData] = useState([])
+    const [data, setData] = useState(null)
+    const [studentData, setStudentData] = useState(null)
+    const [classData, setClassData] = useState(null);
     const [spinner, setSpinner] = useState(false)
 
-    // const getStaffList = () => {
-    //     setSpinner(true)
-    //     try {
-    //     axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
-    //         .then(res => {
-    //             console.log("VIEWDOC", res.data)
-    //             setData(res.data)
-    //             setSpinner(false)
-    //         })
-    //     }
-    //     catch (error) {
-    //         console.error('Error fetching user roles:', error);
-    //       }
-    // }
+    const { search } = useLocation();
+    const queryParams = new URLSearchParams(search);
+    const id = queryParams.get('id'); // '12345'
+    const date = queryParams.get('date'); // '09-11-2023'
 
-    // useEffect(() => {
-    //     getStaffList()
-    // }, [])
+    useEffect(() => {
+        const fetchHealthData = async () => {
+          try {
+            const response = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/GetStudentHealthCheckupById?studentId=${id}&healthCheckupDate=${date}`);
+            const healthData = response.data;
+            console.debug(healthData)
+
+            const studentID = healthData.studentID;
+
+            const studRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${studentID}`);
+            const studData = studRes.data;
+            console.debug(studData)
+
+            const classID = studData.classID;
+
+            const classRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/${classID}`)
+            const classData = classRes.data[0]
+            console.debug(classData)
+            
+            setData(healthData)
+            setStudentData(studData)
+            setClassData(classData)
+          } catch (error) {
+            console.error('Error fetching health data:', error);
+          }
+        };
+    
+        console.debug(id, date)
+        if(id && date) {
+            fetchHealthData();
+        }
+    }, [id, date]);
 
 
 
@@ -80,9 +101,9 @@ const ViewHealthDocument = () => {
 
                                 <div className="healthview-doc-wrapper">
                                     <h5>Health Document Details</h5>
-                                    <AdmissionStudentBasicDetails />
-                                    <HealthAcademicDetails />
-                                    <HealthDocumentDetails />
+                                    <AdmissionStudentBasicDetails data={studentData} />
+                                    <HealthAcademicDetails data={studentData} classData={classData} />
+                                    <HealthDocumentDetails data={data} />
                                 </div>
                                 <div className='backButton pt-4 flex justify-end'>
                                         <Link to={`${import.meta.env.BASE_URL}pages/health/healthDetails`}>
