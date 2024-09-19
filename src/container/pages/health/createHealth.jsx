@@ -32,6 +32,7 @@ const schema = yup.object({
     createdAt: yup.string().nullable().required("Please Enter Enrolment Date "),
     suggestedSolutionsAndTreatments: yup.string().nullable().required("Please Enter suggested Solutions And Treatments "),
     healthCheckupDate: yup.string().nullable().required("Please Enter Health Checkup Date"),
+    nameOfDoctor: yup.string().nullable().required("Please Enter Name of  the Doctor "),
     nameOfHospital: yup.string().nullable().required("Please Enter Name of  the Hospital "),
     //invoice: yup.string().nullable().required("Please Upload Invoice File "),
 
@@ -278,6 +279,11 @@ const CreateHealth = () => {
 
                                         </div>
 
+                                        <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Name of the Hospital<span className='redText'>*</span></label>
+                                            <input type="text" {...register('nameOfDoctor')} name='nameOfDoctor' className="form-control" id="input-text" placeholder="" />
+                                            {errors.nameOfDoctor && <p className='errorTxt'>{errors.nameOfDoctor.message}</p>}
+                                        </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Name of the Hospital<span className='redText'>*</span></label>
                                             <input type="text" {...register('nameOfHospital')} name='nameOfHospital' className="form-control" id="input-text" placeholder="" />

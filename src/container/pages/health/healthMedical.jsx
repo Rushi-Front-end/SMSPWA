@@ -87,7 +87,7 @@ const HealthMedical = (props) => {
 
         const formattedMedicalData = convertToSimplifiedForm(medicalData)
 
-        const finalData = {...props.data, ...formattedMedicalData, nameOfDoctor: "", createdBy: ""}
+        const finalData = {...props.data, ...formattedMedicalData, createdBy: ""}
 
         try {
             const createRes = await axios.post("https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/CreateStudentHealthCheckup", {...finalData})
