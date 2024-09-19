@@ -280,7 +280,7 @@ const CreateHealth = () => {
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Name of the Hospital<span className='redText'>*</span></label>
+                                            <label className="ti-form-select rounded-sm !p-0 mb-2">Name of the Doctor<span className='redText'>*</span></label>
                                             <input type="text" {...register('nameOfDoctor')} name='nameOfDoctor' className="form-control" id="input-text" placeholder="" />
                                             {errors.nameOfDoctor && <p className='errorTxt'>{errors.nameOfDoctor.message}</p>}
                                         </div>
