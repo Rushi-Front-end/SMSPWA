@@ -26,6 +26,9 @@ const StudentAttendance = () => {
     const [classFilter, setClassFilter] = useState(null);
     const [classOptions, setClassOptions] = useState([]);
 
+    const [sectionFilter, setSectionFilter] = useState(null);
+    const [sectionOptions, setSectionOptions] = useState(null);
+
     const [isEditingIndex, setIsEditingIndex] = useState(null);
     const [editedData, setEditedData] = useState({});
     const formattedToday = getFormattedToday();
@@ -46,11 +49,18 @@ const StudentAttendance = () => {
         const fetchStudentAndClass = async () => {
             setSpinner(true)
           try {
-            const studentAttendanceRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance')
+            const studentAttendanceRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/GetStudentattendanceBySearchFilter')
             const studentAttendanceData = studentAttendanceRes.data
             
             const studentRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
             const studentData = studentRes.data;
+
+            const sectionsList = [...new Set(studentData.map(student => student.section))];
+            const sectionData = sectionsList.map(section => ({
+                id: section,
+                value: section,
+                label: section
+            }))
 
             const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
             const classNameData = classRes.data
@@ -71,6 +81,7 @@ const StudentAttendance = () => {
             
             setData(studentAttendanceData)
             setClassOptions(filteredClassData);
+            setSectionOptions(sectionData)
             setSpinner(false)
 
           } catch (error) {
@@ -120,7 +131,7 @@ const StudentAttendance = () => {
     };
 
     const getStatus = (inTime, outTime) => {
-        return inTime && outTime ? 'Present' : 'Absent';
+        return ((inTime === "00:00:00" || inTime === "00:00") && (outTime === "00:00:00" || outTime === "00:00")) ? 'Absent' : 'Present';
     };
 
     
@@ -156,6 +167,10 @@ const StudentAttendance = () => {
     
         if (classFilter) {
             params.push(`classId=${classFilter.value}`);
+        }
+
+        if (sectionFilter) {
+            params.push(`sectionId=${sectionFilter.value}`)
         }
     
         if (params.length === 0) {
@@ -247,16 +262,7 @@ const StudentAttendance = () => {
                             </div>
 
                             <div className="xl:col-span-3 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                {/* <input type="search" className="form-control" id="input-search" placeholder="Search" /> */}
-                                <div className="flex rounded-sm search-box">
-                                    <input type="search" placeholder='Search' id="hs-trailing-button-add-on-with-icon" name="hs-trailing-button-add-on-with-icon" className="ti-form-input rounded-none rounded-s-sm focus:z-10" />
-                                    <button aria-label="button" type="button" className="inline-flex search-icon flex-shrink-0 justify-center items-center rounded-e-sm border border-transparent font-semibold bg-warning text-white hover:bg-warning focus:z-10 focus:outline-none focus:ring-0 focus:ring-warning transition-all text-sm">
-                                        <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                        </svg>
-                                    </button>
-                                </div>
-
+                                <Select  placeholder='Select Section' className="!p-0 place-holder" classNamePrefix='react-select' value={sectionFilter} options={sectionOptions} onChange={(option) => setSectionFilter(option)} />
                             </div>
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
@@ -329,9 +335,9 @@ const StudentAttendance = () => {
                                                                     <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                                                 </button>
                                                                 <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                                    <li><button className="ti-dropdown-item" onClick={() => handleEdit(index)}>Edit</button></li>
-                                                                    <li> <button type="button" className="ti-dropdown-item" onClick={() => handleSave(index)}>Save</button></li>
-                                                                    <li> <button type="button" className="ti-dropdown-item" onClick={handleCancel}>Cancel</button></li>
+                                                                    {!isEditing && <li><button className="ti-dropdown-item" onClick={() => handleEdit(index)}>Edit</button></li>}
+                                                                    {isEditing && <li> <button type="button" className="ti-dropdown-item" onClick={() => handleSave(index)}>Save</button></li>}
+                                                                    {isEditing && <li> <button type="button" className="ti-dropdown-item" onClick={handleCancel}>Cancel</button></li>}
                                                                 </ul>
                                                             </div>
                                                         </td>
