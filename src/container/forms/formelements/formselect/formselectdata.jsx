@@ -93,6 +93,12 @@ export const subjectType = [
   { id: 4, value: "Sports", label:"Sports"},
   { id: 5, value: "Extra-curricular Activity" ,label:"Extra-curricular Activity"},
 ]
+export const subjectCode = [
+  { id: 1, value: "SUB001",label:"SUB001" },
+  { id: 2, value: "SUB002" ,label:"SUB002"},
+  { id: 3, value: "SUB003", label:"SUB003"},
+  
+]
 
 export const assignedSubject = [
   { id: 1, value: "Marathi",label:"Marathi" },

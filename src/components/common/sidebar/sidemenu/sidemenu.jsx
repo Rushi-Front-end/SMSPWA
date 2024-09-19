@@ -1,11 +1,22 @@
-
+import DashBoard from '../../../../assets/images/menu-left-icons/Dashboard.svg';
+import School from '../../../../assets/images/menu-left-icons/School.svg';
+import Staff from '../../../../assets/images/menu-left-icons/Staff.svg';
+import Timetable from '../../../../assets/images/menu-left-icons/Timetable.svg';
+import Student from '../../../../assets/images/menu-left-icons/Student.svg';
+import Health from '../../../../assets/images/menu-left-icons/Health.svg';
+import Attendance from '../../../../assets/images/menu-left-icons/Attendance.svg';
+import Leave from '../../../../assets/images/menu-left-icons/Leave.svg';
+import Examination from '../../../../assets/images/menu-left-icons/Examination.svg';
+import Expense from '../../../../assets/images/menu-left-icons/Expense.svg';
+import Dietplan from '../../../../assets/images/menu-left-icons/Dietplan.svg';
+import Reports from '../../../../assets/images/menu-left-icons/Reports.svg';
 
 export const MENUITEMS = [
   {
     menutitle: 'MAIN',
   },
       {
-        icon: (<i className="side-menu__icon bx bx-home"></i>),
+        icon: <img src={DashBoard} alt="Dashboard Icon" />,
         path: `${import.meta.env.BASE_URL}dashboard`,
         type: 'link',
         Name: '',
@@ -20,7 +31,7 @@ export const MENUITEMS = [
     menutitle: "SCHOOLS",
   },
       {
-        icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
+        icon: <img src={School} alt="Dashboard Icon" />,
         path: `${import.meta.env.BASE_URL}pages/schools/allSchools`,
         type: "link",
         Name: '',
@@ -47,7 +58,7 @@ export const MENUITEMS = [
       //   class: 'text-secondary text-[0.75em] rounded-sm !py-[0.25rem] !px-[0.45rem] badge !bg-secondary/10 ms-2',
       // },
       {
-        icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
+        icon: <img src={Staff} alt="Staff Icon" />,
         path: `${import.meta.env.BASE_URL}pages/staff/staffDetails`,
         type: "link",
         Name: '',
@@ -61,7 +72,7 @@ export const MENUITEMS = [
 
       },
       {
-        icon: (<i className="bx bx-error side-menu__icon"></i>),
+        icon: <img src={Timetable} alt="TimeTable Icon" />,
         path: `${import.meta.env.BASE_URL}pages/timeTable/timeTable`,
         type: "link",
         Name: '',
@@ -92,7 +103,7 @@ export const MENUITEMS = [
            
           // },
           {
-            icon: (<i className="bx bx-task side-menu__icon"></i>),
+            icon: <img src={Student} alt="Student Icon" />,
             path: `${import.meta.env.BASE_URL}pages/student/studentDetails`,
             type: "link",
             Name: '',
@@ -105,7 +116,7 @@ export const MENUITEMS = [
             class: 'text-secondary text-[0.75em] rounded-sm !py-[0.25rem] !px-[0.45rem] badge !bg-secondary/10 ms-2',
           },
           {
-            icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
+            icon: <img src={Health} alt="Health Icon" />,
             path: `${import.meta.env.BASE_URL}pages/health/healthDetails`,
             type: "link",
             Name: '',
@@ -123,7 +134,7 @@ export const MENUITEMS = [
             menutitle: "ATTENDANCE MANAGEMENT",
           },
               {
-                icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
+                icon: <img src={Attendance} alt="Attendance Icon" />,
                 path: `${import.meta.env.BASE_URL}pages/attendance/staffAttendance`,
                 type: "link",
                 Name: '',
@@ -136,7 +147,7 @@ export const MENUITEMS = [
                
               },
               {
-                icon: (<i className="bx bx-task side-menu__icon"></i>),
+                icon: <img src={Attendance} alt="Attendance Icon" />,
                 path: `${import.meta.env.BASE_URL}pages/attendance/studentAttendance`,
                 type: "link",
                 Name: '',
@@ -149,7 +160,7 @@ export const MENUITEMS = [
                 class: 'text-secondary text-[0.75em] rounded-sm !py-[0.25rem] !px-[0.45rem] badge !bg-secondary/10 ms-2',
               },
               {
-                icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
+                icon: <img src={Attendance} alt="Attendance Icon" />,
                 path: `${import.meta.env.BASE_URL}pages/attendance/hostelAttendance`,
                 type: "link",
                 Name: '',
@@ -167,7 +178,7 @@ export const MENUITEMS = [
                 menutitle: "LEAVE MANAGEMENT",
               },
                   {
-                    icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
+                    icon: <img src={Leave} alt="Leave Icon" />,
                     path: `${import.meta.env.BASE_URL}pages/leave/staffLeave`,
                     type: "link",
                     Name: '',
@@ -180,7 +191,8 @@ export const MENUITEMS = [
                    
                   },
                   {
-                    icon: (<i className="bx bx-task side-menu__icon"></i>),
+                    icon: <img src={Leave} alt="Leave Icon" />,
+
                     path: `${import.meta.env.BASE_URL}pages/leave/studentLeave`,
                     type: "link",
                     Name: '',
@@ -193,7 +205,7 @@ export const MENUITEMS = [
                     class: 'text-secondary text-[0.75em] rounded-sm !py-[0.25rem] !px-[0.45rem] badge !bg-secondary/10 ms-2',
                   },
                   {
-                    icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
+                    icon: <img src={Leave} alt="Leave Icon" />,
                     path: `${import.meta.env.BASE_URL}pages/leave/hosteliteLeave`,
                     type: "link",
                     Name: '',
@@ -211,7 +223,7 @@ export const MENUITEMS = [
                     menutitle: "EXTRA FEATURES",
                   },
                       {
-                        icon: (<i className="bx bx-file-blank side-menu__icon"></i>),
+                        icon: <img src={Reports} alt="Reports Icon" />,
                         path: `${import.meta.env.BASE_URL}pages/extraFeatures/reports`,
                         type: "link",
                         Name: '',
@@ -237,7 +249,7 @@ export const MENUITEMS = [
                         class: 'text-secondary text-[0.75em] rounded-sm !py-[0.25rem] !px-[0.45rem] badge !bg-secondary/10 ms-2',
                       },
                       {
-                        icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
+                        icon: <img src={Expense} alt="Expense Icon" />,
                         path: `${import.meta.env.BASE_URL}pages/extraFeatures/expenseManagement`,
                         type: "link",
                         Name: '',
@@ -289,7 +301,7 @@ export const MENUITEMS = [
                         class: '',                
                       }, 
                       {
-                        icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
+                        icon: <img src={Examination} alt="Examination Icon" />,
                         path: `${import.meta.env.BASE_URL}pages/examination/examinationList`,
                         type: "link",
                         Name: '',
@@ -302,7 +314,7 @@ export const MENUITEMS = [
                         class: '',                
                       }, 
                       {
-                        icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
+                        icon: <img src={Dietplan} alt="Dietplan Icon" />,
                         path: `${import.meta.env.BASE_URL}pages/diet/dietList`,
                         type: "link",
                         Name: '',
