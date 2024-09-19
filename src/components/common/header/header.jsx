@@ -342,11 +342,11 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
 
             <div className="header-content-right">
-            <div className="header-element md:px-[0.325rem] !items-center" >
+            {/* <div className="header-element md:px-[0.325rem] !items-center" >
                 <Select  name="state" options={singleselect} className="js-example-basic-single w-full" isSearchable
                                 menuPlacement='auto' classNamePrefix="Select2" defaultValue={[singleselect[0]]}
                             />
-               </div> 
+               </div>  */}
                <div className="header-element md:!px-[0.65rem] px-2 hs-dropdown !items-center ti-dropdown [--placement:bottom-left]">
                 <div className="md:block hidden dropdown-profile cursor-pointer">
                   <p className="font-semibold mb-0 leading-none text-[#536485] text-[0.813rem] ">John Taylor</p>

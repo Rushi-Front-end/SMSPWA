@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
-import { singleselect, subjectType } from '../../forms/formelements/formselect/formselectdata';
+import { singleselect } from '../../forms/formelements/formselect/formselectdata';
 import {  useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
