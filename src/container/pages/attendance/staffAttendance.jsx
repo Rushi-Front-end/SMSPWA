@@ -7,6 +7,7 @@ import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
 
 import DatePicker from 'react-datepicker';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const getFormattedToday = () => {
     const today = new Date();
@@ -32,7 +33,7 @@ const StaffAttendance = () => {
     const [editedData, setEditedData] = useState({});
     const formattedToday = getFormattedToday();
 
-    const schoolId = localStorage.getItem("schoolId")
+  const {id: schoolId} = useSchoolId();
 
     const formatDate = (date) => {
         if (!date) return '';
@@ -80,9 +81,9 @@ const StaffAttendance = () => {
     }, []);
     
 
-    const getStaffAttandance = () => {
+    const getStaffAttandance = async () => {
         setSpinner(true)
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/GetStafftAttendanceBySearchFilter?schoolId=${schoolId}`)
+        await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/GetStafftAttendanceBySearchFilter?schoolId=${schoolId}`)
             .then(res => {
                 console.log(res, 'StaffAttendance')
                 setData(res.data)
@@ -93,7 +94,7 @@ const StaffAttendance = () => {
 
         useEffect(() => {
             getStaffAttandance()
-        }, [])
+        }, [schoolId])
 
 
         const handleEdit = (index) => {
@@ -101,12 +102,12 @@ const StaffAttendance = () => {
             setEditedData(data[index]);
         };
     
-        const handleSave = (index) => {
+        const handleSave = async (index) => {
                 // Ensure inTime and outTime are in the correct format (hh:mm:ss)
         const formattedInTime = editedData.inTime.length === 5 ? `${editedData.inTime}:00` : editedData.inTime;
         const formattedOutTime = editedData.outTime.length === 5 ? `${editedData.outTime}:00` : editedData.outTime;
     
-            axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/${editedData.id}`, {
+            await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/${editedData.id}`, {
                 ...editedData,
                 inTime: formattedInTime,
                 outTime: formattedOutTime,
@@ -285,8 +286,8 @@ const StaffAttendance = () => {
                                                     <tr className="border-b border-defaultborder" key={index}>
                                                         <td>{index + 1}</td>
                                                         <td>{dt.fullName}</td>
-                                                        <td>91 7777777777</td>
-                                                        <td>{staffList.filter(staff => staff.id === dt.staffID)[0]?.roleName || 'Unknown'}</td> {/* Display role name */}
+                                                        <td>{dt.mobileNumber}</td>
+                                                        <td>{roleOptions.filter(role => role.id === dt.roleId)[0]?.label || 'Unknown'}</td> {/* Display role name */}
                                                         <td>
                                                             <input
                                                                 type="time"

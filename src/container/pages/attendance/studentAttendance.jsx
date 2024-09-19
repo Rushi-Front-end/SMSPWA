@@ -36,6 +36,9 @@ const StudentAttendance = () => {
     const [healthStudName, setHealthStudName] = useState([]);
     const [healthClassName, setHealthClassName] = useState([]);
 
+    const [statusSelection, setStatusSelection] = useState(null);
+    const statusOptions = [{id: "Present", value: "Present", label: "Present"}, {id: "Absent", value: "Absent", label: "Absent"}]
+
     const formatDate = (date) => {
         if (!date) return '';
         const day = date.getDate().toString().padStart(2, '0');
@@ -98,12 +101,17 @@ const StudentAttendance = () => {
         setEditedData(data[index]);
     };
 
-    const handleSave = (index) => {
+    const handleSave = async (index) => {
             // Ensure inTime and outTime are in the correct format (hh:mm:ss)
-    const formattedInTime = editedData.inTime.length === 5 ? `${editedData.inTime}:00` : editedData.inTime;
-    const formattedOutTime = editedData.outTime.length === 5 ? `${editedData.outTime}:00` : editedData.outTime;
+    let formattedInTime = editedData.inTime.length === 5 ? `${editedData.inTime}:00` : editedData.inTime;
+    let formattedOutTime = editedData.outTime.length === 5 ? `${editedData.outTime}:00` : editedData.outTime;
 
-        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/${editedData.id}`, {
+    if(statusSelection?.value == "Absent") {
+        formattedInTime = "00:00:00"
+        formattedOutTime = "00:00:00"
+    }
+
+        await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/${editedData.id}`, {
             ...editedData,
             inTime: formattedInTime,
             outTime: formattedOutTime,
@@ -111,7 +119,7 @@ const StudentAttendance = () => {
         })
             .then((res) => {
                 if(res.status === 200 || res.status === 204){
-                axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance')
+                handleFilter();
                 setIsEditingIndex(null);
                 toast.success('Data updated successfully');
                 }
@@ -121,7 +129,12 @@ const StudentAttendance = () => {
 
     const handleCancel = () => {
         setIsEditingIndex(null);
+        setStatusSelection(null)
     };
+
+    const handleStatusChange = (option) => {
+        setStatusSelection(option)
+    }
 
     const handleChange = (e, field) => {
         setEditedData({
@@ -323,9 +336,17 @@ const StudentAttendance = () => {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <span className={`badge ${status === 'Present' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
-                                                                {status}
-                                                            </span>
+                                                            {isEditing ? 
+                                                                <>
+                                                                    <Select  placeholder='Select Status' className="!p-0 place-holder" classNamePrefix='react-select' value={statusSelection} options={statusOptions} onChange={handleStatusChange} />
+                                                                </>
+                                                            :
+                                                                <>
+                                                                    <span className={`badge ${status === 'Present' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
+                                                                        {status}
+                                                                    </span>
+                                                                </>
+                                                            }
                                                         </td>
                                                         <td>
                                                             <div className="ti-dropdown hs-dropdown">

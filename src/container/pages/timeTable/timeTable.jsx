@@ -4,6 +4,7 @@ import TimeTableTabs from '../schools/timeTableTabs';
 import Select from 'react-select';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata';
 import axios from 'axios';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const TimeTable = () => {
 
@@ -19,7 +20,8 @@ const TimeTable = () => {
         const fetchData = async () => {
         try {
             const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class');
-            const schoolId = localStorage.getItem("schoolId");
+            const {id: schoolId} = useSchoolId();
+
             if(schoolId == null) throw Error()
             
             const classList = response.data.filter(classData => classData.schoolID == schoolId)
