@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { academicYear, classIDSelect, sectionselect, bloodGroupSelect, genderSelect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Controller, useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 
@@ -97,6 +98,31 @@ const CreateStudent = () => {
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
+
+    const [classOptions, setClassOptions] = useState([])
+
+    const {id:schoolId} = useSchoolId()
+
+    useEffect(() => {
+        const fetchClass = async () => {
+          try {
+            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/class');
+            const classData = response.data;
+            
+            const filteredClassData = classData.filter(el => el.schoolID == schoolId)
+            const classOptionsList = filteredClassData.map(ele => ({
+                id: ele.id,
+                value: ele.id,
+                label: ele.className
+            }));
+            setClassOptions(classOptionsList)
+          } catch (error) {
+            console.error('Error fetching Class:', error);
+          }
+        };
+    
+        fetchClass();
+    }, [schoolId]);
 
 
     //const studentPostRes = useSelector((state) => state.studentData.postRes)
@@ -257,8 +283,8 @@ const CreateStudent = () => {
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Select Class <span className="redText">*</span></label>
                                 <Select className="!p-0 place-holder"  
                                      isClearable
-                                     options={classIDSelect}
-                                     value={classIDValue ? classIDSelect.find(x => x.value === classIDValue) : classIDValue}
+                                     options={classOptions}
+                                     value={classOptions.find(option => option.value === classIDValue)}
                                      onChange={option => classSelectOnChange(option ? option.value : option)}
                                      {...restclassIDSelectField}
                                      classNamePrefix='react-select'  />
