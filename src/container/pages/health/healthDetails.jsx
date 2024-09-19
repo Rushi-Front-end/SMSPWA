@@ -127,7 +127,7 @@ const HealthDetails = () => {
                                                             <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.studentID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.section || 'Unknown'}</td>
                                                             <td>{dt.createdAt}</td>
                                                             <td>
-                                                                <Link to={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument/`}>
+                                                                <Link to={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument/?id=${dt.studentID}&date=${dt.healthCheckupDate}`}>
                                                                     <button onClick={handleDocUrl} type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">View</button>
                                                                 </Link>
                                                             </td>
