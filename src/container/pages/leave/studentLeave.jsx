@@ -249,7 +249,7 @@ const StudentLeave = () => {
                                 <th scope="col" className="text-start">	Class</th>
                                 <th scope="col" className="text-start">Leave Type</th>
                                 <th scope="col" className="text-start">Duration	</th>
-                                <th scope="col" className="text-start">Status	</th>
+                                {/* <th scope="col" className="text-start">Status	</th> */}
                                 <th scope="col" className="text-start">Action</th>
                             </tr>
                             </thead>
@@ -261,13 +261,13 @@ const StudentLeave = () => {
                                     <td rowSpan="2">{index + 1}</td>
                                        <td>{Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.rollNumber || 'Unknown'}</td>
                                     <td>
-                                       <Link className='text-primary'> {dt.fullName} </Link></td>
+                                      {dt.fullName} </td>
                                        <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.studentID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.section || 'Unknown'}</td>
                                     <td>{dt.leaveType}</td>
                                                         <td>{`${dt.fromDate} - ${dt.toDate}`}</td>
-                                                        <td>  <span className={`badge ${statusMap[dt.id] === 'Approved' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
+                                                        {/* <td>  <span className={`badge ${statusMap[dt.id] === 'Approved' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
                                                                 {statusMap[dt.id] || 'Rejected'}
-                                                            </span></td>
+                                                            </span></td> */}
 
                                     <td rowSpan="2">
                                     <div className="ti-dropdown hs-dropdown">

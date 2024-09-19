@@ -185,7 +185,7 @@ const HosteliteLeave = () => {
                                         <th scope="col" className="text-start">Designation</th>
                                         <th scope="col" className="text-start"> Leave Type</th>
                                         <th scope="col" className="text-start"> Duration</th>
-                                        <th scope="col" className="text-start">Status</th>
+                                        {/* <th scope="col" className="text-start">Status</th> */}
                                         <th scope="col" className="text-start">Action</th>
                                     </tr>
                                     </thead>
@@ -199,9 +199,9 @@ const HosteliteLeave = () => {
                                             <td>student</td>
                                             <td>{dt.outpassType}</td>
                                             <td>{`${dt.fromDate} - ${dt.toDate}`}</td>
-                                            <td>  <span className={`badge ${statusMap[dt.id] === 'Approved' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
+                                            {/* <td>  <span className={`badge ${statusMap[dt.id] === 'Approved' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
                                                                 {statusMap[dt.id] || 'Rejected'}
-                                                            </span></td>
+                                                            </span></td> */}
 
                                             <td rowSpan="2">
                                                 <div className="ti-dropdown hs-dropdown">

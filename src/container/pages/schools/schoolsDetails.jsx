@@ -13,11 +13,12 @@ import SubjectTable from './subjectTable';
 import SubjectCreateForm from './subjectCreateForm';
 import { fetchSchoolById } from '../../../redux/reducers/schoolReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteClassList, fetchClassList } from '../../../redux/reducers/classReducer';
+import { deleteClassList } from '../../../redux/reducers/classReducer';
 import SubjectUpdateForm from './subjectUpdateForm';
 import UpdateRole from './updateRole';
 import UpdateClass from './updateClass';
 import Loader from '../loader/loader';
+import axios from 'axios';
 
 
 const SchoolsDetails = () => {
@@ -27,7 +28,7 @@ const SchoolsDetails = () => {
     const [deleteData, setDeleteData] = useState()
     const [spinner, setSpinner] = useState(false)
 
-
+    const [classDataSec, setClassDataSec] = useState([])
 
     const [classId, setClassId]= useState()
 
@@ -45,13 +46,13 @@ const SchoolsDetails = () => {
 
 
     const schoolIndData = useSelector((state) => state.schoolData)
-    const classIndData = useSelector((state) => state.classData)
+    // const classIndData = useSelector((state) => state.classData)
     const subjectDeleteRes = useSelector((state) => state.classData.deleteRes)
 
     const isLoading = useSelector((state) => state.subjectData.isLoading);
 
 
-    console.log(classIndData, 'classIndData')
+    // console.log(classIndData, 'classIndData')
 
    
 
@@ -85,20 +86,36 @@ const SchoolsDetails = () => {
     useEffect((id) => {
         dispatch(fetchSchoolById(params.id))
     }, [])
+
     
     ///Class useEffect
+    const schoolIdParams = localStorage.getItem('schoolId')
+    console.log(schoolIdParams, 'schoolIdParams')
+
+    const classSecData= ()=> {
+        
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
+       .then((res)=>{
+        console.log(res,'hhhhhhh')
+        setClassDataSec(res.data)
+       })
+       .catch((err) => {
+        console.log(err);
+      });
+    }
     useEffect(() => {
         
-        dispatch(fetchClassList())
+        // dispatch(fetchClassList())
+        classSecData()
         
-    }, [])
+    }, [schoolIdParams])
 
 
     const deleteDatahandler = (data)=>{
         console.log("deleteDatahandler", data)
         dispatch(deleteClassList(data))
         setTimeout(()=>{
-            dispatch(fetchClassList())
+            axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
         },500)
     }
     
@@ -221,10 +238,10 @@ const SchoolsDetails = () => {
                                                     </div>
                                                         {
                                                              isLoading || spinner ? (<Loader />) :
-                                                             Array.isArray(classIndData?.list) && classIndData.list.length > 0 ? (
+                                                             classDataSec.length > 0 ? (
 
-                                                                classIndData.list.map((dt, index) => {
-                                                                    return <div className='classes-sec-wrap pb-4' key={index} id={dt.id} >
+                                                                classDataSec.map((dt, index) => {
+                                                                    return <div className='classes-sec-wrap pb-4' key={index} id={dt.classId} >
                                                                        
                                                                         <div className='classes-top-head flex justify-between'>
                                                                             <h4>{dt.className}</h4>
@@ -246,9 +263,10 @@ const SchoolsDetails = () => {
                                                                                     </tr>
                                                                                     </thead>
                                                                                     <tbody>
-                                                                                        <tr className="border-b border-defaultborder" key={index} id={dt.id}>
+                                                                                        <tr className="border-b border-defaultborder" key={index} id={dt.classId}>
                                                                                             <td>{index + 1}</td>
-                                                                                            <td>{dt.className}</td>
+                                                                                            <td>{dt.classId}</td>
+                                                                                            <td>{dt.sectionName}</td>
                                                                                             {/* <td>{dt.description}</td> */}
                                                                                             <td>
                                                                                                 <div className="hstack flex gap-3 
@@ -259,8 +277,8 @@ const SchoolsDetails = () => {
                                                                                                             <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                                                                                         </button>
                                                                                                         <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                          <li onClick={() => updateForm(dt.id)}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
-                                                         <li><button data-hs-overlay={`#hs-vertically-centered-modal-class-${dt.id}`} className="ti-dropdown-item text-left" onClick={()=>openDelete(dt.id)}>Delete</button></li>
+                                                          <li onClick={() => updateForm(dt.classId)}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                                         <li><button data-hs-overlay={`#hs-vertically-centered-modal-class-${dt.classId}`} className="ti-dropdown-item text-left" onClick={()=>openDelete(dt.classId)}>Delete</button></li>
     
     
                                                                                                         </ul>

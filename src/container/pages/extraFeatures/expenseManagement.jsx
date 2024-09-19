@@ -224,11 +224,11 @@ const ExpenseManagement = () => {
                                             showYearDropdown="true" showIcon selected={startDate1} onChange={(date) => setStartDate1(date)} dateFormat="dd/MM/yyyy" />
                                     </div>
                                 </div>
-                                <div className="expense-category-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
+                                {/* <div className="expense-category-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                     <label className="ti-form-select rounded-sm !p-0 mb-2"> Category:</label>
 
                                     <Select className="!p-0 place-holder" classNamePrefix='react-select' value={categoryFilter} options={categoryOptions} onChange={(option) => setCategoryFilter(option)} />
-                                </div>
+                                </div> */}
                                 <div className="expenseFilter-btn xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                     <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
                                 </div>
@@ -273,9 +273,9 @@ const ExpenseManagement = () => {
                                                             {dt.submittedAt}
                                                         </td>
                                                         <td>{dt.invoiceNumber}</td>
-                                                        <td>
+                                                        {/* <td>
                                                             <Link className='text-primary hs-dropdown-toggle ti-btn ' data-hs-overlay="#hs-vertically-centered-modal">View</Link>
-                                                        </td>
+                                                        </td> */}
                                                         <td rowSpan="2">
                                                             <div className="ti-dropdown hs-dropdown">
                                                                 <button type="button"

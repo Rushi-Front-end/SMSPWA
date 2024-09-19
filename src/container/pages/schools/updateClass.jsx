@@ -28,6 +28,9 @@ const UpdateClass = (props) => {
     const[classEditData, setClassEditData]=useState();
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const schoolId = localStorage.getItem('schoolId')
+
     // useEffect((id) => {
     //   dispatch(fetchClassListById(updateClassID))
     // }, [dispatch, updateClassID])
@@ -108,14 +111,18 @@ useEffect(() => {
     const onSubmit = (formData) => {
         setData({ ...formData });
         //dispatch(postClassList(formData))
-        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/${updateClassID}`, formData)
+        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/${updateClassID}`, {
+          ...formData,
+          schoolId:schoolId,
+          description:""
+        })
         .then(res => {
             console.log(res)
             if(res.status === 200){
               props.updateClassChild(false)
               toast.success('Class Data Updated Successfully')
               setTimeout(() => {
-                dispatch(fetchClassList())
+                 axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class`)
               }, 500);
             }
         })

@@ -237,9 +237,9 @@ const StaffLeave = () => {
                       <th scope="col" className="text-start">
                         Duration
                       </th>
-                      <th scope="col" className="text-start">
+                      {/* <th scope="col" className="text-start">
                         Status
-                      </th>
+                      </th> */}
                       <th scope="col" className="text-start">
                         Action
                       </th>
@@ -258,7 +258,7 @@ const StaffLeave = () => {
                                     <td>{staffList.filter(staff => staff.id === dt.staffID)[0]?.roleName || 'Unknown'}</td> {/* Display role name */}
                             <td>{dt.leaveType}</td>
                             <td>{`${dt.fromDate} - ${dt.toDate}`}</td>
-                            <td>
+                            {/* <td>
                               <span
                                 className={`badge ${
                                   statusMap[dt.id] === 'Approved' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'
@@ -266,7 +266,7 @@ const StaffLeave = () => {
                               >
                                 {statusMap[dt.id] || 'Rejected'}
                               </span>
-                            </td>
+                            </td> */}
                             <td rowSpan="2">
                               <div className="ti-dropdown hs-dropdown">
                                 <button

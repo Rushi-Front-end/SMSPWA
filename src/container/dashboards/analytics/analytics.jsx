@@ -1,11 +1,35 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Fullacalendar from '../../../container/fullacalendar/fullacalendar';
-import { Chartjsbar, Chartjsdonut, Chartjsline } from './analyticsdata';
+import { Chartjsbar, ChartjsbarExpense, Chartjsdonut, Chartjsline } from './analyticsdata';
+import axios from 'axios';
 
 
 
 const Analytics = () => {
+
+    const [data, setData] = useState([])
+    const [spinner, setSpinner] = useState(false)
+    
+    const getDashboardDetails = () => {
+        setSpinner(true)
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/4`)
+            .then(res =>{ 
+                setData(res.data)
+                setSpinner(false)
+                console.log(res.data)
+            })
+            .catch(err => console.log(err))
+    }
+
+    useEffect(() => {
+        getDashboardDetails()
+    }, [])
+
+
+
+    
+
     return (
         <Fragment>
             {/* <Pageheader currentpage="Dashboard" activepage="Dashboard" mainpage="Dashboard" /> */}
@@ -26,7 +50,7 @@ const Analytics = () => {
                                     <div className="flex flex-wrap items-center justify-between">
                                         <div>
                                             <h6 className="font-semibold mb-3 text-[1rem]">Total Students</h6>
-                                            <span className="text-[1.5625rem] font-semibold">12</span>
+                                            <span className="text-[1.5625rem] font-semibold">{data.totalStudent}</span>
                                             <span className="block text-success text-[0.75rem]">Students</span>
                                         </div>
                                         <div id="analytics-users">
@@ -44,7 +68,7 @@ const Analytics = () => {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <h6 className="font-semibold mb-3 text-[1rem]">Total Staffs</h6>
-                                            <span className="text-[1.5625rem] font-semibold">6</span>
+                                            <span className="text-[1.5625rem] font-semibold">{data.totalStaff}</span>
                                             <span className="block text-success text-[0.75rem]">Staffs</span>
                                         </div>
                                         <div>
@@ -62,7 +86,7 @@ const Analytics = () => {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <h6 className="font-semibold mb-3 text-[1rem]">Total Expenses</h6>
-                                            <span className="text-[1.5625rem] font-semibold">5</span>
+                                            <span className="text-[1.5625rem] font-semibold">{data.totalExpenses}</span>
                                             <span className="block text-success text-[0.75rem]">Expenses</span>
                                         </div>
                                         <div>
@@ -80,7 +104,7 @@ const Analytics = () => {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <h6 className="font-semibold mb-3 text-[1rem]">Total Sick Students</h6>
-                                            <span className="text-[1.5625rem] font-semibold">6</span>
+                                            <span className="text-[1.5625rem] font-semibold">{data.totalSickStudent}</span>
                                             <span className="block text-success text-[0.75rem]">Sick Students</span>
                                         </div>
                                         <div>
@@ -110,7 +134,7 @@ const Analytics = () => {
                                 </div>
                                 <div className="box-body !my-2 !py-6 !px-2">
                                     <div id="sessions">
-                                        <Chartjsdonut />
+                                        <Chartjsdonut  />
                                     </div>
                                 </div>
                                 {/* <div className="box-footer !p-0">
@@ -210,36 +234,19 @@ const Analytics = () => {
                             <div className="box dashHeight">
                                 <div className="box-header justify-between">
                                     <div className="box-title">
-                                        Reminder
+                                        Expenses
                                     </div>
-                                    <div>
-                                        <button type="button" className="ti-btn ti-btn-primary 1 !text-[0.85rem] !m-0 !font-medium">View All</button>
-                                    </div>
+                                   
                                 </div>
                                 <div className="box-body !my-2 !py-6 !px-2">
-                                    <div className='reminder-list'>
-                                        <ul className='reminder-listing'>
-                                            <li className='pb-2'>
-                                                <button type="button" className="ti-btn ti-btn-success-full !rounded-full ti-btn-wave">16 June 2024</button>
-                                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam, veritatis maxime. Ut modi, natus ab ducimus unde mollitia fuga minus cumque dolorum non fugit cum repellendus deleniti enim quo ullam.</p>
-                                                <hr />
-                                            </li>
-                                            <li className='pb-2'>
-                                                <button type="button" className="ti-btn ti-btn-success-full !rounded-full ti-btn-wave">16 June 2024</button>
-                                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam, veritatis maxime. Ut modi, natus ab ducimus unde mollitia fuga minus cumque dolorum non fugit cum repellendus deleniti enim quo ullam.</p>
-                                                <hr />
-                                            </li>
-                                            <li className='pt-2'>
-                                                <button type="button" className="ti-btn ti-btn-success-full !rounded-full ti-btn-wave">16 June 2024</button>
-                                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam, veritatis maxime. Ut modi, natus ab ducimus unde mollitia fuga minus cumque dolorum non fugit cum repellendus deleniti enim quo ullam.</p>
-                                            </li>
-                                        </ul>
+                                    <div id="sessions">
+                                        <ChartjsbarExpense />
                                     </div>
                                 </div>
-                                
+                              
                             </div>
                         </div>
-
+                        
                     </div>
                     <div >
                         <Fullacalendar />

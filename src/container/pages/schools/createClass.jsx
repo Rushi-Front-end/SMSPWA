@@ -24,6 +24,7 @@ const CreateClass = (props) => {
     const [data, setData] = useState();
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const schoolId = localStorage.getItem('schoolId')
 
 
     const { register, handleSubmit, formState, control,setValue, reset } = useForm({
@@ -37,15 +38,20 @@ const CreateClass = (props) => {
 
     const classPostRes = useSelector((state) => state.classData.postRes)
     console.log(data,'classPostRes')
-    
+    const schoolIdParams = localStorage.getItem('schoolId')
+    console.log(schoolIdParams, 'schoolIdParams')
     
     const onSubmit = (formData) => {
         setData({ ...formData });
         //dispatch(postClassList(formData))
-        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/create', formData)
+        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/create', {
+            ...formData,
+            schoolId:schoolId,
+        description:""
+        })
         .then(res => {
             console.log(res)
-          dispatch(fetchClassList())
+            axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
         })
         .catch(err => console.log(err))
        // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)

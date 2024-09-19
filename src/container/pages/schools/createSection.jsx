@@ -41,7 +41,7 @@ const CreateSection = (props) => {
         axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Section', formData)
         .then((res)=>{
             if(res.status===201){
-                dispatch(fetchClassList())
+               axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         `)
                 toast.success('Section Added Successfully')
                 setTimeout(() => {
                     

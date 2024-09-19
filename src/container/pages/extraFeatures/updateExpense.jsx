@@ -33,6 +33,7 @@ const schema = yup.object({
 const UpdateExpense = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [data, setData] = useState([]);
+    const [otherValue, setOtherValue] = useState('');
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema)
     });
@@ -73,6 +74,14 @@ const UpdateExpense = () => {
                 Object.keys(classData).forEach(key => {
                     setValue(key, classData[key]);
                 });
+                 // Check for the category and set otherValue accordingly
+                 if (classData.category === 'Other') {
+                    setOtherField(true);
+                    setOtherValue(classData.otherValue || ''); // Assuming you have a separate field for 'Other'
+                    setValue('category', classData.otherValue); // Set the category to the otherValue
+                } else {
+                    setOtherField(false);
+                }
                 // setValue('id', classData.id);
                 // setValue('staffName', classData.staffName);
                 // setValue('leaveType', classData.leaveType);
@@ -90,18 +99,22 @@ const UpdateExpense = () => {
       }, [params.id, setValue]);
 
       const handleCategoryChange = (option) => {
-        if (option && option.value === 'Other') { // Adjust 'Other' to match the actual value for the other option
+        if (option && option.value === 'Other') {
             setOtherField(true);
+            setOtherValue(''); // Clear other value when selecting "Other"
+            setValue('category', ''); // Clear category since we're entering an other value
         } else {
             setOtherField(false);
+            setValue('category', option.value); // Set selected category value
+            setOtherValue(''); // Clear other value when selecting a specific category
         }
     };
-
     const onSubmit = (formData) => {
         setData({...formData})
         console.log(formData, "ExpensesFormData")
         axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/UpdatetExpenses/${params.id}`, {
             ...formData,
+            category: otherField ? otherValue : formData.category,
             schoolId:schoolIdDrop,
             // fromDate: formatDate(startDate), // Ensure format is correct
             // toDate: formatDate(endDate),
@@ -175,15 +188,24 @@ const UpdateExpense = () => {
                           
                             <div className="leave-staff-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2"> Category<span className='redText'>*</span>:</label>
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={category} value={categoryValue ? category.find(x => x.value === categoryValue) : categoryValue}
-                                            onChange={option => {categoryOnChange(option ? option.value : option); handleCategoryChange(option)}}
-                                            {...restcategoryField} />
+                                <Select className="!p-0 place-holder" classNamePrefix='react-select'options={category} 
+                        value={categoryValue ? category.find(x => x.value === categoryValue) : null}
+                        onChange={option => { 
+                            categoryOnChange(option ? option.value : option);
+                            handleCategoryChange(option);
+                        }} 
+                        {...restcategoryField}  />
                                         {errors.category && <p className='errorTxt'>{errors.category.message}</p>}
                             </div>
                             {otherField && (
                                         <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Other:</label>
-                                            <input type="text" {...register('message')} name='message' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" value={otherValue} 
+                             onChange={(e) => {
+                setOtherValue(e.target.value);
+                setValue('category', e.target.value); // Keep the form value updated
+            }}
+              className="form-control" id="input-text" placeholder="" />
                                         </div>
                                     )}
                             <div className="leave-staff-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">

@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 
 const BASE_URL = 'https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class'
 export const fetchClassList   = createAsyncThunk("fetchClassList", async()=>{
-    const response = await fetch(`${BASE_URL}`)
-    return response.json();
+    // const response = await fetch(`${BASE_URL}`)
+    // return response.json();
 })
 
 

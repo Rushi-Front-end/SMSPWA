@@ -37,6 +37,7 @@ const CreateExpense = () => {
         resolver: yupResolver(schema)
     });
     const [otherField, setOtherField] = useState(false)
+    const [otherCategoryValue, setOtherCategoryValue] = useState('');
 
     const navigate = useNavigate()
     // const schoolIdDrop = useContext(IdContext);
@@ -53,11 +54,14 @@ const CreateExpense = () => {
     // const { field: { value: messageValue, onChange: messageOnChange, ...restmessageField } } = useController({ name: 'message', control });
     // const { field: { value: invoiceValue, onChange: invoiceOnChange, ...restinvoiceField } } = useController({ name: 'invoice', control });
 
+
+
     const onSubmit = (formData) => {
         setData({...formData})
         console.log(formData, "ExpensesFormData")
         axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/CreateExpenses`, {
             ...formData,
+            category: otherField ? otherCategoryValue : formData.category, // Use the other category value if applicable
             schoolId:schoolIdDrop,
             // fromDate: formatDate(startDate), // Ensure format is correct
             // toDate: formatDate(endDate),
@@ -78,11 +82,14 @@ const CreateExpense = () => {
     }
 
     const handleCategoryChange = (option) => {
-        if (option && option.value === 'Other') { // Adjust 'Other' to match the actual value for the other option
+        if (option && option.value === 'Other') {
             setOtherField(true);
+            setValue('category', ''); // Clear the category field
         } else {
             setOtherField(false);
+            setOtherCategoryValue(''); // Reset the other category value
         }
+        categoryOnChange(option ? option.value : option);
     };
 
 
@@ -137,15 +144,17 @@ const CreateExpense = () => {
                           
                             <div className="leave-staff-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                 <label className="ti-form-select rounded-sm !p-0 mb-2"> Category<span className='redText'>*</span>:</label>
-                                <Select className="!p-0 place-holder" classNamePrefix='react-select' options={category} value={categoryValue ? category.find(x => x.value === categoryValue) : categoryValue}
-                                            onChange={option => {categoryOnChange(option ? option.value : option); handleCategoryChange(option)}}
-                                            {...restcategoryField} />
+                                <Select className="!p-0 place-holder" classNamePrefix='react-select'  options={category}
+                value={categoryValue ? category.find(x => x.value === categoryValue) : categoryValue}
+                onChange={handleCategoryChange}
+                {...restcategoryField} />
                                         {errors.category && <p className='errorTxt'>{errors.category.message}</p>}
                             </div>
                             {otherField && (
                                         <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Other:</label>
-                                            <input type="text" {...register('message')} name='message' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" value={otherCategoryValue}
+                        onChange={(e) => setOtherCategoryValue(e.target.value)} className="form-control" id="input-text" placeholder="" />
                                         </div>
                                     )}
                             <div className="leave-staff-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
