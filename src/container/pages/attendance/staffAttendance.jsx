@@ -7,6 +7,7 @@ import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
 
 import DatePicker from 'react-datepicker';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const getFormattedToday = () => {
     const today = new Date();
@@ -32,7 +33,7 @@ const StaffAttendance = () => {
     const [editedData, setEditedData] = useState({});
     const formattedToday = getFormattedToday();
 
-    const schoolId = localStorage.getItem("schoolId")
+  const {id: schoolId} = useSchoolId();
 
     const formatDate = (date) => {
         if (!date) return '';
@@ -93,7 +94,7 @@ const StaffAttendance = () => {
 
         useEffect(() => {
             getStaffAttandance()
-        }, [])
+        }, [schoolId])
 
 
         const handleEdit = (index) => {

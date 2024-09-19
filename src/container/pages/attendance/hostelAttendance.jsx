@@ -4,6 +4,7 @@ import axios from 'axios';
 import Loader from '../loader/loader';
 import DatePicker from 'react-datepicker';
 import { toast } from 'react-toastify';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 const getFormattedToday = () => {
@@ -30,7 +31,8 @@ const HostelAttendance = () => {
     const [statusSelection, setStatusSelection] = useState(null);
     const statusOptions = [{id: "Present", value: "Present", label: "Present"}, {id: "Absent", value: "Absent", label: "Absent"}]
 
-    const schoolId = localStorage.getItem("schoolId")
+    const {id: schoolId} = useSchoolId();
+
 
     const getHosteliteAttandance = () => {
         setSpinner(true);

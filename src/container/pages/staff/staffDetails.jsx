@@ -5,6 +5,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 const StaffDetails = () => {
@@ -17,7 +18,7 @@ const StaffDetails = () => {
     const [roleList, setRoleList] = useState([])
 
     const [searchFilter, setSearchFilter] = useState("")
-    const schoolId = localStorage.getItem("schoolId")
+    const {id: schoolId} = useSchoolId();
 
     const getStaffList = () => {
         setSpinner(true)

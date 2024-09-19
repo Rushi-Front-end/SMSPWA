@@ -54,22 +54,22 @@ function App() {
             }}
           />
           <Switcher />
-          <div className='page'>
-            <Header />
-            <Sidebar />
-            <div className='content main-index'>
-              <div className='main-content'
-              // onClick={Bodyclickk}
-              >
-                <IdProvider>
-                <Provider store={storeSchool}>
-                  <Outlet />
-                </Provider>
+              <IdProvider>
+                <div className='page'>
+                  <Header />
+                  <Sidebar />
+                  <div className='content main-index'>
+                    <div className='main-content'
+                    // onClick={Bodyclickk}
+                    >
+                      <Provider store={storeSchool}>
+                        <Outlet />
+                      </Provider>
+                    </div>
+                  </div>
+                  <Footer />
+                </div>
                 </IdProvider>
-              </div>
-            </div>
-            <Footer />
-          </div>
           <Tabtotop />
         </HelmetProvider>
       </Provider>
