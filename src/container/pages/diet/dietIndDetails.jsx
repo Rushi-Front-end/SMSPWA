@@ -65,7 +65,7 @@ const DietIndDetails = ({ selectedDay }) => {
                                         {dietData[selectedDay].map((dt, i) => (
                                             <tr className="border-b border-defaultborder" key={i}>
                                                 <td>{dt.mealType}</td>
-                                                <td>{dt.time || '8am-10am'}</td>
+                                                <td>{dt.mealTime  || '8am-10am'}</td>
                                                 <td>{dt.menuItems}</td>
                                                 <td>{dt.totalCalories}</td>
                                                 {/* <td>{dt.createdBy || 'John Smith'}</td>

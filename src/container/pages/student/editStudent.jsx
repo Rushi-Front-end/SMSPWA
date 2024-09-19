@@ -20,8 +20,24 @@ const formatDate = (date) => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 };
+const formatDate2 = (date) => {
+    if (typeof date !== 'string') {
+        console.error('Invalid date format:', date);
+        return null; // Or handle the error as needed
+    }
 
- 
+    let [day, month, year] = date.split("/");
+
+    // Check if day, month, and year are defined
+    if (!day || !month || !year) {
+        console.error('Invalid date components:', { day, month, year });
+        return null; // Or handle the error as needed
+    }
+
+    // Convert to the format "YYYY-MM-DD"
+    let formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+};
 const schema = yup.object({
     registrationNumber: yup.string().required("Please enter Register Number"),
     rollNumber: yup.string().required("Please enter Roll Number"),
@@ -158,8 +174,8 @@ useEffect(()=>{
        axios.put('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+studentid, 
         {
             ...formData,
-            enrolmentDate:  formatDate(new Date(formData.enrolmentDate)),
-            toDate:  formatDate(new Date(formData.toDate)),
+            enrolmentDate:  formatDate(new Date(formatDate2(formData.enrolmentDate))),
+            toDate:  formatDate(new Date(formatDate2(formData.toDate))),
         }
     )
        .then(res=>{
