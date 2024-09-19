@@ -123,9 +123,7 @@ console.log(schoolIdParams, 'schoolIdParams')
             if(res.status === 200){
               props.updateClassChild(false)
               toast.success('Class Data Updated Successfully')
-              setTimeout(() => {
                  axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
-              }, 500);
             }
         })
         .catch(err => console.log(err))
