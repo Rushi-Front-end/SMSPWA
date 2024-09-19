@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { fetchClassList } from '../../../redux/reducers/classReducer';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const schema = yup.object({
     description: yup.string().nullable().required("Please select Section Name"),
@@ -33,8 +34,10 @@ const CreateSection = (props) => {
     const { errors } = formState;
 
     const dispatch = useDispatch()
-    const schoolIdParams = localStorage.getItem('schoolId')
-    console.log(schoolIdParams, 'schoolIdParams')
+    const {id: schoolId} = useSchoolId();
+
+    // const schoolIdParams = localStorage.getItem('schoolId')
+    // console.log(schoolIdParams, 'schoolIdParams')
 
 
     const onSubmit = (formData) => {
@@ -43,7 +46,7 @@ const CreateSection = (props) => {
         axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Section', formData)
         .then((res)=>{
             if(res.status===201){
-                axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
+                axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
                 toast.success('Section Added Successfully')
                 setTimeout(() => {
                     

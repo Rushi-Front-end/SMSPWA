@@ -9,7 +9,7 @@ import * as yup from "yup";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { IdContext } from '../../../components/common/context/idContext';
+import { IdContext, useSchoolId } from '../../../components/common/context/idContext';
 
 const formatDate = (date) => {
     if (!date) return '';
@@ -44,9 +44,10 @@ const UpdateExpense = () => {
     const [otherField, setOtherField] = useState(false)
 
     // const schoolIdDrop = useContext(IdContext);
-    const schoolIdDrop = localStorage.getItem('schoolId');
+    // const schoolIdDrop = localStorage.getItem('schoolId');
 
-    console.log(schoolIdDrop,"UseCONTEXT")
+    // console.log(schoolIdDrop,"UseCONTEXT")
+    const {id: schoolId} = useSchoolId();
 
     const { errors } = formState;
 
@@ -115,7 +116,7 @@ const UpdateExpense = () => {
         axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/UpdatetExpenses/${params.id}`, {
             ...formData,
             category: otherField ? otherValue : formData.category,
-            schoolId:schoolIdDrop,
+            schoolId:schoolId,
             // fromDate: formatDate(startDate), // Ensure format is correct
             // toDate: formatDate(endDate),
             // createdBy:4

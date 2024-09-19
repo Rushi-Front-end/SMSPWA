@@ -9,6 +9,7 @@ import { fetchClassList, fetchClassListById, postClassList } from '../../../redu
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 
@@ -29,7 +30,9 @@ const UpdateClass = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const schoolId = localStorage.getItem('schoolId')
+    // const schoolId = localStorage.getItem('schoolId')
+    const {id: schoolId} = useSchoolId();
+
 
     // useEffect((id) => {
     //   dispatch(fetchClassListById(updateClassID))
@@ -106,8 +109,8 @@ useEffect(() => {
 //       });
 //   }
 // }, [updateClassID, dispatch, setValue]);
-const schoolIdParams = localStorage.getItem('schoolId')
-console.log(schoolIdParams, 'schoolIdParams')
+// const schoolIdParams = localStorage.getItem('schoolId')
+// console.log(schoolIdParams, 'schoolIdParams')
 
 
     const onSubmit = (formData) => {
@@ -123,7 +126,7 @@ console.log(schoolIdParams, 'schoolIdParams')
             if(res.status === 200){
               props.updateClassChild(false)
               toast.success('Class Data Updated Successfully')
-                 axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
+                 axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
             }
         })
         .catch(err => console.log(err))

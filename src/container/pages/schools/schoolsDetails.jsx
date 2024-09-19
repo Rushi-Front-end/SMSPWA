@@ -19,6 +19,7 @@ import UpdateRole from './updateRole';
 import UpdateClass from './updateClass';
 import Loader from '../loader/loader';
 import axios from 'axios';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 const SchoolsDetails = () => {
@@ -89,12 +90,13 @@ const SchoolsDetails = () => {
 
     
     ///Class useEffect
-    const schoolIdParams = localStorage.getItem('schoolId')
-    console.log(schoolIdParams, 'schoolIdParams')
+    const {id: schoolId} = useSchoolId();
+    // const schoolIdParams = localStorage.getItem('schoolId')
+    // console.log(schoolIdParams, 'schoolIdParams')
 
     const classSecData= ()=> {
         
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
        .then((res)=>{
         console.log(res,'hhhhhhh')
         setClassDataSec(res.data)
@@ -111,14 +113,14 @@ const SchoolsDetails = () => {
             classSecData()
         }, 1000);
         
-    }, [schoolIdParams])
+    }, [schoolId])
 
 
     const deleteDatahandler = (data)=>{
         console.log("deleteDatahandler", data)
         dispatch(deleteClassList(data))
         setTimeout(()=>{
-            axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
+            axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
         },500)
     }
     

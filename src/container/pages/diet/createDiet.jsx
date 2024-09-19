@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { IdContext } from '../../../components/common/context/idContext';
+import { IdContext, useSchoolId } from '../../../components/common/context/idContext';
 
 
 
@@ -37,9 +37,11 @@ const [schoolIdCont, setSchoolIdCont] = useState([])
     });
 
     const navigate = useNavigate()
-    const schoolIdDrop = localStorage.getItem('schoolId');
+    // const schoolIdDrop = localStorage.getItem('schoolId');
+    const {id: schoolId} = useSchoolId();
+
     // const schoolIdDrop = useContext(IdContext);
-    console.log(schoolIdDrop,"UseCONTEXT")
+    // console.log(schoolIdDrop,"UseCONTEXT")
 
     const { field: { value: dayOfWeekValue, onChange: dayOfWeekOnChange, ...restdayOfWeekField } } = useController({ name: 'dayOfWeek', control });
     const { field: { value: mealTypeValue, onChange: mealTypeOnChange, ...restmealTypeField } } = useController({ name: 'mealType', control });
@@ -52,7 +54,7 @@ const [schoolIdCont, setSchoolIdCont] = useState([])
     const onSubmit = (formData) => {
         setData({...formData})
         axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/CreateDietPlan`, {...formData,
-            "schoolId":schoolIdDrop
+            "schoolId":schoolId
         })
         .then((res)=>{
             console.log(res)

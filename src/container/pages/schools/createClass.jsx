@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchClassList, postClassList } from '../../../redux/reducers/classReducer';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 
@@ -24,7 +25,9 @@ const CreateClass = (props) => {
     const [data, setData] = useState();
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const schoolId = localStorage.getItem('schoolId')
+    // const schoolId = localStorage.getItem('schoolId')
+    const {id: schoolId} = useSchoolId();
+
 
 
     const { register, handleSubmit, formState, control,setValue, reset } = useForm({
@@ -38,8 +41,8 @@ const CreateClass = (props) => {
 
     const classPostRes = useSelector((state) => state.classData.postRes)
     console.log(data,'classPostRes')
-    const schoolIdParams = localStorage.getItem('schoolId')
-    console.log(schoolIdParams, 'schoolIdParams')
+    // const schoolIdParams = localStorage.getItem('schoolId')
+    // console.log(schoolIdParams, 'schoolIdParams')
     
     const onSubmit = (formData) => {
         setData({ ...formData });
@@ -53,7 +56,7 @@ const CreateClass = (props) => {
             console.log(res)
             if(res.statusCode === 201){
                 setTimeout(() => {
-                axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
+                axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
             }, 1000);
                 toast.success('Classes Added Successfully')
             }
