@@ -107,6 +107,9 @@ const SchoolsDetails = () => {
         
         // dispatch(fetchClassList())
         classSecData()
+        setTimeout(() => {
+            classSecData()
+        }, 1000);
         
     }, [schoolIdParams])
 

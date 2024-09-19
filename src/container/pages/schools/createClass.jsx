@@ -54,7 +54,7 @@ const CreateClass = (props) => {
             if(res.statusCode === 201){
                 setTimeout(() => {
                 axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
-            }, 500);
+            }, 1000);
                 toast.success('Classes Added Successfully')
             }
         })
