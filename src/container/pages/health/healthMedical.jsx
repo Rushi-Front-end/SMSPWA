@@ -70,6 +70,8 @@ const HealthMedical = (props) => {
           const trueKeys = Object.keys(obj[key]).filter(subKey => obj[key][subKey]);
           if (trueKeys.length > 0) {
             acc[key] = trueKeys.join(',');
+          } else {
+            acc[key] = ""
           }
           return acc;
         }, {});
