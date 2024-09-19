@@ -30,7 +30,7 @@ const schema = yup.object({
     suggestedSolutionsAndTreatments: yup.string().nullable().required("Please Enter suggested Solutions And Treatments "),
     remark: yup.string().nullable().required("Please Enter Remarks "),
     createdAt: yup.string().nullable().required("Please Enter Enrolment Date "),
-    suggestedSolutionsAndTreatments: yup.string().nullable().required("Please Enter suggested Solutions And Treatments "),
+    // suggestedSolutionsAndTreatments: yup.string().nullable().required("Please Enter suggested Solutions And Treatments "),
     healthCheckupDate: yup.string().nullable().required("Please Enter Health Checkup Date"),
     nameOfDoctor: yup.string().nullable().required("Please Enter Name of  the Doctor "),
     nameOfHospital: yup.string().nullable().required("Please Enter Name of  the Hospital "),
