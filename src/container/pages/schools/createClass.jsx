@@ -51,7 +51,12 @@ const CreateClass = (props) => {
         })
         .then(res => {
             console.log(res)
-            axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
+            if(res.statusCode === 201){
+                setTimeout(() => {
+                axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
+            }, 500);
+                toast.success('Classes Added Successfully')
+            }
         })
         .catch(err => console.log(err))
        // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)

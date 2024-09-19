@@ -106,6 +106,8 @@ useEffect(() => {
 //       });
 //   }
 // }, [updateClassID, dispatch, setValue]);
+const schoolIdParams = localStorage.getItem('schoolId')
+console.log(schoolIdParams, 'schoolIdParams')
 
 
     const onSubmit = (formData) => {
@@ -122,7 +124,7 @@ useEffect(() => {
               props.updateClassChild(false)
               toast.success('Class Data Updated Successfully')
               setTimeout(() => {
-                 axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class`)
+                 axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
               }, 500);
             }
         })

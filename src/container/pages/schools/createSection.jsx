@@ -33,6 +33,8 @@ const CreateSection = (props) => {
     const { errors } = formState;
 
     const dispatch = useDispatch()
+    const schoolIdParams = localStorage.getItem('schoolId')
+    console.log(schoolIdParams, 'schoolIdParams')
 
 
     const onSubmit = (formData) => {
@@ -41,7 +43,7 @@ const CreateSection = (props) => {
         axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Section', formData)
         .then((res)=>{
             if(res.status===201){
-               axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         `)
+                axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolIdParams}`)
                 toast.success('Section Added Successfully')
                 setTimeout(() => {
                     

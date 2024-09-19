@@ -265,7 +265,6 @@ const SchoolsDetails = () => {
                                                                                     <tbody>
                                                                                         <tr className="border-b border-defaultborder" key={index} id={dt.classId}>
                                                                                             <td>{index + 1}</td>
-                                                                                            <td>{dt.classId}</td>
                                                                                             <td>{dt.sectionName}</td>
                                                                                             {/* <td>{dt.description}</td> */}
                                                                                             <td>
