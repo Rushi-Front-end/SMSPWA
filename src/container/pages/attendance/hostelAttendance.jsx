@@ -26,6 +26,10 @@ const HostelAttendance = () => {
     const [healthStudName, setHealthStudName] = useState([]);
     const [healthClassName, setHealthClassName] = useState([]);
 
+    
+    const [statusSelection, setStatusSelection] = useState(null);
+    const statusOptions = [{id: "Present", value: "Present", label: "Present"}, {id: "Absent", value: "Absent", label: "Absent"}]
+
     const schoolId = localStorage.getItem("schoolId")
 
     const getHosteliteAttandance = () => {
@@ -47,12 +51,17 @@ console.log(editedData,"formattedToday")
         setEditedData(data[index]);
     };
 
-    const handleSave = (index) => {
+    const handleSave = async (index) => {
             // Ensure inTime and outTime are in the correct format (hh:mm:ss)
-    const formattedInTime = editedData.inTime.length === 5 ? `${editedData.inTime}:00` : editedData.inTime;
-    const formattedOutTime = editedData.outTime.length === 5 ? `${editedData.outTime}:00` : editedData.outTime;
+    let formattedInTime = editedData.inTime.length === 5 ? `${editedData.inTime}:00` : editedData.inTime;
+    let formattedOutTime = editedData.outTime.length === 5 ? `${editedData.outTime}:00` : editedData.outTime;
 
-        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelAttendance?id=${editedData.id}`, {
+    if(statusSelection?.value == "Absent") {
+        formattedInTime = "00:00:00"
+        formattedOutTime = "00:00:00"
+    }
+
+        await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelAttendance?id=${editedData.id}`, {
             ...editedData,
             inTime: formattedInTime,
             outTime: formattedOutTime,
@@ -70,7 +79,12 @@ console.log(editedData,"formattedToday")
 
     const handleCancel = () => {
         setIsEditingIndex(null);
+        setStatusSelection(null)
     };
+
+    const handleStatusChange = (option) => {
+        setStatusSelection(option)
+    }
 
     const handleChange = (e, field) => {
         setEditedData({
@@ -216,9 +230,17 @@ console.log(editedData,"formattedToday")
                                                             />
                                                         </td>
                                                         <td>
-                                                            <span className={`badge ${status === 'Present' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
-                                                                {status}
-                                                            </span>
+                                                            {isEditing ? 
+                                                                <>
+                                                                    <Select  placeholder='Select Status' className="!p-0 place-holder" classNamePrefix='react-select' value={statusSelection} options={statusOptions} onChange={handleStatusChange} />
+                                                                </>
+                                                            :
+                                                                <>
+                                                                    <span className={`badge ${status === 'Present' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
+                                                                        {status}
+                                                                    </span>
+                                                                </>
+                                                            }
                                                         </td>
                                                         <td>
                                                             <div className="ti-dropdown hs-dropdown">
