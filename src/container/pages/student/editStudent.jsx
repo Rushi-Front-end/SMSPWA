@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import media50 from "../../../assets/images/media/media-50.jpg";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 // Date Formatting Function
 const formatDate = (date) => {
@@ -81,7 +82,9 @@ const EditStudent = () => {
 
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
+    const [classOptions, setClassOptions] = useState([])
 
+    const {id:schoolId} = useSchoolId()
     useEffect((id)=>{
         axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${studentid}`)
     },[studentid])
@@ -118,6 +121,26 @@ const EditStudent = () => {
     const { field: { value: genderValue, onChange: genderOnChange, ...genderField } } = useController({ name: 'gender', control });
     const { field: { value: stateValue, onChange: stateOnChange, ...reststateField } } = useController({ name: 'state', control });
    
+    useEffect(() => {
+        const fetchClass = async () => {
+          try {
+            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/class');
+            const classData = response.data;
+            
+            const filteredClassData = classData.filter(el => el.schoolID == schoolId)
+            const classOptionsList = filteredClassData.map(ele => ({
+                id: ele.id,
+                value: ele.id,
+                label: ele.className
+            }));
+            setClassOptions(classOptionsList)
+          } catch (error) {
+            console.error('Error fetching Class:', error);
+          }
+        };
+    
+        fetchClass();
+    }, [schoolId]);
 
  
 useEffect(()=>{
@@ -287,8 +310,8 @@ useEffect(()=>{
                             </div>
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Select Class <span className="redText">*</span></label>
-                            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={classIDSelect}
-            value={classIDValue ? classIDSelect.find(x => x.value === classIDValue) : classIDValue}
+                            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={classOptions}
+             value={classOptions.find(option => option.value === classIDValue)}
             onChange={option => classIDOnChange(option ? option.value : option)}
             {...restclassIDField} 
             />

@@ -1,5 +1,5 @@
 import React, {  useContext, useEffect, useState } from 'react'
-import { department, enableLogin, genderSelect, roleID, shift, singleselect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
+import { assignedSubject, department, enableLogin, genderSelect, roleID, shift, singleselect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import media50 from "../../../assets/images/media/media-50.jpg";
 
@@ -439,8 +439,8 @@ useEffect(()=>{
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Assign Subjects<span className="redText">*</span></label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
-                                    options={singleselect}
-                                    value={assignedSubjectValue ? singleselect.find(x => x.value === assignedSubjectValue) : assignedSubjectValue}
+                                    options={assignedSubject}
+                                    value={assignedSubjectValue ? assignedSubject.find(x => x.value === assignedSubjectValue) : assignedSubjectValue}
                                     onChange={option => assignedSubjectOnChange(option ? option.value : option)}
                                     {...restassignedSubjectField}
                                     classNamePrefix='react-select'  />
@@ -511,7 +511,7 @@ useEffect(()=>{
 
             <div className='student-create-btn'>
                 <div className='flex justify-end'>
-                <button type="submit" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave"> Create</button>
+                <button type="submit" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave"> Update</button>
                 <div className='backButton'>
                 <Link to={`${import.meta.env.BASE_URL}pages/staff/staffDetails`}>
 

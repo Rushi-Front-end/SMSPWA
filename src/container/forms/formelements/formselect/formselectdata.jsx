@@ -84,6 +84,35 @@ export const singleselect = [
   { id: 3, value: "Choice 2" ,label:"Choice 2"},
   { id: 4, value: "Choice 3" ,label:"Choice 3"},
 ]
+
+
+export const subjectType = [
+  { id: 1, value: "Language",label:"Language" },
+  { id: 2, value: "Theory" ,label:"Theory"},
+  { id: 3, value: "Practical", label:"Practical"},
+  { id: 4, value: "Sports", label:"Sports"},
+  { id: 5, value: "Extra-curricular Activity" ,label:"Extra-curricular Activity"},
+]
+
+export const assignedSubject = [
+  { id: 1, value: "Marathi",label:"Marathi" },
+  { id: 2, value: "Hindi" ,label:"Hindi"},
+  { id: 3, value: "English", label:"English"},
+  { id: 4, value: "Sanskrit", label:"Sanskrit"},
+  { id: 5, value: "Mathematics" ,label:"Mathematics"},
+  { id: 6, value: "History" ,label:"History"},
+  { id: 7, value: "Economics" ,label:"Economics"},
+  { id: 8, value: "Geography" ,label:"Geography"},
+  { id: 9, value: "Computer" ,label:"Computer"},
+  { id: 10, value: "General Science" ,label:"General Science"},
+  { id: 11, value: "Physical Education" ,label:"Physical Education"},
+  { id: 12, value: "Social Studies" ,label:"Social Studies"},
+  { id: 13, value: "Other" ,label:"Other"},
+]
+
+
+
+
 export const className = [
   { id: 1, value: "Select Class Name",label:"Select Class Name" },
   { id: 2, value: "5th Class" ,label:"5th Class"},
@@ -98,7 +127,8 @@ export const className = [
 export const schoolBoard = [
   { id: 1, value: "Select Board",label:"Select Board" },
   { id: 2, value: "SSC" ,label:"SSC"},
-  { id: 3, value: "CBSC" ,label:"CBSC"},
+  { id: 3, value: "HSC" ,label:"HSC"},
+  { id: 4, value: "CBSC" ,label:"CBSC"},
 ]
 export const mealType = [
   { id: 1, value: "Select Meal",label:"Select Meal" },
@@ -113,6 +143,11 @@ export const department = [
   { id: 4, value: "Computer department" ,label:"Computer department"},
   { id: 5, value: "Librar  department" ,label:"Library department"},
   { id: 6, value: "Laboratory department" ,label:"Laboratory department"},
+]
+
+export const schoolCategory = [
+  { id: 1, value: "Primary School",label:"Primary School" },
+  { id: 2, value: "Secondary School" ,label:"Secondary School"},
 ]
 
 export const prakalpName  = [
@@ -193,8 +228,8 @@ export const classIDSelect = [
 export const genderSelect = [  
   { id: 1, value: "Male", label:"Male" },
   { id: 2, value: "Female" ,label:"Female"},
-  { id: 2, value: "Transgender" ,label:"Transgender"},
-  { id: 3, value: "Others" ,label:"Others"},
+  // { id: 2, value: "Transgender" ,label:"Transgender"},
+  // { id: 3, value: "Others" ,label:"Others"},
 ]
 export const enableLogin = [  
   { id: 1, value: "Yes", label:"Yes" },

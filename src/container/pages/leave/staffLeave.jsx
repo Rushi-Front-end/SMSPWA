@@ -277,7 +277,7 @@ const StaffLeave = () => {
                                   <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                 </button>
                                 <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                  <li>
+                                  {/* <li>
                                     <Link
                                       className="ti-dropdown-item"
                                       to="#"
@@ -294,7 +294,7 @@ const StaffLeave = () => {
                                     >
                                       Reject
                                     </Link>
-                                  </li>
+                                  </li> */}
                                   <li>
                                     <Link
                                       className="ti-dropdown-item"

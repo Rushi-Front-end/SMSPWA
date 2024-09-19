@@ -16,11 +16,11 @@ const TimeTable = () => {
 
     const [classDataList, setClassDataList] = useState([]);
 
+    const {id: schoolId} = useSchoolId();
     useEffect(() => {
         const fetchData = async () => {
         try {
             const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class');
-            const {id: schoolId} = useSchoolId();
 
             if(schoolId == null) throw Error()
             

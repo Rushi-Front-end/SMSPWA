@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { singleselect, schoolBoard, prakalpName } from '../../forms/formelements/formselect/formselectdata'
+import { singleselect, schoolBoard, prakalpName, schoolCategory, stateSelect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link, useParams } from 'react-router-dom';
 import { Controller, useForm, useController } from 'react-hook-form';
@@ -137,8 +137,8 @@ const CreateSchool = () => {
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">School Category<span className='redText'>*</span>:</label>
                                 <Select className="!p-0 place-holder" 
                                     isClearable
-                                    options={singleselect}
-                                    value={schoolCatValue ? singleselect.find(x => x.value === schoolCatValue) : schoolCatValue}
+                                    options={schoolCategory}
+                                    value={schoolCatValue ? schoolCategory.find(x => x.value === schoolCatValue) : schoolCatValue}
                                     onChange={option => schoolCatOnChange(option ? option.value : option)}
                                     {...restschoolCatField}
                                     classNamePrefix='react-select'  />
@@ -209,8 +209,8 @@ const CreateSchool = () => {
                                 <label className="ti-form-select rounded-sm !p-0 mb-2">Select State/Province<span className='redText'>*</span>:</label>
                                 <Select className="!p-0 place-holder" 
                                     isClearable
-                                    options={singleselect}
-                                    value={stateValue ? singleselect.find(x => x.value === stateValue) : stateValue}
+                                    options={stateSelect}
+                                    value={stateValue ? stateSelect.find(x => x.value === stateValue) : stateValue}
                                     onChange={option => stateOnChange(option ? option.value : option)}
                                     {...reststateField}
                                     classNamePrefix='react-select'  />

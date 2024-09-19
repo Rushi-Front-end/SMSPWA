@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Chart, ArcElement, Tooltip, Legend, registerables } from 'chart.js';
 import { useEffect, useState } from 'react';
 import { Line, Bar, Doughnut,} from 'react-chartjs-2';
+import { useSchoolId } from '../../../components/common/context/idContext';
 Chart.register(...registerables, ArcElement, Tooltip, Legend);
 
 //  LineChart
@@ -61,12 +62,14 @@ const Data1 = (examData) => {
 };
 
 export function Chartjsline() {
+  const {id: schoolId} = useSchoolId();
+
   const [examData, setExamData] = useState([]);
 
   useEffect(() => {
     const fetchExamData = async () => {
       try {
-        const response = await fetch('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph/4');
+        const response = await fetch(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph/${schoolId}`);
         const data = await response.json();
         setExamData(data);
         console.log(data);
@@ -76,11 +79,11 @@ export function Chartjsline() {
     };
 
     fetchExamData();
-  }, []);
+  }, [schoolId]);
 
-  if (!examData.length) {
-    return <div>Loading...</div>;
-  }
+  // if (!examData.length) {
+  //   return <div>Loading...</div>;
+  // }
 
   return <Line options={Option1} data={Data1(examData)} height={300} />;
 }
@@ -106,6 +109,8 @@ const Option2 = {
 
 
 export function Chartjsbar() {
+  const {id: schoolId} = useSchoolId();
+  
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -122,7 +127,7 @@ export function Chartjsbar() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph/1');
+        const response = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph/${schoolId}`);
         console.log('API Response:', response.data); // Log the response
 
         const apiData = response.data;
@@ -146,7 +151,7 @@ export function Chartjsbar() {
     };
 
     fetchData();
-  }, []);
+  }, [schoolId]);
 
   return <Bar options={Option2} data={data} height='300px' />;
 }
@@ -183,11 +188,12 @@ const Data4 = (studentData) => ({
 export function Chartjsdonut() {
 
   const [studentData, setStudentData] = useState(null);
+  const {id: schoolId} = useSchoolId();
 
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await fetch('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph/4'); // Replace with your API URL
+        const response = await fetch(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph/${schoolId}`); // Replace with your API URL
         const data = await response.json();
         setStudentData(data);
       } catch (error) {
@@ -196,7 +202,7 @@ export function Chartjsdonut() {
     };
 
     fetchStudentData();
-  }, []);
+  }, [schoolId]);
 
   // Show a loading state while data is being fetched
   if (!studentData) {
@@ -227,6 +233,8 @@ const optionExpense = {
 };
 
 export function ChartjsbarExpense() {
+  const {id: schoolId} = useSchoolId();
+
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -243,7 +251,7 @@ export function ChartjsbarExpense() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph/4'); // Replace with your API URL
+        const response = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph/${schoolId}`); // Replace with your API URL
         const apiData = response.data;
 
         // Aggregate amounts by month
@@ -272,7 +280,7 @@ export function ChartjsbarExpense() {
     };
 
     fetchData();
-  }, []);
+  }, [schoolId]);
 
   return <Bar options={optionExpense} data={data} height='300px' />;
 }

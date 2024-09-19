@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Fullacalendar from '../../../container/fullacalendar/fullacalendar';
 import { Chartjsbar, ChartjsbarExpense, Chartjsdonut, Chartjsline } from './analyticsdata';
 import axios from 'axios';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 
@@ -10,10 +11,11 @@ const Analytics = () => {
 
     const [data, setData] = useState([])
     const [spinner, setSpinner] = useState(false)
+  const {id: schoolId} = useSchoolId();
     
     const getDashboardDetails = () => {
         setSpinner(true)
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/4`)
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/${schoolId}`)
             .then(res =>{ 
                 setData(res.data)
                 setSpinner(false)
@@ -24,7 +26,7 @@ const Analytics = () => {
 
     useEffect(() => {
         getDashboardDetails()
-    }, [])
+    }, [schoolId])
 
 
 

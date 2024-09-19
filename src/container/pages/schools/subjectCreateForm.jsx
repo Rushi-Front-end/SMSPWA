@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
-import { singleselect } from '../../forms/formelements/formselect/formselectdata';
+import { singleselect, subjectType } from '../../forms/formelements/formselect/formselectdata';
 import {  useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -84,8 +84,8 @@ const SubjectCreateForm = (props) => {
         <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
             <label htmlFor="input-text" className="form-label">Subject Type<span className='redText'>*</span></label>
             {/* <input type="text" className="form-control" id="input-text" placeholder="Enter Subject Code" /> */}
-            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={singleselect}
-            value={subjectTypeValue ? singleselect.find(x => x.value === subjectTypeValue) : subjectTypeValue}
+            <Select className="!p-0 place-holder" classNamePrefix='react-select' options={subjectType}
+            value={subjectTypeValue ? subjectType.find(x => x.value === subjectTypeValue) : subjectTypeValue}
             onChange={option => subjectTypeOnChange(option ? option.value : option)}
             {...restsubjectTypeField}
             />

@@ -210,8 +210,8 @@ const HosteliteLeave = () => {
                                                         <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                                     </button>
                                                     <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                                    <li><Link className="ti-dropdown-item" to="#"onClick={() => handleStatusChange(dt.id, 'Approved')} >Approve</Link></li>
-                                                                    <li><Link className="ti-dropdown-item" to="#" onClick={() => handleStatusChange(dt.id, 'Rejected')}>Reject</Link></li>
+                                                                    {/* <li><Link className="ti-dropdown-item" to="#"onClick={() => handleStatusChange(dt.id, 'Approved')} >Approve</Link></li>
+                                                                    <li><Link className="ti-dropdown-item" to="#" onClick={() => handleStatusChange(dt.id, 'Rejected')}>Reject</Link></li> */}
                                                                     <li><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/leave/updateHosteliteLeave/${dt.id}`}>Edit</Link></li>
                                                                     <li><Link className="ti-dropdown-item" to="#" data-hs-overlay={`#hs-vertically-centered-modal${dt.id}`} onClick={()=>deleteStaffLeave(dt.id)}>Cancel</Link></li>
                                                                 </ul>

@@ -7,6 +7,7 @@ import { getUsers } from '../../../redux/action';
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 const Student = () => {
@@ -26,11 +27,12 @@ const Student = () => {
     
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {id: schoolId} = useSchoolId();
 
     
     const getStudentDetails = () => {
         setSpinner(true)
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students?schoolId=${schoolId}`)
             .then(res =>{ 
                 setData(res.data)
                 setSpinner(false)
@@ -40,7 +42,7 @@ const Student = () => {
 
     useEffect(() => {
         getStudentDetails()
-    }, [])
+    }, [schoolId])
 
 
     const handleChange = value => {

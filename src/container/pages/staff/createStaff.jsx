@@ -1,5 +1,5 @@
 import React, {  useContext, useEffect, useState } from 'react'
-import { department, enableLogin, genderSelect, roleID, shift, singleselect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
+import { assignedSubject, department, enableLogin, genderSelect, roleID, shift, singleselect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import media50 from "../../../assets/images/media/media-50.jpg";
 
@@ -11,7 +11,7 @@ import axios from 'axios';
 import { Controller, useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { IdContext } from '../../../components/common/context/idContext';
+import { IdContext, useSchoolId } from '../../../components/common/context/idContext';
 import { toast } from 'react-toastify';
 
 
@@ -57,6 +57,29 @@ const CreateStaff = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
     const [staffEnableLogin, setStaffEnableLogin] = useState(false);
+
+    // const [subjectOptions, setSubjectOptions] = useState([])
+    // const {id:schoolId} = useSchoolId()
+
+
+    
+    // useEffect(() => {
+    //     const fetchClass = async () => {
+    //         try {
+    //             const subjectsResponse = await axios.get(
+    //                 "https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Subjects"
+    //             );
+    //             setSubjectOptions(subjectsResponse.data);
+    //         } catch (err) {
+    //             setSubjectOptions([]);
+    //         }
+    //     };
+    
+    //     fetchClass();
+    // }, [schoolId]);
+
+
+
     const profileImage = (e) => {
         console.log(e.target.files[0], "Image URL");
         setFile(URL.createObjectURL(e.target.files[0]));
@@ -402,8 +425,8 @@ const CreateStaff = () => {
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Assign Subjects<span className="redText">*</span></label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
-                                    options={singleselect}
-                                    value={assignedSubjectValue ? singleselect.find(x => x.value === assignedSubjectValue) : assignedSubjectValue}
+                                    options={assignedSubject}
+                                    value={assignedSubjectValue ? assignedSubject.find(x => x.value === assignedSubjectValue) : assignedSubjectValue}
                                     onChange={option => assignedSubjectOnChange(option ? option.value : option)}
                                     {...restassignedSubjectField}
                                     classNamePrefix='react-select'  />
