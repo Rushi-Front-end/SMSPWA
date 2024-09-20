@@ -1,3 +1,4 @@
+import * as XLSX from 'xlsx';
 import React, { useContext, useEffect, useState } from 'react';
 import { prakalpName, reportType, singleselect } from '../../forms/formelements/formselect/formselectdata';
 import Select from 'react-select';
@@ -43,6 +44,9 @@ const Reports = () => {
     const [reportName, setReportName] = useState()
 
     const [reportGenData, setReportGenData] = useState([])
+
+    const [dataReport, setDataReport] = useState([]);
+
 
     // const [examReportCont, setExamReportCont] = useState([]);
     // const [expenseReportCont, setEReportCont] = useState([]);
@@ -121,6 +125,7 @@ const Reports = () => {
                 console.log(url,"REPORTS URL")
                 // Fetch report data
                 const response = await axios.get(url.toString());
+                setDataReport(response.data)
                 
                 // Handle the response data
                 console.log(response.data, "Generated Report Data");
@@ -294,7 +299,30 @@ console.log(reportName, 'reportName')
                         {reportName == 'Exam Report' && <ExamReport reportGenData={reportGenData} /> }
                         {reportName == 'Expense Report' && <ExpenseReport reportGenData={reportGenData} /> }
                             </div>
-                            <div className="ti-modal-footer">
+                            <div className="ti-modal-footer report-footer">
+                            <div className="ti-btn-group" >
+                                        <div className="hs-dropdown ti-dropdown">
+                                            <button className={'ti-btn ti-btn-outline-warning ti-dropdown-toggle !rounded-full me-2'} type="button"
+                                                id="dropdownMenuButton2"
+                                                aria-expanded="false">
+                                                Export<i
+                                                    className="ri-arrow-down-s-line align-middle ms-1 inline-block"></i>
+                                            </button>
+                                            <ul className="hs-dropdown-menu ti-dropdown-menu hidden"
+                                                aria-labelledby="dropdownMenuButton2">
+                                                <li><Link className="ti-dropdown-item" to="#">
+                                                    <div id="export_1724247195639" className="dropdown-item"onClick={() => exportData(dataReport, 'xls')}>Excel (.xls)</div>
+                                                </Link>
+                                                </li>
+                                                <li><Link className="ti-dropdown-item" to="#">
+                                                    <div id="export_1724247195639" className="dropdown-item" onClick={() => exportData(dataReport, 'xlsx')}>Excel (.xlsx)</div>
+                                                </Link></li>
+                                                <li><Link className="ti-dropdown-item" to="#">
+                                                    <div id="export_1724247195639" className="dropdown-item" onClick={() => exportData(dataReport, 'csv')}>Excel (.csv)</div>
+                                                </Link></li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 <button type="button" className="ti-btn ti-btn-secondary-full" onClick={closeModal}>
                                     Close
                                 </button>
@@ -330,5 +358,39 @@ console.log(reportName, 'reportName')
         </div>
     );
 }
+
+export const exportData = (jsonData, fileType) => {
+    // Convert JSON data to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(jsonData);
+  
+    // Create a new workbook
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+  
+    // Determine file extension and book type based on the fileType argument
+    let fileExtension;
+    let bookType;
+  
+    switch (fileType) {
+      case 'csv':
+        fileExtension = '.csv';
+        bookType = 'csv';
+        break;
+      case 'xls':
+        fileExtension = '.xls';
+        bookType = 'xls';
+        break;
+      case 'xlsx':
+        fileExtension = '.xlsx';
+        bookType = 'xlsx';
+        break;
+      default:
+        console.error('Unsupported file type');
+        return;
+    }
+  
+    // Trigger the download of the file
+    XLSX.writeFile(workbook, `exported_data${fileExtension}`, { bookType });
+  };
 
 export default Reports;
