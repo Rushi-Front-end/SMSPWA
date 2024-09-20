@@ -11,7 +11,7 @@ import axios from 'axios';
 import { Controller, useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { IdContext } from '../../../components/common/context/idContext';
+import { IdContext, useSchoolId } from '../../../components/common/context/idContext';
 
 
 const schema = yup.object({
@@ -63,6 +63,31 @@ const UpdateStaff = () => {
     const { register, handleSubmit,  formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema)
     });
+
+
+    const [subjectOptions, setSubjectOptions] = useState([])
+    const {id:schoolId} = useSchoolId()
+
+
+    
+    useEffect(() => {
+        const fetchClass = async () => {
+            try {
+                const response = await axios.get("https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Subjects");
+                const options = response.data.map(subject => ({
+                    id:subject.id,
+                    value: subject.subjectName,
+                    label: subject.subjectName,
+                }));
+                setSubjectOptions(options);
+            } catch (err) {
+                setSubjectOptions([]);
+            }
+        };
+        
+        fetchClass();
+    }, [schoolId]);
+    
 
     const schoolIdDrop = useContext(IdContext);
     console.log(schoolIdDrop.id,"UseCONTEXT")
@@ -439,8 +464,8 @@ useEffect(()=>{
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Assign Subjects<span className="redText">*</span></label>
                             <Select className="!p-0 place-holder"   
                                     isClearable
-                                    options={assignedSubject}
-                                    value={assignedSubjectValue ? assignedSubject.find(x => x.value === assignedSubjectValue) : assignedSubjectValue}
+                                    options={subjectOptions}
+                                    value={assignedSubjectValue ? subjectOptions.find(x => x.value === assignedSubjectValue) : assignedSubjectValue}
                                     onChange={option => assignedSubjectOnChange(option ? option.value : option)}
                                     {...restassignedSubjectField}
                                     classNamePrefix='react-select'  />

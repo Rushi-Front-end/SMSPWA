@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Fullacalendar from '../../../container/fullacalendar/fullacalendar';
-import { Chartjsbar, ChartjsbarExpense, Chartjsdonut, Chartjsline } from './analyticsdata';
+import { Chartjsbar, ChartjsbarExpense, Chartjsdonut, Chartjsdonut1, Chartjsline } from './analyticsdata';
 import axios from 'axios';
 import { useSchoolId } from '../../../components/common/context/idContext';
 
@@ -168,7 +168,7 @@ const Analytics = () => {
                                 </div>
                                 <div className="box-body !my-2 !py-6 !px-2">
                                     <div id="sessions">
-                                        <Chartjsdonut />
+                                        <Chartjsdonut1 />
                                     </div>
                                 </div>
                                 {/* <div className="box-footer !p-0">

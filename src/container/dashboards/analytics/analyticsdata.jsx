@@ -127,7 +127,7 @@ export function Chartjsbar() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph/${schoolId}`);
+        const response = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph/1`);
         console.log('API Response:', response.data); // Log the response
 
         const apiData = response.data;
@@ -151,7 +151,7 @@ export function Chartjsbar() {
     };
 
     fetchData();
-  }, [schoolId]);
+  }, []);
 
   return <Bar options={Option2} data={data} height='300px' />;
 }
@@ -175,7 +175,8 @@ const Data4 = (studentData) => ({
   labels: ['Total Student', 'Present', 'Absent'],
   datasets: [{
     label: 'Student',
-    data: [studentData.totalStudent, studentData.presentCount, studentData.absentCount],
+    // data: [studentData.totalStudent, studentData.presentCount, studentData.absentCount],
+    data: ['100', '80', '15'],
     backgroundColor: [
       'rgb(132, 90, 223)',
       'rgb(35, 183, 229)',
@@ -211,6 +212,62 @@ export function Chartjsdonut() {
   
 
   return <Doughnut options={Option4} data={Data4(studentData)} height='300px' />;
+}
+//donut
+const OptionStaff = {
+
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: true,
+       position:'bottom'
+    },
+  },
+};
+
+const Data5 = (staffData) => ({
+  type: 'donut',
+  labels: ['Total Staff', 'Present', 'Absent'],
+  datasets: [{
+    label: 'Staff',
+    // data: [staffData.totalStudent, staffData.presentCount, staffData.absentCount],
+    data: ['100', '80', '15'],
+    backgroundColor: [
+      'rgb(132, 90, 223)',
+      'rgb(35, 183, 229)',
+      'rgb(255, 99, 132)', // Updated to a valid color
+    ],
+    hoverOffset: 1,
+  }],
+});
+
+export function Chartjsdonut1() {
+
+  const [staffData, setStaffData] = useState(null);
+  const {id: schoolId} = useSchoolId();
+
+  useEffect(() => {
+    const fetchStaffData = async () => {
+      try {
+        const response = await fetch(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph/${schoolId}`); // Replace with your API URL
+        const data = await response.json();
+        setStaffData(data);
+      } catch (error) {
+        console.error('Error fetching student data:', error);
+      }
+    };
+
+    fetchStaffData();
+  }, [schoolId]);
+
+  // Show a loading state while data is being fetched
+  if (!staffData) {
+    return <div>Loading...</div>;
+  }
+  
+
+  return <Doughnut options={OptionStaff} data={Data5(staffData)} height='300px' />;
 }
 
 
