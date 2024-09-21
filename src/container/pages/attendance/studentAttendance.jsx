@@ -75,7 +75,18 @@ const StudentAttendance = () => {
                     label: classDataItem.className
                 }));
             
-            setData(studentAttendanceData)
+            const studentDataWithClassData = studentAttendanceData.map(studData => {
+                const currentStudent = studentData.filter(data => data.id == studData.studentID)[0]
+                const currentClass = classNameData.filter(data => data.id == currentStudent.classID)[0]
+
+                return {
+                    ...studData,
+                    className: currentClass.className,
+                    section: currentStudent.section
+                }
+            })
+            
+            setData(studentDataWithClassData)
             setClassOptions(filteredClassData);
             setSectionOptions(sectionData)
             setSpinner(false)
@@ -286,7 +297,7 @@ const StudentAttendance = () => {
                                                     <tr className="border-b border-defaultborder" key={index}>
                                                         <td>{index + 1}</td>
                                                         <td>{dt.fullName}</td>
-                                                        <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.studentID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.section || 'Unknown'}</td>
+                                                        <td>{dt.className} - {dt.section}</td>
                                                         <td>
                                                             <input
                                                                 type="time"

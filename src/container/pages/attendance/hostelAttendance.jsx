@@ -184,7 +184,7 @@ const HostelAttendance = () => {
                                                     <tr className="border-b border-defaultborder" key={index}>
                                                         <td>{index + 1}</td>
                                                         <td>{dt.fullName}</td>
-                                                        <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.studentID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.section || 'Unknown'}</td>
+                                                        <td>{dt.className} - {dt.sectionName}</td>
                                                         <td>
                                                             <input
                                                                 type="time"
