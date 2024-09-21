@@ -98,7 +98,7 @@ const StudentLeave = () => {
          .then((res)=>{
             if(res.status === 200){
                 getStudentList()
-                toast.success('Staff Delete Data Successfully')
+                toast.success('Student Delete Data Successfully')
             }
          }) 
 

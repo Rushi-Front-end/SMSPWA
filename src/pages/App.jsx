@@ -12,6 +12,7 @@ import { Outlet } from 'react-router-dom';
 import Tabtotop from '../components/common/tabtotop/tabtotop';
 import storeSchool from '../redux/Store/storeSchool';
 import { IdProvider } from '../components/common/context/idContext';
+import { AllDashIdProvider } from '../components/common/context/allDashIdContext';
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
           />
           <Switcher />
               <IdProvider>
+                <AllDashIdProvider>
                 <div className='page'>
                   <Header />
                   <Sidebar />
@@ -69,6 +71,7 @@ function App() {
                   </div>
                   <Footer />
                 </div>
+                </AllDashIdProvider>
                 </IdProvider>
           <Tabtotop />
         </HelmetProvider>

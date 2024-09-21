@@ -55,7 +55,7 @@ const HosteliteLeave = () => {
          .then((res)=>{
             if(res.status === 200){
                 getHosteliteList()
-                toast.success('Staff Delete Data Successfully')
+                toast.success('Hostelite Delete Data Successfully')
             }
          }) 
 
@@ -252,7 +252,7 @@ const HosteliteLeave = () => {
                       <button type="button" className="hs-dropdown-toggle ti-btn yoti-btn-secondary-full" data-hs-overlay={`#hs-vertically-centered-modal${deleteLeav}`}>
                         No
                       </button>
-                      <button type="button" className="hs-dropdown-toggle ti-btn ti-btn-primary-full" data-hs-overlay={`#hs-vertically-centered-modal${deleteLeav}`} onClick={()=>deleteHostelLeave(deleteLeav)}>
+                      <button type="button" className="hs-dropdown-toggle ti-btn ti-btn-primary-full" data-hs-overlay={`#hs-vertically-centered-modal${deleteLeav}`} onClick={()=>deleteDatahandler(deleteLeav)}>
                         Yes
                       </button>
                       {/* <Link className="ti-btn ti-btn-primary-full" to="#" 

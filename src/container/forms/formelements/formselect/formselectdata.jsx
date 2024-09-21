@@ -157,16 +157,15 @@ export const schoolCategory = [
 ]
 
 export const prakalpName  = [
-  { id: 1, value: "Prakalp Name",label:"Prakalp Name" },
-  { id: 2, value: "Aheri" ,label:"Aheri"},
-  { id: 3, value: "Bhambaragad" ,label:"Bhambaragad"},
+  { id: 1, value: "Aheri" ,label:"Aheri"},
+  { id: 2, value: "Bhambaragad" ,label:"Bhambaragad"},
   { id: 3, value: "Bhandara" ,label:"Bhandara"},
-  { id: 3, value: "Chandrapur" ,label:"Chandrapur"},
-  { id: 3, value: "Chimur" ,label:"Chimur"},
-  { id: 3, value: "Devari" ,label:"Devari"},
-  { id: 3, value: "Gadchiroli" ,label:"Gadchiroli"},
-  { id: 3, value: "Nagpur" ,label:"Nagpur"},
-  { id: 3, value: "Wardha" ,label:"Wardha"},
+  { id: 4, value: "Chandrapur" ,label:"Chandrapur"},
+  { id: 5, value: "Chimur" ,label:"Chimur"},
+  { id: 6, value: "Devari" ,label:"Devari"},
+  { id: 7, value: "Gadchiroli" ,label:"Gadchiroli"},
+  { id: 8, value: "Nagpur" ,label:"Nagpur"},
+  { id: 9, value: "Wardha" ,label:"Wardha"},
 ]
 
 export const leaveType  = [

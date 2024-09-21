@@ -4,6 +4,7 @@ import Fullacalendar from '../../../container/fullacalendar/fullacalendar';
 import { Chartjsbar, ChartjsbarExpense, Chartjsdonut, Chartjsdonut1, Chartjsline } from './analyticsdata';
 import axios from 'axios';
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { useDashId } from '../../../components/common/context/allDashIdContext';
 
 
 
@@ -12,11 +13,23 @@ const Analytics = () => {
     const [data, setData] = useState([])
     const [spinner, setSpinner] = useState(false)
   const {id: schoolId} = useSchoolId();
+  const {dashId: dashIDAll} = useDashId();
+  const {dashIdCheck: dashIDCheckAll} = useDashId();
+  console.log(dashIDCheckAll, 'dashIDAll')
     
     const getDashboardDetails = () => {
         setSpinner(true)
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/${schoolId}`)
-            .then(res =>{ 
+        let dashURl
+        if(dashIDCheckAll) {
+
+            dashURl = axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/${dashIDAll}`)
+        }
+        else{
+            dashURl = axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/${schoolId}`)
+
+        }
+       // axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/${schoolId}`)
+       dashURl.then(res =>{ 
                 setData(res.data)
                 setSpinner(false)
                 console.log(res.data)
@@ -26,7 +39,7 @@ const Analytics = () => {
 
     useEffect(() => {
         getDashboardDetails()
-    }, [schoolId])
+    }, [schoolId, dashIDCheckAll])
 
 
 

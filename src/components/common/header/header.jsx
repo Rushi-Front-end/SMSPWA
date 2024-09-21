@@ -20,6 +20,7 @@ import {  Selectmaxoption, Selectoption1, Selectoption2, Selectoption3, Selectop
 import { IdContext } from '../../common/context/idContext';
 import axios from 'axios';
 import { singleselect } from '../../../container/forms/formelements/formselect/formselectdata';
+import { AllDashIdContext } from '../context/allDashIdContext';
 
 
 const Header = ({ local_varaiable, ThemeChanger }) => {
@@ -50,6 +51,8 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   //
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { id, setId } = useContext(IdContext);
+  const { dashId, setDashId } = useContext(AllDashIdContext);
+  const { dashIdCheck, setDashIdCheck } = useContext(AllDashIdContext);
   const handleToggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
@@ -103,6 +106,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   const [cartItems, setCartItems] = useState([...cartProduct]);
   const [cartItemCount, setCartItemCount] = useState(cartProduct.length);
   const [selectedValue, setSelectedValue] = useState();
+  const [selectedPrakalValue, setSelectedPrakalValue] = useState();
   const handleRemove = (e, itemId) => {
     e.stopPropagation(); // Prevents the event from reaching the button click event
     const updatedCart = cartItems.filter((item) => item.id !== itemId);
@@ -281,31 +285,178 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
   };
 
-  const schoolDropDown = (e)  =>{
-    setSelectedValue(e); // Get selected value
-    console.log('Selected value:', e); // Display selected value
-    setId(e.id)
-  }
+  // const schoolPrakalpDown = (e)  =>{
+  //   setSelectedPrakalValue(e); // Get selected value
+  //   console.log('Prakalp value:', e); // Display selected value
+  // }
+  // const schoolDropDown = (e)  =>{
+  //   setSelectedValue(e); // Get selected value
+  //   console.log('Selected value:', e); // Display selected value
+  //   setId(e.id)
+  // }
 
   const [schoolDataList, setSchoolDataList] = useState([]);
+  const [schoolPrakalpList, setSchoolPrakalpList] = useState([]);
 
+
+  // useEffect(()=>{
+  //   const fetchPrakalp = async () => {
+  //     try {
+  //       const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
+
+  //       // Create a Set to track unique prakalpNames
+  //       const uniquePrakalpNames = new Set();
+  //       const schoolPrakalpOptions = [];
+
+  //       response.data.forEach((schoolData) => {
+  //           if (!uniquePrakalpNames.has(schoolData.prakalpName)) {
+  //               uniquePrakalpNames.add(schoolData.prakalpName);
+  //               schoolPrakalpOptions.push({
+  //                   id: schoolData.id,
+  //                   label: schoolData.prakalpName,
+  //                   value: schoolData.prakalpName
+  //               });
+  //           }
+  //       });
+  //       setSchoolPrakalpList(schoolPrakalpOptions)
+  //       console.log(schoolPrakalpOptions, 'schoolListOptions');
+  //       schoolPrakalpDown(schoolPrakalpOptions.filter(schoolData => schoolData.id === id)[0] ?? schoolPrakalpOptions[0])
+  //       // setSchoolDataList(schoolListOptions);
+  //   } catch (err) {
+  //     setSchoolPrakalpList([]);
+  //   }
+  //   }
+  //   fetchPrakalp();
+  // },[])
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
+  //       const schoolListOptions = response.data.map((schoolData) => ({id: schoolData.id, label: schoolData.schoolName, value: schoolData.id}))
+
+  //       schoolDropDown(schoolListOptions.filter(schoolData => schoolData.id === id)[0] ?? schoolListOptions[0])
+  //       setSchoolDataList(schoolListOptions);
+  //     } catch (err) {
+  //       setSchoolDataList([])
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+  const [prakalpId, setPrakalpId] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPrakalp = async () => {
       try {
         const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
-        const schoolListOptions = response.data.map((schoolData) => ({id: schoolData.id, label: schoolData.schoolName, value: schoolData.id}))
+        const uniquePrakalpNames = new Set();
+        const schoolPrakalpOptions = [];
 
-        schoolDropDown(schoolListOptions.filter(schoolData => schoolData.id === id)[0] ?? schoolListOptions[0])
-        setSchoolDataList(schoolListOptions);
+        response.data.forEach((schoolData) => {
+          if (!uniquePrakalpNames.has(schoolData.prakalpName)) {
+            uniquePrakalpNames.add(schoolData.prakalpName);
+            schoolPrakalpOptions.push({
+              id: schoolData.id,
+              label: schoolData.prakalpName,
+              value: schoolData.prakalpName
+            });
+          }
+        });
+
+        setSchoolPrakalpList(schoolPrakalpOptions);
+        const initialPrakalp = schoolPrakalpOptions[0];
+        setSelectedPrakalValue(initialPrakalp);
+        setPrakalpId(initialPrakalp.value);
       } catch (err) {
-        setSchoolDataList([])
+        setSchoolPrakalpList([]);
       }
     };
 
-    fetchData();
+    fetchPrakalp();
   }, []);
 
+  useEffect(() => {
+    const fetchSchools = async () => {
+      if (prakalpId) {
+        try {
+          console.log(prakalpId,'prakalpId')
+          const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
+        const filteredSchoolOptions = [];
+        // const uniquePrakalpNames = new Set();
+
+        response.data.forEach((schoolData) => {
+          if (prakalpId === schoolData.prakalpName) {
+          //  uniquePrakalpNames.add(schoolData.schoolName);
+            filteredSchoolOptions.push({
+              id: schoolData.id,
+              label: schoolData.schoolName,
+              value: schoolData.schoolName
+            });
+          }
+        });
+          
+          setSchoolDataList(filteredSchoolOptions);
+          const initialSchool = filteredSchoolOptions[0];
+          setSelectedValue(initialSchool);
+          setId(initialSchool.id);
+        } catch (err) {
+          setSchoolDataList([]);
+        }
+      }
+    };
+
+    fetchSchools();
+  }, [prakalpId]);
+
+  const schoolPrakalpDown = (selectedOption) => {
+    setSelectedPrakalValue(selectedOption);
+    setPrakalpId(selectedOption.value);
+  };
+
+  const schoolDropDown = (selectedOption) => {
+    setSelectedValue(selectedOption);
+    setId(selectedOption.id);
+  };
   
+ 
+
+  const dashboardChange = (e) => {
+    console.log(e.target.checked, 'DashboardChange');
+    const allSchoolCheck = e.target.checked;
+    const checkedSchoolNameList = [];
+
+    schoolDataList.forEach((ele) => {
+        checkedSchoolNameList.push(ele.id);
+    });
+
+    // Join the array into a string separated by commas
+    const schoolNameString = checkedSchoolNameList.join(', ');
+    
+    // Create an object and pass schoolNameString
+    // const schoolDataObject = {
+    //   schoolNames: schoolNameString
+    // };
+
+    const schoolDataObject = {}
+    // console.log(schoolDataObject, 'allSchoolCheck');
+
+    if (allSchoolCheck) {
+      setDashIdCheck(allSchoolCheck)
+      // Assign schoolNameString to a property in schoolDataObject
+      // schoolDataObject.schoolNames = schoolNameString;
+      setDashId(schoolNameString)
+  }
+  else{
+    setDashId({})
+    setDashIdCheck(allSchoolCheck)
+  }
+
+  console.log(schoolDataObject, 'allSchoolCheck', schoolNameString);
+
+  
+  }
+
+
   return (
     <Fragment>
       <header className="app-header">
@@ -333,10 +484,23 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
               </div>
 
               <div className="header-element md:px-[0.325rem] !items-center" >
+                <Select value={selectedPrakalValue} name="state" options={schoolPrakalpList} onChange={schoolPrakalpDown} className="js-example-basic-single w-full" isSearchable
+                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolPrakalpList[0]]}
+                            />
+               </div>             
+              <div className="header-element md:px-[0.325rem] !items-center" >
                 <Select value={selectedValue} name="state" options={schoolDataList} onChange={schoolDropDown} className="js-example-basic-single w-full" isSearchable
                                 menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolDataList[0]]}
                             />
-               </div>             
+               </div>   
+               <div className='header-element !items-center admin-checkbox'>
+               <div className="form-check">
+                            <input className="form-check-input" onChange={dashboardChange}  type="checkbox" id="dashboardCheck" />
+                            <label className="form-check-label" htmlFor="dashboardCheck">
+                              All School
+                            </label>
+                        </div>
+                </div>          
             </div>
 
 
