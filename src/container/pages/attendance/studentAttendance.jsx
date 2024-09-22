@@ -29,8 +29,6 @@ const StudentAttendance = () => {
 
     const formattedToday = getFormattedToday();
     
-    const [healthStudName, setHealthStudName] = useState([]);
-    const [healthClassName, setHealthClassName] = useState([]);
 
     const formatDate = (date) => {
         if (!date) return '';
@@ -45,50 +43,40 @@ const StudentAttendance = () => {
         const fetchStudentAndClass = async () => {
             setSpinner(true)
           try {
-            const studentAttendanceRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/GetStudentattendanceBySearchFilter')
-            const studentAttendanceData = studentAttendanceRes.data
-            
-            const studentRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
-            const studentData = studentRes.data;
-
-            const sectionsList = [...new Set(studentData.map(student => student.section))];
-            const sectionData = sectionsList.map(section => ({
-                id: section,
-                value: section,
-                label: section
-            }))
-
             const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
             const classNameData = classRes.data
 
-            const studentClassIDs = studentAttendanceData.map(attendance => {
-                const student = studentData.find(student => student.id === attendance.studentID);
-                return student ? student.classID : null;
-            }).filter(Boolean); // Remove null values
-            
-            // Filter classData based on the classID from students
-            const filteredClassData = classNameData
-                .filter(classDataItem => studentClassIDs.includes(classDataItem.id))
-                .map(classDataItem => ({
-                    id: classDataItem.id,
-                    value: classDataItem.id,
-                    label: classDataItem.className
-                }));
-            
-            const studentDataWithClassData = studentAttendanceData.map(studData => {
-                const currentStudent = studentData.filter(data => data.id == studData.studentID)[0]
-                const currentClass = classNameData.filter(data => data.id == currentStudent.classID)[0]
+            const classOptionsList = classNameData.map((classDataItem) => ({
+				id: classDataItem.id,
+				value: classDataItem.id,
+				label: classDataItem.className,
+			}));
 
-                return {
-                    ...studData,
-                    className: currentClass.className,
-                    section: currentStudent.section
-                }
-            })
+            const defaultClassOption = classOptionsList[0];
+
+            setClassFilter(defaultClassOption)
+            setClassOptions(classOptionsList);
+
             
-            setData(studentDataWithClassData)
-            setClassOptions(filteredClassData);
-            setSectionOptions(sectionData)
+            const sectionRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Section/GetSectionByClassId?classId=${defaultClassOption.id}`)
+            const sectionData = sectionRes.data
+
+            const sectionOptionsList = sectionData.map((sectionItem) => ({
+				id: sectionItem.id,
+				value: sectionItem.id,
+				label: sectionItem.description,
+			}));
+            
+            setSectionOptions(sectionOptionsList)
+
+
+            const currentDate = formatDate(startDate)
+
+            const studentAttendanceRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/GetStudentattendanceBySearchFilter?AttendanceDate=${currentDate}&classId=${defaultClassOption.id}`)
+            const studentAttendanceData = studentAttendanceRes.data
+            
+            setData(studentAttendanceData)
+
             setSpinner(false)
 
           } catch (error) {
@@ -115,10 +103,12 @@ const StudentAttendance = () => {
     }
 
         await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/${data[index].id}`, {
-            ...data[index],
+            id: data[index].id,
+            studentID: data[index].studentID,
             inTime: formattedInTime,
             outTime: formattedOutTime,
-            attendanceDate: formattedToday
+            attendanceDate: formattedToday,
+            submittedBy: 0
         })
             .then((res) => {
                 if(res.status === 200 || res.status === 204){
@@ -132,30 +122,6 @@ const StudentAttendance = () => {
     const getStatus = (inTime, outTime) => {
         return ((inTime === "00:00:00" || inTime === "00:00") && (outTime === "00:00:00" || outTime === "00:00")) ? 'Absent' : 'Present';
     };
-
-    
-    const getStudentName = async () => {
-        try {
-            const studentsRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
-            const studentsData = studentsRes.data;
-            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
-            const classNameData = classRes.data
-            // Assuming studentsData is an array of students
-            setHealthStudName(studentsData);
-            setHealthClassName(classNameData)
-
-            const classIDs = [...new Set(studentsData.map(student => student.classID))];
-         
-         
-          
-            console.log(studentsData, "StudentNAMein helath", classRes);
-        } catch (error) {
-            console.error('Error fetching user roles:', error);
-        }
-    }
-    useEffect(() => {
-        getStudentName();
-    }, []);
 
     const handleFilter = async () => {
         let params = [];
@@ -297,7 +263,7 @@ const StudentAttendance = () => {
                                                     <tr className="border-b border-defaultborder" key={index}>
                                                         <td>{index + 1}</td>
                                                         <td>{dt.fullName}</td>
-                                                        <td>{dt.className} - {dt.section}</td>
+                                                        <td>{dt.className} - {dt.sectionName}</td>
                                                         <td>
                                                             <input
                                                                 type="time"
