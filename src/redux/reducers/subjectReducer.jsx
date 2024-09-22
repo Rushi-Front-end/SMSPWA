@@ -15,7 +15,7 @@ export const postSubjectList = createAsyncThunk('postSubjectList', async (data) 
         headers:{
             "Content-Type":"application/json"
         },
-        body:JSON.stringify(data)
+        body:JSON.stringify({...data, subjectCode: ""})
     });
     if(!response.ok) throw new Error(`Error :${response.status}`);
 
@@ -58,7 +58,7 @@ export const updateSubjectRecord = createAsyncThunk('updateSubjectRecord', async
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(data) // Send the updated data
+        body: JSON.stringify({...data, subjectCode: ""}) // Send the updated data
         
     });
 

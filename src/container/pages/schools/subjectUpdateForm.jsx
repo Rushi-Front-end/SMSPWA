@@ -11,7 +11,7 @@ import { fetchSubjectById, fetchSubjectList, updateSubjectRecord } from '../../.
 
 const schema = yup.object({
     subjectName: yup.string().nullable().required("Please Enter Subject Name"),
-    subjectCode: yup.string().nullable().required("Please Enter Subject Code"),
+    // subjectCode: yup.string().nullable().required("Please Enter Subject Code"),
     subjectType: yup.string().nullable().required("Please select Subject Type"),
   });
 const SubjectUpdateForm = (props) => {
@@ -29,7 +29,7 @@ const SubjectUpdateForm = (props) => {
 
 
     const { field: { value: subjectNameValue, onChange: subjectNameOnChange, ...restsubjectNameField } } = useController({ name: 'subjectName', control });
-    const { field: { value: subjectCodeValue, onChange: subjectCodeOnChange, ...restsubjectCodeField } } = useController({ name: 'subjectCode', control });
+    // const { field: { value: subjectCodeValue, onChange: subjectCodeOnChange, ...restsubjectCodeField } } = useController({ name: 'subjectCode', control });
     const { field: { value: subjectTypeValue, onChange: subjectTypeOnChange, ...restsubjectTypeField } } = useController({ name: 'subjectType', control });
 
     const { errors } = formState;
@@ -82,9 +82,8 @@ const SubjectUpdateForm = (props) => {
             {errors.subjectName && <p className='errorTxt'>{errors.subjectName.message}</p>}
         </div>
         
-        <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
+        {/* <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
             <label htmlFor="input-text" className="form-label">Subject Code<span className='redText'>*</span></label>
-            {/* <input type="text" className="form-control" id="input-text" placeholder="Enter Subject Code" /> */}
             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={subjectCode}
             value={subjectCodeValue ? subjectCode.find(x => x.value === subjectCodeValue) : subjectCodeValue}
             onChange={option => subjectCodeOnChange(option ? option.value : option)}
@@ -92,7 +91,7 @@ const SubjectUpdateForm = (props) => {
             />
               {errors.subjectCode && <p className='errorTxt'>{errors.subjectCode.message}</p>}
 
-        </div>
+        </div> */}
         <div className="xl:col-span-12 lg:col-span-12 md:col-span-12 sm:col-span-12 col-span-12 pt-4">
             <label htmlFor="input-text" className="form-label">Subject Type<span className='redText'>*</span></label>
             {/* <input type="text" className="form-control" id="input-text" placeholder="Enter Subject Code" /> */}
