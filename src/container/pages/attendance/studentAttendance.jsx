@@ -27,6 +27,8 @@ const StudentAttendance = () => {
     const [sectionFilter, setSectionFilter] = useState(null);
     const [sectionOptions, setSectionOptions] = useState(null);
 
+    const [changedAttendance, setChangedAttendance] = useState(new Set())
+
     const formattedToday = getFormattedToday();
     
 
@@ -86,6 +88,47 @@ const StudentAttendance = () => {
     
         fetchStudentAndClass();
     }, []);
+
+    const updateAttendanceData = (index) => {
+        setChangedAttendance(prev => {
+            let newValue = new Set([...prev])
+            if(prev.has(index)) {
+                newValue.delete(index)
+            } else {
+                newValue = new Set([...prev, index])
+            }
+            return newValue
+        })
+    }
+
+    const handleCancel = (index) => {
+        setChangedAttendance(prev => {
+            let newValue = new Set([...prev])
+            if(prev.has(index)) {
+                newValue.delete(index)
+            }
+            return newValue
+        })
+    }
+
+    const handleSingleSave = async (index) => {
+        const status = (getStatus(data[index].inTime, data[index].outTime) === "Present")
+        
+        if(changedAttendance.has(index)) {
+            await handleSave({status: !status, index: index})
+        }
+    }
+
+    const handleSaveAll = async () => {
+        for (const item of changedAttendance) {
+            try {
+              const response = await handleSingleSave(item);
+              handleCancel(item)
+            } catch (error) {
+              console.error('Error making API call:', error);
+            }
+          }
+    }
 
     const handleSave = async ({status, index}) => {
             // Ensure inTime and outTime are in the correct format (hh:mm:ss)
@@ -233,7 +276,7 @@ const StudentAttendance = () => {
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
                             </div>
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Mark All Present</button>
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSaveAll}>Mark All Present</button>
                             </div>
                         </div>
                     </div>
@@ -251,6 +294,7 @@ const StudentAttendance = () => {
                                     <th scope="col" className="text-start">Out Time</th>
                                     <th scope="col" className="text-start">Status</th>
                                     <th scope="col" className="text-start">Attendance</th>
+                                    <th scope="col" className="text-start">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -290,7 +334,20 @@ const StudentAttendance = () => {
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <ToggleSwitch status={status} index={index} handleSave={handleSave} />
+                                                            <ToggleSwitch status={status} index={index} updateAttendanceData={updateAttendanceData} />
+                                                        </td>
+                                                        <td>
+                                                            <div className="ti-dropdown hs-dropdown">
+                                                                <button type="button"
+                                                                    className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none"
+                                                                    aria-expanded="false">
+                                                                    <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                                </button>
+                                                                <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                                    <li> <button type="button" className="ti-dropdown-item" onClick={() => handleSingleSave(index)}>Save</button></li>
+                                                                    {/* <li> <button type="button" className="ti-dropdown-item" onClick={() => handleCancel(index)}>Cancel</button></li> */}
+                                                                </ul>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 );
@@ -309,7 +366,7 @@ const StudentAttendance = () => {
     )
 }
 
-const ToggleSwitch = ({ status, index, handleSave }) => {
+const ToggleSwitch = ({ status, index, updateAttendanceData }) => {
 	const [isPresent, setIsPresent] = useState(null);
 
 	useEffect(() => {
@@ -318,7 +375,7 @@ const ToggleSwitch = ({ status, index, handleSave }) => {
 
 	const toggleValue = async () => {
 		setIsPresent(!isPresent);
-		await handleSave({ status: !isPresent, index });
+        updateAttendanceData(index)
 	};
 
 	return (
