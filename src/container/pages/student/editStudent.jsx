@@ -153,7 +153,7 @@ const EditStudent = () => {
                 if (classIDValue) {
                     const filteredSecData = secData.filter(el => el.classID === classIDValue);
                     const secOptionsList = filteredSecData.map(ele => ({
-                        value: ele.id, // Ensure this is correct
+                        value: ele.description, // Ensure this is correct
                         label: ele.description // Ensure this is correct
                     }));
     

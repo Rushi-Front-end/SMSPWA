@@ -135,7 +135,7 @@ const CreateStudent = () => {
                 if (selectedClassId) {
                     const filteredSecData = secData.filter(el => el.classID === selectedClassId);
                     const secOptionsList = filteredSecData.map(ele => ({
-                        value: ele.id, // Ensure this is correct
+                        value: ele.description, // Ensure this is correct
                         label: ele.description // Ensure this is correct
                     }));
     
