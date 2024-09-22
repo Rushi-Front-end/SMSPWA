@@ -18,9 +18,7 @@ const getFormattedToday = () => {
 };
 const StudentAttendance = () => {
     const [startDate, setStartDate] = useState(new Date());
-    const [startDate3, setStartDate3] = useState(new Date());
     const [data, setData] = useState([])
-    const [search, setSearch] = useState('')
     const [spinner, setSpinner] = useState(false)
 
     const [classFilter, setClassFilter] = useState(null);
@@ -29,15 +27,10 @@ const StudentAttendance = () => {
     const [sectionFilter, setSectionFilter] = useState(null);
     const [sectionOptions, setSectionOptions] = useState(null);
 
-    const [isEditingIndex, setIsEditingIndex] = useState(null);
-    const [editedData, setEditedData] = useState({});
     const formattedToday = getFormattedToday();
     
     const [healthStudName, setHealthStudName] = useState([]);
     const [healthClassName, setHealthClassName] = useState([]);
-
-    const [statusSelection, setStatusSelection] = useState(null);
-    const statusOptions = [{id: "Present", value: "Present", label: "Present"}, {id: "Absent", value: "Absent", label: "Absent"}]
 
     const formatDate = (date) => {
         if (!date) return '';
@@ -82,7 +75,18 @@ const StudentAttendance = () => {
                     label: classDataItem.className
                 }));
             
-            setData(studentAttendanceData)
+            const studentDataWithClassData = studentAttendanceData.map(studData => {
+                const currentStudent = studentData.filter(data => data.id == studData.studentID)[0]
+                const currentClass = classNameData.filter(data => data.id == currentStudent.classID)[0]
+
+                return {
+                    ...studData,
+                    className: currentClass.className,
+                    section: currentStudent.section
+                }
+            })
+            
+            setData(studentDataWithClassData)
             setClassOptions(filteredClassData);
             setSectionOptions(sectionData)
             setSpinner(false)
@@ -95,24 +99,23 @@ const StudentAttendance = () => {
         fetchStudentAndClass();
     }, []);
 
-    
-    const handleEdit = (index) => {
-        setIsEditingIndex(index);
-        setEditedData(data[index]);
-    };
-
-    const handleSave = async (index) => {
+    const handleSave = async ({status, index}) => {
             // Ensure inTime and outTime are in the correct format (hh:mm:ss)
-    let formattedInTime = editedData.inTime.length === 5 ? `${editedData.inTime}:00` : editedData.inTime;
-    let formattedOutTime = editedData.outTime.length === 5 ? `${editedData.outTime}:00` : editedData.outTime;
+    let formattedInTime = ""
+    let formattedOutTime = ""
 
-    if(statusSelection?.value == "Absent") {
+    
+
+    if(status) {
+        formattedInTime = "10:00:00"
+        formattedOutTime = "18:00:00"
+    }else {
         formattedInTime = "00:00:00"
         formattedOutTime = "00:00:00"
     }
 
-        await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/${editedData.id}`, {
-            ...editedData,
+        await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/${data[index].id}`, {
+            ...data[index],
             inTime: formattedInTime,
             outTime: formattedOutTime,
             attendanceDate: formattedToday
@@ -120,27 +123,10 @@ const StudentAttendance = () => {
             .then((res) => {
                 if(res.status === 200 || res.status === 204){
                 handleFilter();
-                setIsEditingIndex(null);
                 toast.success('Data updated successfully');
                 }
             })
             .catch(err => console.log(err));
-    };
-
-    const handleCancel = () => {
-        setIsEditingIndex(null);
-        setStatusSelection(null)
-    };
-
-    const handleStatusChange = (option) => {
-        setStatusSelection(option)
-    }
-
-    const handleChange = (e, field) => {
-        setEditedData({
-            ...editedData,
-            [field]: e.target.value,
-        });
     };
 
     const getStatus = (inTime, outTime) => {
@@ -298,69 +284,47 @@ const StudentAttendance = () => {
                                     <th scope="col" className="text-start">In Time</th>
                                     <th scope="col" className="text-start">Out Time</th>
                                     <th scope="col" className="text-start">Status</th>
-                                    <th scope="col" className="text-start">Action</th>
+                                    <th scope="col" className="text-start">Attendance</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {
                                         spinner ? <Loader /> :
                                             data.map((dt, index) => {
-                                                const isEditing = index === isEditingIndex;
-                                                const status = getStatus(isEditing ? editedData.inTime : dt.inTime, isEditing ? editedData.outTime : dt.outTime);
+                                                const status = getStatus(dt.inTime, dt.outTime);
 
                                                 return (
                                                     <tr className="border-b border-defaultborder" key={index}>
                                                         <td>{index + 1}</td>
                                                         <td>{dt.fullName}</td>
-                                                        <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.studentID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.section || 'Unknown'}</td>
+                                                        <td>{dt.className} - {dt.section}</td>
                                                         <td>
                                                             <input
                                                                 type="time"
-                                                                value={isEditing ? editedData.inTime || '' : dt.inTime}
+                                                                value={dt.inTime}
                                                                 className="timePicker"
                                                                 id="startTime"
                                                                 name="startTime"
-                                                                disabled={!isEditing}
-                                                                onChange={(e) => handleChange(e, 'inTime')}
+                                                                disabled
                                                             />
                                                         </td>
                                                         <td>
                                                             <input
                                                                 type="time"
-                                                                value={isEditing ? editedData.outTime || '' : dt.outTime}
+                                                                value={dt.outTime}
                                                                 className="timePicker"
                                                                 id="endTime"
                                                                 name="endTime"
-                                                                disabled={!isEditing}
-                                                                onChange={(e) => handleChange(e, 'outTime')}
+                                                                disabled
                                                             />
                                                         </td>
                                                         <td>
-                                                            {isEditing ? 
-                                                                <>
-                                                                    <Select  placeholder='Select Status' className="!p-0 place-holder" classNamePrefix='react-select' value={statusSelection} options={statusOptions} onChange={handleStatusChange} />
-                                                                </>
-                                                            :
-                                                                <>
-                                                                    <span className={`badge ${status === 'Present' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
-                                                                        {status}
-                                                                    </span>
-                                                                </>
-                                                            }
+                                                            <span className={`badge ${status === 'Present' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
+                                                                {status}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            <div className="ti-dropdown hs-dropdown">
-                                                                <button type="button"
-                                                                    className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none"
-                                                                    aria-expanded="false">
-                                                                    <i className="ri-arrow-down-s-line align-middle inline-block"></i>
-                                                                </button>
-                                                                <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                                    {!isEditing && <li><button className="ti-dropdown-item" onClick={() => handleEdit(index)}>Edit</button></li>}
-                                                                    {isEditing && <li> <button type="button" className="ti-dropdown-item" onClick={() => handleSave(index)}>Save</button></li>}
-                                                                    {isEditing && <li> <button type="button" className="ti-dropdown-item" onClick={handleCancel}>Cancel</button></li>}
-                                                                </ul>
-                                                            </div>
+                                                            <ToggleSwitch status={status} index={index} handleSave={handleSave} />
                                                         </td>
                                                     </tr>
                                                 );
@@ -378,5 +342,38 @@ const StudentAttendance = () => {
         </div>
     )
 }
+
+const ToggleSwitch = ({ status, index, handleSave }) => {
+	const [isPresent, setIsPresent] = useState(null);
+
+	useEffect(() => {
+		setIsPresent(status === "Present");
+	}, [status]);
+
+	const toggleValue = async () => {
+		setIsPresent(!isPresent);
+		await handleSave({ status: !isPresent, index });
+	};
+
+	return (
+		<div className="flex items-center space-x-3">
+			<div
+				onClick={toggleValue}
+				className={`relative w-12 h-6 flex items-center rounded-full cursor-pointer transition-colors duration-300 ${
+					isPresent ? "bg-success" : "bg-danger"
+				}`}
+			>
+				<div
+					className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300 ${
+						isPresent ? "translate-x-6" : "translate-x-1"
+					}`}
+				></div>
+			</div>
+			<span className="text-sm font-medium w-16 text-center">
+				{isPresent ? "Present" : "Absent"}
+			</span>
+		</div>
+	);
+};
 
 export default StudentAttendance
