@@ -309,7 +309,7 @@ const CreateStudent = () => {
                                      isClearable
                                      options={classOptions}
                                      value={classOptions.find(option => option.value === classIDValue)}
-                                     onChange={option => {classSelectOnChange(option ? option.value : option); setSelectedClassId(option.value)}}
+                                     onChange={option => {classSelectOnChange(option ? option.value : option); setSelectedClassId(option ? option.value : null)}}
                                      {...restclassIDSelectField}
                                      classNamePrefix='react-select'  />
                                     {errors.classID && <p className='errorTxt'>{errors.classID.message}</p>}

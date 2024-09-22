@@ -84,7 +84,6 @@ const EditStudent = () => {
     const [startDate1, setStartDate1] = useState(new Date());
     const [classOptions, setClassOptions] = useState([])
     const [sectionOptions, setSectionOptions] = useState([])
-    const [selectedClassId, setSelectedClassId] = useState(null);
 
 
     const {id:schoolId} = useSchoolId()
@@ -151,8 +150,8 @@ const EditStudent = () => {
                 const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Section');
                 const secData = response.data;
     
-                if (selectedClassId) {
-                    const filteredSecData = secData.filter(el => el.classID === selectedClassId);
+                if (classIDValue) {
+                    const filteredSecData = secData.filter(el => el.classID === classIDValue);
                     const secOptionsList = filteredSecData.map(ele => ({
                         value: ele.id, // Ensure this is correct
                         label: ele.description // Ensure this is correct
@@ -166,7 +165,7 @@ const EditStudent = () => {
         };
     
         fetchSection();
-    }, [selectedClassId]); // Run when selectedClassId changes
+    }, [classIDValue]);
 
  
 
@@ -341,7 +340,7 @@ useEffect(()=>{
                             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={classOptions}
              value={classOptions.find(option => option.value === classIDValue)}
             // onChange={option => classIDOnChange(option ? option.value : option)}
-            onChange={option => {classIDOnChange(option ? option.value : option); setSelectedClassId(option.value)}}
+            onChange={option => classIDOnChange(option ? option.value : option)}
 
             {...restclassIDField} 
             />
@@ -355,9 +354,9 @@ useEffect(()=>{
                             <Select className="!p-0 place-holder"  
                                      isClearable
                                      options={sectionOptions}
-                                     value={sectionValue ? sectionOptions.find(x => x.value === sectionValue) : sectionValue}
+                                     value={sectionValue ? sectionOptions.find(x => x.label === sectionValue) : sectionValue}
 
-                                     onChange={option => sectionOnChange(option ? option.value : option)}
+                                     onChange={option => sectionOnChange(option ? option.label : option)}
                                      {...restsectionField}
                                      classNamePrefix='react-select'  />
                                     {errors.section && <p className='errorTxt'>{errors.section.message}</p>}
