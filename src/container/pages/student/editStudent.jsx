@@ -83,6 +83,9 @@ const EditStudent = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
     const [classOptions, setClassOptions] = useState([])
+    const [sectionOptions, setSectionOptions] = useState([])
+    const [selectedClassId, setSelectedClassId] = useState(null);
+
 
     const {id:schoolId} = useSchoolId()
     useEffect((id)=>{
@@ -142,7 +145,32 @@ const EditStudent = () => {
         fetchClass();
     }, [schoolId]);
 
+    useEffect(() => {
+        const fetchSection = async () => {
+            try {
+                const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Section');
+                const secData = response.data;
+    
+                if (selectedClassId) {
+                    const filteredSecData = secData.filter(el => el.classID === selectedClassId);
+                    const secOptionsList = filteredSecData.map(ele => ({
+                        value: ele.id, // Ensure this is correct
+                        label: ele.description // Ensure this is correct
+                    }));
+    
+                    setSectionOptions(secOptionsList);
+                }
+            } catch (error) {
+                console.error('Error fetching Section:', error);
+            }
+        };
+    
+        fetchSection();
+    }, [selectedClassId]); // Run when selectedClassId changes
+
  
+
+
 useEffect(()=>{
     if (studentid) {
     axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${studentid}`)
@@ -312,7 +340,9 @@ useEffect(()=>{
                             <label className="ti-form-select rounded-sm !p-0 mb-2">Select Class <span className="redText">*</span></label>
                             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={classOptions}
              value={classOptions.find(option => option.value === classIDValue)}
-            onChange={option => classIDOnChange(option ? option.value : option)}
+            // onChange={option => classIDOnChange(option ? option.value : option)}
+            onChange={option => {classIDOnChange(option ? option.value : option); setSelectedClassId(option.value)}}
+
             {...restclassIDField} 
             />
                                     {errors.classID && <p className='errorTxt'>{errors.classID.message}</p>}
@@ -324,8 +354,8 @@ useEffect(()=>{
                             
                             <Select className="!p-0 place-holder"  
                                      isClearable
-                                     options={sectionselect}
-                                     value={sectionValue ? sectionselect.find(x => x.value === sectionValue) : sectionValue}
+                                     options={sectionOptions}
+                                     value={sectionValue ? sectionOptions.find(x => x.value === sectionValue) : sectionValue}
 
                                      onChange={option => sectionOnChange(option ? option.value : option)}
                                      {...restsectionField}

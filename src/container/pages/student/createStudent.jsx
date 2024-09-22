@@ -100,6 +100,8 @@ const CreateStudent = () => {
     const [startDate1, setStartDate1] = useState(new Date());
 
     const [classOptions, setClassOptions] = useState([])
+    const [sectionOptions, setSectionOptions] = useState([])
+    const [selectedClassId, setSelectedClassId] = useState(null);
 
     const {id:schoolId} = useSchoolId()
 
@@ -124,6 +126,28 @@ const CreateStudent = () => {
         fetchClass();
     }, [schoolId]);
 
+    useEffect(() => {
+        const fetchSection = async () => {
+            try {
+                const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Section');
+                const secData = response.data;
+    
+                if (selectedClassId) {
+                    const filteredSecData = secData.filter(el => el.classID === selectedClassId);
+                    const secOptionsList = filteredSecData.map(ele => ({
+                        value: ele.id, // Ensure this is correct
+                        label: ele.description // Ensure this is correct
+                    }));
+    
+                    setSectionOptions(secOptionsList);
+                }
+            } catch (error) {
+                console.error('Error fetching Section:', error);
+            }
+        };
+    
+        fetchSection();
+    }, [selectedClassId]); // Run when selectedClassId changes
 
     //const studentPostRes = useSelector((state) => state.studentData.postRes)
     const dispatch = useDispatch()
@@ -285,7 +309,7 @@ const CreateStudent = () => {
                                      isClearable
                                      options={classOptions}
                                      value={classOptions.find(option => option.value === classIDValue)}
-                                     onChange={option => classSelectOnChange(option ? option.value : option)}
+                                     onChange={option => {classSelectOnChange(option ? option.value : option); setSelectedClassId(option.value)}}
                                      {...restclassIDSelectField}
                                      classNamePrefix='react-select'  />
                                     {errors.classID && <p className='errorTxt'>{errors.classID.message}</p>}
@@ -297,9 +321,9 @@ const CreateStudent = () => {
                             
                             <Select className="!p-0 place-holder"  
                                      isClearable
-                                     options={sectionselect}
-                                     value={sectionValue ? sectionselect.find(x => x.value === sectionValue) : sectionValue}
-                                     onChange={option => sectionOnChange(option ? option.value : option)}
+                                     options={sectionOptions}
+                                     value={ sectionOptions.find(x => x.value === sectionValue)}
+                                     onChange={option => sectionOnChange(option ? option.value : null)}
                                      {...restsectionField}
                                      classNamePrefix='react-select'  />
                                     {errors.section && <p className='errorTxt'>{errors.section.message}</p>}

@@ -121,14 +121,18 @@ export const assignedSubject = [
 
 export const className = [
   { id: 1, value: "Select Class Name",label:"Select Class Name" },
-  { id: 2, value: "5th Class" ,label:"5th Class"},
-  { id: 3, value: "6th Class" ,label:"6th Class"},
-  { id: 4, value: "7th Class" ,label:"7th Class"},
-  { id: 5, value: "8th Class" ,label:"8th Class"},
-  { id: 6, value: "9th Class" ,label:"9th Class"},
-  { id: 7, value: "10th Class" ,label:"10th Class"},
-  { id: 8, value: "11th Class" ,label:"11th Class"},
-  { id: 9, value: "12th Class" ,label:"12th Class"},
+  { id: 2, value: "1th Class" ,label:"1th Class"},
+  { id: 3, value: "2nd Class" ,label:"2nd Class"},
+  { id: 4, value: "3rd Class" ,label:"3rd Class"},
+  { id: 5, value: "4th Class" ,label:"4th Class"},
+  { id: 6, value: "5th Class" ,label:"5th Class"},
+  { id: 7, value: "6th Class" ,label:"6th Class"},
+  { id: 8, value: "7th Class" ,label:"7th Class"},
+  { id: 9, value: "8th Class" ,label:"8th Class"},
+  { id: 10, value: "9th Class" ,label:"9th Class"},
+  { id: 11, value: "10th Class" ,label:"10th Class"},
+  { id: 12, value: "11th Class" ,label:"11th Class"},
+  { id: 13, value: "12th Class" ,label:"12th Class"},
 ]
 export const schoolBoard = [
   { id: 1, value: "Select Board",label:"Select Board" },
