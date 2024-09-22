@@ -494,12 +494,12 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                             />
                </div>   
                <div className='header-element !items-center admin-checkbox'>
-               <div className="form-check">
+               {/* <div className="form-check">
                             <input className="form-check-input" onChange={dashboardChange}  type="checkbox" id="dashboardCheck" />
                             <label className="form-check-label" htmlFor="dashboardCheck">
                               All School
                             </label>
-                        </div>
+                        </div> */}
                 </div>          
             </div>
 
