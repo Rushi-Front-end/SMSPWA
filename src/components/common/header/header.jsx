@@ -21,6 +21,7 @@ import { IdContext } from '../../common/context/idContext';
 import axios from 'axios';
 import { singleselect } from '../../../container/forms/formelements/formselect/formselectdata';
 import { AllDashIdContext } from '../context/allDashIdContext';
+import { UserRoleNameContext } from '../context/userRoleContext';
 
 
 const Header = ({ local_varaiable, ThemeChanger }) => {
@@ -53,6 +54,9 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   const { id, setId } = useContext(IdContext);
   const { dashId, setDashId } = useContext(AllDashIdContext);
   const { dashIdCheck, setDashIdCheck } = useContext(AllDashIdContext);
+
+  const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+
   const handleToggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
@@ -107,6 +111,16 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   const [cartItemCount, setCartItemCount] = useState(cartProduct.length);
   const [selectedValue, setSelectedValue] = useState();
   const [selectedPrakalValue, setSelectedPrakalValue] = useState();
+
+  const userLoginRoleName = 'teacher'
+
+
+  useEffect(()=>{
+    setUserRoleName(userLoginRoleName)
+  },[])
+
+
+
   const handleRemove = (e, itemId) => {
     e.stopPropagation(); // Prevents the event from reaching the button click event
     const updatedCart = cartItems.filter((item) => item.id !== itemId);
@@ -494,12 +508,12 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                             />
                </div>   
                <div className='header-element !items-center admin-checkbox'>
-               {/* <div className="form-check">
+               <div className="form-check">
                             <input className="form-check-input" onChange={dashboardChange}  type="checkbox" id="dashboardCheck" />
                             <label className="form-check-label" htmlFor="dashboardCheck">
                               All School
                             </label>
-                        </div> */}
+                        </div>
                 </div>          
             </div>
 
@@ -514,7 +528,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                <div className="header-element md:!px-[0.65rem] px-2 hs-dropdown !items-center ti-dropdown [--placement:bottom-left]">
                 <div className="md:block hidden dropdown-profile cursor-pointer">
                   <p className="font-semibold mb-0 leading-none text-[#536485] text-[0.813rem] ">John Taylor</p>
-                  <span className="opacity-[0.7] font-normal text-[#536485] block text-[0.6875rem] ">as Admin</span>
+                  <span className="opacity-[0.7] font-normal text-[#536485] block text-[0.6875rem] ">as {userLoginRoleName}</span>
                 </div>
                 <div
                   className="hs-dropdown-menu ti-dropdown-menu !-mt-3 border-0 w-[11rem] !p-0 border-defaultborder hidden main-header-dropdown  pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end"

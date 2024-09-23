@@ -341,3 +341,75 @@ export const MENUITEMS = [
                       // },                  
 ];
 
+const ROLE_MENU_ITEMS = {
+  admin: [
+    'Dashboards',
+    'All Schools',
+    'Staff',
+    'Timetable',
+    'Students',
+    'Health Documents',
+    'Staff Attendance',
+    'Students Attendance',
+    'Hostel Attendance',
+    'Staff Leave',
+    'Students Leave',
+    'Hostelite Outpasses',
+    'Reports',
+    'Expense Management',
+    'Examination',
+    'Diet Plan',
+  ],
+  superAdmin: [
+    'Dashboards',
+    'All Schools',
+    'Staff',
+    'Timetable',
+    'Students',
+    'Health Documents',
+    'Staff Attendance',
+    'Students Attendance',
+    'Hostel Attendance',
+    'Staff Leave',
+    'Students Leave',
+    'Hostelite Outpasses',
+    'Reports',
+    'Expense Management',
+    'Examination',
+    'Diet Plan',
+    // Add additional items as needed
+  ],
+  teacher: [
+    'Dashboards',
+    'Students',
+    'Health Documents',
+    'Students Attendance',
+    'Reports',
+    // Add additional items as needed
+  ],
+  staff: [
+    'Dashboards',
+    'All Schools',
+    'Staff',
+    'Timetable',
+    'Students',
+    'Health Documents',
+    'Staff Attendance',
+    // Add additional items as needed
+  ],
+};
+
+const getMenuItemsForRole = (role) => {
+  const allowedTitles = ROLE_MENU_ITEMS[role] || [];
+  
+  return MENUITEMS.filter(item => {
+    if (item.menutitle) return true; // Keep the section titles
+    return allowedTitles.includes(item.title);
+  });
+};
+
+// Example usage
+const userRole = 'admin'; // Get this dynamically based on the logged-in user
+const filteredMenuItems = getMenuItemsForRole(userRole);
+
+// No
