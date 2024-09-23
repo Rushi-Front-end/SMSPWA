@@ -23,8 +23,7 @@ const HostelAttendance = () => {
     const [spinner, setSpinner] = useState(false);
     const formattedToday = getFormattedToday();
 
-    const [healthStudName, setHealthStudName] = useState([]);
-    const [healthClassName, setHealthClassName] = useState([]);
+    const [changedAttendance, setChangedAttendance] = useState(new Set())
 
     const {id: schoolId} = useSchoolId();
 
@@ -41,6 +40,48 @@ const HostelAttendance = () => {
     useEffect(() => {
         getHosteliteAttandance();
     }, [schoolId]);
+
+    
+    const updateAttendanceData = (index) => {
+        setChangedAttendance(prev => {
+            let newValue = new Set([...prev])
+            if(prev.has(index)) {
+                newValue.delete(index)
+            } else {
+                newValue = new Set([...prev, index])
+            }
+            return newValue
+        })
+    }
+
+    const handleCancel = (index) => {
+        setChangedAttendance(prev => {
+            let newValue = new Set([...prev])
+            if(prev.has(index)) {
+                newValue.delete(index)
+            }
+            return newValue
+        })
+    }
+
+    const handleSingleSave = async (index) => {
+        const status = (getStatus(data[index].inTime, data[index].outTime) === "Present")
+        
+        if(changedAttendance.has(index)) {
+            await handleSave({status: !status, index: index})
+        }
+    }
+
+    const handleSaveAll = async () => {
+        for (const item of changedAttendance) {
+            try {
+              const response = await handleSingleSave(item);
+              handleCancel(item)
+            } catch (error) {
+              console.error('Error making API call:', error);
+            }
+          }
+    }
 
 
     const handleSave = async ({status, index}) => {
@@ -74,32 +115,8 @@ const HostelAttendance = () => {
     };
 
     const getStatus = (inTime, outTime) => {
-        return inTime && outTime ? 'Present' : 'Absent';
+        return ((inTime === "00:00:00" || inTime === "00:00") && (outTime === "00:00:00" || outTime === "00:00")) ? 'Absent' : 'Present';
     };
-
-    const getStudentName = async () => {
-        try {
-            const studentsRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
-            const studentsData = studentsRes.data;
-            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
-            const classNameData = classRes.data
-            // Assuming studentsData is an array of students
-            setHealthStudName(studentsData);
-            setHealthClassName(classNameData)
-
-            const classIDs = [...new Set(studentsData.map(student => student.classID))];
-         
-         
-          
-            console.log(studentsData, "StudentNAMein helath", classRes);
-        } catch (error) {
-            console.error('Error fetching user roles:', error);
-        }
-    }
-    useEffect(() => {
-        getStudentName();
-    }, []);
-
 
     return (
         <div>
@@ -157,7 +174,7 @@ const HostelAttendance = () => {
                                 </div> */}
                             </div>
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Mark All Present</button>
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSaveAll}>Mark All Present</button>
                             </div>
                         </div>
                     </div>
@@ -173,6 +190,7 @@ const HostelAttendance = () => {
                                         <th scope="col" className="text-start">Out Time</th>
                                         <th scope="col" className="text-start">Status</th>
                                         <th scope="col" className="text-start">Attendance</th>
+                                        <th scope="col" className="text-start">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -212,7 +230,20 @@ const HostelAttendance = () => {
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <ToggleSwitch status={status} index={index} handleSave={handleSave} />
+                                                            <ToggleSwitch status={status} index={index} updateAttendanceData={updateAttendanceData} />
+                                                        </td>
+                                                        <td>
+                                                            <div className="ti-dropdown hs-dropdown">
+                                                                <button type="button"
+                                                                    className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none"
+                                                                    aria-expanded="false">
+                                                                    <i className="ri-arrow-down-s-line align-middle inline-block"></i>
+                                                                </button>
+                                                                <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
+                                                                    <li> <button type="button" className="ti-dropdown-item" onClick={() => handleSingleSave(index)}>Save</button></li>
+                                                                    {/* <li> <button type="button" className="ti-dropdown-item" onClick={() => handleCancel(index)}>Cancel</button></li> */}
+                                                                </ul>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 );
@@ -228,7 +259,7 @@ const HostelAttendance = () => {
     );
 };
 
-const ToggleSwitch = ({ status, index, handleSave }) => {
+const ToggleSwitch = ({ status, index, updateAttendanceData }) => {
 	const [isPresent, setIsPresent] = useState(null);
 
 	useEffect(() => {
@@ -237,7 +268,7 @@ const ToggleSwitch = ({ status, index, handleSave }) => {
 
 	const toggleValue = async () => {
 		setIsPresent(!isPresent);
-		await handleSave({ status: !isPresent, index });
+        updateAttendanceData(index)
 	};
 
 	return (
