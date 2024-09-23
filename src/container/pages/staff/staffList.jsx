@@ -74,9 +74,9 @@ const StaffList = () => {
                                                 <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning active" to="#" id="underline-item-1" data-hs-tab="#underline-1" aria-controls="underline-1">
                                                     Staff Details
                                                 </Link>
-                                                <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning " to="#" id="underline-item-2" data-hs-tab="#underline-2" aria-controls="underline-2">
+                                                {/* <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning " to="#" id="underline-item-2" data-hs-tab="#underline-2" aria-controls="underline-2">
                                                     Assign Roles & Permission
-                                                </Link>
+                                                </Link> */}
 
                                             </nav>
                                         </div>
@@ -97,7 +97,7 @@ const StaffList = () => {
                                                 </div>
 
                                             </div>
-                                            <div id="underline-2" className="hidden" role="tabpanel" aria-labelledby="underline-item-2">
+                                            {/* <div id="underline-2" className="hidden" role="tabpanel" aria-labelledby="underline-item-2">
                                                 <div className='flex-container'>
                                                     {
                                                         staffEditRole ? null :
@@ -114,7 +114,7 @@ const StaffList = () => {
                                                     <StaffRolesPermission staffEditRole={staffEditRole} setStaffRole={setStaffRole} />
                                                 </div>
 
-                                            </div>
+                                            </div> */}
 
                                         </div>
                                     </div>

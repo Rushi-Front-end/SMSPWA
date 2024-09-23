@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { leaveType } from '../../forms/formelements/formselect/formselectdata';
+import { leaveType, studentLeave } from '../../forms/formelements/formselect/formselectdata';
 
 // Validation Schema
 const schema = yup.object({
@@ -189,8 +189,8 @@ const UpdateStudentLeave = () => {
                                         <Select
                                         className="!p-0 place-holder"
                                         classNamePrefix='react-select'
-                                        options={leaveType}
-                                        value={leaveTypeValue ? leaveType.find(x => x.value === leaveTypeValue) : null}
+                                        options={studentLeave}
+                                        value={leaveTypeValue ? studentLeave.find(x => x.value === leaveTypeValue) : null}
                                         onChange={option => leaveTypeOnChange(option ? option.value : null)}
                                         {...restleaveTypeField}
                                     />

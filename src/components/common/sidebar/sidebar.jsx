@@ -1,21 +1,28 @@
 import {  Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { MENUITEMS } from './sidemenu/sidemenu';
+import getMenuItemsForRole, { MENUITEMS } from './sidemenu/sidemenu';
 import { ThemeChanger } from '../../../redux/action';
 import store from '../../../redux/store';
 import logo1 from "../../../assets/images/brand-logos/desktop-logo.png";
-import logo2 from "../../../assets/images/brand-logos/toggle-logo.png";
-import logo3 from "../../../assets/images/brand-logos/desktop-dark.png";
+import logoSmall from "../../../assets/images/logo/logo_small.svg";
+import logo from "../../../assets/images/logo/logo.svg";
 import logo4 from "../../../assets/images/brand-logos/toggle-dark.png";
 import logo5 from "../../../assets/images/brand-logos/desktop-white.png";
 import logo6 from "../../../assets/images/brand-logos/toggle-white.png";
 import SimpleBar from 'simplebar-react';
 import Menuloop from '../../ui/menuloop';
+import { useUserRoleName } from '../context/userRoleContext';
 
 
 const Sidebar = ({ local_varaiable, ThemeChanger }) => {
   const [menuitems, setMenuitems] = useState(MENUITEMS);
+  
+  const {userRoleName: userRoleNameLogin} = useUserRoleName();
+  console.log(userRoleNameLogin,'userRoleNameLogin')
+  const userRole = userRoleNameLogin; // Adjust based on your Redux state structure
+  const filteredMenuItems = getMenuItemsForRole(userRole);
+
 
   function closeMenuFn() {
     const closeMenuRecursively = (items) => {
@@ -609,8 +616,8 @@ const handleClick = (event) => {
         <div className="main-sidebar-header">
           <a href={`${import.meta.env.BASE_URL}dashboard`} className="header-logo">
             <img src={logo1} alt="logo" className="desktop-logo" />
-            <img src={logo2} alt="logo" className="toggle-logo" />
-            <img src={logo3} alt="logo" className="desktop-dark" />
+            <img src={logoSmall} alt="logo" className="toggle-logo" />
+            <img src={logo} alt="logo" className="desktop-dark" />
             <img src={logo4} alt="logo" className="toggle-dark" />
             <img src={logo5} alt="logo" className="desktop-white" />
             <img src={logo6} alt="logo" className="toggle-white" />
@@ -625,7 +632,7 @@ const handleClick = (event) => {
             </svg></div>
 
             <ul className="main-menu" onClick={() => Sideclick()}>
-              {MENUITEMS.map((levelone) => (
+              {filteredMenuItems.map((levelone) => (
                 <Fragment key={Math.random()}>
                   <li className={`${levelone.menutitle ? 'slide__category' : ''} ${levelone.type === 'link' ? 'slide' : ''}
                        ${levelone.type === 'sub' ? 'slide has-sub' : ''} ${levelone?.active ? 'open' : ''} ${levelone?.selected ? 'active' : ''}`}>

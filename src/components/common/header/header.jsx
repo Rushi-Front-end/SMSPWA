@@ -112,7 +112,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   const [selectedValue, setSelectedValue] = useState();
   const [selectedPrakalValue, setSelectedPrakalValue] = useState();
 
-  const userLoginRoleName = 'teacher'
+  const userLoginRoleName = 'superAdmin'
 
 
   useEffect(()=>{

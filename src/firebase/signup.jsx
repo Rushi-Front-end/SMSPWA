@@ -1,6 +1,7 @@
 import { Fragment, useState, } from 'react';
 import { Link } from 'react-router-dom';
-import desktoplogo from "../assets/images/brand-logos/desktop-logo.png";
+import logo from "../assets/images/logo/logo.svg";
+
 import desktopdarklogo from "../assets/images/brand-logos/desktop-dark.png";
 
 
@@ -17,7 +18,7 @@ const Signup = () => {
                 <div className="xxl:col-span-4 xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-8 col-span-12">
                     <div className="my-[2.5rem] flex justify-center">
                         <Link to={`${import.meta.env.BASE_URL}dashboards/crm/`}>
-                            <img src={desktoplogo} alt="logo" className="desktop-logo"/>
+                            <img src={logo} alt="logo" className="desktop-logo"/>
                             <img src={desktopdarklogo} alt="logo" className="desktop-dark"/>
                         </Link>
                     </div>

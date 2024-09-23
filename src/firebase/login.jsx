@@ -2,7 +2,8 @@ import {  Fragment, useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import { ThemeChanger } from "../redux/action";
 import { Link, useNavigate } from 'react-router-dom';
-import desktoplogo from "../assets/images/brand-logos/desktop-logo.png";
+import logo from "../assets/images/logo/logo.svg";
+
 import desktopdarklogo from "../assets/images/brand-logos/desktop-dark.png";
 import react from "../assets/images/brand-logos/2.png";
 import firebase from "../assets/images/brand-logos/1.png";
@@ -60,7 +61,7 @@ const Login = ({ ThemeChanger }) => {
                         <div className="xxl:col-span-4 xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-8 col-span-12">
                             <div className="my-[1.5rem] flex justify-center">
                                 <Link to={`${import.meta.env.BASE_URL}dashboard`}>
-                                    <img src={desktoplogo} alt="logo" className="desktop-logo" />
+                                    <img src={logo} alt="logo" className="desktop-logo" />
                                     <img src={desktopdarklogo} alt="logo" className="desktop-dark" />
                                 </Link>
                             </div>

@@ -4,6 +4,7 @@ import { Chart, ArcElement, Tooltip, Legend, registerables } from 'chart.js';
 import { useEffect, useState } from 'react';
 import { Line, Bar, Doughnut,} from 'react-chartjs-2';
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { useDashId } from '../../../components/common/context/allDashIdContext';
 Chart.register(...registerables, ArcElement, Tooltip, Legend);
 
 //  LineChart
@@ -63,23 +64,31 @@ const Data1 = (examData) => {
 
 export function Chartjsline() {
   const {id: schoolId} = useSchoolId();
-
+  const {dashId: dashIDAll} = useDashId();
+  const {dashIdCheck: dashIDCheckAll} = useDashId();
   const [examData, setExamData] = useState([]);
 
   useEffect(() => {
+    console.log(dashIDAll,'dashIDCheckAll')
     const fetchExamData = async () => {
       try {
-        const response = await fetch(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph/${schoolId}`);
-        const data = await response.json();
+        let dashURL;
+        if (dashIDCheckAll) {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph/${dashIDAll}`;
+        } else {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph/${schoolId}`;
+        }
+  
+        const response = await axios.get(dashURL); // Use axios to fetch data
+        const data = response.data; // Axios automatically parses JSON
         setExamData(data);
         console.log(data);
       } catch (error) {
         console.error('Error fetching student data:', error);
       }
     };
-
     fetchExamData();
-  }, [schoolId]);
+  }, [schoolId, dashIDCheckAll]);
 
   // if (!examData.length) {
   //   return <div>Loading...</div>;
@@ -110,7 +119,8 @@ const Option2 = {
 
 export function Chartjsbar() {
   const {id: schoolId} = useSchoolId();
-  
+  const {dashId: dashIDAll} = useDashId();
+  const {dashIdCheck: dashIDCheckAll} = useDashId();
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -127,7 +137,14 @@ export function Chartjsbar() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph/1`);
+        let dashURL;
+        if (dashIDCheckAll) {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph/${dashIDAll}`;
+        } else {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph/${schoolId}`;
+        }
+  
+        const response = await axios.get(dashURL);
         console.log('API Response:', response.data); // Log the response
 
         const apiData = response.data;
@@ -151,7 +168,7 @@ export function Chartjsbar() {
     };
 
     fetchData();
-  }, []);
+  }, [schoolId, dashIDCheckAll]);
 
   return <Bar options={Option2} data={data} height='300px' />;
 }
@@ -175,8 +192,8 @@ const Data4 = (studentData) => ({
   labels: ['Total Student', 'Present', 'Absent'],
   datasets: [{
     label: 'Student',
-    // data: [studentData.totalStudent, studentData.presentCount, studentData.absentCount],
-    data: ['100', '80', '15'],
+     data: [studentData.totalStudent, studentData.presentCount, studentData.absentCount],
+    //data: ['100', '80', '15'],
     backgroundColor: [
       'rgb(132, 90, 223)',
       'rgb(35, 183, 229)',
@@ -190,11 +207,20 @@ export function Chartjsdonut() {
 
   const [studentData, setStudentData] = useState(null);
   const {id: schoolId} = useSchoolId();
+  const {dashId: dashIDAll} = useDashId();
+  const {dashIdCheck: dashIDCheckAll} = useDashId();
 
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await fetch(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph/${schoolId}`); // Replace with your API URL
+
+        let dashURL;
+        if (dashIDCheckAll) {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph/${dashIDAll}`;
+        } else {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph/${schoolId}`;
+        }
+        const response = await fetch(dashURL); // Replace with your API URL
         const data = await response.json();
         setStudentData(data);
       } catch (error) {
@@ -203,7 +229,7 @@ export function Chartjsdonut() {
     };
 
     fetchStudentData();
-  }, [schoolId]);
+  }, [schoolId, dashIDCheckAll]);
 
   // Show a loading state while data is being fetched
   if (!studentData) {
@@ -231,8 +257,8 @@ const Data5 = (staffData) => ({
   labels: ['Total Staff', 'Present', 'Absent'],
   datasets: [{
     label: 'Staff',
-    // data: [staffData.totalStudent, staffData.presentCount, staffData.absentCount],
-    data: ['100', '80', '15'],
+    data: [staffData.totalStudent, staffData.presentCount, staffData.absentCount],
+    //data: ['100', '80', '15'],
     backgroundColor: [
       'rgb(132, 90, 223)',
       'rgb(35, 183, 229)',
@@ -246,11 +272,21 @@ export function Chartjsdonut1() {
 
   const [staffData, setStaffData] = useState(null);
   const {id: schoolId} = useSchoolId();
+  const {dashId: dashIDAll} = useDashId();
+  const {dashIdCheck: dashIDCheckAll} = useDashId();
 
   useEffect(() => {
     const fetchStaffData = async () => {
       try {
-        const response = await fetch(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph/${schoolId}`); // Replace with your API URL
+
+        let dashURL;
+        if (dashIDCheckAll) {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph/${dashIDAll}`;
+        } else {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph/${schoolId}`;
+        }
+        
+        const response = await fetch(dashURL); // Replace with your API URL
         const data = await response.json();
         setStaffData(data);
       } catch (error) {
@@ -259,7 +295,7 @@ export function Chartjsdonut1() {
     };
 
     fetchStaffData();
-  }, [schoolId]);
+  }, [schoolId, dashIDCheckAll]);
 
   // Show a loading state while data is being fetched
   if (!staffData) {
@@ -291,7 +327,8 @@ const optionExpense = {
 
 export function ChartjsbarExpense() {
   const {id: schoolId} = useSchoolId();
-
+  const {dashId: dashIDAll} = useDashId();
+  const {dashIdCheck: dashIDCheckAll} = useDashId();
   const [data, setData] = useState({
     labels: [],
     datasets: [
@@ -308,7 +345,16 @@ export function ChartjsbarExpense() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph/${schoolId}`); // Replace with your API URL
+
+        let dashURL;
+        if (dashIDCheckAll) {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph/${dashIDAll}`;
+        } else {
+          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph/${schoolId}`;
+        }
+        
+
+        const response = await axios.get(dashURL); // Replace with your API URL
         const apiData = response.data;
 
         // Aggregate amounts by month
@@ -337,7 +383,7 @@ export function ChartjsbarExpense() {
     };
 
     fetchData();
-  }, [schoolId]);
+  }, [schoolId, dashIDCheckAll]);
 
   return <Bar options={optionExpense} data={data} height='300px' />;
 }

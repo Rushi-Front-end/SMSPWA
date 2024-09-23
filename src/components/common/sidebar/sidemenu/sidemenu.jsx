@@ -397,19 +397,50 @@ const ROLE_MENU_ITEMS = {
     'Staff Attendance',
     // Add additional items as needed
   ],
+  warden: [
+    
+    'Health Documents',
+    'Staff Attendance',
+    // Add additional items as needed
+  ],
 };
 
 const getMenuItemsForRole = (role) => {
   const allowedTitles = ROLE_MENU_ITEMS[role] || [];
-  
-  return MENUITEMS.filter(item => {
-    if (item.menutitle) return true; // Keep the section titles
+  console.log("Allowed Titles for Role:", allowedTitles);
+  // return MENUITEMS.filter(item => {
+  //   if (item.menutitle) return true; // Keep the section titles
+  //   return allowedTitles.includes(item.title);
+  // });
+  // Create an array of valid menu items
+  const validItems = MENUITEMS.filter(item => {
+    if (item.menutitle) return true; // Keep section titles
     return allowedTitles.includes(item.title);
   });
+  console.log("Filtered Items Before Return:", validItems);
+  
+  const result = [];
+  let currentMenuTitle = '';
+  
+  validItems.forEach(item => {
+    if (item.menutitle) {
+      // Check if there are any valid items after this title
+      const hasValidItems = validItems.slice(validItems.indexOf(item) + 1).some(nextItem => !nextItem.menutitle);
+      if (hasValidItems) {
+        currentMenuTitle = item.menutitle;
+        result.push(item); // Add the menutitle if there are valid items following it
+      }
+    } else {
+      result.push(item); // Add valid menu item
+    }
+  });
+
+  return result;
 };
 
+export default getMenuItemsForRole
 // Example usage
-const userRole = 'admin'; // Get this dynamically based on the logged-in user
-const filteredMenuItems = getMenuItemsForRole(userRole);
+//const userRole = 'admin'; // Get this dynamically based on the logged-in user
+//const filteredMenuItems = getMenuItemsForRole(userRole);
 
 // No

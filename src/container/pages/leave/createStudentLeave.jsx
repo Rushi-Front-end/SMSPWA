@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { leaveType } from '../../forms/formelements/formselect/formselectdata';
+import { leaveType, studentLeave } from '../../forms/formelements/formselect/formselectdata';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -160,8 +160,8 @@ const CreateStudentLeave = () => {
                                     <Select
                                         className="!p-0 place-holder"
                                         classNamePrefix='react-select'
-                                        options={leaveType}
-                                        value={leaveTypeValue ? leaveType.find(x => x.value === leaveTypeValue) : null}
+                                        options={studentLeave}
+                                        value={leaveTypeValue ? studentLeave.find(x => x.value === leaveTypeValue) : null}
                                         onChange={option => leaveTypeOnChange(option ? option.value : null)}
                                         {...restleaveTypeField}
                                     />

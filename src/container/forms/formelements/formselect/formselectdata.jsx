@@ -183,6 +183,18 @@ export const leaveType  = [
   { id: 8, value: "Unpaid" ,label:"Unpaid"},
   { id: 9, value: "Other" ,label:"Other"},
 ]
+export const studentLeave  = [
+  { id: 1, value: "Select Leave Type",label:"Leave Type" },
+  { id: 2, value: "Casual Leave" ,label:"Casual Leave"},
+  { id: 3, value: "Sick Leave" ,label:"Sick Leave"},
+  { id: 4, value: "Vacation Leave" ,label:"Vacation Leave"},
+  { id: 5, value: "Medical Leave" ,label:"Medical Leave"},
+  { id: 6, value: "Religious Leave" ,label:"Religious Leave"},
+  { id: 7, value: "Extracurricular Leave" ,label:"Extracurricular Leave"},
+  { id: 8, value: "Study Leave" ,label:"Study Leave"},
+  { id: 9, value: "Temperary Suspension" ,label:"Temperary Suspension"},
+  { id: 10, value: "Personal Leave" ,label:"Personal Leave"},
+]
  
 export const shift = [
   {id:1, value:"Morning shift", label:"Morning shift"},
