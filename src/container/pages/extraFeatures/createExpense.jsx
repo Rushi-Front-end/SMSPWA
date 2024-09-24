@@ -22,7 +22,7 @@ const schema = yup.object({
     category: yup.string().nullable().required("Please Select Category"),
     date: yup.string().nullable().required("Please Select Expense Date "),
     amount: yup.string().nullable().required("Please Enter Amount "),
-    invoiceNumber: yup.string().nullable().required("Please Enter Invoice Number "),
+    invoiceNumber: yup.string().nullable(),
     note: yup.string().nullable(),
     message: yup.string().nullable(),
     //invoice: yup.string().nullable().required("Please Upload Invoice File "),
@@ -170,7 +170,7 @@ const CreateExpense = () => {
                             <div className="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-12 col-span-12">
             <label htmlFor="input-text" className="form-label">Invoice Number<span className='redText'>*</span></label>
             <input type="text" {...register('invoiceNumber')} name='invoiceNumber' className="form-control" id="input-text" placeholder="Enter Invoice Number" />
-            {errors.invoiceNumber && <p className='errorTxt'>{errors.invoiceNumber.message}</p>}
+            {/* {errors.invoiceNumber && <p className='errorTxt'>{errors.invoiceNumber.message}</p>} */}
 
         </div>
                                 <div className="xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">

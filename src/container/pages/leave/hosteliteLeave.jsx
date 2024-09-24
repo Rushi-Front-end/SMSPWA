@@ -182,7 +182,7 @@ const HosteliteLeave = () => {
                                     <thead><tr className="border-b  border-defaultborder">
                                         <th scope="col" className="text-start">#</th>
                                         <th scope="col" className="text-start"> Name</th>
-                                        <th scope="col" className="text-start">Designation</th>
+                                        <th scope="col" className="text-start">Class Name</th>
                                         <th scope="col" className="text-start"> Leave Type</th>
                                         <th scope="col" className="text-start"> Duration</th>
                                         {/* <th scope="col" className="text-start">Status</th> */}

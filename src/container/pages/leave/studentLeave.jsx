@@ -152,7 +152,7 @@ const StudentLeave = () => {
             setHealthStudName(studentsData);
             setHealthClassName(classNameData)
             const classIDs = [...new Set(studentsData.map(student => student.classID))];
-            console.log(studentsData, "StudentNAMein helath", classRes);
+            console.log(classNameData, "StudentNAMein helath", data);
         } catch (error) {
             console.error('Error fetching user roles:', error);
         }
