@@ -174,7 +174,7 @@ const HostelAttendance = () => {
                                 </div> */}
                             </div>
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSaveAll}>Mark All Present</button>
+                                <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSaveAll}>Save All</button>
                             </div>
                         </div>
                     </div>
