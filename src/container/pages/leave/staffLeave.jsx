@@ -67,7 +67,15 @@ const StaffLeave = () => {
         const roleData = roleRes.data;
         const staffRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
         const staffData = staffRes.data;
-        const updatedStaffData = staffData.map(staff => ({...staff, roleName: roleData.filter(role => staff.roleID === role.id)[0].roleName}));
+        const updatedStaffData = staffData.map(staff => 
+          {
+            const role = roleData.find(role => staff.roleID === role.id);
+            return {
+              ...staff,
+              roleName: role ? role.roleName : 'Unknown'
+            };
+          }
+      );
         const roleOptionsList = roleData.map(role => ({
           id: role.id,
           value: role.id,

@@ -99,6 +99,11 @@ export const subjectCode = [
   { id: 3, value: "SUB003", label:"SUB003"},
   
 ]
+export const language = [
+  { id: 1, value: "English", label:"English"},
+  { id: 2, value: "Marathi",label:"Marathi" },
+  
+]
 
 export const assignedSubject = [
   { id: 1, value: "Marathi",label:"Marathi" },

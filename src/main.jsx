@@ -66,6 +66,7 @@ import UpdateStudentLeave from './container/pages/leave/updateStudentLeave.jsx'
 import UpdateHosteliteLeave from './container/pages/leave/updateHosteliteLeave.jsx'
 import UpdateStaff from './container/pages/staff/updateStaff.jsx'
 import UpdateExpense from './container/pages/extraFeatures/updateExpense.jsx'
+import ForgotPassword from './firebase/forgotPassword.jsx'
 // import ErrorPage from './container/pages/404page/errorPage.jsx'
 
 
@@ -82,6 +83,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route index element={<Login />} />
               <Route path={`${import.meta.env.BASE_URL}firebase/login`} element={<Login />} />
               <Route path={`${import.meta.env.BASE_URL}firebase/signup`} element={<Signup />} />
+              <Route path={`${import.meta.env.BASE_URL}firebase/forgotPassword`} element={<ForgotPassword />} />
           </Route>    
 
           

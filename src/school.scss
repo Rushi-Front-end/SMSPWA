@@ -214,7 +214,7 @@ background-color: transparent;}
 
 .header-content-left {
     .js-example-basic-single{
-        width: 200px;
+        width: 175px;
     }
 }
 
@@ -230,6 +230,15 @@ background-color: transparent;}
 ::-webkit-scrollbar-thumb{
     width:6px;background-color:#d6d6d6;opacity: 0.8;
 }
+.goog-te-gadget-simple{
+    padding: 5px;
+    border-radius: 5px;
+    xwidth: 100px;
+    span{margin-right: 5px;}
+.goog-te-gadget-icon{display: none;}
+img{display: none;}
+}
+.VIpgJd-ZVi9od-ORHb-OEVmcd{visibility: hidden!important;}
 @media (min-width:481px) and (max-width:767px){
     .time-tables-wrap{
         .timetable-navs{

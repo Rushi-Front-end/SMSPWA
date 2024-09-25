@@ -15,10 +15,14 @@ const Option1 = {
   plugins: {
     legend: {
       display: true,
-      position: 'bottom',
+       position:'bottom'
     },
   },
-  cutout: 90,
+  scales: {
+    y: {
+      beginAtZero: true
+    }
+  }
 };
 
 const aggregateData = (examData) => {
@@ -94,7 +98,7 @@ export function Chartjsline() {
   //   return <div>Loading...</div>;
   // }
 
-  return <Line options={Option1} data={Data1(examData)} height={300} />;
+  return <Bar options={Option1} data={Data1(examData)} height={300} />;
 }
 
 

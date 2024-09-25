@@ -1,37 +1,77 @@
-import {  Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import { ThemeChanger } from "../redux/action";
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Import axios
 import logo from "../assets/images/logo/logo.svg";
-
 import desktopdarklogo from "../assets/images/brand-logos/desktop-dark.png";
-import react from "../assets/images/brand-logos/2.png";
-import firebase from "../assets/images/brand-logos/1.png";
-
 import { LocalStorageBackup } from '../components/common/switcher/switcherdata/switcherdata';
-import { auth } from './firebaseapi';
-
 
 const Login = ({ ThemeChanger }) => {
     const [passwordshow1, setpasswordshow1] = useState(false);
     const [err, setError] = useState("");
     const [data, setData] = useState({
-        "email": "adminreact@gmail.com",
+       "email": "adminreact@gmail.com",
         "password": "1234567890",
     });
     const { email, password } = data;
+    const [rememberMe, setRememberMe] = useState(false); // State for Remember M
+    const navigate = useNavigate();
+
     const changeHandler = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
         setError("");
     };
-    const navigate = useNavigate();
+
     const routeChange = () => {
         const path = `${import.meta.env.BASE_URL}dashboard`;
         navigate(path);
     };
-    const Login1 = () => {
+    useEffect(() => {
+        LocalStorageBackup(ThemeChanger);
+         // Load email from localStorage if it exists
+         const savedEmail = localStorage.getItem('savedEmail');
+         if (savedEmail) {
+             setData({ ...data, email: savedEmail });
+             setRememberMe(true); // Check the box if email exists
+         }
+    }, [ThemeChanger]);
+
+    const handleRememberMe = (e) => {
+        setRememberMe(e.target.checked);
+        if (!e.target.checked) {
+            localStorage.removeItem('savedEmail'); // Clear email from localStorage if unchecked
+        }
+    };
+
+    const Login = async (e) => {
+        e.preventDefault();
+
+        // try {
+        //     const response = await axios.post('YOUR_API_ENDPOINT', {
+        //         email,
+        //         password,
+        //     }, {
+        //         headers: {
+        //             'Authorization': 'Bearer YOUR_AUTHORIZATION_KEY', // Add your authorization key here
+        //         },
+        //     });
+
+        //     // Handle success
+        //     console.log(response.data);
+        // if (rememberMe) {
+        //     localStorage.setItem('savedEmail', email); // Save email to localStorage
+        // }
+        //     routeChange();
+        // } catch (error) {
+        //     console.error(error);
+        //     setError(error.response?.data?.message || "An error occurred");
+        // }
 
         if (data.email == "adminreact@gmail.com" && data.password == "1234567890") {
+            if (rememberMe) {
+                localStorage.setItem('savedEmail', email); // Save email to localStorage
+            }
             routeChange();
         }
         else {
@@ -42,16 +82,8 @@ const Login = ({ ThemeChanger }) => {
             });
         }
     };
-    const Login = (e) => {
-        e.preventDefault();
-        auth.signInWithEmailAndPassword(email, password).then(
-            user => { console.log(user); routeChange(); }).catch(err => { console.log(err); setError(err.message); });
-    };
 
 
-    useEffect(() => {
-        LocalStorageBackup(ThemeChanger);
-    }, []);
     return (
         <Fragment>
             <div className="container">
@@ -60,21 +92,18 @@ const Login = ({ ThemeChanger }) => {
                         <div className="xxl:col-span-4 xl:col-span-4 lg:col-span-4 md:col-span-3 sm:col-span-2"></div>
                         <div className="xxl:col-span-4 xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-8 col-span-12">
                             <div className="my-[1.5rem] flex justify-center">
-                                <Link to={`${import.meta.env.BASE_URL}dashboard`}>
+                                <div >
                                     <img src={logo} alt="logo" className="desktop-logo" />
                                     <img src={desktopdarklogo} alt="logo" className="desktop-dark" />
-                                </Link>
+                                </div>
                             </div>
- 
+
                             <div className="box !p-[3rem]">
-                               
-                                <div className="box-body" role="tabpanel" id="pills-with-brand-color-01" aria-labelledby="pills-with-brand-color-item-1">
+                                <div className="box-body">
                                     <p className="h5 font-semibold mb-2 text-center">Sign In</p>
-                                    <p className="mb-4 text-[#8c9097] dark:text-white/50 opacity-[0.7] font-normal text-center">Welcome back Jhon !</p>
+                                    <p className="mb-4 text-[#8c9097] dark:text-white/50 opacity-[0.7] font-normal text-center">Welcome back!</p>
                                     {err && <div className="alert-danger px-4 py-3 shadow-md mb-2" role="alert">
                                         <div className="flex">
-                                            <div className="py-1">
-                                            </div>
                                             <div>{err}</div>
                                         </div>
                                     </div>}
@@ -86,108 +115,35 @@ const Login = ({ ThemeChanger }) => {
                                         </div>
                                         <div className="xl:col-span-12 col-span-12 mb-2">
                                             <label htmlFor="signin-password" className="form-label text-default block">Password
-                                                <Link to={`${import.meta.env.BASE_URL}authentication/resetpassword/resetbasic`} className="float-end text-danger">
-                                                    Forget password ?</Link></label>
+                                                <Link to={`${import.meta.env.BASE_URL}firebase/forgotPassword`} className="float-end text-danger">
+                                                    Forget password?</Link></label>
                                             <div className="input-group">
-                                                <input type={(passwordshow1) ? 'text' : "password"} className="form-control form-control-lg !rounded-s-md"
+                                                <input type={passwordshow1 ? 'text' : "password"} className="form-control form-control-lg !rounded-s-md"
                                                     name="password"
                                                     placeholder="password" value={password}
                                                     onChange={changeHandler} />
                                                 <button
                                                     onClick={() => setpasswordshow1(!passwordshow1)}
-                                                    aria-label="button" className="ti-btn ti-btn-light !rounded-s-none !mb-0" type="button" id="button-addon2"><i className={`${passwordshow1 ? 'ri-eye-line' : 'ri-eye-off-line'} align-middle`}></i></button>
+                                                    aria-label="button" className="ti-btn ti-btn-light !rounded-s-none !mb-0" type="button" id="button-addon2">
+                                                    <i className={`${passwordshow1 ? 'ri-eye-line' : 'ri-eye-off-line'} align-middle`}></i>
+                                                </button>
                                             </div>
                                             <div className="mt-2">
                                                 <div className="form-check !ps-0">
-                                                    <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                                                <input className="form-check-input" type="checkbox" checked={rememberMe} onChange={handleRememberMe} id="defaultCheck1" />
                                                     <label className="form-check-label text-[#8c9097] dark:text-white/50 font-normal" htmlFor="defaultCheck1">
-                                                        Remember password ?
+                                                        Remember password?
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="xl:col-span-12 col-span-12 grid mt-2">
                                             <button className="ti-btn ti-btn-primary !bg-primary !text-white !font-medium"
-                                                onClick={Login1}>Sign In</button>
+                                                onClick={Login}>Sign In</button>
                                         </div>
                                     </div>
                                     <div className="text-center">
-                                        <p className="text-[0.75rem] text-[#8c9097] dark:text-white/50 mt-4">Dont have an account? <Link to={`${import.meta.env.BASE_URL}firebase/signup`} className="text-primary">Sign Up</Link></p>
-                                    </div>
-                                    <div className="text-center my-4 authentication-barrier">
-                                        <span>OR</span>
-                                    </div>
-                                    <div className="btn-list text-center">
-                                        <button aria-label="button" type="button" className="ti-btn ti-btn-icon ti-btn-light me-[0.365rem]">
-                                            <i className="ri-facebook-line font-bold text-dark opacity-[0.7]"></i>
-                                        </button>
-                                        <button aria-label="button" type="button" className="ti-btn ti-btn-icon ti-btn-light me-[0.365rem]">
-                                            <i className="ri-google-line font-bold text-dark opacity-[0.7]"></i>
-                                        </button>
-                                        <button aria-label="button" type="button" className="ti-btn ti-btn-icon ti-btn-light">
-                                            <i className="ri-twitter-line font-bold text-dark opacity-[0.7]"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="box-body hidden" role="tabpanel" id="pills-with-brand-color-02" aria-labelledby="pills-with-brand-color-item-2">
-                                    <p className="h5 font-semibold mb-2 text-center">Sign In</p>
-
-
-                                    <p className="mb-4 text-[#8c9097] dark:text-white/50 opacity-[0.7] font-normal text-center">Welcome back Jhon !</p>
-
-                                    {err && <div className="alert-danger px-4 py-3 shadow-md mb-2" role="alert">
-                                        <div className="flex">
-                                            <div className="py-1">
-                                            </div>
-                                            <div>{err}</div>
-                                        </div>
-                                    </div>}
-                                    <div className="grid grid-cols-12 gap-y-4">
-                                        <div className="xl:col-span-12 col-span-12">
-                                            <label htmlFor="signin-username" className="form-label text-default">Email</label>
-                                            <input type="email" name="email" className="form-control form-control-lg w-full !rounded-md"
-
-                                                placeholder="user name" value={email}
-                                                onChange={changeHandler} />
-                                        </div>
-                                        <div className="xl:col-span-12 col-span-12 mb-2">
-                                            <label htmlFor="signin-password" className="form-label text-default block">Password<Link to={`${import.meta.env.BASE_URL}authentication/resetpassword/resetbasic`} className="float-end text-danger">Forget password ?</Link></label>
-                                            <div className="input-group">
-                                                <input name="password" type='password' className="form-control form-control-lg !rounded-s-md"
-
-                                                    placeholder="password" value={password}
-                                                    onChange={changeHandler} />
-                                                <button onClick={() => setpasswordshow1(!passwordshow1)} aria-label="button" className="ti-btn ti-btn-light !rounded-s-none !mb-0" type="button" id="button-addon2"><i className={`${passwordshow1 ? 'ri-eye-line' : 'ri-eye-off-line'} align-middle`}></i></button>
-                                            </div>
-                                            <div className="mt-2">
-                                                <div className="form-check !ps-0">
-                                                    <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                                    <label className="form-check-label text-[#8c9097] dark:text-white/50 font-normal" htmlFor="defaultCheck1">
-                                                        Remember password ?
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="xl:col-span-12 col-span-12 grid mt-2">
-                                            <Link to="#" className="ti-btn ti-btn-primary !bg-primary !text-white !font-medium" onClick={Login}>Sign In</Link>
-                                        </div>
-                                    </div>
-                                    <div className="text-center">
-                                        <p className="text-[0.75rem] text-[#8c9097] dark:text-white/50 mt-4">Dont have an account? <Link to={`${import.meta.env.BASE_URL}authentication/signup/signupbasic`} className="text-primary">Sign Up</Link></p>
-                                    </div>
-                                    <div className="text-center my-4 authentication-barrier">
-                                        <span>OR</span>
-                                    </div>
-                                    <div className="btn-list text-center">
-                                        <button aria-label="button" type="button" className="ti-btn ti-btn-icon ti-btn-light me-[0.365rem]">
-                                            <i className="ri-facebook-line font-bold text-dark opacity-[0.7]"></i>
-                                        </button>
-                                        <button aria-label="button" type="button" className="ti-btn ti-btn-icon ti-btn-light me-[0.365rem]">
-                                            <i className="ri-google-line font-bold text-dark opacity-[0.7]"></i>
-                                        </button>
-                                        <button aria-label="button" type="button" className="ti-btn ti-btn-icon ti-btn-light">
-                                            <i className="ri-twitter-line font-bold text-dark opacity-[0.7]"></i>
-                                        </button>
+                                        <p className="text-[0.75rem] text-[#8c9097] dark:text-white/50 mt-4">Don't have an account? <Link to={`${import.meta.env.BASE_URL}firebase/signup`} className="text-primary">Sign Up</Link></p>
                                     </div>
                                 </div>
                             </div>
@@ -197,8 +153,7 @@ const Login = ({ ThemeChanger }) => {
                 </div>
             </div>
         </Fragment>
-
-    )
+    );
 };
 
 const mapStateToProps = (state) => ({
@@ -206,5 +161,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { ThemeChanger })(Login);
-
-

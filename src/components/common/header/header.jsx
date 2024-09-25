@@ -19,7 +19,7 @@ import Select from 'react-select';
 import {  Selectmaxoption, Selectoption1, Selectoption2, Selectoption3, Selectoption4, Selectoption5 } from '../../../container/forms/select2/select2data';
 import { IdContext } from '../../common/context/idContext';
 import axios from 'axios';
-import { singleselect } from '../../../container/forms/formelements/formselect/formselectdata';
+import { language, singleselect } from '../../../container/forms/formelements/formselect/formselectdata';
 import { AllDashIdContext } from '../context/allDashIdContext';
 import { UserRoleNameContext } from '../context/userRoleContext';
 
@@ -428,6 +428,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   };
 
   const schoolDropDown = (selectedOption) => {
+    console.log(selectedOption.id,'SChoooooo')
     setSelectedValue(selectedOption);
     setId(selectedOption.id);
   };
@@ -469,6 +470,18 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
   
   }
+
+  // function googleTranslateElementInit() {
+  //   new google.translate.TranslateElement({
+  //     pageLanguage: 'en',
+  //     includedLanguages: 'mr,hi,en',
+  //     layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  //   }, 'google_translate_element');
+  // }
+  // useEffect(()=>{
+  //   googleTranslateElementInit()
+  // },[googleTranslateElementInit])
+ 
 
 
   return (
@@ -520,11 +533,12 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
 
             <div className="header-content-right">
-            {/* <div className="header-element md:px-[0.325rem] !items-center" >
-                <Select  name="state" options={singleselect} className="js-example-basic-single w-full" isSearchable
-                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[singleselect[0]]}
+            <div className="header-element md:px-[0.325rem] !items-center" >
+                <Select  name="state" options={language} className="js-example-basic-single w-full" isSearchable
+                                menuPlacement='auto' id='google_translate_element' classNamePrefix="Select2"  defaultValue={[language[0]]}
                             />
-               </div>  */}
+                            {/* <div id="google_translate_element"></div> */}
+               </div> 
                <div className="header-element md:!px-[0.65rem] px-2 hs-dropdown !items-center ti-dropdown [--placement:bottom-left]">
                 <div className="md:block hidden dropdown-profile cursor-pointer">
                   <p className="font-semibold mb-0 leading-none text-[#536485] text-[0.813rem] ">John Taylor</p>
