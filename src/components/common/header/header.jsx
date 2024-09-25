@@ -534,9 +534,9 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
             <div className="header-content-right">
             <div className="header-element md:px-[0.325rem] !items-center" >
-                <Select  name="state" options={language} className="js-example-basic-single w-full" isSearchable
-                                menuPlacement='auto' id='google_translate_element' classNamePrefix="Select2"  defaultValue={[language[0]]}
-                            />
+                {/* <Select  name="state" options={language} className="js-example-basic-single w-full" isSearchable
+                                menuPlacement='auto' id='google_translate_element' classNamePrefix="Select2" onChange={languageChange} defaultValue={[language[0]]}
+                            /> */}
                             {/* <div id="google_translate_element"></div> */}
                </div> 
                <div className="header-element md:!px-[0.65rem] px-2 hs-dropdown !items-center ti-dropdown [--placement:bottom-left]">

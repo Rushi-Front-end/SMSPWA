@@ -100,8 +100,9 @@ export const subjectCode = [
   
 ]
 export const language = [
-  { id: 1, value: "English", label:"English"},
-  { id: 2, value: "Marathi",label:"Marathi" },
+  { id: 1, value: "en", label:"English"},
+  { id: 2, value: "mr",label:"Marathi" },
+  { id: 3, value: "hi",label:"Hindi" },
   
 ]
 
