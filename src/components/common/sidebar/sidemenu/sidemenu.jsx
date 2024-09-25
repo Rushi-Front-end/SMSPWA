@@ -406,6 +406,8 @@ const ROLE_MENU_ITEMS = {
 };
 
 const getMenuItemsForRole = (role) => {
+  if(!role) return []
+
   const allowedTitles = ROLE_MENU_ITEMS[role] || [];
   console.log("Allowed Titles for Role:", allowedTitles);
   // return MENUITEMS.filter(item => {
@@ -422,10 +424,10 @@ const getMenuItemsForRole = (role) => {
   const result = [];
   let currentMenuTitle = '';
   
-  validItems.forEach(item => {
+  validItems.forEach((item, ind) => {
     if (item.menutitle) {
       // Check if there are any valid items after this title
-      const hasValidItems = validItems.slice(validItems.indexOf(item) + 1).some(nextItem => !nextItem.menutitle);
+      const hasValidItems = !!(validItems[ind+1] && !validItems[ind+1]?.menutitle);
       if (hasValidItems) {
         currentMenuTitle = item.menutitle;
         result.push(item); // Add the menutitle if there are valid items following it
