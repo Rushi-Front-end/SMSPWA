@@ -151,6 +151,7 @@ export const mealType = [
   { id: 2, value: "Breakfast" ,label:"Breakfast"},
   { id: 3, value: "Lunch" ,label:"Lunch"},
   { id: 4, value: "Dinner" ,label:"Dinner"},
+  { id: 5, value: "Other" ,label:"Other"},
 ]
 export const department = [
   { id: 1, value: "Academic department",label:"Academic department" },
@@ -179,15 +180,14 @@ export const prakalpName  = [
 ]
 
 export const leaveType  = [
-  { id: 1, value: "Select Leave Type",label:"Leave Type" },
-  { id: 2, value: "Casual" ,label:"Casual"},
-  { id: 3, value: "Sick" ,label:"Sick"},
-  { id: 4, value: "Annual" ,label:"Annual"},
-  { id: 5, value: "Maternity" ,label:"Maternity"},
-  { id: 6, value: "Paternity" ,label:"Paternity"},
-  { id: 7, value: "Child Development Leave" ,label:"Child Development Leave"},
-  { id: 8, value: "Unpaid" ,label:"Unpaid"},
-  { id: 9, value: "Other" ,label:"Other"},
+  { id: 1, value: "Casual" ,label:"Casual"},
+  { id: 2, value: "Sick" ,label:"Sick"},
+  { id: 3, value: "Annual" ,label:"Annual"},
+  { id: 4, value: "Maternity" ,label:"Maternity"},
+  { id: 5, value: "Paternity" ,label:"Paternity"},
+  { id: 6, value: "Child Development Leave" ,label:"Child Development Leave"},
+  { id: 7, value: "Unpaid" ,label:"Unpaid"},
+  { id: 8, value: "Other" ,label:"Other"},
 ]
 export const studentLeave  = [
   { id: 1, value: "Casual Leave" ,label:"Casual Leave"},

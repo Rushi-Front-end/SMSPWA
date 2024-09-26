@@ -20,19 +20,30 @@ const StaffDetails = () => {
     const [searchFilter, setSearchFilter] = useState("")
     const {id: schoolId} = useSchoolId();
 
-    const getStaffList = () => {
-        setSpinner(true)
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
-            .then(res => {
-                setData(res.data)
-                setSpinner(false)
-            })
-            .catch(err => console.log(err))
+    const getStaffList = async() => {
+        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff/GetStaffBySearchFilter?schoolId=${schoolId}`;
+    
+        // axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+        //     .then(res => {
+            //         setData(res.data)
+            //         setSpinner(false)
+            //     })
+            //     .catch(err => console.log(err))
+            setSpinner(true)
+            try {
+            const result = await axios.get(url);
+            const filterData = result.data;
+            setSpinner(false)
+            setData(filterData);
+        } catch (error) {
+            toast.error("An error occurred while fetching data");
+            console.error("Error fetching data:", error);
+        }
     }
 
     useEffect(() => {
         getStaffList()
-    }, [])
+    }, [schoolId])
 
     useEffect(() => {
         const fetchUserRoles = async () => {

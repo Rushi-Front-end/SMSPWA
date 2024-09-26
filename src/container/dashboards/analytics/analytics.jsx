@@ -119,8 +119,7 @@ const Analytics = () => {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <h6 className="font-semibold mb-3 text-[1rem]">Total Sick Students</h6>
-                                            {/* <span className="text-[1.5625rem] font-semibold">{data.totalSickStudent}</span> */}
-                                            <span className="text-[1.5625rem] font-semibold">25</span>
+                                            <span className="text-[1.5625rem] font-semibold">{data.totalSickStudent}</span>
                                             <span className="block text-success text-[0.75rem]">Sick Students</span>
                                         </div>
                                         <div>

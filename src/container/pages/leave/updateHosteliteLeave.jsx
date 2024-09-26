@@ -13,7 +13,7 @@ import { leaveType } from '../../forms/formelements/formselect/formselectdata';
 
 // Validation Schema
 const schema = yup.object({
-    studentName: yup.string().nullable().required("Please Select Staff Name"),
+    fullName: yup.string().nullable().required("Please Select Staff Name"),
     outpassType: yup.string().nullable().required("Please Select Leave Type "),
     fromDate: yup.string().nullable().required("Please Select From Date "),
     toDate: yup.string().nullable().required("Please Select To Date "),
@@ -50,7 +50,7 @@ const UpdateHosteliteLeave = () => {
         resolver: yupResolver(schema),
     });
 
-    const { field: { value: studentNameValue, onChange: studentNameOnChange, ...reststudentNameField } } = useController({ name: 'studentName', control });
+    const { field: { value: fullNameValue, onChange: fullNameOnChange, ...restfullNameField } } = useController({ name: 'fullName', control });
     const { field: { value: outpassTypeValue, onChange: outpassTypeOnChange, ...restoutpassTypeField } } = useController({ name: 'outpassType', control });
 
     
@@ -142,8 +142,8 @@ const UpdateHosteliteLeave = () => {
                                     </Link>
                                 </li>
                                 <li className="text-sm">
-                                    <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}pages/leave/studentLeave`}>
-                                        Student Leave
+                                    <Link className="flex items-center text-primary hover:text-primary dark:text-primary" to={`${import.meta.env.BASE_URL}pages/leave/hosteliteLeave`}>
+                                    Hostelite Outpasses
                                         <svg className="flex-shrink-0 mx-3 overflow-visible h-2.5 w-2.5 text-black-300 dark:text-white/10 rtl:rotate-180"
                                             width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14"
@@ -152,7 +152,7 @@ const UpdateHosteliteLeave = () => {
                                     </Link>
                                 </li>
                                 <li className="text-sm text-gray-500 dark:text-[#8c9097] dark:text-white/50 hover:text-primary truncate" aria-current="page">
-                                    Update Leave Staff
+                                    Update Hostelite Leave
                                 </li>
                             </ol>
                         </div>
@@ -173,11 +173,11 @@ const UpdateHosteliteLeave = () => {
                                         className="!p-0 place-holder"
                                         classNamePrefix='react-select'
                                         options={studentNameDrop}
-                                        value={studentNameValue ? studentNameDrop.find(x => x.label === studentNameValue) : null}
-                                        onChange={option => studentNameOnChange(option ? option.label : null)}
-                                        {...reststudentNameField}
+                                        value={fullNameValue ? studentNameDrop.find(x => x.label === fullNameValue) : fullNameValue}
+                                        onChange={option => fullNameOnChange(option ? option.label : option)}
+                                        {...restfullNameField}
                                     />
-                                        {errors.studentName && <p className='errorTxt'>{errors.studentName.message}</p>}
+                                        {errors.fullName && <p className='errorTxt'>{errors.fullName.message}</p>}
                                     </div>
                                     <div className="leave-staff-div xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
                                         <label className="ti-form-select rounded-sm !p-0 mb-2">Select Leave Type<span className='redText'>*</span></label>

@@ -188,7 +188,7 @@ const HostelAttendance = () => {
                                         <th scope="col" className="text-start">Class</th>
                                         <th scope="col" className="text-start">In Time</th>
                                         <th scope="col" className="text-start">Out Time</th>
-                                        <th scope="col" className="text-start">Status</th>
+                                        {/* <th scope="col" className="text-start">Status</th> */}
                                         <th scope="col" className="text-start">Attendance</th>
                                         <th scope="col" className="text-start">Action</th>
                                     </tr>
@@ -224,11 +224,11 @@ const HostelAttendance = () => {
                                                                 disabled
                                                             />
                                                         </td>
-                                                        <td>
+                                                        {/* <td>
                                                             <span className={`badge ${status === 'Present' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
                                                                 {status}
                                                             </span>
-                                                        </td>
+                                                        </td> */}
                                                         <td>
                                                             <ToggleSwitch status={status} index={index} updateAttendanceData={updateAttendanceData} />
                                                         </td>

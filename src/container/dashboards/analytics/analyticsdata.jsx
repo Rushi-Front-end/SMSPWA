@@ -40,16 +40,20 @@ const aggregateData = (examData) => {
     labels: Object.keys(aggregated),
     datasets: [
       {
-        label: 'Total Passed Students',
+        label: 'Percentage of Passed Students',
         backgroundColor: 'rgba(132, 90, 223, 0.5)',
         borderColor: 'rgb(132, 90, 223)',
-        data: Object.values(aggregated).map(item => item.totalPassed),
+        data: Object.values(aggregated).map(item => 
+          item.totalAppeared > 0 ? (item.totalPassed / item.totalAppeared) * 100 : 0
+        ),
       },
       {
-        label: 'Total Failed Students',
+        label: 'Percentage of Failed Students',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         borderColor: 'rgb(255, 99, 132)',
-        data: Object.values(aggregated).map(item => item.totalFailed),
+        data: Object.values(aggregated).map(item => 
+          item.totalAppeared > 0 ? (item.totalFailed / item.totalAppeared) * 100 : 0
+        ),
       },
       {
         label: 'Total Appeared Students',

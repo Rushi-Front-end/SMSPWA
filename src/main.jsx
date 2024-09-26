@@ -67,6 +67,9 @@ import UpdateHosteliteLeave from './container/pages/leave/updateHosteliteLeave.j
 import UpdateStaff from './container/pages/staff/updateStaff.jsx'
 import UpdateExpense from './container/pages/extraFeatures/updateExpense.jsx'
 import ForgotPassword from './firebase/forgotPassword.jsx'
+import EditHealth from './container/pages/health/editHealth.jsx'
+import { UserRoleNameProvider } from './components/common/context/userRoleContext.jsx'
+import { AllDashIdProvider } from './components/common/context/allDashIdContext.jsx'
 // import ErrorPage from './container/pages/404page/errorPage.jsx'
 
 
@@ -75,6 +78,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.Fragment>
     <ToastContainer theme='colored' autoClose={2000} position='top-right' />
           <IdProvider>
+          <AllDashIdProvider>
+
+          <UserRoleNameProvider>
     <BrowserRouter>
       <React.Suspense>
       <ScrollToTop/>
@@ -114,6 +120,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}pages/admissionQuery/createAdmissionForm`} element={ <CreateAdmissionQuery />} />
             <Route path={`${import.meta.env.BASE_URL}pages/health/healthDetails`} element={<HealthDetails />} />
             <Route path={`${import.meta.env.BASE_URL}pages/health/createHealth`} element={<CreateHealth />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/health/editHealth/:id`} element={<EditHealth />} />
             <Route path={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument`} element={<ViewHealthDocument />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/staffLeave`} element={<StaffLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/studentLeave`} element={<StudentLeave />} />
@@ -140,13 +147,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}pages/examination/createExamination`} element={<CreateExamination />} />
             <Route path={`${import.meta.env.BASE_URL}pages/examination/updateExamination/:id`} element={<UpdateExamination />} />
             <Route path={`${import.meta.env.BASE_URL}pages/diet/dietList`} element={<DietList />} />
-            <Route path={`${import.meta.env.BASE_URL}pages/diet/createDiet`} element={<CreateDiet />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/diet/editDiet/:id`} element={<CreateDiet />} />
 
 
           </Route>
         </Routes>
       </React.Suspense>
     </BrowserRouter>
+    </UserRoleNameProvider>
+    </AllDashIdProvider>
           </IdProvider>
   </React.Fragment>
 )

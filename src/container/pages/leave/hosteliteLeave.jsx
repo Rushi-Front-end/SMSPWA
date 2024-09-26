@@ -13,6 +13,8 @@ const HosteliteLeave = () => {
     const [statusMap, setStatusMap] = useState({}); // Store status for each leave
 
     const [searchFilter, setSearchFilter] = useState(null);
+    const [healthStudName, setHealthStudName] = useState([]);
+    const [healthClassName, setHealthClassName] = useState([]);
     
     const getHosteliteList = () => {
         setSpinner(true)
@@ -99,6 +101,26 @@ const HosteliteLeave = () => {
             console.error("Error fetching data:", error);
         }
     }
+
+    const getStudentName = async () => {
+        try {
+            const studentsRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
+            const studentsData = studentsRes.data;
+            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
+            const classNameData = classRes.data
+            // Assuming studentsData is an array of students
+            setHealthStudName(studentsData);
+            setHealthClassName(classNameData)
+            const classIDs = [...new Set(studentsData.map(student => student.classID))];
+            console.log(classNameData, "StudentNAMein helath", data);
+        } catch (error) {
+            console.error('Error fetching user roles:', error);
+        }
+    }
+    useEffect(() => {
+        getStudentName();
+    }, []);
+
     
     return (
         <div>
@@ -194,9 +216,9 @@ const HosteliteLeave = () => {
                                             data.map((dt, index) => {
                                  return   <tbody key={index}>
                                         <tr>
-                                            <td rowSpan="2">1</td>
+                                            <td rowSpan="2">{index +1}</td>
                                             <td>{dt.fullName}</td>
-                                            <td>student</td>
+                                            <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === healthStudName.filter(staff => staff.id === dt.studentID)[0]?.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.section || 'Unknown'}</td>
                                             <td>{dt.outpassType}</td>
                                             <td>{`${dt.fromDate} - ${dt.toDate}`}</td>
                                             {/* <td>  <span className={`badge ${statusMap[dt.id] === 'Approved' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>

@@ -271,7 +271,7 @@ const StaffAttendance = () => {
                                     <th scope="col" className="text-start">Role</th>
                                     <th scope="col" className="text-start">In Time</th>
                                     <th scope="col" className="text-start">Out Time</th>
-                                    <th scope="col" className="text-start">Status</th>
+                                    {/* <th scope="col" className="text-start">Status</th> */}
                                     <th scope="col" className="text-start">Action</th>
                                 </tr>
                                 </thead>
@@ -310,11 +310,11 @@ const StaffAttendance = () => {
                                                                 onChange={(e) => handleChange(e, 'outTime')}
                                                             />
                                                         </td>
-                                                        <td>
+                                                        {/* <td>
                                                             <span className={`badge ${status === 'Present' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
                                                                 {status}
                                                             </span>
-                                                        </td>
+                                                        </td> */}
                                                         <td>
                                                             <div className="ti-dropdown hs-dropdown">
                                                                 <button type="button"

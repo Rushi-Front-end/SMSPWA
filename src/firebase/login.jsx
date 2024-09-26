@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import { ThemeChanger } from "../redux/action";
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,15 +6,18 @@ import axios from 'axios'; // Import axios
 import logo from "../assets/images/logo/logo.svg";
 import desktopdarklogo from "../assets/images/brand-logos/desktop-dark.png";
 import { LocalStorageBackup } from '../components/common/switcher/switcherdata/switcherdata';
+import { UserRoleNameContext } from '../components/common/context/userRoleContext';
 
 const Login = ({ ThemeChanger }) => {
     const [passwordshow1, setpasswordshow1] = useState(false);
     const [err, setError] = useState("");
     const [data, setData] = useState({
-       "email": "adminreact@gmail.com",
-        "password": "1234567890",
+       "userId": "",
+        "password": "",
     });
-    const { email, password } = data;
+    const { userId, password } = data;
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext) || { userRoleName: '', setUserRoleName: () => {} };
+
     const [rememberMe, setRememberMe] = useState(false); // State for Remember M
     const navigate = useNavigate();
 
@@ -32,7 +35,7 @@ const Login = ({ ThemeChanger }) => {
          // Load email from localStorage if it exists
          const savedEmail = localStorage.getItem('savedEmail');
          if (savedEmail) {
-             setData({ ...data, email: savedEmail });
+             setData({ ...data, userId: savedEmail });
              setRememberMe(true); // Check the box if email exists
          }
     }, [ThemeChanger]);
@@ -47,42 +50,49 @@ const Login = ({ ThemeChanger }) => {
     const Login = async (e) => {
         e.preventDefault();
 
-        // try {
-        //     const response = await axios.post('YOUR_API_ENDPOINT', {
-        //         email,
-        //         password,
-        //     }, {
-        //         headers: {
-        //             'Authorization': 'Bearer YOUR_AUTHORIZATION_KEY', // Add your authorization key here
-        //         },
-        //     });
-
-        //     // Handle success
-        //     console.log(response.data);
-        // if (rememberMe) {
-        //     localStorage.setItem('savedEmail', email); // Save email to localStorage
-        // }
-        //     routeChange();
-        // } catch (error) {
-        //     console.error(error);
-        //     setError(error.response?.data?.message || "An error occurred");
-        // }
-
-        if (data.email == "adminreact@gmail.com" && data.password == "1234567890") {
-            if (rememberMe) {
-                localStorage.setItem('savedEmail', email); // Save email to localStorage
-            }
-            routeChange();
-        }
-        else {
-            setError("The Auction details did not Match");
-            setData({
-                "email": "adminreact@gmail.com",
-                "password": "1234567890",
+        try {
+            let resData;
+            const response = await axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Login/loginApp', {
+                userId,
+                password,
+            }, {
+                headers: {
+                    'Authorization': 'Bearer YOUR_AUTHORIZATION_KEY', // Add your authorization key here
+                },
             });
+                // if(response.status === 200){
+                    // Handle success
+                    console.log(response.data, 'dssdsadsad');
+                    resData= await response
+                    setUserRoleName(resData)
+                    // setTimeout(() => {
+                    // }, 1000);
+                    
+                // }
+        if (rememberMe) {
+            localStorage.setItem('savedEmail', userId); // Save email to localStorage
         }
-    };
+            routeChange();
+        } catch (error) {
+            console.error(error);
+            setError(error.response?.data?.message || "An error occurred");
+        }
 
+        // if (data.email == "adminreact@gmail.com" && data.password == "1234567890") {
+        //     if (rememberMe) {
+        //         localStorage.setItem('savedEmail', email); // Save email to localStorage
+        //     }
+        //     routeChange();
+        // }
+        // else {
+        //     setError("The Auction details did not Match");
+        //     setData({
+        //         "email": "adminreact@gmail.com",
+        //         "password": "1234567890",
+        //     });
+        // }
+    };
+    console.log(userRoleName, 'userRoleNameHHHH')
 
     return (
         <Fragment>
@@ -110,7 +120,7 @@ const Login = ({ ThemeChanger }) => {
                                     <div className="grid grid-cols-12 gap-y-4">
                                         <div className="xl:col-span-12 col-span-12">
                                             <label htmlFor="signin-username" className="form-label text-default">Email</label>
-                                            <input type="email" name="email" className="form-control form-control-lg w-full !rounded-md" onChange={changeHandler} value={email}
+                                            <input type="text" name="userId" className="form-control form-control-lg w-full !rounded-md" onChange={changeHandler} value={userId}
                                                 id="signin-username" placeholder="user name" />
                                         </div>
                                         <div className="xl:col-span-12 col-span-12 mb-2">

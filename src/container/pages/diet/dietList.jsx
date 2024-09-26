@@ -60,9 +60,9 @@ const DietList = () => {
                                     {/*  */}
                                     <div className="createstudent-btn flex justify-between w-100 p-4 !pb-0">
                                         <h4>Diet Plan Details</h4>
-                                        <Link to={`${import.meta.env.BASE_URL}pages/diet/createDiet`}>
+                                        {/* <Link to={`${import.meta.env.BASE_URL}pages/diet/createDiet`}>
                                             <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave"> Create Diet</button>
-                                        </Link>
+                                        </Link> */}
                                     </div>
                                     <div className="box-body">
                                         <div className="border-b-2 border-gray-200 dark:border-white/10">

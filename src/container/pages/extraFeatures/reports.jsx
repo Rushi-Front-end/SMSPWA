@@ -30,7 +30,7 @@ const getFormattedToday = () => {
 
 
 const options = {
-    filename: "using-function.pdf",
+    filename: "Report.pdf",
     page: {
       margin: 20
     }
@@ -324,13 +324,14 @@ console.log(reportName, 'reportName')
                             </div> */}
                             <div className="ti-modal-body" id='pdfDataFile'>
                                 <img src={schoolLogoLarge} alt='school logo' className='pb-4'/>
+                                <h4> {reportHead.reportType}</h4>
                             <div className='reportHead flex justify-between align-center pb-4'>
                                 <div className='headLeftReport'>
                                     <p><b>Prakalp Name:</b> {reportHead.prakalpName}</p>
                                     <p><b>School Name:</b>  {reportHead.schoolName}</p>
                                     <p><b>From:</b>  {reportHead.fromDate}</p>
                                     <p><b>To:</b>  {reportHead.toDate}</p>
-                                    <p><b>Report Type:</b>  {reportHead.reportType}</p>
+                                    {/* <p><b>Report Type:</b>  {reportHead.reportType}</p> */}
                                     <p><b>Created By:</b>  Anup Singh</p>
                                     <p><b>Created At:</b>  {formattedToday}</p>
                                 </div>                                
@@ -353,12 +354,12 @@ console.log(reportName, 'reportName')
                                                     <div id="export_1724247195639" className="dropdown-item"onClick={() => exportData(dataReport, 'xls')}>Excel (.xls)</div>
                                                 </Link>
                                                 </li>
-                                                <li><Link className="ti-dropdown-item" to="#">
+                                                {/* <li><Link className="ti-dropdown-item" to="#">
                                                     <div id="export_1724247195639" className="dropdown-item" onClick={() => exportData(dataReport, 'xlsx')}>Excel (.xlsx)</div>
                                                 </Link></li>
                                                 <li><Link className="ti-dropdown-item" to="#">
                                                     <div id="export_1724247195639" className="dropdown-item" onClick={() => exportData(dataReport, 'csv')}>Excel (.csv)</div>
-                                                </Link></li>
+                                                </Link></li> */}
                                                 <li><Link className="ti-dropdown-item" to="#">
                                                     <div id="export_1724247195639" className="dropdown-item" onClick={downloadPdf}>PDF (.pdf)</div>
                                                 </Link></li>
@@ -414,18 +415,18 @@ export const exportData = (jsonData, fileType) => {
     let bookType;
   
     switch (fileType) {
-      case 'csv':
-        fileExtension = '.csv';
-        bookType = 'csv';
-        break;
+    //   case 'csv':
+    //     fileExtension = '.csv';
+    //     bookType = 'csv';
+    //     break;
       case 'xls':
         fileExtension = '.xls';
         bookType = 'xls';
         break;
-      case 'xlsx':
-        fileExtension = '.xlsx';
-        bookType = 'xlsx';
-        break;
+    //   case 'xlsx':
+    //     fileExtension = '.xlsx';
+    //     bookType = 'xlsx';
+    //     break;
       default:
         console.error('Unsupported file type');
         return;
