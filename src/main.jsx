@@ -77,10 +77,10 @@ import { AllDashIdProvider } from './components/common/context/allDashIdContext.
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.Fragment>
     <ToastContainer theme='colored' autoClose={2000} position='top-right' />
+          <UserRoleNameProvider>
           <IdProvider>
           <AllDashIdProvider>
 
-          <UserRoleNameProvider>
     <BrowserRouter>
       <React.Suspense>
       <ScrollToTop/>
@@ -154,8 +154,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </Routes>
       </React.Suspense>
     </BrowserRouter>
-    </UserRoleNameProvider>
     </AllDashIdProvider>
           </IdProvider>
+    </UserRoleNameProvider>
   </React.Fragment>
 )
