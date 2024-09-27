@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState } from 'react';
 export const UserRoleNameContext = createContext();
 
 export const UserRoleNameProvider = ({ children }) => {
-    const [userRoleName, setUserRoleName] = useState('');
+    const [userRoleName, setUserRoleName] = useState([]);
 
   return (
     <UserRoleNameContext.Provider value={{ userRoleName, setUserRoleName }}>
@@ -13,6 +13,6 @@ export const UserRoleNameProvider = ({ children }) => {
   );
 };
 
-export const useUserRoleName = () => {
+export const useLoginName = () => {
   return useContext(UserRoleNameContext);
 };

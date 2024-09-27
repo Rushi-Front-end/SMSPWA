@@ -12,13 +12,13 @@ import logo5 from "../../../assets/images/brand-logos/desktop-white.png";
 import logo6 from "../../../assets/images/brand-logos/toggle-white.png";
 import SimpleBar from 'simplebar-react';
 import Menuloop from '../../ui/menuloop';
-import { useUserRoleName } from '../context/userRoleContext';
+import { useLoginName } from '../context/userRoleContext';
 
 
 const Sidebar = ({ local_varaiable, ThemeChanger }) => {
   const [menuitems, setMenuitems] = useState(MENUITEMS);
   
-  const {userRoleName: userRoleNameLogin} = useUserRoleName();
+  const {userRoleName: userRoleNameLogin} = useLoginName();
   console.log(userRoleNameLogin,'userRoleNameLogin')
   const userRole = userRoleNameLogin; // Adjust based on your Redux state structure
   const filteredMenuItems = getMenuItemsForRole(userRole);

@@ -55,20 +55,24 @@ const Login = ({ ThemeChanger }) => {
             const response = await axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Login/loginApp', {
                 userId,
                 password,
-            }, {
-                headers: {
-                    'Authorization': 'Bearer YOUR_AUTHORIZATION_KEY', // Add your authorization key here
-                },
-            });
-                // if(response.status === 200){
+            }, 
+            // {
+            //     headers: {
+            //         'Authorization': 'Bearer YOUR_AUTHORIZATION_KEY', // Add your authorization key here
+            //     },
+            // }
+        );
+        const token = response.data.auth_token; // Adjust this according to your API response structure
+                if(response.status === 200){
                     // Handle success
                     console.log(response.data, 'dssdsadsad');
-                    resData= await response
+                    localStorage.setItem('authToken', token); // Save token to localStorage
+                    resData= response.data
                     setUserRoleName(resData)
                     // setTimeout(() => {
                     // }, 1000);
                     
-                // }
+                }
         if (rememberMe) {
             localStorage.setItem('savedEmail', userId); // Save email to localStorage
         }
