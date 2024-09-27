@@ -5,7 +5,7 @@ import product3 from "../../../assets/images/ecommerce/jpg/3.jpg";
 import product5 from "../../../assets/images/ecommerce/jpg/5.jpg";
 import product4 from "../../../assets/images/ecommerce/jpg/4.jpg";
 import product6 from "../../../assets/images/ecommerce/jpg/6.jpg";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import store from '../../../redux/store';
 import { connect } from 'react-redux';
 import { ThemeChanger } from "../../../redux/action";
@@ -56,7 +56,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   const { dashIdCheck, setDashIdCheck } = useContext(AllDashIdContext);
 
   const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
-  
+
 
   const handleToggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -113,7 +113,21 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   const [selectedValue, setSelectedValue] = useState();
   const [selectedPrakalValue, setSelectedPrakalValue] = useState();
 
-  const userLoginRoleName = 'admin'
+  const loginValue = localStorage.getItem('loginData')
+  let  parsedLoginValue
+  let   roleName
+  let   fullName
+  if (loginValue) {
+     parsedLoginValue = JSON.parse(loginValue);
+      roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+      fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+    console.log(parsedLoginValue.roleName, 'loginValue');
+  } else {
+    console.log('No login data found');
+  }
+
+  // const userLoginRoleName = parsedLoginValue.roleName
+  const userLoginRoleName = roleName ? 'admin' : ''
 
 
   useEffect(()=>{
@@ -472,16 +486,30 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   
   }
 
-  // function googleTranslateElementInit() {
-  //   new google.translate.TranslateElement({
-  //     pageLanguage: 'en',
-  //     includedLanguages: 'mr,hi,en',
-  //     layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  //   }, 'google_translate_element');
-  // }
-  // useEffect(()=>{
-  //   googleTranslateElementInit()
-  // },[googleTranslateElementInit])
+  const navigate = useNavigate();
+
+  const routeChange = () => {
+    const path = `${import.meta.env.BASE_URL}firebase/login`;
+    navigate(path);
+};
+  const loginOut = () =>{
+    localStorage.removeItem('loginData')
+    localStorage.removeItem('authToken')
+    routeChange()
+
+  }
+
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'mr,hi,en',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false,
+    }, 'google_translate_element');
+  }
+  useEffect(()=>{
+    googleTranslateElementInit()
+  },[googleTranslateElementInit])
  
 
 
@@ -538,11 +566,11 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                 {/* <Select  name="state" options={language} className="js-example-basic-single w-full" isSearchable
                                 menuPlacement='auto' id='google_translate_element' classNamePrefix="Select2" onChange={languageChange} defaultValue={[language[0]]}
                             /> */}
-                            {/* <div id="google_translate_element"></div> */}
+                            <div className="js-example-basic-single w-full" id="google_translate_element"></div>
                </div> 
                <div className="header-element md:!px-[0.65rem] px-2 hs-dropdown !items-center ti-dropdown [--placement:bottom-left]">
                 <div className="md:block hidden dropdown-profile cursor-pointer">
-                  <p className="font-semibold mb-0 leading-none text-[#536485] text-[0.813rem] ">John Taylor</p>
+                  <p className="font-semibold mb-0 leading-none text-[#536485] text-[0.813rem] ">{fullName}</p>
                   <span className="opacity-[0.7] font-normal text-[#536485] block text-[0.6875rem] ">as {userLoginRoleName}</span>
                 </div>
                 <div
@@ -572,8 +600,8 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                       <Link className="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex" to={`${import.meta.env.BASE_URL}pages/changePassword/passwordChange`}>
                       <i className="ti ti-lock text-[1.125rem] me-2 opacity-[0.7]"></i>Change Password</Link></li>
                     
-                    <li><Link className="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex" to={`${import.meta.env.BASE_URL}firebase/login`}><i
-                      className="ti ti-logout text-[1.125rem] me-2 opacity-[0.7]"></i>Log Out</Link></li>
+                    <li><p className="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex" onClick={loginOut}><i
+                      className="ti ti-logout text-[1.125rem] me-2 opacity-[0.7]"></i>Log Out</p></li>
                   </ul>
                 </div>
               </div>

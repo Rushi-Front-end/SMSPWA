@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { deleteSubjectList, fetchSubjectList } from '../../../redux/reducers/subjectReducer'
 import Loader from '../loader/loader'
+import { toast } from 'react-toastify'
 
 const SubjectTable = ({ sendSubDataToParent }) => {
     const [data, setData] = useState(true)
@@ -35,7 +36,7 @@ const SubjectTable = ({ sendSubDataToParent }) => {
         console.log("deleteDatahandler", data)
         dispatch(deleteSubjectList(data))
         setTimeout(()=>{
-
+            toast.success("Subject Deleted Successfuly")
             dispatch(fetchSubjectList())
         },500)
         

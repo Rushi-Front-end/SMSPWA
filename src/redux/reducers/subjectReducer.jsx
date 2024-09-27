@@ -116,7 +116,7 @@ const  subjectSlice = createSlice ({
     
     builder.addCase(fetchSubjectById.rejected,(state,action)=>{
         state.isError = true;
-        toast.error(`Error: ${action.error.message}`); // Error notification
+       // toast.error(`Error: ${action.error.message}`); // Error notification
 
     })
     
@@ -129,13 +129,13 @@ const  subjectSlice = createSlice ({
          console.log(state, "Sliccc")
         state.isLoading = false;
         state.list = action.payload;
-        toast.success("Subject Created Successfuly")
+        // toast.success("Subject Created Successfuly")
 
     })
     
     builder.addCase(postSubjectList.rejected,(state,action)=>{
         state.isError = true;
-        toast.error(`Error: ${action.error.message}`); // Error notification
+        //toast.error(`Error: ${action.error.message}`); // Error notification
 
     })
 
@@ -147,13 +147,13 @@ const  subjectSlice = createSlice ({
     builder.addCase(deleteSubjectList.fulfilled,(state,action)=>{
         state.isLoading = false;
         state.deleteRes = action.payload;
-        toast.success("Subject Deleted Successfuly")
+        // toast.success("Subject Deleted Successfuly")
 
     })
     
     builder.addCase(deleteSubjectList.rejected,(state,action)=>{
         state.isError = true;
-        toast.error(`Error: ${action.error.message}`); // Error notification
+        //toast.error(`Error: ${action.error.message}`); // Error notification
     })
 
 
@@ -170,7 +170,7 @@ const  subjectSlice = createSlice ({
         state.list = state.list.map((ele)=>{
             ele.id === action.payload.id ? action.payload : ele
         })
-        toast.success("Subject Updated Successfuly")
+       // toast.success("Subject Updated Successfuly")
 
         //state.updateRes = action.payload;
     })

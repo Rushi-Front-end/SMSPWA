@@ -51,7 +51,6 @@ const Login = ({ ThemeChanger }) => {
         e.preventDefault();
 
         try {
-            let resData;
             const response = await axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Login/loginApp', {
                 userId,
                 password,
@@ -67,7 +66,9 @@ const Login = ({ ThemeChanger }) => {
                     // Handle success
                     console.log(response.data, 'dssdsadsad');
                     localStorage.setItem('authToken', token); // Save token to localStorage
-                    resData= response.data
+                    
+                    const   resData= JSON.stringify(response.data)
+                    localStorage.setItem('loginData',resData); // Save token to localStorage
                     setUserRoleName(resData)
                     // setTimeout(() => {
                     // }, 1000);
@@ -128,9 +129,9 @@ const Login = ({ ThemeChanger }) => {
                                                 id="signin-username" placeholder="user name" />
                                         </div>
                                         <div className="xl:col-span-12 col-span-12 mb-2">
-                                            <label htmlFor="signin-password" className="form-label text-default block">Password
+                                            {/* <label htmlFor="signin-password" className="form-label text-default block">Password
                                                 <Link to={`${import.meta.env.BASE_URL}firebase/forgotPassword`} className="float-end text-danger">
-                                                    Forget password?</Link></label>
+                                                    Forget password?</Link></label> */}
                                             <div className="input-group">
                                                 <input type={passwordshow1 ? 'text' : "password"} className="form-control form-control-lg !rounded-s-md"
                                                     name="password"
@@ -156,9 +157,9 @@ const Login = ({ ThemeChanger }) => {
                                                 onClick={Login}>Sign In</button>
                                         </div>
                                     </div>
-                                    <div className="text-center">
+                                    {/* <div className="text-center">
                                         <p className="text-[0.75rem] text-[#8c9097] dark:text-white/50 mt-4">Don't have an account? <Link to={`${import.meta.env.BASE_URL}firebase/signup`} className="text-primary">Sign Up</Link></p>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

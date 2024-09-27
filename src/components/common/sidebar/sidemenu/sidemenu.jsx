@@ -379,6 +379,14 @@ const ROLE_MENU_ITEMS = {
     'Diet Plan',
     // Add additional items as needed
   ],
+  Principal: [
+    'Dashboards',
+    'Students',
+    'Health Documents',
+    'Students Attendace',
+    'Reports',
+    // Add additional items as needed
+  ],
   teacher: [
     'Dashboards',
     'Students',
