@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -14,6 +14,49 @@ const EditHealthMedical = (props) => {
     const [medicalC, setMedicalC] = useState({})
     const [medicalD, setMedicalD] = useState({})
     const [medicalE, setMedicalE] = useState({})
+
+    const { search } = useLocation();
+    const queryParams = new URLSearchParams(search);
+    const id = queryParams.get('id'); // '12345'
+    const date = queryParams.get('date'); // '09-11-2023'
+
+    useEffect(() => {
+        if(props.data?.defectAtBirth?.split(",").filter(el => el)?.length){
+            const filteredObj = props.data?.defectAtBirth?.split(",").filter(el => el).map(el => ({[el]: true}))
+            const finalObj = filteredObj.reduce((acc, obj) => {
+                                return { ...acc, ...obj };
+                            }, {});
+            setMedicalA(finalObj)
+        }
+        if(props.data?.deficiency?.split(",").filter(el => el)?.length){
+            const filteredObj = props.data?.deficiency?.split(",").filter(el => el).map(el => ({[el]: true}))
+            const finalObj = filteredObj.reduce((acc, obj) => {
+                                return { ...acc, ...obj };
+                            }, {});
+            setMedicalB(finalObj)
+        }
+        if(props.data?.childhoodDiseases?.split(",").filter(el => el)?.length){
+            const filteredObj = props.data?.childhoodDiseases?.split(",").filter(el => el).map(el => ({[el]: true}))
+            const finalObj = filteredObj.reduce((acc, obj) => {
+                                return { ...acc, ...obj };
+                            }, {});
+            setMedicalC(finalObj)
+        }
+        if(props.data?.developmentalDelay?.split(",").filter(el => el)?.length){
+            const filteredObj = props.data?.developmentalDelay?.split(",").filter(el => el).map(el => ({[el]: true}))
+            const finalObj = filteredObj.reduce((acc, obj) => {
+                                return { ...acc, ...obj };
+                            }, {});
+            setMedicalD(finalObj)
+        }
+        if(props.data?.E?.split(",").filter(el => el)?.length){
+            const filteredObj = props.data?.E?.split(",").filter(el => el).map(el => ({[el]: true}))
+            const finalObj = filteredObj.reduce((acc, obj) => {
+                                return { ...acc, ...obj };
+                            }, {});
+            setMedicalE(finalObj)
+        }
+    }, [props])
 
     const navigate = useNavigate()
     const { register, formState, control, setValue, reset } = useForm({
@@ -92,10 +135,10 @@ const EditHealthMedical = (props) => {
         const finalData = {...props.data, ...formattedMedicalData, createdBy: ""}
 
         try {
-            const createRes = await axios.post("https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/CreateStudentHealthCheckup", {...finalData})
+            const createRes = await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/UpdatetStudentHealthCheckup?studentId=${id}&healthCheckupDate=${date}`, {...finalData})
 
             navigate(`${import.meta.env.BASE_URL}pages/health/healthDetails`)
-            toast.success("Medical Data Created Successfuly")
+            toast.success("Medical Data Edited Successfuly")
         } catch (error) {
             console.error(error)
         }

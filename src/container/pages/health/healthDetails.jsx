@@ -156,7 +156,7 @@ const HealthDetails = () => {
                                                     </button>
                                                                  <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
                                                                     <li><Link className="ti-dropdown-item"  to={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument/?id=${dt.studentID}&date=${dt.healthCheckupDate}`}>View</Link></li>
-                                                        <li ><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/health/editHealth/${dt.studentID}`}>Edit</Link></li>
+                                                        <li ><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/health/editHealth/?id=${dt.studentID}&date=${dt.healthCheckupDate}`}>Edit</Link></li>
                                                         <li><Link className="ti-dropdown-item " data-hs-overlay="#hs-vertically-centered-modal" onClick={()=>openDelete(dt.studentID, dt.healthCheckupDate)} >Delete</Link></li>
                                                         
                                                             {/* onClick={()=>deleteDatahandler(dt.id)} */}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Select from 'react-select';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import HealthMedical from './healthMedical';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
@@ -43,7 +43,7 @@ const schema = yup.object({
 const EditHealth = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema),
         mode: 'onChange' // Optional: ensures validation runs on each change
@@ -51,15 +51,63 @@ const EditHealth = () => {
 
     const [studMed, setStudMedical] = useState(false);
     const [studNameDrop, setStudNameDrop] = useState([]);
-
-    const params = useParams()
-    console.log(params,"HEalthParamsS")
+    
+    const { search } = useLocation();
+    const queryParams = new URLSearchParams(search);
+    const id = queryParams.get('id'); // '12345'
+    const date = queryParams.get('date'); // '09-11-2023'
 
     const { errors, isValid } = formState;
 
     const { field: { value: studentNameValue, onChange: studentNameOnChange, ...reststudentNameField } } = useController({ name: 'studentID', control });
-    
+    const { field: { value: height, onChange: heightOnChange, ...restHeightField } } = useController({ name: 'height', control });
+    const { field: { value: weight, onChange: weightOnChange, ...restWeightField } } = useController({ name: 'weight', control });
+    const { field: { value: bloodPressure, onChange: bloodPressureOnChange, ...restBloodPressureField } } = useController({ name: 'bloodPressure', control });
+    const { field: { value: dentalCheckup, onChange: dentalCheckupOnChange, ...restDentalCheckupField } } = useController({ name: 'dentalCheckup', control });
+    const { field: { value: bmiClassification, onChange: bmiClassificationOnChange, ...restBmiClassificationField } } = useController({ name: 'bmiClassification', control });
+    const { field: { value: mctsNumber, onChange: mctsNumberOnChange, ...restMctsNumberField } } = useController({ name: 'mctsNumber', control });
+    const { field: { value: acuityOfVisionLeftEye, onChange: acuityOfVisionLeftEyeOnChange, ...restAcuityOfVisionLeftEyeField } } = useController({ name: 'acuityOfVisionLeftEye', control });
+    const { field: { value: acuityOfVisionRightEye, onChange: acuityOfVisionRightEyeOnChange, ...restAcuityOfVisionRightEyeField } } = useController({ name: 'acuityOfVisionRightEye', control });
+    const { field: { value: descriptionOfDiseases, onChange: descriptionOfDiseasesOnChange, ...restDescriptionOfDiseasesField } } = useController({ name: 'descriptionOfDiseases', control });
+    const { field: { value: suggestedSolutionsAndTreatments, onChange: suggestedSolutionsAndTreatmentsOnChange, ...restSuggestedSolutionsAndTreatmentsField } } = useController({ name: 'suggestedSolutionsAndTreatments', control });
+    const { field: { value: remark, onChange: remarkOnChange, ...restRemarkField } } = useController({ name: 'remark', control });
+    const { field: { value: createdAt, onChange: createdAtOnChange } } = useController({ name: 'createdAt', control });
+    const { field: { value: healthCheckupDate, onChange: healthCheckupDateOnChange } } = useController({ name: 'healthCheckupDate', control });
+    const { field: { value: nameOfDoctor, onChange: nameOfDoctorOnChange, ...restNameOfDoctorField } } = useController({ name: 'nameOfDoctor', control });
+    const { field: { value: nameOfHospital, onChange: nameOfHospitalOnChange, ...restNameOfHospitalField } } = useController({ name: 'nameOfHospital', control});
 
+    const getHealthDataById = async (id, date) => {
+      try {
+        const studentRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/GetStudentHealthCheckupById?studentId=${id}&healthCheckupDate=${date}`)
+        const studentData = studentRes.data
+
+        setData(studentData)
+
+        studentNameOnChange(studentData.studentID)
+        heightOnChange(studentData.height)
+        weightOnChange(studentData.weight)
+        bloodPressureOnChange(studentData.bloodPressure)
+        dentalCheckupOnChange(studentData.dentalCheckup)
+        bmiClassificationOnChange(studentData.bmiClassification)
+        mctsNumberOnChange(studentData.mctsNumber)
+        acuityOfVisionLeftEyeOnChange(studentData.acuityOfVisionLeftEye)
+        acuityOfVisionRightEyeOnChange(studentData.acuityOfVisionRightEye)
+        descriptionOfDiseasesOnChange(studentData.descriptionOfDiseases)
+        suggestedSolutionsAndTreatmentsOnChange(studentData.suggestedSolutionsAndTreatments)
+        remarkOnChange(studentData.remark)
+        createdAtOnChange(studentData.createdAt)
+        healthCheckupDateOnChange(studentData.healthCheckupDate)
+        nameOfDoctorOnChange(studentData.nameOfDoctor)
+        nameOfHospitalOnChange(studentData.nameOfHospital)
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    useEffect(() => {
+        if(id && date)  getHealthDataById(id, date)
+    }, [id, date])
 
 
     const NextPageOpen = (e) => {
@@ -67,14 +115,14 @@ const EditHealth = () => {
     }
     const onSubmit = (formData) => {
         if(isValid){
-            setData({...formData})
+            setData(prev => ({...prev, ...formData}))
 
 
             setStudMedical(true)
         }
     }
-    const getStudNameDrop = () => {
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
+    const getStudNameDrop = async () => {
+        await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
             .then(res => {
                 const studDropOptions = res.data.map(staff => ({
                     value: staff.id,
@@ -85,8 +133,9 @@ const EditHealth = () => {
             .catch(err => console.log(err));
       }
       useEffect(()=>{
+        if(data)
         getStudNameDrop()
-      },[])
+      },[data])
 
     return (
         <div>
@@ -163,67 +212,67 @@ const EditHealth = () => {
                                     <div className='grid grid-cols-12 sm:gap-6 pt-4'>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Height<span className='redText'>*</span>:</label>
-                                            <input type="text" {...register('height')} name='height' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" {...register('height')} name='height' className="form-control" id="input-text" placeholder="" value={height} onChange={heightOnChange} {...restHeightField} />
                                             {errors.height && <p className='errorTxt'>{errors.height.message}</p>}
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Weight<span className='redText'>*</span></label>
-                                            <input type="text"  {...register('weight')} name='weight' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text"  {...register('weight')} name='weight' className="form-control" id="input-text" placeholder="" value={weight} onChange={weightOnChange} {...restWeightField} />
                                             {errors.weight && <p className='errorTxt'>{errors.weight.message}</p>}
 
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Blood Pressure<span className='redText'>*</span></label>
-                                            <input type="text"  {...register('bloodPressure')} name='bloodPressure' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text"  {...register('bloodPressure')} name='bloodPressure' className="form-control" id="input-text" placeholder="" value={bloodPressure} onChange={bloodPressureOnChange} {...restBloodPressureField} />
                                             {errors.bloodPressure && <p className='errorTxt'>{errors.bloodPressure.message}</p>}
 
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Dental Checkup<span className='redText'>*</span></label>
-                                            <input type="text" {...register('dentalCheckup')} name='dentalCheckup' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" {...register('dentalCheckup')} name='dentalCheckup' className="form-control" id="input-text" placeholder="" value={dentalCheckup} onChange={dentalCheckupOnChange} {...restDentalCheckupField} />
                                             {errors.dentalCheckup && <p className='errorTxt'>{errors.dentalCheckup.message}</p>}
 
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">BMI Classification<span className='redText'>*</span></label>
-                                            <input type="text" {...register('bmiClassification')} name='bmiClassification' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" {...register('bmiClassification')} name='bmiClassification' className="form-control" id="input-text" placeholder="" value={bmiClassification} onChange={bmiClassificationOnChange} {...restBmiClassificationField} />
                                             {errors.bmiClassification && <p className='errorTxt'>{errors.bmiClassification.message}</p>}
 
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">MCTS Number(Mother & Child Tracking)<span className='redText'>*</span></label>
-                                            <input type="text"  {...register('mctsNumber')} name='mctsNumber' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text"  {...register('mctsNumber')} name='mctsNumber' className="form-control" id="input-text" placeholder="" value={mctsNumber} onChange={mctsNumberOnChange} {...restMctsNumberField} />
                                             {errors.mctsNumber && <p className='errorTxt'>{errors.mctsNumber.message}</p>}
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Acuity of Vision(Left Eye)<span className='redText'>*</span></label>
-                                            <input type="text"  {...register('acuityOfVisionLeftEye')} name='acuityOfVisionLeftEye'  className="form-control" id="input-text" placeholder="" />
+                                            <input type="text"  {...register('acuityOfVisionLeftEye')} name='acuityOfVisionLeftEye'  className="form-control" id="input-text" placeholder="" value={acuityOfVisionLeftEye} onChange={acuityOfVisionLeftEyeOnChange} {...restAcuityOfVisionLeftEyeField} />
                                             {errors.acuityOfVisionLeftEye && <p className='errorTxt'>{errors.acuityOfVisionLeftEye.message}</p>}
 
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Acuity of Vision(Right Eye)<span className='redText'>*</span></label>
-                                            <input type="text" {...register('acuityOfVisionRightEye')} name='acuityOfVisionRightEye' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" {...register('acuityOfVisionRightEye')} name='acuityOfVisionRightEye' className="form-control" id="input-text" placeholder="" value={acuityOfVisionRightEye} onChange={acuityOfVisionRightEyeOnChange} {...restAcuityOfVisionRightEyeField} />
                                             {errors.acuityOfVisionRightEye && <p className='errorTxt'>{errors.acuityOfVisionRightEye.message}</p>}
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Description of Diseases/Conditions<span className='redText'>*</span></label>
-                                            <input type="text" {...register('descriptionOfDiseases')} name='descriptionOfDiseases' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" {...register('descriptionOfDiseases')} name='descriptionOfDiseases' className="form-control" id="input-text" placeholder="" value={descriptionOfDiseases} onChange={descriptionOfDiseasesOnChange} {...restDescriptionOfDiseasesField} />
                                             {errors.descriptionOfDiseases && <p className='errorTxt'>{errors.descriptionOfDiseases.message}</p>}
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Suggested Solutions & Treatments<span className='redText'>*</span></label>
-                                            <input type="text" {...register('suggestedSolutionsAndTreatments')} name='suggestedSolutionsAndTreatments' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" {...register('suggestedSolutionsAndTreatments')} name='suggestedSolutionsAndTreatments' className="form-control" id="input-text" placeholder="" value={suggestedSolutionsAndTreatments} onChange={suggestedSolutionsAndTreatmentsOnChange} {...restSuggestedSolutionsAndTreatmentsField} />
                                             {errors.suggestedSolutionsAndTreatments && <p className='errorTxt'>{errors.suggestedSolutionsAndTreatments.message}</p>}
                                         </div>
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Remarks<span className='redText'>*</span></label>
-                                            <input type="text" {...register('remark')} name='remark' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" {...register('remark')} name='remark' className="form-control" id="input-text" placeholder="" value={remark} onChange={remarkOnChange} {...restRemarkField} />
                                             {errors.remark && <p className='errorTxt'>{errors.remark.message}</p>}
                                         </div>
 
@@ -284,12 +333,12 @@ const EditHealth = () => {
 
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Name of the Doctor<span className='redText'>*</span></label>
-                                            <input type="text" {...register('nameOfDoctor')} name='nameOfDoctor' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" {...register('nameOfDoctor')} name='nameOfDoctor' className="form-control" id="input-text" placeholder="" value={nameOfDoctor} onChange={nameOfDoctorOnChange} {...restNameOfDoctorField} />
                                             {errors.nameOfDoctor && <p className='errorTxt'>{errors.nameOfDoctor.message}</p>}
                                         </div>
                                         <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                             <label className="ti-form-select rounded-sm !p-0 mb-2">Name of the Hospital<span className='redText'>*</span></label>
-                                            <input type="text" {...register('nameOfHospital')} name='nameOfHospital' className="form-control" id="input-text" placeholder="" />
+                                            <input type="text" {...register('nameOfHospital')} name='nameOfHospital' className="form-control" id="input-text" placeholder="" value={nameOfHospital} onChange={nameOfHospitalOnChange} {...restNameOfHospitalField} />
                                             {errors.nameOfHospital && <p className='errorTxt'>{errors.nameOfHospital.message}</p>}
                                         </div>
 
