@@ -311,7 +311,7 @@ const StudentAttendance = () => {
                                                         <td>
                                                             <input
                                                                 type="time"
-                                                                value={dt.inTime}
+                                                                value={status === "Present" ? dt.inTime : ""}
                                                                 className="timePicker"
                                                                 id="startTime"
                                                                 name="startTime"
@@ -321,7 +321,7 @@ const StudentAttendance = () => {
                                                         <td>
                                                             <input
                                                                 type="time"
-                                                                value={dt.outTime}
+                                                                value={status === "Present" ? dt.outTime : ""}
                                                                 className="timePicker"
                                                                 id="endTime"
                                                                 name="endTime"

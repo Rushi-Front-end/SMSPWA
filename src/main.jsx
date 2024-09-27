@@ -120,7 +120,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}pages/admissionQuery/createAdmissionForm`} element={ <CreateAdmissionQuery />} />
             <Route path={`${import.meta.env.BASE_URL}pages/health/healthDetails`} element={<HealthDetails />} />
             <Route path={`${import.meta.env.BASE_URL}pages/health/createHealth`} element={<CreateHealth />} />
-            <Route path={`${import.meta.env.BASE_URL}pages/health/editHealth/:id`} element={<EditHealth />} />
+            <Route path={`${import.meta.env.BASE_URL}pages/health/editHealth/`} element={<EditHealth />} />
             <Route path={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument`} element={<ViewHealthDocument />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/staffLeave`} element={<StaffLeave />} />
             <Route path={`${import.meta.env.BASE_URL}pages/leave/studentLeave`} element={<StudentLeave />} />
