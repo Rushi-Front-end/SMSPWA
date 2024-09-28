@@ -56,7 +56,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   const { dashIdCheck, setDashIdCheck } = useContext(AllDashIdContext);
 
   const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
-
+  const [allSchAdmin, setAllSchAdmin] = useState(false)
 
   const handleToggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -129,9 +129,16 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   // const userLoginRoleName = parsedLoginValue.roleName
   const userLoginRoleName = roleName ? 'admin' : ''
 
-
+  
+  
   useEffect(()=>{
     setUserRoleName(userLoginRoleName)
+    if(userLoginRoleName === 'admin') {
+      setAllSchAdmin(true)
+    }
+    else{
+      setAllSchAdmin(false)
+    }
   },[])
 
 
@@ -549,6 +556,9 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                                 menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolDataList[0]]}
                             />
                </div>   
+               {
+                allSchAdmin && (
+
                <div className='header-element !items-center admin-checkbox'>
                <div className="form-check">
                             <input className="form-check-input" onChange={dashboardChange}  type="checkbox" id="dashboardCheck" />
@@ -557,6 +567,8 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                             </label>
                         </div>
                 </div>          
+                )
+               }
             </div>
 
 
