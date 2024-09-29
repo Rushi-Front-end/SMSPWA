@@ -107,10 +107,28 @@ const StaffAttendance = () => {
         const formattedInTime = editedData.inTime.length === 5 ? `${editedData.inTime}:00` : editedData.inTime;
         const formattedOutTime = editedData.outTime.length === 5 ? `${editedData.outTime}:00` : editedData.outTime;
     
-            await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/${editedData.id}`, {
-                ...editedData,
+        if(editedData.id == 0) {
+            await axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/create`, {
+                staffID: editedData.staffID,
                 inTime: formattedInTime,
                 outTime: formattedOutTime,
+                submittedBy: editedData.submittedBy,
+                attendanceDate: formattedToday
+            })
+                .then((res) => {
+                    if(res.status === 201){
+                    getStaffAttandance();
+                    setIsEditingIndex(null);
+                    toast.success('Data updated successfully');
+                    }
+                })
+                .catch(err => console.log(err));
+        } else {
+            await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/${editedData.id}`, {
+                staffID: editedData.staffID,
+                inTime: formattedInTime,
+                outTime: formattedOutTime,
+                submittedBy: editedData.submittedBy,
                 attendanceDate: formattedToday
             })
                 .then((res) => {
@@ -121,6 +139,7 @@ const StaffAttendance = () => {
                     }
                 })
                 .catch(err => console.log(err));
+        }
         };
     
         const handleCancel = () => {
@@ -252,9 +271,9 @@ const StaffAttendance = () => {
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
                             </div>
-                            <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            {/* <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Save All</button>
-                            </div>
+                            </div> */}
 
                         </div>
                     </div>

@@ -112,23 +112,65 @@ const StudentAttendance = () => {
     }
 
     const handleSingleSave = async (index) => {
+        if(data[index].id == 0) {
+            await handleCreateNew(data[index].studentID)
+        }
+        
         const status = (getStatus(data[index].inTime, data[index].outTime) === "Present")
         
         if(changedAttendance.has(index)) {
             await handleSave({status: !status, index: index})
+            handleCancel(index)
         }
     }
 
     const handleSaveAll = async () => {
+        const newEntries = data.filter(el => el.id == 0);
+
+        for (const entry of newEntries) {
+            try {
+                await handleCreateNew(entry.studentID)
+            } catch (error) {
+                console.error("Error Saving Student Attendance", Error)
+            }
+        }
+        
         for (const item of changedAttendance) {
             try {
               const response = await handleSingleSave(item);
-              handleCancel(item)
             } catch (error) {
               console.error('Error making API call:', error);
             }
           }
     }
+
+    const handleCreateNew = async (studentId) => {
+		try {
+            const formattedInTime = "10:00:00";
+            const formattedOutTime = "18:00:00";
+
+			await axios
+				.post(
+					`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentAttendance/create`,
+					{
+						studentID: studentId,
+						inTime: formattedInTime,
+						outTime: formattedOutTime,
+						attendanceDate: formattedToday,
+						submittedBy: 0,
+					}
+				)
+				.then(async (res) => {
+					if (res.status === 200) {
+						await handleFilter();
+						toast.success("Data updated successfully");
+					}
+				})
+				.catch((err) => console.log(err));
+		} catch (error) {
+			console.error("Error while creating Student Attendance");
+		}
+	};
 
     const handleSave = async ({status, index}) => {
             // Ensure inTime and outTime are in the correct format (hh:mm:ss)
