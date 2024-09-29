@@ -13,7 +13,6 @@ import Tabtotop from '../components/common/tabtotop/tabtotop';
 import storeSchool from '../redux/Store/storeSchool';
 import { IdProvider } from '../components/common/context/idContext';
 import { AllDashIdProvider } from '../components/common/context/allDashIdContext';
-import { UserRoleNameProvider } from '../components/common/context/userRoleContext';
 
 
 function App() {
@@ -58,7 +57,6 @@ function App() {
           <Switcher />
               <IdProvider>
                 <AllDashIdProvider>
-                  <UserRoleNameProvider>
                 <div className='page'>
                   <Header />
                   <Sidebar />
@@ -73,7 +71,6 @@ function App() {
                   </div>
                   <Footer />
                 </div>
-                </UserRoleNameProvider>
                 </AllDashIdProvider>
                 </IdProvider>
           <Tabtotop />

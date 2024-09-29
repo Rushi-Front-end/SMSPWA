@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { dietDay, mealType, singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { setHours, setMinutes } from "date-fns";
 import { useForm, useController, Controller } from 'react-hook-form';
@@ -13,8 +13,6 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { IdContext, useSchoolId } from '../../../components/common/context/idContext';
 
-
-
 const schema = yup.object({
     dayOfWeek: yup.string().nullable().required("Please Select Day"),
     mealType: yup.string().nullable().required("Please Select Meal Type "),
@@ -23,10 +21,7 @@ const schema = yup.object({
     menuItems: yup.string().nullable().required("Please Enter Menu Items "),
     totalCalories: yup.string().nullable().required("Please Enter Calories Intake "),
     mealTime: yup.string().nullable().required("Please Enter meal Time "),
-
 });
-
-
 const CreateDiet = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -49,25 +44,62 @@ const [schoolIdCont, setSchoolIdCont] = useState([])
     // const { field: { value: toDateValue, onChange: toDateOnChange, ...resttoDateField } } = useController({ name: 'toDate', control });
 
     const { errors } = formState;
+    const { search } = useLocation();
+    const queryParams = new URLSearchParams(search);
+    const id = queryParams.get('id'); // '12345'
+    const day = queryParams.get('day'); // '09-11-2023'
+    const mealTypeParam = queryParams.get('mealType'); // '09-11-2023'
 
+    
+    const getDietById = async(id,day,mealType) => {
+        const dietRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/GetDietPlanById?id=${id}&day=${day}&mealType=${mealType}`)
+        const dietData = dietRes.data
+        console.log(dietData, 'dietData')
+          // Resetting form fields with fetched data
+          reset({
+            dayOfWeek: dietData.dayOfWeek,
+            mealType: dietData.mealType,
+            mealTime: dietData.mealTime,
+            menuItems: dietData.menuItems,
+            totalCalories: dietData.totalCalories,
+        });
 
-    const onSubmit = (formData) => {
-        setData({...formData})
-        axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/CreateDietPlan`, {...formData,
-            "schoolId":schoolId
-        })
-        .then((res)=>{
-            console.log(res)
-            if(res.status === 200){
+    }
+    useEffect(() => {
+        if(id && day && mealTypeParam)  getDietById(id,day,mealTypeParam)
+    }, [id,day,mealTypeParam])
 
-                navigate(`${import.meta.env.BASE_URL}pages/diet/dietList`)
-                toast.success("Diet Data Created Successfuly")
+    const onSubmit = async(formData) => {
+        // setData({...formData})
+        // axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/CreateDietPlan`, {...formData,
+        //     "schoolId":schoolId
+        // })
+        // .then((res)=>{
+        //     console.log(res)
+        //     if(res.status === 200){
+
+        //         navigate(`${import.meta.env.BASE_URL}pages/diet/dietList`)
+        //         toast.success("Diet Data Created Successfuly")
+        //     }
+
+        // })
+        // .catch((err) => {
+        //     console.log(err)
+        // })
+
+        try {
+            const response = await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/UpdateDietPlan?id=${id}&day=${day}&mealType=${mealTypeParam}`, {
+                ...formData,
+                schoolId, // Add any other required fields
+            });
+            if (response.status === 200) {
+                toast.success("Diet Data Updated Successfully");
+                navigate(`${import.meta.env.BASE_URL}pages/diet/dietList`);
             }
-
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+        } catch (error) {
+            console.error('Error updating diet data:', error);
+            toast.error("Failed to update diet data.");
+        }
     }
 
 

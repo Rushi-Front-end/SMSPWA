@@ -39,7 +39,7 @@ const schema = yup.object({
     
     academicYear: yup.string().nullable().required("Please select Academic Year"),
     classID: yup.string().nullable().required("Please select Class"),
-    section: yup.string().nullable().required("Please select Section"),
+    section: yup.string().nullable(),
     bloodGroup: yup.string().nullable().required("Please select Blood Group"),
     gender: yup.string().nullable().required("Please select Gender"),
     state: yup.string().nullable().required("Please select State")
@@ -188,9 +188,11 @@ const CreateStudent = () => {
 
     const onSubmit = (formData) => {
         console.log(formData,"StudentData")
+        const sectionValue = formData.section ? formData.section : ' ';
         axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students', 
             {
                 ...formData,
+                section: sectionValue
                // enrolmentDate:  formatDate(new Date(formData.enrolmentDate)),
                 //toDate:  formatDate(new Date(formData.toDate)),
             }
@@ -200,9 +202,7 @@ const CreateStudent = () => {
                 navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
             })
             .catch(err => console.log(err))
-        //setData({ ...formData });
-       //  dispatch(postStudentList(formData))
-        // navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
+        
         console.log(formData, "Lates Filed added")
 
     }
@@ -317,7 +317,7 @@ const CreateStudent = () => {
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Section <span className="redText">*</span></label>
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Section</label>
                             
                             <Select className="!p-0 place-holder"  
                                      isClearable
@@ -326,7 +326,7 @@ const CreateStudent = () => {
                                      onChange={option => sectionOnChange(option ? option.value : null)}
                                      {...restsectionField}
                                      classNamePrefix='react-select'  />
-                                    {errors.section && <p className='errorTxt'>{errors.section.message}</p>}
+                                    {/* {errors.section && <p className='errorTxt'>{errors.section.message}</p>} */}
                                 
                                 </div>
 

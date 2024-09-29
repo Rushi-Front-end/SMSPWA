@@ -4,7 +4,7 @@ const ExpenseReport = ({reportGenData}) => {
   return (
     <div>
     <div className='generated-report-wrapper'>
-    <table className="table border  whitespace-nowrap table-sm min-w-full">
+    <table className="table border table-bordered  whitespace-nowrap table-sm min-w-full">
                              <thead><tr className="border-b border-defaultborder">
                                  <th scope="col" className="text-start">SrNo</th>
                                  {/* <th scope="col" className="text-start">Title	</th> */}

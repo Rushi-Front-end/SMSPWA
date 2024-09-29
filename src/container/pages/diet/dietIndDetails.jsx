@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { Link } from 'react-router-dom';
+import { useSchoolId } from '../../../components/common/context/idContext';
+import { toast } from 'react-toastify';
 
 const DietIndDetails = ({ selectedDay }) => {
     const [dietData, setDietData] = useState({});
     const [spinner, setSpinner] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
-
+    const {id: schoolId} = useSchoolId();
 
     const getDietList = () => {
         setSpinner(true);
@@ -43,37 +45,50 @@ const DietIndDetails = ({ selectedDay }) => {
         }, {});
     };
 
+    console.log(itemToDelete, 'itemToDelete')
+   
     const handleDelete = () => {
-        setDietData(prevData => {
-            const updatedData = { ...prevData };
-            const dayData = updatedData[selectedDay];
+        if (!itemToDelete) return; // Ensure itemToDelete is not null
 
-            if (dayData) {
-                const index = dayData.findIndex(item => item.id === itemToDelete.id);
-                console.log(index,"DIEEET")
-                if (index !== -1) {
-                    dayData[index] = {
-                        ...dayData[index],
-                        mealTime: '--',
-                        menuItems: '--',
-                        totalCalories: '--',
-                    };
+        // Prepare the updated data
+        const updatedItem = {
+            ...itemToDelete,
+            mealTime: '',
+            menuItems: '',
+            totalCalories: 0,
+        };
+    
+        // Make the API call to update the item in the database
+        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/UpdateDietPlan?id=${schoolId}&day=${selectedDay}&mealType=${itemToDelete.mealType}`, updatedItem)
+            .then(res => {
+                if (res.status === 200) {
+                    // Update local state if the API call is successful
+                    setDietData(prevData => {
+                        const updatedData = { ...prevData };
+                        const dayData = updatedData[selectedDay];
+    
+                        if (dayData) {
+                            const index = dayData.findIndex(item => item.mealType === itemToDelete.mealType && item.schoolId === schoolId);
+                            console.log(index, "dsadasdasd")
+                            if (index !== -1) {
+                                dayData[index] = updatedItem; // Update the item in local state
+                            }
+                        }
+    
+                        toast.success("Diet plan deleted successfully");
+                        return updatedData;
+                    });
+    
+                    // Fetch the updated data (optional, since you're already updating local state)
+                    getDietList();
                 }
-            }
-
-            return updatedData;
-        });
-
-        axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/DeleteDietPlan?id=${itemToDelete.id}`)
-            .then(() => {
-                toast.success("Diet plan deleted successfully");
             })
             .catch(err => {
-                console.error("Error deleting diet plan:", err);
-                toast.error("Failed to delete diet plan");
+                console.error(err);
+                toast.error(err);
             });
-
-        setItemToDelete(null);
+    
+        setItemToDelete(null); // Clear the item to delete
     };
 
     return (
@@ -101,9 +116,9 @@ const DietIndDetails = ({ selectedDay }) => {
                                         {dietData[selectedDay].map((dt, i) => (
                                             <tr className="border-b border-defaultborder" key={i}>
                                                 <td>{dt.mealType}</td>
-                                                <td>{dt.mealTime  || '8am-10am'}</td>
-                                                <td>{dt.menuItems}</td>
-                                                <td>{dt.totalCalories}</td>
+                                                <td>{dt.mealTime && dt.mealTime.trim() !== '' ? dt.mealTime : '--'}</td>
+                                                <td>{dt.menuItems && dt.menuItems.trim() !== '' ? dt.menuItems : '--'}</td>
+                                                <td>{dt.totalCalories !== 0 ? dt.totalCalories : 0}</td>
                                                 <td>
                                                 <div className="ti-dropdown hs-dropdown">
                                                     <button type="button"
@@ -111,7 +126,7 @@ const DietIndDetails = ({ selectedDay }) => {
                                                         <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                                     </button>
                                                                  <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                        <li ><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/diet/editDiet/${dt.id}`}>Edit</Link></li>
+                                                        <li ><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/diet/editDiet?id=${schoolId}&day=${selectedDay}&mealType=${dt.mealType}`}>Edit</Link></li>
                                                         <li><Link className="ti-dropdown-item "   onClick={() => {
                                                                     setItemToDelete(dt);
                                                                 }}data-hs-overlay="#hs-vertically-centered-modal" >Delete</Link></li>

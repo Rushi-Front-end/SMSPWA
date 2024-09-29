@@ -499,24 +499,64 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
     const path = `${import.meta.env.BASE_URL}firebase/login`;
     navigate(path);
 };
+
+useEffect(() => {
+  // Check if the dropdown should be open based on some condition
+  const isLoggedIn = localStorage.getItem('auth_token') !== null; // Example check
+  if (isLoggedIn) {
+    setDropdownOpen(true); // or any logic to determine the dropdown state
+    setTimeout(() => {
+      const select = document.querySelector('#google_translate_element select');
+      if (select) {
+          select.value = 'mr'; // Set value to Marathi
+          select.dispatchEvent(new Event('change')); // Trigger the change event
+      }
+  }, 1000); // Delay to ensure the DOM is ready
+  }
+  // if(isDropdownOpen){
+  // }
+}, []);
   const loginOut = () =>{
     localStorage.removeItem('loginData')
     localStorage.removeItem('authToken')
     routeChange()
 
+    // Reset Google Translate to Marathi
+    setTimeout(() => {
+      const select = document.querySelector('#google_translate_element select');
+      if (select) {
+          select.value = 'mr'; // Set value to Marathi
+          select.dispatchEvent(new Event('change')); // Trigger the change event
+      }
+  }, 1000); // Delay to ensure the DOM is ready
+
   }
 
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'mr,hi,en',
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-      autoDisplay: false,
+
+    
+  const googleTranslateElementInit = () => {
+    const translateElement = new google.translate.TranslateElement({
+        pageLanguage: 'en', // Set your base language
+        includedLanguages: 'mr,hi,en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false,
     }, 'google_translate_element');
-  }
-  useEffect(()=>{
-    googleTranslateElementInit()
-  },[googleTranslateElementInit])
+
+    // Use a timeout to ensure the dropdown is available before trying to set the default language
+    setTimeout(() => {
+        const select = document.querySelector('#google_translate_element select');
+        if (select) {
+            select.value = 'mr'; // Set value to Marathi
+            select.dispatchEvent(new Event('change')); // Trigger the change event
+        }
+    }, 2000); // Adjust the delay as needed
+};
+
+useEffect(() => {
+    googleTranslateElementInit();
+}, []);
+
+
  
 
 
