@@ -21,7 +21,7 @@ import { IdContext } from '../../common/context/idContext';
 import axios from 'axios';
 import { language, singleselect } from '../../../container/forms/formelements/formselect/formselectdata';
 import { AllDashIdContext } from '../context/allDashIdContext';
-import { useLoginName } from '../context/userRoleContext';
+import { UserRoleNameContext } from '../context/userRoleContext';
 
 
 const Header = ({ local_varaiable, ThemeChanger }) => {
@@ -55,7 +55,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   const { dashId, setDashId } = useContext(AllDashIdContext);
   const { dashIdCheck, setDashIdCheck } = useContext(AllDashIdContext);
 
-  const { userRoleName } = useLoginName()
+  const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
   const [allSchAdmin, setAllSchAdmin] = useState(false)
 
   const handleToggleDropdown = () => {
@@ -125,9 +125,15 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   } else {
     console.log('No login data found');
   }
+
+  // const userLoginRoleName = parsedLoginValue.roleName
+  const userLoginRoleName = roleName ? 'admin' : ''
+
+  
   
   useEffect(()=>{
-    if(userRoleName === 'admin') {
+    setUserRoleName(userLoginRoleName)
+    if(userLoginRoleName === 'admin') {
       setAllSchAdmin(true)
     }
     else{
@@ -617,7 +623,7 @@ useEffect(() => {
                <div className="header-element md:!px-[0.65rem] px-2 hs-dropdown !items-center ti-dropdown [--placement:bottom-left]">
                 <div className="md:block hidden dropdown-profile cursor-pointer">
                   <p className="font-semibold mb-0 leading-none text-[#536485] text-[0.813rem] ">{fullName}</p>
-                  <span className="opacity-[0.7] font-normal text-[#536485] block text-[0.6875rem] ">as {userRoleName}</span>
+                  <span className="opacity-[0.7] font-normal text-[#536485] block text-[0.6875rem] ">as {userLoginRoleName}</span>
                 </div>
                 <div
                   className="hs-dropdown-menu ti-dropdown-menu !-mt-3 border-0 w-[11rem] !p-0 border-defaultborder hidden main-header-dropdown  pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end"

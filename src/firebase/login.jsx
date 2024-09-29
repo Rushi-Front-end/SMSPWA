@@ -6,7 +6,7 @@ import axios from 'axios'; // Import axios
 import logo from "../assets/images/logo/logo.svg";
 import desktopdarklogo from "../assets/images/brand-logos/desktop-dark.png";
 import { LocalStorageBackup } from '../components/common/switcher/switcherdata/switcherdata';
-import { useLoginName } from '../components/common/context/userRoleContext';
+import { UserRoleNameContext } from '../components/common/context/userRoleContext';
 
 const Login = ({ ThemeChanger }) => {
     const [passwordshow1, setpasswordshow1] = useState(false);
@@ -16,7 +16,7 @@ const Login = ({ ThemeChanger }) => {
         "password": "",
     });
     const { userId, password } = data;
-    const { userRoleName, setUserRoleName } = useLoginName();
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext) || { userRoleName: '', setUserRoleName: () => {} };
 
     const [rememberMe, setRememberMe] = useState(false); // State for Remember M
     const navigate = useNavigate();
@@ -69,7 +69,7 @@ const Login = ({ ThemeChanger }) => {
                     
                     const   resData= JSON.stringify(response.data)
                     localStorage.setItem('loginData',resData); // Save token to localStorage
-                    setUserRoleName(JSON.parse(resData).roleName)
+                    setUserRoleName(resData)
                     // setTimeout(() => {
                     // }, 1000);
                     
