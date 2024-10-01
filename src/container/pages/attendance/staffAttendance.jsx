@@ -83,7 +83,7 @@ const StaffAttendance = () => {
 
     const getStaffAttandance = async () => {
         setSpinner(true)
-        await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/GetStafftAttendanceBySearchFilter?schoolId=${schoolId}`)
+        await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffAttendance/GetStafftAttendanceBySearchFilter?AttendanceDate=${formatDate(startDate)}&schoolId=${schoolId}`)
             .then(res => {
                 console.log(res, 'StaffAttendance')
                 setData(res.data)

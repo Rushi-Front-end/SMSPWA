@@ -38,7 +38,7 @@ const HostelAttendance = () => {
 
     const getHosteliteAttandance = () => {
         setSpinner(true);
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelAttendance/GetHostelattendanceBySearchFilter?schoolId=${schoolId}`)
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelAttendance/GetHostelattendanceBySearchFilter?AttendanceDate=${formatDate(startDate)}&schoolId=${schoolId}`)
             .then(res => {
                 setData(res.data);
                 setSpinner(false);
