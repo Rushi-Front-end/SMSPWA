@@ -82,12 +82,17 @@ export function Chartjsline() {
       try {
         let dashURL;
         if (dashIDCheckAll) {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph/${dashIDAll}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph`,{
+            schoolId:JSON.stringify(dashIDAll)
+
+          });
         } else {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph/${schoolId}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph`,{
+            schoolId:JSON.stringify(schoolId)
+          });
         }
   
-        const response = await axios.get(dashURL); // Use axios to fetch data
+        const response = await dashURL; // Use axios to fetch data
         const data = response.data; // Axios automatically parses JSON
         setExamData(data);
         console.log(data);
@@ -147,12 +152,16 @@ export function Chartjsbar() {
       try {
         let dashURL;
         if (dashIDCheckAll) {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph/${dashIDAll}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph`,{
+              schoolId:JSON.stringify(dashIDAll)
+          });
         } else {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph/${schoolId}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph`,{
+              schoolId:JSON.stringify(schoolId)
+          });
         }
   
-        const response = await axios.get(dashURL);
+        const response = await dashURL;
         console.log('API Response:', response.data); // Log the response
 
         const apiData = response.data;
@@ -224,12 +233,16 @@ export function Chartjsdonut() {
 
         let dashURL;
         if (dashIDCheckAll) {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph/${dashIDAll}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph`,{
+            schoolId:JSON.stringify(dashIDAll)
+          });
         } else {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph/${schoolId}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph`,{
+            schoolId:JSON.stringify(schoolId)
+          });
         }
-        const response = await fetch(dashURL); // Replace with your API URL
-        const data = await response.json();
+        const response = await dashURL; // Replace with your API URL
+        const data = response.data;
         setStudentData(data);
       } catch (error) {
         console.error('Error fetching student data:', error);
@@ -289,13 +302,17 @@ export function Chartjsdonut1() {
 
         let dashURL;
         if (dashIDCheckAll) {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph/${dashIDAll}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph`,{
+            schoolId:JSON.stringify(dashIDAll)
+          });
         } else {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph/${schoolId}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph`,{
+            schoolId:JSON.stringify(schoolId)
+          });
         }
         
-        const response = await fetch(dashURL); // Replace with your API URL
-        const data = await response.json();
+        const response = await dashURL; // Replace with your API URL
+        const data = response.data;
         setStaffData(data);
       } catch (error) {
         console.error('Error fetching student data:', error);
@@ -356,13 +373,19 @@ export function ChartjsbarExpense() {
 
         let dashURL;
         if (dashIDCheckAll) {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph/${dashIDAll}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph`,{
+            schoolId:JSON.stringify(dashIDAll)
+
+          });
         } else {
-          dashURL = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph/${schoolId}`;
+          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph`,{
+            schoolId:JSON.stringify(schoolId)
+
+          });
         }
         
 
-        const response = await axios.get(dashURL); // Replace with your API URL
+        const response = await dashURL; // Replace with your API URL
         const apiData = response.data;
 
         // Aggregate amounts by month

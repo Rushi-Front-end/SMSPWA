@@ -39,7 +39,7 @@ const schema = yup.object({
     
     academicYear: yup.string().nullable().required("Please select Academic Year"),
     classID: yup.string().nullable().required("Please select Class"),
-    section: yup.string().nullable(),
+    sectionId: yup.string().nullable(),
     bloodGroup: yup.string().nullable().required("Please select Blood Group"),
     gender: yup.string().nullable().required("Please select Gender"),
     state: yup.string().nullable().required("Please select State")
@@ -61,7 +61,7 @@ const CreateStudent = () => {
     id: "",
     academicYear: "",
     classID: "",
-    section: "",
+    sectionId: "",
     rollNumber: "",
     registrationNumber: "",
     enrolmentDate: "",
@@ -135,11 +135,14 @@ const CreateStudent = () => {
                 if (selectedClassId) {
                     const filteredSecData = secData.filter(el => el.classID === selectedClassId);
                     const secOptionsList = filteredSecData.map(ele => ({
+                        sectionId:ele.id,
                         value: ele.description, // Ensure this is correct
                         label: ele.description // Ensure this is correct
                     }));
+                    console.log(secOptionsList, 'secOptionsList')
     
-                    setSectionOptions(secOptionsList);
+                     setSectionOptions(secOptionsList);
+                    //setSectionOptions(filteredSections.map(el => ({ value: el.id, label: el.description })));
                 }
             } catch (error) {
                 console.error('Error fetching Section:', error);
@@ -163,7 +166,7 @@ const CreateStudent = () => {
 
     const { field: { value: academicYearValue, onChange: academicYearOnChange , ...restacademicYearField } } = useController({ name: 'academicYear', control });
     const { field: { value: classIDValue, onChange: classSelectOnChange, ...restclassIDSelectField } } = useController({ name: 'classID', control });
-    const { field: { value: sectionValue, onChange: sectionOnChange, ...restsectionField } } = useController({ name: 'section', control });
+    const { field: { value: sectionValue, onChange: sectionOnChange, ...restsectionField } } = useController({ name: 'sectionId', control });
     const { field: { value: bloodGroupValue, onChange: bloodGroupOnChange, ...bloodGroupField } } = useController({ name: 'bloodGroup', control });
     const { field: { value: genderValue, onChange: genderOnChange, ...restgenderField } } = useController({ name: 'gender', control });
     const { field: { value: stateValue, onChange: stateOnChange, ...reststateField } } = useController({ name: 'state', control });
@@ -186,25 +189,34 @@ const CreateStudent = () => {
 
     const { errors } = formState;
 
-    const onSubmit = (formData) => {
-        console.log(formData,"StudentData")
-        const sectionValue = formData.section ? formData.section : ' ';
-        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students', 
-            {
-                ...formData,
-                section: sectionValue
-               // enrolmentDate:  formatDate(new Date(formData.enrolmentDate)),
-                //toDate:  formatDate(new Date(formData.toDate)),
-            }
-        )
-            .then(res => {
-                console.log(res)
-                navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
-            })
-            .catch(err => console.log(err))
-        
-        console.log(formData, "Lates Filed added")
+    const onSubmit = async(formData) => {
+        try {
+            const formDataToSend = new FormData();
 
+            // Append all form data
+            for (const key in formData) {
+                if (key !== 'imageURL') {
+                    formDataToSend.append(key, formData[key]);
+                }
+            }
+
+            // Append image if exists
+            if (file) {
+                formDataToSend.append('imageURL', file);
+            }
+
+            // Post the data
+            const response = await axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            console.log(response);
+            navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     // const onSubmit = (formData) => {
@@ -322,7 +334,7 @@ const CreateStudent = () => {
                             <Select className="!p-0 place-holder"  
                                      isClearable
                                      options={sectionOptions}
-                                     value={ sectionOptions.find(x => x.value === sectionValue)}
+                                     value={ sectionOptions.find(x => x.sectionId === sectionValue)}
                                      onChange={option => sectionOnChange(option ? option.value : null)}
                                      {...restsectionField}
                                      classNamePrefix='react-select'  />

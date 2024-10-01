@@ -303,7 +303,7 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                                         </Link>
                                                     </td>
                                                     {/* <td>{dt.dob}</td> */}
-                                                    <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.section || 'Unknown'}</td>
+                                                    <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.sectionName || 'Unknown'}</td>
                                                     {/* <td>{dt.aadhar}</td> */}
                                                     <td><div className="hstack flex gap-3 text-[.9375rem]">
                                                     <div className="ti-dropdown hs-dropdown">

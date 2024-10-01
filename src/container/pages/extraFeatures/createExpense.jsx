@@ -38,6 +38,7 @@ const CreateExpense = () => {
     });
     const [otherField, setOtherField] = useState(false)
     const [otherCategoryValue, setOtherCategoryValue] = useState('');
+    const [file, setFile] = useState(null);
 
     const navigate = useNavigate()
     // const schoolIdDrop = useContext(IdContext);
@@ -55,31 +56,38 @@ const CreateExpense = () => {
     // const { field: { value: messageValue, onChange: messageOnChange, ...restmessageField } } = useController({ name: 'message', control });
     // const { field: { value: invoiceValue, onChange: invoiceOnChange, ...restinvoiceField } } = useController({ name: 'invoice', control });
 
+    const profileImage = (e) => {
+        console.log(e.target.files[0].name, "Image URL");
+        setFile(URL.createObjectURL(e.target.files[0]));
+    }
 
 
     const onSubmit = (formData) => {
-        setData({...formData})
-        console.log(formData, "ExpensesFormData")
-        axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/CreateExpenses`, {
-            ...formData,
-            category: otherField ? otherCategoryValue : formData.category, // Use the other category value if applicable
-            schoolId:schoolId,
-            // fromDate: formatDate(startDate), // Ensure format is correct
-            // toDate: formatDate(endDate),
-            // createdBy:4
-        })
-        .then((res)=>{
-            console.log(res)
-            if(res.status === 200){
-                axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/GetAllExpenses`)
-                navigate(`${import.meta.env.BASE_URL}pages/extraFeatures/expenseManagement`)
-                toast.success("Expenses Data Created Successfuly")
+        const data = new FormData();
+        data.append('category', otherField ? otherCategoryValue : formData.category);
+        data.append('schoolId', schoolId);
+        data.append('amount', formData.amount);
+        data.append('invoiceNumber', formData.invoiceNumber);
+        data.append('note', formData.note);
+        data.append('date', formData.date);
+        if (file) {
+            data.append('invoice', file);
+        }
+    
+        axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/CreateExpenses`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
             }
-
+        })
+        .then((res) => {
+            if (res.status === 200) {
+                toast.success("Expenses Data Created Successfully");
+                navigate(`${import.meta.env.BASE_URL}pages/extraFeatures/expenseManagement`);
+            }
         })
         .catch((err) => {
-            console.log(err)
-        })
+            console.log(err);
+        });
     }
 
     const handleCategoryChange = (option) => {
@@ -210,7 +218,7 @@ const CreateExpense = () => {
                                        file:border-0
                                       file:bg-light file:me-4
                                       file:py-3 file:px-4
-                                      dark:file:bg-black/20 dark:file:text-white/50"/>
+                                      dark:file:bg-black/20 dark:file:text-white/50"  onChange={profileImage} />
                             </div>
             {/* {errors.invoice && <p className='errorTxt'>{errors.invoice.message}</p>} */}
 

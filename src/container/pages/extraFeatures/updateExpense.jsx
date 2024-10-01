@@ -34,6 +34,7 @@ const UpdateExpense = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [data, setData] = useState([]);
     const [otherValue, setOtherValue] = useState('');
+    const [file, setFile] = useState(null);
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema)
     });
@@ -60,9 +61,19 @@ const UpdateExpense = () => {
     // const { field: { value: invoiceValue, onChange: invoiceOnChange, ...restinvoiceField } } = useController({ name: 'invoice', control });
 
 
+    const profileImage = (e) => {
+        console.log(e.target.files[0].name, "Image URL");
+        setFile(URL.createObjectURL(e.target.files[0]));
+    }
+
+
     useEffect((id)=>{
         axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/GetExpensesById/${params.id}`)
     },[params.id])
+
+
+
+
 
     useEffect(() => {
         if (params.id) {
@@ -111,29 +122,31 @@ const UpdateExpense = () => {
         }
     };
     const onSubmit = (formData) => {
-        setData({...formData})
-        console.log(formData, "ExpensesFormData")
-        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/UpdatetExpenses/${params.id}`, {
-            ...formData,
-            category: otherField ? otherValue : formData.category,
-            schoolId:schoolId,
-            // fromDate: formatDate(startDate), // Ensure format is correct
-            // toDate: formatDate(endDate),
-            // createdBy:4
-        })
-        .then((res)=>{
-            console.log(res)
-            if(res.status === 200){
-                axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/GetAllExpenses`)
-                navigate(`${import.meta.env.BASE_URL}pages/extraFeatures/expenseManagement`)
-                toast.success("Expenses Data Created Successfuly")
-            }
+        const formDataToSend = new FormData();
+        for (const key in formData) {
+            formDataToSend.append(key, formData[key]);
+        }
+        if (file) {
+            formDataToSend.append('invoice', file);
+        }
+        formDataToSend.append('category', otherField ? otherValue : formData.category);
+        formDataToSend.append('schoolId', schoolId);
 
+        axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/UpdatetExpenses/${params.id}`, formDataToSend, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then((res) => {
+            if (res.status === 200) {
+                navigate(`${import.meta.env.BASE_URL}pages/extraFeatures/expenseManagement`);
+                toast.success("Expenses Data Updated Successfully");
+            }
         })
         .catch((err) => {
-            console.log(err)
-        })
-    }
+            console.error('Error updating expense:', err);
+        });
+    };
 
 
 
@@ -261,7 +274,7 @@ const UpdateExpense = () => {
                                        file:border-0
                                       file:bg-light file:me-4
                                       file:py-3 file:px-4
-                                      dark:file:bg-black/20 dark:file:text-white/50"/>
+                                      dark:file:bg-black/20 dark:file:text-white/50" onChange={profileImage} />
                             </div>
             {/* {errors.invoice && <p className='errorTxt'>{errors.invoice.message}</p>} */}
 

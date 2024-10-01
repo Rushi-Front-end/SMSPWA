@@ -15,17 +15,21 @@ const Analytics = () => {
   const {id: schoolId} = useSchoolId();
   const {dashId: dashIDAll} = useDashId();
   const {dashIdCheck: dashIDCheckAll} = useDashId();
-  console.log(dashIDCheckAll, 'dashIDAll')
+  console.log(schoolId, 'dashIDAll')
     
     const getDashboardDetails = () => {
         setSpinner(true)
         let dashURl
         if(dashIDCheckAll) {
 
-            dashURl = axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/${dashIDAll}`)
+            dashURl = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount`,{
+                schoolId:JSON.stringify(dashIDAll)
+            })
         }
         else{
-            dashURl = axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/${schoolId}`)
+            dashURl = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount`, {
+                schoolId:JSON.stringify(schoolId)
+            })
 
         }
        // axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount/${schoolId}`)

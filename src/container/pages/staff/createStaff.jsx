@@ -138,32 +138,41 @@ const CreateStaff = () => {
     const { field: { value: stateValue, onChange: stateOnChange, ...reststateField } } = useController({ name: 'state', control });
    
     const onSubmit = async (formData) => {
-
-        console.log(formData,"StudentData")
-        await axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff', 
-            {
-                ...formData,
-                enableLogin: formData.enableLogin === "Yes",
-                roleID:staffRole.value,
-                schoolId:schoolIdDrop.id,
-               // enableLogin:staffEnableLogin
-                
-               // enrolmentDate:  formatDate(new Date(formData.enrolmentDate)),
-                //toDate:  formatDate(new Date(formData.toDate)),
+        try {
+            const formDataToSend = new FormData();
+    
+            // Append each field to the FormData object
+            for (const key in formData) {
+                formDataToSend.append(key, formData[key]);
             }
-        )
-            .then(res => {
-                console.log(res, "Staffffffffff")
-                if(res.status === 200){
-                    navigate(`${import.meta.env.BASE_URL}pages/staff/staffDetails`)
-                    axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
-                    toast.success('Staff Created Successfully')
+    
+            // If there's an image file, append it
+            if (file) { // Assuming imageFile is your state for the uploaded image
+                formDataToSend.append('imageUrl', file);
+            }
+    
+            // Append additional fields as necessary
+            //const enableLogin = formData.enableLogin === "Yes";
+           // formDataToSend.append('enableLogin', enableLogin); // Append as a boolean
+            formDataToSend.append('roleID', staffRole.value);
+            formDataToSend.append('schoolId', schoolIdDrop.id);
+            
+            const response = await axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data' // Important for file uploads
                 }
-            })
-            .catch(err => console.log(err))
-
-    }
-
+            });
+    
+            console.log(response, "Staff Response");
+            if (response.status === 200) {
+                navigate(`${import.meta.env.BASE_URL}pages/staff/staffDetails`);
+                toast.success('Staff Created Successfully');
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error('Failed to create staff');
+        }
+    };
     const roleChange = (option) => {
         console.log(option,"RoleChange")
         setStaffRole(option)
@@ -239,7 +248,7 @@ const CreateStaff = () => {
                                        file:border-0
                                       file:bg-light file:me-4
                                       file:py-3 file:px-4
-                                      dark:file:bg-black/20 dark:file:text-white/50"/>
+                                      dark:file:bg-black/20 dark:file:text-white/50" onChange={profileImage}/>
                             </div>
                             </div>
                         </div>
@@ -478,8 +487,8 @@ const CreateStaff = () => {
                             <Select className="!p-0 place-holder"   
                                     isClearable
                                     options={enableLogin}
-                                    value={enableLoginValue ? enableLogin.find(x => x.value === enableLoginValue) : enableLoginValue}
-                                    onChange={option => enableLoginOnChange(option ? option.value : option)}
+                                    value={enableLoginValue ? enableLogin.find(x => x.value === enableLoginValue) : null}
+                                    onChange={option => enableLoginOnChange(option ? option.value : null)}
                                     {...restenableLoginSelectField}
                                     classNamePrefix='react-select'  />
                             </div>

@@ -12,6 +12,7 @@ import { Controller, useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { IdContext, useSchoolId } from '../../../components/common/context/idContext';
+import { toast } from 'react-toastify';
 
 
 const schema = yup.object({
@@ -55,9 +56,13 @@ const UpdateStaff = () => {
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
+
     const profileImage = (e) => {
         console.log(e.target.files[0], "Image URL");
-        setFile(URL.createObjectURL(e.target.files[0]));
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile); // Store the file directly
+        }
     }
 
     const { register, handleSubmit,  formState, control, setValue, reset } = useForm({
@@ -155,33 +160,18 @@ useEffect(()=>{
           Object.keys(editStaff).forEach(key => {
             setValue(key, editStaff[key]);
         });
+// Special handling for date fields if needed
+// if (editStaff.dob) {
+//     setStartDate(new Date(editStaff.dob));
+//   }
+//   if (editStaff.dateOfJoining) {
+//     setStartDate1(new Date(editStaff.dateOfJoining));
+//   }
 
-        // setValue('id', editStudent.id);
-        // setValue('academicYear', editStudent.academicYear);
-        // setValue('addressLine', editStudent.addressLine);
-        // setValue('bloodGroup', editStudent.bloodGroup);
-        // setValue('caste', editStudent.caste);
-        // setValue('city', editStudent.city);
-        // setValue('classID', editStudent.classID);
-        // setValue('district', editStudent.district);
-        // setValue('dob', editStudent.dob);
-        // setValue('email', editStudent.email);
-        // setValue('emergencyMobileNumber', editStudent.emergencyMobileNumber);
-        // setValue('fatherMobileNumber', editStudent.fatherMobileNumber);
-        // setValue('fatherName', editStudent.fatherName);
-        // setValue('fullName', editStudent.fullName);
-        // setValue('gender', editStudent.gender);
-        // setValue('height', editStudent.height);
-        // setValue('mobileNumber', editStudent.mobileNumber);
-        // setValue('motherName', editStudent.motherName);
-        // setValue('nameOnAadharcard', editStudent.nameOnAadharcard);
-        // setValue('pinCode', editStudent.pinCode);
-        // setValue('registrationNumber', editStudent.registrationNumber);
-        // setValue('religion', editStudent.religion);
-        // setValue('rollNumber', editStudent.rollNumber);
-        // setValue('section', editStudent.section);
-        // setValue('state', editStudent.state);
-        // setValue('weight', editStudent.weight);
+  // Handle the image URL if it exists
+  if (editStaff.imageUrl) {
+    setFile(editStaff.imageUrl); // Assuming you want to set the image URL for display
+  }     
       }
     })
     .catch((err)=>{
@@ -192,37 +182,48 @@ useEffect(()=>{
 
 
 
-    const onSubmit = async (formData) => {
+  const onSubmit = async (formData) => {
+    try {
+        console.log(formData, "StudentData");
 
-        console.log(formData,"StudentData")
-        await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff?id=${formData.id}`, 
+        const formDataToSend = new FormData();
+
+        // Append all form fields to FormData
+        for (const key in formData) {
+            formDataToSend.append(key, formData[key]);
+        }
+
+        // If there's an image file, append it
+        // if (file) {
+        // }
+        //formDataToSend.append('imageUrl', file); // Assuming 'file' is the image URL or file object
+
+        // Append additional fields as necessary
+      //  formDataToSend.append('enableLogin', formData.enableLogin === "Yes");
+        formDataToSend.append('roleID', staffRole.value);
+        formDataToSend.append('schoolId', schoolIdDrop.id);
+
+        // Send the PUT request with FormData
+        const response = await axios.put(
+            `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff?id=${formData.id}`,
+            formDataToSend,
             {
-                ...formData,
-                enableLogin: formData.enableLogin === "Yes",
-                roleID:staffRole.value,
-                schoolId:schoolIdDrop.id
-                
-               // enrolmentDate:  formatDate(new Date(formData.enrolmentDate)),
-                //toDate:  formatDate(new Date(formData.toDate)),
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Important for file uploads
+                },
             }
-        )
-            .then(res => {
-                console.log(res, "Staffffffffff")
-                if(res.status === 200){
-                    navigate(`${import.meta.env.BASE_URL}pages/staff/staffDetails`)
-                    axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
-                    toast.success('Staff Updated Successfully')
-                }
-            })
-            .catch(err => console.log(err))
+        );
 
+        console.log(response, "Staff Updated Successfully");
+        if (response.status === 200) {
+            navigate(`${import.meta.env.BASE_URL}pages/staff/staffDetails`);
+            toast.success('Staff Updated Successfully');
+        }
+    } catch (err) {
+        console.error(err);
+        toast.error('Failed to update staff');
     }
-
-    const roleChange = (option) => {
-        console.log(option,"RoleChange")
-        setStaffRole(option)
-    }
-
+};
 
   return (
     <div>
@@ -279,7 +280,7 @@ useEffect(()=>{
                     <div className='staff-profile-uploads pt-4'>
                         <div className='staff-profile-wrap flex items-center'>
                             <div className='left-side-profile-pic'>
-                            <img src={media50} className="img-fluid !rounded-full profile-image !inline-flex"  />
+                            {file && <img src={file} alt="Staff" className="img-fluid !rounded-full profile-image !inline-flex" />}
                             </div>
                             <div className='right-side-upload-pic'>
                                 <p>Upload Staff Photo (150px X 150px)</p>
@@ -289,7 +290,7 @@ useEffect(()=>{
                                        file:border-0
                                       file:bg-light file:me-4
                                       file:py-3 file:px-4
-                                      dark:file:bg-black/20 dark:file:text-white/50"/>
+                                      dark:file:bg-black/20 dark:file:text-white/50" onChange={profileImage}/>
                             </div>
                             </div>
                         </div>
