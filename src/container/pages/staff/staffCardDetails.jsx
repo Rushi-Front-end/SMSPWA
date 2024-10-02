@@ -35,6 +35,7 @@ const [staffCardList, setStaffCardList] = useState([])
                                
                                 <div className="box-body">
                                     <h6 className="box-title font-semibold"> {staffCardList.fullName}</h6>
+                                    <p className="card-text pt-2">Role:{staffCardList.roleName}</p>
                                     <p className="card-text pt-2">Mobile No.: {staffCardList.mobileNumber}</p>
                                     <p className="card-text pt-2">Email Id:{staffCardList.emailID}</p>
                                     <p className="card-text pt-2">Department:{staffCardList.department}</p>

@@ -127,13 +127,13 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   }
 
   // const userLoginRoleName = parsedLoginValue.roleName
-  const userLoginRoleName = roleName ? 'admin' : ''
+  const userLoginRoleName = roleName ? 'superAdmin' : ''
 
   
   
   useEffect(()=>{
     setUserRoleName(userLoginRoleName)
-    if(userLoginRoleName === 'admin') {
+    if(userLoginRoleName === 'superAdmin') {
       setAllSchAdmin(true)
     }
     else{

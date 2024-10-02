@@ -194,9 +194,9 @@ useEffect(()=>{
         }
 
         // If there's an image file, append it
-        // if (file) {
-        // }
-        //formDataToSend.append('imageUrl', file); // Assuming 'file' is the image URL or file object
+        if (file) {
+            formDataToSend.append('imageUrl', file); // Assuming 'file' is the image URL or file object
+        }
 
         // Append additional fields as necessary
       //  formDataToSend.append('enableLogin', formData.enableLogin === "Yes");
@@ -224,7 +224,10 @@ useEffect(()=>{
         toast.error('Failed to update staff');
     }
 };
-
+const roleChange = (option) => {
+    console.log(option,"RoleChange")
+    setStaffRole(option)
+}
   return (
     <div>
        <h4 className='pt-4 borderBottom'>Update Staffs</h4>

@@ -344,21 +344,23 @@ export const MENUITEMS = [
 const ROLE_MENU_ITEMS = {
   admin: [
     'Dashboards',
-    'All Schools',
+    // 'All Schools',
     'Staff',
-    'Timetable',
+    // 'Timetable',
     'Students',
     'Health Documents',
     'Staff Attendance',
-    'Students Attendace',
-    'Hostel Attendance',
+    // 'Students Attendace',
+    // 'Hostel Attendance',
     'Staff Leave',
-    'Students Leave',
-    'Hostelite Outpasses',
+    // 'Students Leave',
+    // 'Hostelite Outpasses',
     'Reports',
     'Expense Management',
     'Examination',
-    'Diet Plan',
+    // 'Diet Plan',
+    'Reports',
+
   ],
   superAdmin: [
     'Dashboards',
@@ -381,10 +383,20 @@ const ROLE_MENU_ITEMS = {
   ],
   Principal: [
     'Dashboards',
+    'Staff',
+    'Timetable',
     'Students',
     'Health Documents',
+    'Staff Attendance',
     'Students Attendace',
+    'Hostel Attendance',
+    'Staff Leave',
+    'Students Leave',
+    'Hostelite Outpasses',
     'Reports',
+    'Expense Management',
+    'Examination',
+    'Diet Plan',
     // Add additional items as needed
   ],
   teacher: [
@@ -392,23 +404,23 @@ const ROLE_MENU_ITEMS = {
     'Students',
     'Health Documents',
     'Students Attendace',
-    'Reports',
+    'Students Leave',
+    'Examination',
+
     // Add additional items as needed
   ],
-  staff: [
-    'Dashboards',
-    'All Schools',
-    'Staff',
-    'Timetable',
-    'Students',
-    'Health Documents',
-    'Staff Attendance',
-    // Add additional items as needed
-  ],
+  
   warden: [
+    'Hostel Attendance',
+    'Students',
     
     'Health Documents',
-    'Staff Attendance',
+    'Hostelite Outpasses',
+
+    'Expense Management',
+
+    'Diet Plan',
+
     // Add additional items as needed
   ],
 };

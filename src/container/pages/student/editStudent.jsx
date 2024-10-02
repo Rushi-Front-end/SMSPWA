@@ -65,7 +65,7 @@ const schema = yup.object({
     
     academicYear: yup.string().nullable().required("Please select Academic Year"),
     classID: yup.string().nullable().required("Please select Class"),
-    section: yup.string().nullable().required("Please select Section"),
+    sectionId: yup.string().nullable().required("Please select Section"),
     bloodGroup: yup.string().nullable().required("Please select Blood Group"),
     gender: yup.string().nullable().required("Please select Gender"),
     state: yup.string().nullable().required("Please select State")
@@ -84,6 +84,7 @@ const EditStudent = () => {
     const [startDate1, setStartDate1] = useState(new Date());
     const [classOptions, setClassOptions] = useState([])
     const [sectionOptions, setSectionOptions] = useState([])
+    const [file, setFile] = useState();
 
 
     const {id:schoolId} = useSchoolId()
@@ -118,7 +119,7 @@ const EditStudent = () => {
   
     const { field: { value: academicYearValue, onChange: academicYearOnChange , ...restacademicYearField } } = useController({ name: 'academicYear', control });
     const { field: { value: classIDValue, onChange: classIDOnChange, ...restclassIDField } } = useController({ name: 'classID', control });
-    const { field: { value: sectionValue, onChange: sectionOnChange, ...restsectionField } } = useController({ name: 'section', control });
+    const { field: { value: sectionValue, onChange: sectionOnChange, ...restsectionField } } = useController({ name: 'sectionId', control });
     const { field: { value: bloodGroupValue, onChange: bloodGroupOnChange, ...bloodGroupField } } = useController({ name: 'bloodGroup', control });
     const { field: { value: genderValue, onChange: genderOnChange, ...genderField } } = useController({ name: 'gender', control });
     const { field: { value: stateValue, onChange: stateOnChange, ...reststateField } } = useController({ name: 'state', control });
@@ -153,6 +154,7 @@ const EditStudent = () => {
                 if (classIDValue) {
                     const filteredSecData = secData.filter(el => el.classID === classIDValue);
                     const secOptionsList = filteredSecData.map(ele => ({
+                        sectionId:ele.id,
                         value: ele.description, // Ensure this is correct
                         label: ele.description // Ensure this is correct
                     }));
@@ -218,32 +220,55 @@ useEffect(()=>{
 }
   },[studentid, setValue])
 
-   const onSubmit = (formData) => {
-       //alert(JSON.stringify(values, null, 2));
-       setStudent({...formData})
-       axios.put('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+studentid, 
-        {
-            ...formData,
-            enrolmentDate:  formatDate(new Date(formatDate2(formData.enrolmentDate))),
-            toDate:  formatDate(new Date(formatDate2(formData.toDate))),
+  const onSubmit = async (formData) => {
+    try {
+        // Create a FormData object
+        const formDataToSend = new FormData();
+
+        // Append the form data fields
+        for (const key in formData) {
+            if (formData.hasOwnProperty(key)) {
+                formDataToSend.append(key, formData[key]);
+            }
         }
-    )
-       .then(res=>{
-           console.log(res, "StudentPut")
-           if(res.status === 200){
 
-               navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`)
-               toast.success("Student Data Updated Successfuly")
-               setTimeout(() => {
-                   axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students`)
-             }, 400);
-           }
-        })
-        .catch((err)=>{
-            console.log(err)
-        })   
+        // Format the dates before sending
+        formDataToSend.set('enrolmentDate', formatDate(new Date(formatDate2(formData.enrolmentDate))));
+        formDataToSend.set('toDate', formatDate(new Date(formatDate2(formData.toDate))));
+
+        formDataToSend.append('image', file); // Ensure the key matches your API expectations
+        // Append the image file if it exists
+        // if (file) {
+        // }
+
+        // Await the response from the PUT request
+        const res = await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${studentid}`, formDataToSend, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        console.log(res, "StudentPut");
+
+        // Check the response status
+        if (res.status === 200) {
+            toast.success("Student Data Updated Successfully");
+            navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`);
+            setTimeout(() => {
+                axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
+            }, 400);
+        }
+    } catch (err) {
+        console.error(err);
+        toast.error("Failed to update student data.");
+    }
+};
+
+
+const profileImage = (e) => {
+    console.log(e.target.files[0], "Image URL");
+    setFile(URL.createObjectURL(e.target.files[0]));
 }
-
 
 
 
@@ -309,7 +334,7 @@ useEffect(()=>{
                                 <p>Upload Student Photo (150px X 150px)</p>
                                 <div>
                                 <label htmlFor="file-input" className="sr-only">Choose file</label>
-                                <input type="file"  name="file-input" id="file-input" className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/50
+                                <input type="file" onChange={profileImage}   name="file-input" id="file-input" className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/50
                                        file:border-0
                                       file:bg-light file:me-4
                                       file:py-3 file:px-4
@@ -356,7 +381,7 @@ useEffect(()=>{
                                      options={sectionOptions}
                                      value={sectionValue ? sectionOptions.find(x => x.label === sectionValue) : sectionValue}
 
-                                     onChange={option => sectionOnChange(option ? option.label : option)}
+                                     onChange={option => sectionOnChange(option ? option.sectionId : option)}
                                      {...restsectionField}
                                      classNamePrefix='react-select'  />
                                     {errors.section && <p className='errorTxt'>{errors.section.message}</p>}

@@ -93,13 +93,13 @@ const Student = () => {
             const sectionOptionsList = studentsData.map(student => {
                 return {
                     id: student.classID,
-                    value: student.section,
-                    label: student.section
+                    value: student.sectionName,
+                    label: student.sectionName
                 };
             });
             setSectionOptions(sectionOptionsList)
             
-            console.log(studentsData, "StudentNAMein helath", classRes);
+            console.log(studentsData, "StudentNAMein helath", sectionOptionsList);
         } catch (error) {
             console.error('Error fetching user roles:', error);
         }

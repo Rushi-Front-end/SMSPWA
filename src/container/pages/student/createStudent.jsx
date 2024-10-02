@@ -10,6 +10,7 @@ import { Controller, useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { toast } from 'react-toastify';
 
 
 
@@ -213,7 +214,10 @@ const CreateStudent = () => {
             });
 
             console.log(response);
-            navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`);
+            if(response.status === 200){
+                toast.success('Student created successfully')
+                navigate(`${import.meta.env.BASE_URL}pages/student/studentDetails`);
+            }
         } catch (err) {
             console.error(err);
         }
@@ -334,8 +338,8 @@ const CreateStudent = () => {
                             <Select className="!p-0 place-holder"  
                                      isClearable
                                      options={sectionOptions}
-                                     value={ sectionOptions.find(x => x.sectionId === sectionValue)}
-                                     onChange={option => sectionOnChange(option ? option.value : null)}
+                                     value={ sectionOptions.find(x => x.value === sectionValue)}
+                                     onChange={option => sectionOnChange(option ? option.sectionId : null)}
                                      {...restsectionField}
                                      classNamePrefix='react-select'  />
                                     {/* {errors.section && <p className='errorTxt'>{errors.section.message}</p>} */}
