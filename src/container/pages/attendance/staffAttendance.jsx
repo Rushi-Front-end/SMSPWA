@@ -113,7 +113,7 @@ const StaffAttendance = () => {
                 inTime: formattedInTime,
                 outTime: formattedOutTime,
                 submittedBy: editedData.submittedBy,
-                attendanceDate: formattedToday
+                attendanceDate: formatDate(startDate)
             })
                 .then((res) => {
                     if(res.status === 201){
@@ -129,7 +129,7 @@ const StaffAttendance = () => {
                 inTime: formattedInTime,
                 outTime: formattedOutTime,
                 submittedBy: editedData.submittedBy,
-                attendanceDate: formattedToday
+                attendanceDate: formatDate(startDate)
             })
                 .then((res) => {
                     if(res.status === 200 || res.status === 204){

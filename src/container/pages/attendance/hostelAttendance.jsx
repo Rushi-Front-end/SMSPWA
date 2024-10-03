@@ -35,62 +35,57 @@ const HostelAttendance = () => {
         return `${day}/${month}/${year}`;
     };
 
-
-    const getHosteliteAttandance = () => {
-        setSpinner(true);
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelAttendance/GetHostelattendanceBySearchFilter?AttendanceDate=${formatDate(startDate)}&schoolId=${schoolId}`)
-            .then(res => {
-                setData(res.data);
-                setSpinner(false);
-            })
-            .catch(err => console.log(err));
-    };
     useEffect(() => {
-        getHosteliteAttandance();
+        if(schoolId)
+        (async () => await handleFilter())()
     }, [schoolId]);
 
     
-    const updateAttendanceData = (index) => {
+    const updateAttendanceData = (studentId) => {
         setChangedAttendance(prev => {
             let newValue = new Set([...prev])
-            if(prev.has(index)) {
-                newValue.delete(index)
+            if(prev.has(studentId)) {
+                newValue.delete(studentId)
             } else {
-                newValue = new Set([...prev, index])
+                newValue = new Set([...prev, studentId])
             }
             return newValue
         })
     }
 
-    const handleCancel = (index) => {
+    const handleCancel = (studentId) => {
         setChangedAttendance(prev => {
             let newValue = new Set([...prev])
-            if(prev.has(index)) {
-                newValue.delete(index)
+            if(prev.has(studentId)) {
+                newValue.delete(studentId)
             }
             return newValue
         })
     }
 
-    const handleSingleSave = async (index) => {
-        if(data[index].id == 0) {
-            await handleCreateNew(data[index].studentID)
+    const handleSingleSave = async (studentId) => {
+        const latestData = await handleFilter();
+        const student = latestData.filter(el => el.studentId == studentId)[0]
+        if(student.id == 0) {
+            await handleCreateNew(student.studentId)
         }
         
-        const status = (getStatus(data[index].inTime, data[index].outTime) === "Present")
+        const status = (getStatus(student.inTime, student.outTime) === "Present")
         
-        if(changedAttendance.has(index)) {
-            await handleSave({status: !status, index: index})
-            handleCancel(index)
+        if(changedAttendance.has(studentId)) {
+            await handleSave({status: !status, studentId: studentId})
+            await handleFilter()
+            handleCancel(student.studentId)
         }
     }
 
     const handleSaveAll = async () => {
-        const newEntries = data.filter(el => el.id == 0);
+        const latestData = await handleFilter()
+        const newEntries = latestData.filter(el => el.id == 0);
 
         for (const entry of newEntries) {
             try {
-                await handleCreateNew(entry.studentID)
+                await handleCreateNew(entry.studentId)
             } catch (error) {
                 console.error("Error Saving Hostel Attendance", Error)
             }
@@ -117,13 +112,13 @@ const HostelAttendance = () => {
 						studentID: studentId,
 						inTime: formattedInTime,
 						outTime: formattedOutTime,
-						attendanceDate: formattedToday,
+						attendanceDate: formatDate(startDate),
 						submittedBy: 0,
 					}
 				)
 				.then(async (res) => {
 					if (res.status === 200) {
-						await handleFilter();
+                        await handleFilter()
 						toast.success("Data updated successfully");
 					}
 				})
@@ -133,7 +128,9 @@ const HostelAttendance = () => {
 		}
 	};
 
-    const handleSave = async ({status, index}) => {
+    const handleSave = async ({status, studentId}) => {
+        const latestData = await handleFilter()
+        const student = latestData.filter(el => el.studentId == studentId)[0]
             // Ensure inTime and outTime are in the correct format (hh:mm:ss)
     let formattedInTime = ""
     let formattedOutTime = ""
@@ -146,17 +143,16 @@ const HostelAttendance = () => {
         formattedOutTime = "00:00:00"
     }
 
-        await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelAttendance?id=${data[index].id}`, {
-            studentID: data[index].studentId,
-            id: data[index].id,
+        await axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelAttendance?id=${student.id}`, {
+            studentID: student.studentId,
+            id: student.id,
             inTime: formattedInTime,
             outTime: formattedOutTime,
-            attendanceDate: formattedToday,
+            attendanceDate: formatDate(startDate),
             submittedBy: 0
         })
             .then((res) => {
                 if(res.status === 200 || res.status === 204){
-                getHosteliteAttandance();
                 toast.success('Data updated successfully');
                 }
             })
@@ -195,9 +191,11 @@ const HostelAttendance = () => {
             }
     
             setData(filterData);
+            return filterData
         } catch (error) {
             toast.error("An error occurred while fetching data");
             console.error("Error fetching data:", error);
+            return []
         }
     }
 
@@ -283,7 +281,7 @@ const HostelAttendance = () => {
                                                 const status = getStatus(dt.inTime, dt.outTime);
 
                                                 return (
-                                                    <tr className="border-b border-defaultborder" key={index}>
+                                                    <tr className="border-b border-defaultborder" key={dt.studentId}>
                                                         <td>{index + 1}</td>
                                                         <td>{dt.fullName}</td>
                                                         <td>{dt.className} - {dt.sectionName}</td>
@@ -313,7 +311,7 @@ const HostelAttendance = () => {
                                                             </span>
                                                         </td> */}
                                                         <td>
-                                                            <ToggleSwitch status={status} index={index} updateAttendanceData={updateAttendanceData} />
+                                                            <ToggleSwitch status={status} studentId={dt.studentId} updateAttendanceData={updateAttendanceData} />
                                                         </td>
                                                         <td>
                                                             <div className="ti-dropdown hs-dropdown">
@@ -323,7 +321,7 @@ const HostelAttendance = () => {
                                                                     <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                                                 </button>
                                                                 <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                                    <li> <button type="button" className="ti-dropdown-item" onClick={() => handleSingleSave(index)}>Save</button></li>
+                                                                    <li> <button type="button" className="ti-dropdown-item" onClick={() => handleSingleSave(dt.studentId)}>Save</button></li>
                                                                     {/* <li> <button type="button" className="ti-dropdown-item" onClick={() => handleCancel(index)}>Cancel</button></li> */}
                                                                 </ul>
                                                             </div>
@@ -342,7 +340,7 @@ const HostelAttendance = () => {
     );
 };
 
-const ToggleSwitch = ({ status, index, updateAttendanceData }) => {
+const ToggleSwitch = ({ status, studentId, updateAttendanceData }) => {
 	const [isPresent, setIsPresent] = useState(null);
 
 	useEffect(() => {
@@ -351,7 +349,7 @@ const ToggleSwitch = ({ status, index, updateAttendanceData }) => {
 
 	const toggleValue = async () => {
 		setIsPresent(!isPresent);
-        updateAttendanceData(index)
+        updateAttendanceData(studentId)
 	};
 
 	return (
