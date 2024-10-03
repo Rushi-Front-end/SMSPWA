@@ -328,13 +328,16 @@ console.log(reportName, 'reportName')
                             <div className='reportHead flex justify-between align-center pb-4'>
                                 <div className='headLeftReport'>
                                     <p><b>Prakalp Name:</b> {reportHead.prakalpName}</p>
-                                    <p><b>School Name:</b>  {reportHead.schoolName}</p>
                                     <p><b>From:</b>  {reportHead.fromDate}</p>
-                                    <p><b>To:</b>  {reportHead.toDate}</p>
                                     {/* <p><b>Report Type:</b>  {reportHead.reportType}</p> */}
                                     <p><b>Created By:</b>  Anup Singh</p>
+                                </div>  
+                                <div className='headRightReport'>
+                                    <p><b>School Name:</b>  {reportHead.schoolName}</p>
+                                    <p><b>To:</b>  {reportHead.toDate}</p>
                                     <p><b>Created At:</b>  {formattedToday}</p>
-                                </div>                                
+                                    
+                                    </div>                              
                             </div>
                         {reportName == 'Exam Report' && <ExamReport reportGenData={reportGenData} /> }
                         {reportName == 'Expense Report' && <ExpenseReport reportGenData={reportGenData} /> }
