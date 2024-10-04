@@ -126,8 +126,8 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
     console.log('No login data found');
   }
 
-  // const userLoginRoleName = parsedLoginValue.roleName
-  const userLoginRoleName = roleName ? 'superAdmin' : ''
+   const userLoginRoleName = parsedLoginValue.roleName
+  //const userLoginRoleName = roleName ? 'superAdmin' : ''
 
   
   
