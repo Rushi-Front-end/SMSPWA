@@ -23,7 +23,7 @@ const Analytics = () => {
         if(dashIDCheckAll) {
 
             dashURl = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardDetailsCount`,{
-                schoolId:JSON.stringify(dashIDAll)
+                schoolId:dashIDAll
             })
         }
         else{

@@ -83,7 +83,7 @@ export function Chartjsline() {
         let dashURL;
         if (dashIDCheckAll) {
           dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExamResultGraph`,{
-            schoolId:JSON.stringify(dashIDAll)
+            schoolId:dashIDAll
 
           });
         } else {
@@ -153,7 +153,7 @@ export function Chartjsbar() {
         let dashURL;
         if (dashIDCheckAll) {
           dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph`,{
-              schoolId:JSON.stringify(dashIDAll)
+            schoolId:dashIDAll
           });
         } else {
           dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardSickStudentGraph`,{
@@ -234,7 +234,7 @@ export function Chartjsdonut() {
         let dashURL;
         if (dashIDCheckAll) {
           dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph`,{
-            schoolId:JSON.stringify(dashIDAll)
+            schoolId:dashIDAll
           });
         } else {
           dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetSttudentAttendanceGraph`,{
@@ -303,7 +303,7 @@ export function Chartjsdonut1() {
         let dashURL;
         if (dashIDCheckAll) {
           dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph`,{
-            schoolId:JSON.stringify(dashIDAll)
+            schoolId:dashIDAll
           });
         } else {
           dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph`,{
@@ -374,7 +374,7 @@ export function ChartjsbarExpense() {
         let dashURL;
         if (dashIDCheckAll) {
           dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetDashboardExpenseGraph`,{
-            schoolId:JSON.stringify(dashIDAll)
+            schoolId:dashIDAll
 
           });
         } else {
