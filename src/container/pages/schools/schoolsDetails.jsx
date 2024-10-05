@@ -94,25 +94,40 @@ const SchoolsDetails = () => {
     // const schoolIdParams = localStorage.getItem('schoolId')
     // console.log(schoolIdParams, 'schoolIdParams')
 
-    const classSecData= ()=> {
+    const classSecData= async ()=> {
         
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
-       .then((res)=>{
-        console.log(res,'hhhhhhh')
-        setClassDataSec(res.data)
-       })
-       .catch((err) => {
-        console.log(err);
-      });
+        await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
+        .then((res)=>{
+            const resData = res.data
+
+            const formattedResponse = [];
+
+            resData.forEach(item => {
+            // Check if the class already exists in the formattedResponse array
+            let classIndex = formattedResponse.findIndex(c => c.classId === item.classId);
+
+            if (classIndex === -1) {
+                // If the class doesn't exist, add it to the formattedResponse array
+                formattedResponse.push({
+                classId: item.classId,
+                schoolID: item.schoolID,
+                className: item.className,
+                sections: [{ sectionId: item.sectionId, sectionName: item.sectionName }]
+                });
+            } else {
+                // If the class exists, just push the section into the sections array
+                formattedResponse[classIndex].sections.push({ sectionId: item.sectionId, sectionName: item.sectionName });
+            }
+            });
+            
+            setClassDataSec(formattedResponse)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }
     useEffect(() => {
-        
-        // dispatch(fetchClassList())
-        classSecData()
-        setTimeout(() => {
-            classSecData()
-        }, 1000);
-        
+        if(schoolId) classSecData()
     }, [schoolId])
 
 
@@ -268,31 +283,33 @@ const SchoolsDetails = () => {
                                                                                     </tr>
                                                                                     </thead>
                                                                                     <tbody>
-                                                                                        <tr className="border-b border-defaultborder" key={index} id={dt.classId}>
-                                                                                            <td>{index + 1}</td>
-                                                                                            <td>{dt.sectionName}</td>
-                                                                                            {/* <td>{dt.description}</td> */}
+                                                                                        {dt?.sections?.length ? dt.sections.map((section, ind) => {
+                                                                                            return <tr className="border-b border-defaultborder" key={ind} id={section.sectionId}>
+                                                                                            <td>{ind + 1}</td>
+                                                                                            <td>{section.sectionName}</td>
                                                                                             <td>
-                                                                                                <div className="hstack flex gap-3 
-    text-[.9375rem]">
+                                                                                                <div className="hstack flex gap-3 text-[.9375rem]">
                                                                                                     <div className="ti-dropdown hs-dropdown">
                                                                                                         <button type="button"
                                                                                                             className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
                                                                                                             <i className="ri-arrow-down-s-line align-middle inline-block"></i>
                                                                                                         </button>
                                                                                                         <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
-                                                          <li onClick={() => updateForm(dt.classId)}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
-                                                         <li><button data-hs-overlay={`#hs-vertically-centered-modal-class-${dt.classId}`} className="ti-dropdown-item text-left" onClick={()=>openDelete(dt.classId)}>Delete</button></li>
-    
-    
+                                                                                                            <li onClick={() => updateForm(dt.classId)}><Link className="ti-dropdown-item" to="#">Edit</Link></li>
+                                                                                                            <li><button data-hs-overlay={`#hs-vertically-centered-modal-class-${dt.classId}`} className="ti-dropdown-item text-left" onClick={()=>openDelete(dt.classId)}>Delete</button></li>
                                                                                                         </ul>
                                                                                                     </div>
-                                                                                                    {/* <button type="button" className="ti-btn ti-btn-outline-danger !rounded-full ti-btn-wave">Disable</button>
-                                <button type="button" className="ti-btn ti-btn-outline-secondary !rounded-full ti-btn-wave">Edit</button> */}
                                                                                                 </div>
                                                                                             </td>
                                                                                         </tr>
-                                                                                      
+                                                                                        })
+                                                                                        :
+                                                                                        <tr>
+                                                                                            <td colSpan="6">
+                                                                                                <h3 className='text-center'>No Sections available</h3>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    }
                                                                                     </tbody>
                                                                                 </table>
                                                                             </div>
@@ -317,7 +334,7 @@ const SchoolsDetails = () => {
                                                     <div className="col-span-12 xl:col-span-4">
                                                     
                                                         {
-                                                           ( (addSec === true) ? <CreateSection addSec={addSec} setAddSec={setAddSec} /> : (updateClass.value === true) ? <UpdateClass updateClassChild={setUpdateClass} updateClass={updateClass} /> :<CreateClass updateClassChild={setUpdateClass} updateClass={updateClass} /> )
+                                                           ( (addSec === true) ? <CreateSection classSecData={classSecData} classDataSec={classDataSec} addSec={addSec} setAddSec={setAddSec} /> : (updateClass.value === true) ? <UpdateClass updateClassChild={setUpdateClass} updateClass={updateClass} /> : <CreateClass classSecData={classSecData} /> )
                                                         }
                                                         {/* <CreateClass updateClassChild={setUpdateClass} updateClass={updateClass} /> */}
                                                         {/* <UpdateClass updateClassChild={setUpdateClass} updateClass={updateClass} /> */}
