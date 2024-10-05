@@ -362,7 +362,7 @@ const ROLE_MENU_ITEMS = {
     'Reports',
 
   ],
-  superAdmin: [
+  SuperAdmin: [
     'Dashboards',
     'All Schools',
     'Staff',

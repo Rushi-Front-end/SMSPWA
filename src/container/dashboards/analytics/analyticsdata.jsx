@@ -55,12 +55,12 @@ const aggregateData = (examData) => {
           item.totalAppeared > 0 ? (item.totalFailed / item.totalAppeared) * 100 : 0
         ),
       },
-      {
-        label: 'Total Appeared Students',
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        borderColor: 'rgb(54, 162, 235)',
-        data: Object.values(aggregated).map(item => item.totalAppeared),
-      }
+      // {
+      //   label: 'Total Appeared Students',
+      //   backgroundColor: 'rgba(54, 162, 235, 0.5)',
+      //   borderColor: 'rgb(54, 162, 235)',
+      //   data: Object.values(aggregated).map(item => item.totalAppeared),
+      // }
     ]
   };
 };

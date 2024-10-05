@@ -61,7 +61,7 @@ const HealthDetails = () => {
 
     const deleteDatahandler = async (id) => {
         try {
-            await axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/DeleteStudentHealthCheckup/${id}?healthCheckupDate=${healthDate}`);
+            await axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/DeleteStudentHealthCheckup?studentId=${id}&healthCheckupDate=${healthDate}`);
             console.log(`Student with ID ${id} deleted`);
             getHealthList(); // Refresh the student list
             toast.success("Student Data Deleted Successfuly")
@@ -143,7 +143,7 @@ const HealthDetails = () => {
                                                             <td>{dt.healthCheckupDate} </td>
                                                             <td>{Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.fullName || 'Unknown'}</td> {/* Display student name */}
 
-                                                            <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === healthStudName.filter(staff => staff.id === dt.studentID)[0]?.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.section || 'Unknown'}</td>
+                                                            <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === healthStudName.filter(staff => staff.id === dt.studentID)[0]?.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.sectionName || 'Unknown'}</td>
                                                             <td>{dt.createdAt}</td>
                                                             <td>
                                                                 {/* <Link to={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument/?id=${dt.studentID}&date=${dt.healthCheckupDate}`}>

@@ -259,7 +259,7 @@ export const genderSelect = [
 ]
 export const enableLogin = [  
   { id: 1, value: true, label:"Yes" },
-  { id: 2, value: false ,label:"No"},
+  { id: 2, value: false, label:"No"},
   
 ]
  

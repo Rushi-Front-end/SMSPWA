@@ -36,7 +36,7 @@ const StaffDetails = () => {
             setSpinner(false)
             setData(filterData);
         } catch (error) {
-            toast.error("An error occurred while fetching data");
+          //  toast.error("An error occurred while fetching data");
             console.error("Error fetching data:", error);
         }
     }

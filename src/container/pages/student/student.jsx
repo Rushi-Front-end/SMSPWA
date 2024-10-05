@@ -240,7 +240,7 @@ const Student = () => {
                                     <Select placeholder='Select Class' className="!p-0 place-holder" classNamePrefix='react-select' value={classFilter} options={classOptions} onChange={(option) => setClassFilter(option)} />
                                 </div> 
                                 <div className="xl:col-span-3 lg:col-span-3 md:col-span-6 sm:col-span-12 col-span-12">
-                                   <Select placeholder='Select Role' className="!p-0 place-holder" classNamePrefix='react-select' value={sectionFilter} options={sectionOptions} onChange={(option) => setSectionFilter(option)} />
+                                   <Select placeholder='Select Section' className="!p-0 place-holder" classNamePrefix='react-select' value={sectionFilter} options={sectionOptions} onChange={(option) => setSectionFilter(option)} />
                                 </div> 
                             <div className="stud-create-btn xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>

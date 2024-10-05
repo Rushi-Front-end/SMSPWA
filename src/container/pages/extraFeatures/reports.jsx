@@ -57,8 +57,8 @@ const schema = yup.object({
     reportType: yup.string().nullable().required("Please Enter Report Type"),
     fromDate: yup.string().nullable().required("Please Select From Date"),
     toDate: yup.string().nullable().required("Please Select To Date"),
-    prakalpName: yup.string().nullable().required("Please Enter Prakalp Name"),
-    schoolName: yup.string().nullable().required("Please Enter School Name"),
+    prakalpName: yup.string().nullable(),
+    schoolName: yup.string().nullable(),
 });
 
 const Reports = () => {
@@ -72,6 +72,11 @@ const Reports = () => {
 
     const [dataReport, setDataReport] = useState([]);
     const [reportHead, setReportHead] = useState()
+
+    const [schoolPrakalpList, setSchoolPrakalpList] = useState([]);
+    const [prakalpId, setPrakalpId] = useState([]);
+    const [selectedPrakalValue, setSelectedPrakalValue] = useState();
+    const [selectedValue, setSelectedValue] = useState();
 
     const formattedToday = getFormattedToday();
     // const [examReportCont, setExamReportCont] = useState([]);
@@ -95,86 +100,164 @@ const Reports = () => {
     const schoolIdDrop = useContext(IdContext);
     console.log(schoolIdDrop.id, "UseCONTEXT");
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
-                const schoolListOptions = response.data.map((schoolData) => ({
-                    id: schoolData.id,
-                    label: schoolData.schoolName,
-                    value: schoolData.id
-                }));
-                setSchoolDataList(schoolListOptions);
-            } catch (err) {
-                setSchoolDataList([]);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
+    //             const schoolListOptions = response.data.map((schoolData) => ({
+    //                 id: schoolData.id,
+    //                 label: schoolData.schoolName,
+    //                 value: schoolData.id
+    //             }));
+    //             setSchoolDataList(schoolListOptions);
+    //         } catch (err) {
+    //             setSchoolDataList([]);
+    //         }
+    //     };
 
-        fetchData();
-    }, []);
+    //     fetchData();
+    // }, []);
 
     const onReportTypeChange = (option) => {
        // alert(option.value)
        setReportName(option.value)
     }
 
-    const onSubmit = async (formData) => {
-        if (isValid) {
-            try {
-                const { prakalpName, schoolName, fromDate, toDate, reportType } = formData;
-    
-                setReportHead(formData)
-                // Format dates for API request
-                const formattedFromDate = formatDate(new Date(formatDate2(fromDate)));
-                const formattedToDate = formatDate(new Date(formatDate2(toDate)));
-                
-                console.log(schoolName, "ReportSchoolName")
-    
-                // Determine URL based on reportType
-                let url;
-                switch (reportType) {
-                    case 'Exam Report':
-                        url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetExamReport');
-                        break;
-                    case 'Expense Report':
-                        url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetExpenseReports');
-                        break;
-                    default:
-                        url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetHostelAttendanceReports');
-                }
-    
-                url.searchParams.append('prakalpName', prakalpName);
-                url.searchParams.append('schoolName', schoolName);
-                url.searchParams.append('fromDate', formattedFromDate);
-                url.searchParams.append('toDate', formattedToDate);
-                
-
-                console.log(url,"REPORTS URL")
-                // Fetch report data
-                const response = await axios.get(url.toString());
-                setDataReport(response.data)
-                
-                // Handle the response data
-                console.log(response.data, "Generated Report Data");
-
-                //set the value of report generated
-                setReportGenData(response.data)
-    
-                // Open modal to show success message
-                setModalIsOpen(true);
-            } catch (error) {
-                console.error('Error generating report:', error);
-                toast.error("Failed to generate the report. Please try again.");
-            }
-        } else {
-            toast.error("Please fix the errors before submitting.");
-        }
-    };
+ 
     
 console.log(reportName, 'reportName')
     const closeModal = () => {
         setModalIsOpen(false);
     };
+
+    useEffect(() => {
+        const fetchPrakalp = async () => {
+          try {
+            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
+            const uniquePrakalpNames = new Set();
+            const schoolPrakalpOptions = [];
+    
+            response.data.forEach((schoolData) => {
+              if (!uniquePrakalpNames.has(schoolData.prakalpName)) {
+                uniquePrakalpNames.add(schoolData.prakalpName);
+                schoolPrakalpOptions.push({
+                  id: schoolData.id,
+                  label: schoolData.prakalpName,
+                  value: schoolData.prakalpName
+                });
+              }
+            });
+    
+            setSchoolPrakalpList(schoolPrakalpOptions);
+            const initialPrakalp = schoolPrakalpOptions[0];
+            setSelectedPrakalValue(initialPrakalp);
+            setPrakalpId(initialPrakalp.value);
+          } catch (err) {
+            setSchoolPrakalpList([]);
+          }
+        };
+    
+        fetchPrakalp();
+      }, []);
+    
+      useEffect(() => {
+        const fetchSchools = async () => {
+          if (prakalpId) {
+            try {
+              console.log(prakalpId,'prakalpId')
+              const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/School');
+            const filteredSchoolOptions = [];
+            // const uniquePrakalpNames = new Set();
+            response.data.forEach((schoolData) => {
+              if (prakalpId === schoolData.prakalpName) {
+              //  uniquePrakalpNames.add(schoolData.schoolName);
+                filteredSchoolOptions.push({
+                  id: schoolData.id,
+                  label: schoolData.schoolName,
+                  value: schoolData.schoolName
+                });
+              }
+            });
+              setSchoolDataList(filteredSchoolOptions);
+              const initialSchool = filteredSchoolOptions[0];
+              console.log(initialSchool,'initialSchool')
+              setSelectedValue(initialSchool);
+            } 
+            catch (err) {
+              setSchoolDataList([]);
+            }
+          }
+        };
+    
+        fetchSchools();
+      }, [prakalpId]);
+    
+  const schoolPrakalpDown = (selectedOption) => {
+    setSelectedPrakalValue(selectedOption);
+    setPrakalpId(selectedOption.value);
+  };
+
+  const schoolDropDown = (selectedOption) => {
+    console.log(selectedOption.id,'SChoooooo')
+    setSelectedValue(selectedOption);
+  };
+  
+  const onSubmit = async (formData) => {
+    if (isValid) {
+        try {
+            const { fromDate, toDate, reportType } = formData;
+
+            // Use the selected values from state
+            const prakalpName = selectedPrakalValue.value; // Get the selected prakalp name
+            const schoolName = selectedValue.value; // Get the selected school name
+
+            setReportHead(formData);
+
+            // Format dates for API request
+            const formattedFromDate = formatDate(new Date(formatDate2(fromDate)));
+            const formattedToDate = formatDate(new Date(formatDate2(toDate)));
+
+            // Determine URL based on reportType
+            let url;
+            switch (reportType) {
+                case 'Exam Report':
+                    url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetExamReport');
+                    break;
+                case 'Expense Report':
+                    url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetExpenseReports');
+                    break;
+                default:
+                    url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetHostelAttendanceReports');
+            }
+
+            // Append parameters to URL
+            url.searchParams.append('prakalpName', prakalpName);
+            url.searchParams.append('schoolName', schoolName);
+            url.searchParams.append('fromDate', formattedFromDate);
+            url.searchParams.append('toDate', formattedToDate);
+
+            console.log(url, "REPORTS URL");
+            // Fetch report data
+            const response = await axios.get(url.toString());
+            setDataReport(response.data);
+
+            // Handle the response data
+            console.log(response.data, "Generated Report Data");
+
+            // Set the value of report generated
+            setReportGenData(response.data);
+
+            // Open modal to show success message
+            setModalIsOpen(true);
+        } catch (error) {
+            console.error('Error generating report:', error);
+            toast.error("Failed to generate the report. Please try again.");
+        }
+    } else {
+        toast.error("Please fix the errors before submitting.");
+    }
+};
+
 
     return (
         <div>
@@ -214,10 +297,9 @@ console.log(reportName, 'reportName')
                                     <Select
                                         className="!p-0 place-holder"
                                         classNamePrefix='react-select'
-                                        options={prakalpName}
-                                        value={prakalpNameValue ? prakalpName.find(x => x.value === prakalpNameValue) : null}
-                                        onChange={option => prakalpNameOnChange(option ? option.value : '')}
-                                        {...restprakalpNameField}
+                                        value={selectedPrakalValue} name="state" options={schoolPrakalpList} onChange={schoolPrakalpDown} 
+                                        isSearchable 
+                                     {...restprakalpNameField}
                                     />
                                     {errors.prakalpName && <p className='errorTxt'>{errors.prakalpName.message}</p>}
                                 </div>
@@ -226,10 +308,8 @@ console.log(reportName, 'reportName')
                                     <Select
                                         className="!p-0 place-holder"
                                         classNamePrefix='react-select'
-                                        options={schoolDataList}
-                                        value={schoolNameValue ? schoolDataList.find(x => x.label === schoolNameValue) : null}
-                                        onChange={option => schoolNameOnChange(option ? option.label : '')}
-                                        {...restschoolNameField}
+                                        value={selectedValue} name="state" options={schoolDataList} onChange={schoolDropDown}  isSearchable
+                                         {...restschoolNameField}
                                     />
                                     {errors.schoolName && <p className='errorTxt'>{errors.schoolName.message}</p>}
                                 </div>

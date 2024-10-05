@@ -85,8 +85,9 @@ const CreateStaff = () => {
 
 
     const profileImage = (e) => {
-        console.log(e.target.files[0], "Image URL");
-        setFile(URL.createObjectURL(e.target.files[0]));
+        console.log(e.target.files[0].name, "Image URL");
+        //setFile(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0].name);
     }
 
     const { register, handleSubmit,  formState, control, setValue, reset } = useForm({
@@ -238,7 +239,7 @@ const CreateStaff = () => {
                     <div className='staff-profile-uploads pt-4'>
                         <div className='staff-profile-wrap flex items-center'>
                             <div className='left-side-profile-pic'>
-                            <img src={media50} className="img-fluid !rounded-full profile-image !inline-flex"  />
+                            <img src={file} className="img-fluid !rounded-full profile-image !inline-flex"  />
                             </div>
                             <div className='right-side-upload-pic'>
                                 <p>Upload Staff Photo (150px X 150px)</p>
@@ -487,7 +488,7 @@ const CreateStaff = () => {
                             <Select className="!p-0 place-holder"   
                                     isClearable
                                     options={enableLogin}
-                                    value={enableLoginValue ? enableLogin.find(x => x.value === enableLoginValue) : null}
+                                    value={enableLoginValue !== null ? enableLogin.find(x => x.value === enableLoginValue) : null}
                                     onChange={option => enableLoginOnChange(option ? option.value : null)}
                                     {...restenableLoginSelectField}
                                     classNamePrefix='react-select'  />

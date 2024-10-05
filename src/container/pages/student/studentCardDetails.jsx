@@ -67,9 +67,17 @@ useEffect(()=>{
                                 <p className="card-text pt-4"><b>Mobile No:</b> {data.mobileNumber}</p>
                                 <p className="card-text pt-4"><b>Email Id:</b> {data.email}</p>
                                 <p className="card-text pt-4"><b>Alternate Mobile No:</b> {data.emergencyMobileNumber}</p>
-                                <p className="card-text pt-4"><b>Date of Joining:</b> {data.enrolmentDate}</p>
+                                <p className="card-text pt-4"><b> Enrollment Date:</b> {data.enrolmentDate}</p>
                                 <p className="card-text pt-4"><b>Gender:</b> {data.gender}</p>
                                 <p className="card-text pt-4"><b>Address:</b> {data.addressLine}</p>
+                                <p className="card-text pt-4"><b> Prakalp Name:</b> {data.prakalpName}</p>
+                                <p className="card-text pt-4"><b> School Name:</b> {data.schoolName}</p>
+                                <p className="card-text pt-4"><b> Class Name:</b> {data.className}</p>
+                                <p className="card-text pt-4"><b> Section Name:</b> {data.sectionName}</p>
+                                <p className="card-text pt-4"><b> DOB:</b> {data.dob}</p>
+                                <p className="card-text pt-4"><b> Roll Number:</b> {data.rollNumber}</p>
+                                <p className="card-text pt-4"><b> Gender :</b> {data.gender}</p>
+                                <p className="card-text pt-4"><b> Address :</b> {data.addressLine}</p>
                                 </div>       
                             }
                             </div>
