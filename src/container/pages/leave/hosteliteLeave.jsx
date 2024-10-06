@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
+import { useSchoolId } from '../../../components/common/context/idContext';
+
 const HosteliteLeave = () => {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
@@ -15,10 +17,12 @@ const HosteliteLeave = () => {
     const [searchFilter, setSearchFilter] = useState(null);
     const [healthStudName, setHealthStudName] = useState([]);
     const [healthClassName, setHealthClassName] = useState([]);
+    const {id: schoolId} = useSchoolId();
+
     
     const getHosteliteList = () => {
         setSpinner(true)
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelOutPass/GetAllHostelOutPass')
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/HostelOutPass/GetHostelOutPassByFilter?SchoolId=${schoolId}`)
             .then(res => {
                 setData(res.data)
                 setSpinner(false)
@@ -69,7 +73,7 @@ const HosteliteLeave = () => {
    
     useEffect(() => {
         getHosteliteList()
-    }, [])
+    }, [schoolId])
 
     const handleFilter = async () => {
         let params = [];
@@ -211,8 +215,10 @@ const HosteliteLeave = () => {
                                         <th scope="col" className="text-start">Action</th>
                                     </tr>
                                     </thead>
-                                    {
-                                        spinner ? <Loader /> :
+                                    {spinner ? (
+                    <Loader />
+                    ) : (
+                    data.length > 0 ? (
                                             data.map((dt, index) => {
                                  return   <tbody key={index}>
                                         <tr>
@@ -244,7 +250,17 @@ const HosteliteLeave = () => {
                                         </tr>
                                     </tbody>
                                     })
-                                }
+                                ) : (
+                                    <tr>
+                                        <td  colSpan="6">
+                                          <h3 className='text-center'>
+                                            No Data available.
+                                            </h3>
+                                          </td>
+                                    </tr>
+                                )
+
+          )}
                                 </table>
 
                             </div>

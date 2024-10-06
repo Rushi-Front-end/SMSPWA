@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const ExpenseManagement = () => {
     const [data, setData] = useState([]);
@@ -16,11 +17,12 @@ const ExpenseManagement = () => {
     const [deleteLeav, setDeleteLeav] = useState();
     const [categoryFilter, setCategoryFilter] = useState(null)
     const [categoryOptions, setCategoryOptions] = useState([])
+    const {id: schoolId} = useSchoolId();
 
     const getExpenseList = () => {
         setSpinner(true);
         axios
-            .get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/GetAllExpenses')
+            .get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/GetExpensesByFilter?SchoolId=${schoolId}`)
             .then((res) => {
                 console.log(res, "GTSATFF SL")
                 setData(res.data);
@@ -65,7 +67,7 @@ const ExpenseManagement = () => {
 
     useEffect(() => {
         getExpenseList();
-    }, []);
+    }, [schoolId]);
 
     const formatDate = (inputDate) => {
         const date = new Date(inputDate);

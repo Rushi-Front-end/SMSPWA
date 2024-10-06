@@ -35,14 +35,16 @@ const [staffCardList, setStaffCardList] = useState([])
                                
                                 <div className="box-body">
                                     <h6 className="box-title font-semibold"> {staffCardList.fullName}</h6>
-                                    <p className="card-text pt-2">Role:{staffCardList.roleName}</p>
-                                    <p className="card-text pt-2">Mobile No.: {staffCardList.mobileNumber}</p>
-                                    <p className="card-text pt-2">Email Id:{staffCardList.emailID}</p>
-                                    <p className="card-text pt-2">Department:{staffCardList.department}</p>
-                                    <p className="card-text pt-2">Alternate Mobile No.: {staffCardList.alternateMobileNumber}</p>
-                                    <p className="card-text pt-2">Date of Joining: {staffCardList.dateOfJoining}</p>
-                                    <p className="card-text pt-2">Gender:{staffCardList.gender}</p>
-                                    <p className="card-text pt-2">Address:{staffCardList.address}</p>
+                                    <p className="card-text pt-2"><b>Role:</b>{staffCardList.roleName}</p>
+                                    <p className="card-text pt-2"><b>Prakalp Name:</b>{staffCardList.prakalpName}</p>
+                                    <p className="card-text pt-2"><b>School Name:</b>{staffCardList.schoolName}</p>
+                                    <p className="card-text pt-2"><b>Mobile No.:</b> {staffCardList.mobileNumber}</p>
+                                    <p className="card-text pt-2"><b>Email Id:</b>{staffCardList.emailID}</p>
+                                    <p className="card-text pt-2"><b>Department:</b>{staffCardList.department}</p>
+                                    <p className="card-text pt-2"><b>Alternate Mobile No.:</b> {staffCardList.alternateMobileNumber}</p>
+                                    <p className="card-text pt-2"><b>Date of Joining:</b> {staffCardList.dateOfJoining}</p>
+                                    <p className="card-text pt-2"><b>Gender:</b>{staffCardList.gender}</p>
+                                    <p className="card-text pt-2"><b>Address:</b>{staffCardList.address}</p>
                                 </div>
                                
                             </div>

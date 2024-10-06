@@ -5,11 +5,13 @@ import Select from 'react-select';
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const ExaminationList = () => {
     const [examData, setExamData] = useState([])
     const [spinner, setSpinner] = useState(false)
     const [deleteStudent, setDeleteStudent] = useState()
+    const {id: schoolId} = useSchoolId();
 
     
     // Calculate percentages
@@ -21,7 +23,7 @@ const ExaminationList = () => {
     
     const getExamDataList = () => {
         setSpinner(true)
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam`)
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam?SchoolId=${schoolId}`)
             .then(res => {
                 setExamData(res.data)
                 
@@ -31,7 +33,7 @@ const ExaminationList = () => {
     }
     useEffect(()=>{
         getExamDataList()
-    },[])
+    },[schoolId])
 
     const openDelete = (id)=>{
         setDeleteStudent(id)
@@ -129,7 +131,7 @@ const ExaminationList = () => {
                             <tbody>
                             {
                                         spinner ? <Loader /> :
-                                       // Array.isArray(examData?.list) && examData.list.length > 0 ? (
+                                        examData.length > 0 ? (
                                             examData.map((dt, index) => {
                                                 const passedPercentage = calculatePercentage(dt.passedStudent, dt.totalAppearedStudent);
                                                 const failedPercentage = calculatePercentage(dt.failedStudent, dt.totalAppearedStudent);
@@ -163,11 +165,15 @@ const ExaminationList = () => {
                                     </td>
                                 </tr>
                                   })
-                                // ) : (
-                                        //     <tr>
-                                        //         <td colSpan="6">No Data available.</td>
-                                        //     </tr>
-                                        // )
+                                ) : (
+                                            <tr>
+                                                <td colSpan="6">
+                                                <h3 className='text-center'>
+                                                    No Data available.
+                                                </h3>
+                                                </td>
+                                            </tr>
+                                        )
 
                                     }
 

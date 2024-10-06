@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const StaffLeave = () => {
   const [data, setData] = useState([]);
@@ -16,11 +17,12 @@ const StaffLeave = () => {
   const [roleFilter, setRoleFilter] = useState(null)
   const [roleOptions, setRoleOptions] = useState([])
   const [staffList, setStaffList] = useState([])
+  const {id: schoolId} = useSchoolId();
 
   const getStaffList = () => {
     setSpinner(true);
     axios
-      .get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/GetAllStaffLeave')
+      .get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/GetStaffLeaveByFilter?schoolId=${schoolId}`)
       .then((res) => {
         console.log(res,"GTSATFF SL")
         setData(res.data);
@@ -93,7 +95,7 @@ const StaffLeave = () => {
 
   useEffect(() => {
     getStaffList();
-  }, []);
+  }, [schoolId]);
 
   const dataFilter = () => {
     setSpinner(true);
@@ -255,7 +257,7 @@ const StaffLeave = () => {
                   </thead>
                   {spinner ? (
                     <Loader />
-                  ) : (
+                    ) : (
                     data.length > 0 ? (
                     data.map((dt, index) => {
                       return (

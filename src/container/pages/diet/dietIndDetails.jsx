@@ -13,7 +13,7 @@ const DietIndDetails = ({ selectedDay }) => {
 
     const getDietList = () => {
         setSpinner(true);
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/GetAllDietPlan')
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DietPlan/GetAllDietPlan?SchoolId=${schoolId}`)
             .then(res => {
                 if (res.status === 200 && Array.isArray(res.data)) {
                     const groupedData = groupByDay(res.data);
@@ -31,7 +31,7 @@ const DietIndDetails = ({ selectedDay }) => {
 
     useEffect(() => {
         getDietList();
-    }, []);
+    }, [schoolId]);
 
     // Function to group data by day of the week
     const groupByDay = (data) => {
