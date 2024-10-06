@@ -48,6 +48,7 @@ const CreateSection = (props) => {
             if(res.status===201){
                 axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
                 toast.success('Section Added Successfully')
+                props.classSecData()
                 setTimeout(() => {
                     
                     reset({
@@ -65,25 +66,33 @@ const CreateSection = (props) => {
     }
 
     useEffect(() => {
-        const fetchUserRoles = async () => {
-          try {
-            const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class');
-            // const roleData = response.data;
-            // console.log('schhhhh', roleData)
-            // const roleOptions = roleData.map(role => ({id:role.id, value: role.id, label: role.className}))
-            const classData = response.data;
-            const classOptions = classData.map(classItem => ({
-                id: classItem.id,
-                value: classItem.id,
-                label: classItem.className
-            }));
-            setSchClassList(classOptions)
-          } catch (error) {
-            console.error('Error fetching user roles:', error);
-          }
-        };
+        // const fetchUserRoles = async () => {
+        //   try {
+        //     const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class');
+        //     // const roleData = response.data;
+        //     // console.log('schhhhh', roleData)
+        //     // const roleOptions = roleData.map(role => ({id:role.id, value: role.id, label: role.className}))
+        //     const classData = response.data;
+        //     const classOptions = classData.map(classItem => ({
+        //         id: classItem.id,
+        //         value: classItem.id,
+        //         label: classItem.className
+        //     }));
+        //     setSchClassList(classOptions)
+        //   } catch (error) {
+        //     console.error('Error fetching user roles:', error);
+        //   }
+        // };
     
-        fetchUserRoles();
+        // fetchUserRoles();
+
+        const classOptions = props.classDataSec.map(classItem => ({
+            id: classItem.classId,
+            value: classItem.classId,
+            label: classItem.className
+        }))
+        
+        setSchClassList(classOptions)
     }, []);
 
 

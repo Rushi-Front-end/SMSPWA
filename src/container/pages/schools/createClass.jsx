@@ -19,8 +19,7 @@ const schema = yup.object({
 
 
 
-const CreateClass = (props) => {
-    console.log('updateClass',props)
+const CreateClass = ({classSecData}) => {
 
     const [data, setData] = useState();
     const dispatch = useDispatch()
@@ -44,29 +43,26 @@ const CreateClass = (props) => {
     // const schoolIdParams = localStorage.getItem('schoolId')
     // console.log(schoolIdParams, 'schoolIdParams')
     
-    const onSubmit = (formData) => {
-        setData({ ...formData });
+    const onSubmit = async (formData) => {
+        // setData({ ...formData });
         //dispatch(postClassList(formData))
-        axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/create', {
+        await axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/create', {
             ...formData,
             schoolId:schoolId,
-        description:""
+            description: "A"
         })
-        .then(res => {
-            console.log(res)
-            if(res.statusCode === 201){
-                setTimeout(() => {
-                axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
-            }, 1000);
+        .then(async (res) => {
+            if(res.status === 201){
+                await classSecData();
                 toast.success('Classes Added Successfully')
             }
         })
         .catch(err => console.log(err))
        // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
-       reset({
-        className: '',
-        description: '',
-    });
+    //    reset({
+    //     className: '',
+    //     description: '',
+    // });
     }
 
 
