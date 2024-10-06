@@ -131,9 +131,13 @@ const Student = () => {
     
     const handleFilter = async () => {
         let params = [];
+
+        if(schoolId) {
+            params.push(`SchoolId=${schoolId}`)
+        }
     
         if (search) {
-            params.push(`Name=${encodeURIComponent(search)}`);
+            params.push(`studentFullName=${encodeURIComponent(search)}`);
         }
     
         if (classFilter) {
@@ -141,7 +145,7 @@ const Student = () => {
         }
 
         if(sectionFilter) {
-            params.push(`Section=${sectionFilter.value}`)
+            params.push(`SectionId=${sectionFilter.value}`)
         }
     
         if (params.length === 0) {
@@ -150,32 +154,17 @@ const Student = () => {
         }
     
         const queryString = params.join("&");
-        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/GetAllStudentHealthDataByFilter?${queryString}`;
+        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/details?${queryString}`;
     
         try {
             const result = await axios.get(url);
-            const filteredData = result.data;
-    
-            if (!filteredData?.length) {
+            const data = result.data;
+
+            if(!data?.length) {
                 toast.error("No data found");
             }
 
-            const filteredStudentDataRes = filteredData.map(async (el) => {
-                try {
-                    const studentRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${el.studentID}`)
-                    const studentData = studentRes.data;
-
-                    return studentData
-                    
-                } catch (error) {
-                    toast.error("An error occurred while fetching student data")
-                    console.error("Error in fetching student by ID", error)
-                }
-            })
-
-            const filteredStudentData = await Promise.all(filteredStudentDataRes)
-
-            setData(filteredStudentData);
+            setData(data)
         } catch (error) {
             toast.error("An error occurred while fetching data");
             console.error("Error fetching data:", error);

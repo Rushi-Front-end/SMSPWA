@@ -33,8 +33,8 @@ const TimeTable = () => {
         }
         };
 
-        fetchData();
-    }, []);
+        if(schoolId) fetchData();
+    }, [schoolId]);
 
 
     return (
