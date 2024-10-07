@@ -2,28 +2,29 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSchoolId } from "../../../components/common/context/idContext";
 
 const TimeInnerTable = ({ selectedOption, selectedDay }) => {
 	const [timeTableList, setTimeTableList] = useState([]);
 	const [newTimeTableRow, setNewTimeTableRow] = useState([]);
 	const [classDataList, setClassDataList] = useState([]);
+	const {id} = useSchoolId();
+
 	useEffect(() => {
-		(async () => await fetchTimeTableData())();
+		if(id) fetchTimeTableData()
 		setNewTimeTableRow([]);
-	}, [selectedOption, selectedDay]);
+	}, [selectedOption, selectedDay, id]);
 
 	const fetchTimeTableData = async () => {
 		try {
 			const timeTableResponse = await axios.get(
-				"https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/TimeTable"
+				`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/TimeTable?SchoolId=${id}`
 			);
-			const schoolId = selectedOption?.schoolId;
 			const classId = selectedOption.id;
 			const day = selectedDay;
 
 			const timeTableListData = timeTableResponse.data.filter(
 				(timeTableData) =>
-					timeTableData.schoolID == schoolId &&
 					timeTableData.classID == classId &&
 					timeTableData.day == day
 			);
