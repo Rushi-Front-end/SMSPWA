@@ -16,8 +16,6 @@ const Student = () => {
     const [search, setSearch] = useState(null)
     const [spinner, setSpinner] = useState(false)
     const [deleteStudent, setDeleteStudent] = useState()
-    const [healthStudName, setHealthStudName] = useState([]);
-    const [healthClassName, setHealthClassName] = useState([]);
 
     const [classFilter, setClassFilter] = useState(null);
     const [classOptions, setClassOptions] = useState([]);
@@ -43,86 +41,59 @@ const Student = () => {
     useEffect(() => {
         getStudentDetails()
     }, [schoolId])
-
-
-    const handleChange = value => {
-        setSearch(value);
-        filterData(value);
-    }
- 
-    const filterData = value => {
-        const lowerCaseValue = value.toLowerCase().trim();
-        if (!lowerCaseValue) {
-            //setData(data);
-            getStudentDetails()
-        }
-        else {
-            const filteredData = data.filter(item => {
-                return Object.keys(item).some(key => {
-                    return item[key].toString().toLowerCase().includes(lowerCaseValue)
-                })
-            });
-            setData(filteredData);
-        }
-    }
  
     const openDelete = (id)=>{
         setDeleteStudent(id)
     }
 
-    const getStudentName = async () => {
-        try {
-            const studentsRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
-            const studentsData = studentsRes.data;
-            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
-            const classNameData = classRes.data
-            // Assuming studentsData is an array of students
-            setHealthStudName(studentsData);
-            setHealthClassName(classNameData)
+    const getClassData = async () => {
+		try {
+			const classRes = await axios.get(
+				`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`
+			);
+			const classData = classRes.data;
 
-            const classIDs = [...new Set(studentsData.map(student => student.classID))];
-            const filteredClasses = classNameData.filter(cls => classIDs.includes(cls.id));
+			// Class array
+			const classOptionsList = classData.reduce((acc, item) => {
+				// Check if classId already exists in the array to avoid duplicates
+				if (!acc.some((c) => c.id === item.classId)) {
+					acc.push({
+						id: item.classId,
+						value: item.classId,
+						label: item.className,
+					});
+				}
+				return acc;
+			}, []);
 
-            const classOptionsList = filteredClasses.map(classData => ({
-                id: classData.id,
-                value: classData.id,
-                label: classData.className
-            }))
             setClassOptions(classOptionsList)
 
-            const sectionOptionsList = studentsData.map(student => {
-                return {
-                    id: student.classID,
-                    value: student.sectionName,
-                    label: student.sectionName
-                };
-            });
-            setSectionOptions(sectionOptionsList)
-            
-            console.log(studentsData, "StudentNAMein helath", sectionOptionsList);
-        } catch (error) {
-            console.error('Error fetching user roles:', error);
-        }
-    }
-    useEffect(() => {
-        getStudentName();
-    }, []);
+			// Section array
+			const sectionOptionsList = classData
+				.filter(
+					(item) => item.sectionId !== 0 && item.sectionName !== null
+				) // Exclude if sectionId is 0 or sectionName is null
+				.map((item) => ({
+					id: item.sectionId,
+					value: item.sectionId,
+					label: item.sectionName,
+				}));
 
-     
-    // const deleteDatahandler = (id) =>{
-    //     axios.delete('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/'+id)
-    //     .then((res)=>{
-    //         console.log(id, 'Pleae Check it')
-    //         getStudentDetails()
-    //     })
-    //     .catch(err=>console.log(err))
-    //   }
+            setSectionOptions(sectionOptionsList)
+		} catch (error) {
+			console.error("Error fetching user roles:", error);
+		}
+	};
+
+    useEffect(() => {
+        getClassData();
+    }, [schoolId]);
 
       const deleteDatahandler = async (id) => {
         try {
             await axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/${id}`);
             console.log(`Student with ID ${id} deleted`);
-            getStudentDetails(); // Refresh the student list
+            handleFilter(); // Refresh the student list
             toast.success("Student Data Deleted Successfuly")
         } catch (err) {
             console.error("Error deleting student:", err);
@@ -155,7 +126,9 @@ const Student = () => {
     
         const queryString = params.join("&");
         const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/details?${queryString}`;
-    
+        
+        setSpinner(true)
+
         try {
             const result = await axios.get(url);
             const data = result.data;
@@ -169,6 +142,8 @@ const Student = () => {
             toast.error("An error occurred while fetching data");
             console.error("Error fetching data:", error);
         }
+
+        setSpinner(false)
     }
 
 
@@ -216,7 +191,7 @@ const Student = () => {
                                     {/* <input type="search" onChange={(e) => handleChange(e.target.value)} value={search} className="form-control" id="input-search" placeholder="Search" /> */}
                                     <div className="flex rounded-sm search-box">
                                         <input type="search" placeholder='Search...' onChange={(e) =>  setSearch(e.target.value)} value={search}  id="hs-trailing-button-add-on-with-icon" name="hs-trailing-button-add-on-with-icon" className="ti-form-input rounded-none rounded-s-sm focus:z-10" />
-                                        <button aria-label="button"  onClick={()=>filterData(search)} type="button" className="inline-flex search-icon flex-shrink-0 justify-center items-center rounded-e-sm border border-transparent font-semibold bg-warning text-white hover:bg-warning focus:z-10 focus:outline-none focus:ring-0 focus:ring-warning transition-all text-sm">
+                                        <button aria-label="button"  onClick={handleFilter} type="button" className="inline-flex search-icon flex-shrink-0 justify-center items-center rounded-e-sm border border-transparent font-semibold bg-warning text-white hover:bg-warning focus:z-10 focus:outline-none focus:ring-0 focus:ring-warning transition-all text-sm">
                                             <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                                             </svg>
@@ -292,7 +267,7 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                                         </Link>
                                                     </td>
                                                     {/* <td>{dt.dob}</td> */}
-                                                    <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.sectionName || 'Unknown'}</td>
+                                                    <td>{dt?.className || 'Unknown'}- {dt?.sectionName || 'Unknown'}</td>
                                                     {/* <td>{dt.aadhar}</td> */}
                                                     <td><div className="hstack flex gap-3 text-[.9375rem]">
                                                     <div className="ti-dropdown hs-dropdown">
