@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../loader/loader';
@@ -6,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import { toast } from 'react-toastify';
 import { useSchoolId } from '../../../components/common/context/idContext';
 import Select from 'react-select';
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 
 
 const getFormattedToday = () => {
@@ -199,6 +201,37 @@ const HostelAttendance = () => {
         }
     }
 
+    
+
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+    const [allSchAdmin, setAllSchAdmin] = useState(false)
+
+    
+        const loginValue = localStorage.getItem('loginData')
+        let  parsedLoginValue
+        let   roleName
+        let   fullName
+        if (loginValue) {
+           parsedLoginValue = JSON.parse(loginValue);
+            roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+            fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+          console.log(parsedLoginValue.roleName, 'loginValue');
+        } else {
+          console.log('No login data found');
+        }
+      
+         const userLoginRoleName = parsedLoginValue.roleName
+      
+        useEffect(()=>{
+          setUserRoleName(userLoginRoleName)
+          if(userLoginRoleName === 'Principal') {
+            setAllSchAdmin(true)
+          }
+          else{
+            setAllSchAdmin(false)
+          }
+        },[])
+
     return (
         <div>
             <h4 className='pt-4 borderBottom'>Hostel Attendance</h4>
@@ -254,9 +287,9 @@ const HostelAttendance = () => {
                                     </button>
                                 </div> */}
                             </div>
-                            <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            {allSchAdmin && (<div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSaveAll}>Save All</button>
-                            </div>
+                            </div>)}
                         </div>
                     </div>
                     <div className="student-table-details pt-4">
@@ -271,7 +304,8 @@ const HostelAttendance = () => {
                                         <th scope="col" className="text-start">Out Time</th>
                                         {/* <th scope="col" className="text-start">Status</th> */}
                                         <th scope="col" className="text-start">Attendance</th>
-                                        <th scope="col" className="text-start">Action</th>
+                                        {allSchAdmin && (<th scope="col" className="text-start">Action</th>)}
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -313,7 +347,7 @@ const HostelAttendance = () => {
                                                         <td>
                                                             <ToggleSwitch status={status} studentId={dt.studentId} updateAttendanceData={updateAttendanceData} />
                                                         </td>
-                                                        <td>
+                                                        {allSchAdmin && (<td>
                                                             <div className="ti-dropdown hs-dropdown">
                                                                 <button type="button"
                                                                     className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none"
@@ -325,7 +359,7 @@ const HostelAttendance = () => {
                                                                     {/* <li> <button type="button" className="ti-dropdown-item" onClick={() => handleCancel(index)}>Cancel</button></li> */}
                                                                 </ul>
                                                             </div>
-                                                        </td>
+                                                        </td>)}
                                                     </tr>
                                                 );
                                             })

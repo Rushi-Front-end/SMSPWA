@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 
 
 const Student = () => {
@@ -25,6 +27,12 @@ const Student = () => {
     const [sectionFilter, setSectionFilter] = useState(null);
     const [sectionOptions, setSectionOptions] = useState([])
     
+
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+  const [allSchAdmin, setAllSchAdmin] = useState(false)
+
+
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {id: schoolId} = useSchoolId();
@@ -171,6 +179,35 @@ const Student = () => {
         }
     }
 
+    const loginValue = localStorage.getItem('loginData')
+    let  parsedLoginValue
+    let   roleName
+    let   fullName
+    if (loginValue) {
+       parsedLoginValue = JSON.parse(loginValue);
+        roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+        fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+      console.log(parsedLoginValue.roleName, 'loginValue');
+    } else {
+      console.log('No login data found');
+    }
+  
+     const userLoginRoleName = parsedLoginValue.roleName
+    //const userLoginRoleName = roleName ? 'superAdmin' : ''
+  
+    
+    
+    useEffect(()=>{
+      setUserRoleName(userLoginRoleName)
+      if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal') {
+        setAllSchAdmin(true)
+      }
+      else{
+        setAllSchAdmin(false)
+      }
+    },[])
+  
+
 
     return (
         <div>
@@ -237,11 +274,13 @@ const Student = () => {
 
                             </div>
                         </div>
+                        {allSchAdmin && (
                         <div className="stud-create-btn">
                             <Link to={`${import.meta.env.BASE_URL}pages/student/createStudent`} className="product-image">
                                 <button type="button" className="ti-btn ti-btn-warning-full  !rounded-full  ti-btn-wave">Add Students</button>
                             </Link>
                         </div>
+                        )}
                     </div>
                     {/* Top section end */}
                     {/* Table section start */}
@@ -258,7 +297,7 @@ const Student = () => {
                                         {/* <th scope="col" className="text-start">Date Of Birth</th> */}
                                         <th scope="col" className="text-start">Class Admitted To</th>
                                         {/* <th scope="col" className="text-start">Aadhar Card No.</th> */}
-                                        <th scope="col" className="text-start">Action</th>
+                                        {allSchAdmin && (<th scope="col" className="text-start">Action</th>)}
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -294,7 +333,8 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                                     {/* <td>{dt.dob}</td> */}
                                                     <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === dt.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.id)[0]?.sectionName || 'Unknown'}</td>
                                                     {/* <td>{dt.aadhar}</td> */}
-                                                    <td><div className="hstack flex gap-3 text-[.9375rem]">
+                                                    {allSchAdmin && (<td>
+                                                        <div className="hstack flex gap-3 text-[.9375rem]">
                                                     <div className="ti-dropdown hs-dropdown">
                                                     <button type="button"
                                                         className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
@@ -307,7 +347,7 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                                             {/* onClick={()=>deleteDatahandler(dt.id)} */}
                                                     </ul>
                                                 </div>
-                                                        </div></td>
+                                                        </div> </td>)}
                                                 </tr>
                                             })
 

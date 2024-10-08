@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import TimeTableTabs from '../schools/timeTableTabs';
 import Select from 'react-select';
@@ -6,6 +6,7 @@ import { singleselect } from '../../forms/formelements/formselect/formselectdata
 import axios from 'axios';
 import { useSchoolId } from '../../../components/common/context/idContext';
 
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 const TimeTable = () => {
 
     const [selectedOption, setSelectedOption] = useState(null);
@@ -35,6 +36,52 @@ const TimeTable = () => {
 
         if(schoolId) fetchData();
     }, [schoolId]);
+
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+    const [allSchAdmin, setAllSchAdmin] = useState(false)
+        const loginValue = localStorage.getItem('loginData')
+        let  parsedLoginValue
+        let   roleName
+        let   fullName
+        if (loginValue) {
+
+           parsedLoginValue = JSON.parse(loginValue);
+
+            roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+
+            fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+
+          console.log(parsedLoginValue.roleName, 'loginValue');
+
+        } else {
+
+          console.log('No login data found');
+
+        }
+
+      
+
+         const userLoginRoleName = parsedLoginValue.roleName
+
+      
+
+        useEffect(()=>{
+
+          setUserRoleName(userLoginRoleName)
+
+          if( userLoginRoleName === 'Principal') {
+
+            setAllSchAdmin(true)
+
+          }
+
+          else{
+
+            setAllSchAdmin(false)
+
+          }
+
+        },[])
 
 
     return (

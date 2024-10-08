@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { category, singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
@@ -8,6 +8,7 @@ import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 
 const ExpenseManagement = () => {
     const [data, setData] = useState([]);
@@ -122,6 +123,35 @@ const ExpenseManagement = () => {
         }
     }
 
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+    const [allSchAdmin, setAllSchAdmin] = useState(false)
+
+    
+        const loginValue = localStorage.getItem('loginData')
+        let  parsedLoginValue
+        let   roleName
+        let   fullName
+        if (loginValue) {
+           parsedLoginValue = JSON.parse(loginValue);
+            roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+            fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+          console.log(parsedLoginValue.roleName, 'loginValue');
+        } else {
+          console.log('No login data found');
+        }
+      
+         const userLoginRoleName = parsedLoginValue.roleName
+      
+        useEffect(()=>{
+          setUserRoleName(userLoginRoleName)
+          if(userLoginRoleName === 'Principal' || userLoginRoleName === 'Warden') {
+            setAllSchAdmin(true)
+          }
+          else{
+            setAllSchAdmin(false)
+          }
+        },[])
+
     return (
         <div>
             <h4 className='pt-4 borderBottom'>Expense</h4>
@@ -170,7 +200,7 @@ const ExpenseManagement = () => {
                         <div className='expense-export-create-sec flex  justify-end'>
 
 
-                            <div className='export-button'>
+                        {allSchAdmin &&(<div className='export-button'>
                                 <div className="ti-btn-list">
                                     <div className="ti-btn-group" >
                                         <div className="hs-dropdown ti-dropdown">
@@ -196,12 +226,12 @@ const ExpenseManagement = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="createstudent-btn">
+                            </div>)}
+                            {allSchAdmin && (<div className="createstudent-btn">
                                 <Link to={`${import.meta.env.BASE_URL}pages/extrafeatures/createExpense`}>
                                     <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create Expense</button>
                                 </Link>
-                            </div>
+                            </div>)}
                         </div>
                         </div>
                         <div className='expenses-top-wrapper flex justify-between pt-4'>
@@ -254,7 +284,7 @@ const ExpenseManagement = () => {
                                     <th scope="col" className="text-start">Amount	</th>
                                     <th scope="col" className="text-start">Created By	</th>
                                     <th scope="col" className="text-start">Invoice</th>
-                                    <th scope="col" className="text-start">Action</th>
+                                    {allSchAdmin &&(<th scope="col" className="text-start">Action</th>)}
                                 </tr>
                                 </thead>
 
@@ -279,7 +309,7 @@ const ExpenseManagement = () => {
                                                         {/* <td>
                                                             <Link className='text-primary hs-dropdown-toggle ti-btn ' data-hs-overlay="#hs-vertically-centered-modal">View</Link>
                                                         </td> */}
-                                                        <td rowSpan="2">
+                                                         {allSchAdmin &&(<td rowSpan="2">
                                                             <div className="ti-dropdown hs-dropdown">
                                                                 <button type="button"
                                                                     className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
@@ -302,7 +332,7 @@ const ExpenseManagement = () => {
 
                                                                 </ul>
                                                             </div>
-                                                        </td>
+                                                        </td>)}
                                                     </tr>
                                                     <tr><td colSpan="7" className="text-normal"><p>Remarks: {dt.note}</p></td>
                                                     </tr>

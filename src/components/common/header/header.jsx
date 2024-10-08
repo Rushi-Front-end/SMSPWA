@@ -133,7 +133,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   
   useEffect(()=>{
     setUserRoleName(userLoginRoleName)
-    if(userLoginRoleName === 'SuperAdmin') {
+    if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'admin') {
       setAllSchAdmin(true)
     }
     else{
@@ -589,13 +589,13 @@ useEffect(() => {
               <div className="header-element md:px-[0.325rem] !items-center" >
                 <label className='header-label'>Prakalp:</label>
                 <Select value={selectedPrakalValue} title="prakalp"  name="state" options={schoolPrakalpList} onChange={schoolPrakalpDown} className="js-example-basic-single w-full" isSearchable
-                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolPrakalpList[0]]}
+                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolPrakalpList[0]]} isDisabled={!allSchAdmin}
                             />
                </div>             
               <div className="header-element md:px-[0.325rem] !items-center" >
               <label className='header-label'>School Name:</label>
                 <Select value={selectedValue} name="state" options={schoolDataList} onChange={schoolDropDown} className="js-example-basic-single w-full" isSearchable
-                                menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolDataList[0]]}
+                                 menuPlacement='auto' classNamePrefix="Select2" defaultValue={[schoolDataList[0]]} isDisabled={!allSchAdmin}
                             />
                </div>   
                {

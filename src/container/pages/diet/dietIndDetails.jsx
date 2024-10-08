@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { Link } from 'react-router-dom';
 import { useSchoolId } from '../../../components/common/context/idContext';
 import { toast } from 'react-toastify';
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 
 const DietIndDetails = ({ selectedDay }) => {
     const [dietData, setDietData] = useState({});
@@ -91,6 +93,35 @@ const DietIndDetails = ({ selectedDay }) => {
         setItemToDelete(null); // Clear the item to delete
     };
 
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+    const [allSchAdmin, setAllSchAdmin] = useState(false)
+
+    
+        const loginValue = localStorage.getItem('loginData')
+        let  parsedLoginValue
+        let   roleName
+        let   fullName
+        if (loginValue) {
+           parsedLoginValue = JSON.parse(loginValue);
+            roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+            fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+          console.log(parsedLoginValue.roleName, 'loginValue');
+        } else {
+          console.log('No login data found');
+        }
+      
+         const userLoginRoleName = parsedLoginValue.roleName
+      
+        useEffect(()=>{
+          setUserRoleName(userLoginRoleName)
+          if(userLoginRoleName === 'Warden') {
+            setAllSchAdmin(true)
+          }
+          else{
+            setAllSchAdmin(false)
+          }
+        },[])
+
     return (
         <div>
             {spinner ? (
@@ -119,7 +150,7 @@ const DietIndDetails = ({ selectedDay }) => {
                                                 <td>{dt.mealTime && dt.mealTime.trim() !== '' ? dt.mealTime : '--'}</td>
                                                 <td>{dt.menuItems && dt.menuItems.trim() !== '' ? dt.menuItems : '--'}</td>
                                                 <td>{dt.totalCalories !== 0 ? dt.totalCalories : 0}</td>
-                                                <td>
+                                                {allSchAdmin && (<td>
                                                 <div className="ti-dropdown hs-dropdown">
                                                     <button type="button"
                                                         className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
@@ -134,7 +165,7 @@ const DietIndDetails = ({ selectedDay }) => {
                                                             {/* onClick={()=>deleteDatahandler(dt.id)} */}
                                                     </ul>
                                                     </div>
-                                                </td>
+                                                </td>)}
                                                 {/* <td>{dt.createdBy || 'John Smith'}</td>
                                                 <td>{dt.createdAt}</td> */}
                                             </tr>

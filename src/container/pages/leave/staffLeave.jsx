@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
 import { roleID } from '../../forms/formelements/formselect/formselectdata';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
@@ -6,6 +7,7 @@ import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 
 const StaffLeave = () => {
   const [data, setData] = useState([]);
@@ -119,7 +121,34 @@ const StaffLeave = () => {
         setSpinner(false);
       });
   };
+  const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+  const [allSchAdmin, setAllSchAdmin] = useState(false)
+
   
+      const loginValue = localStorage.getItem('loginData')
+      let  parsedLoginValue
+      let   roleNameVal
+      let   fullName
+      if (loginValue) {
+         parsedLoginValue = JSON.parse(loginValue);
+          roleNameVal = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+          fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+        console.log(parsedLoginValue.roleName, 'loginValue');
+      } else {
+        console.log('No login data found');
+      }
+    
+       const userLoginRoleName = parsedLoginValue.roleName
+    
+      useEffect(()=>{
+        setUserRoleName(userLoginRoleName)
+        if(userLoginRoleName === 'Admin' || userLoginRoleName === 'Principal') {
+          setAllSchAdmin(true)
+        }
+        else{
+          setAllSchAdmin(false)
+        }
+      },[])
 
   return (
     <div>
@@ -217,13 +246,13 @@ const StaffLeave = () => {
                 </div>
               </div>
             </div>
-            <div className="createstudent-btn">
+            {allSchAdmin && (<div className="createstudent-btn">
               <Link to={`${import.meta.env.BASE_URL}pages/leave/createLeave`}>
                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">
                   Create Leave
                 </button>
               </Link>
-            </div>
+            </div>)}
           </div>
           {/* Table section start */}
           <div className="student-table-details">

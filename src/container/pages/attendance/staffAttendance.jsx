@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,8 @@ import { toast } from 'react-toastify';
 
 import DatePicker from 'react-datepicker';
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
+
 
 const getFormattedToday = () => {
     const today = new Date();
@@ -191,6 +194,36 @@ const StaffAttendance = () => {
             }
         }
 
+           
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+    const [allSchAdmin, setAllSchAdmin] = useState(false)
+
+    
+        const loginValue = localStorage.getItem('loginData')
+        let  parsedLoginValue
+        let   roleName
+        let   fullName
+        if (loginValue) {
+           parsedLoginValue = JSON.parse(loginValue);
+            roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+            fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+          console.log(parsedLoginValue.roleName, 'loginValue');
+        } else {
+          console.log('No login data found');
+        }
+      
+         const userLoginRoleName = parsedLoginValue.roleName
+      
+        useEffect(()=>{
+          setUserRoleName(userLoginRoleName)
+          if(userLoginRoleName === 'Principal' ) {
+            setAllSchAdmin(true)
+          }
+          else{
+            setAllSchAdmin(false)
+          }
+        },[])
+
 
     return (
         <div>
@@ -291,7 +324,7 @@ const StaffAttendance = () => {
                                     <th scope="col" className="text-start">In Time</th>
                                     <th scope="col" className="text-start">Out Time</th>
                                     <th scope="col" className="text-start">Status</th>
-                                    <th scope="col" className="text-start">Action</th>
+                                    {allSchAdmin && (<th scope="col" className="text-start">Action</th>)}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -334,7 +367,7 @@ const StaffAttendance = () => {
                                                                 {status}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        {allSchAdmin && (<td>
                                                             <div className="ti-dropdown hs-dropdown">
                                                                 <button type="button"
                                                                     className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none"
@@ -347,7 +380,7 @@ const StaffAttendance = () => {
                                                                     {isEditing && <li> <button type="button" className="ti-dropdown-item" onClick={handleCancel}>Cancel</button></li>}
                                                                 </ul>
                                                             </div>
-                                                        </td>
+                                                        </td>)}
                                                     </tr>
                                                 );
                                             })

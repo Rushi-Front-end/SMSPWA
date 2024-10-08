@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,17 +6,16 @@ import axios from 'axios';
 import Loader from '../loader/loader';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteSchoolList, fetchSchoolList } from '../../../redux/reducers/schoolReducer';
-
-
-
-
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 
 const AllSchool = () => {
     // const [data, setData] = useState([])
      const [spinner, setSpinner] = useState(false)
      const [deleteData, setDeleteData] = useState()
      const [updateSchool, setUpdateSchool] = useState(true)
+     const [allSchAdmin, setAllSchAdmin] = useState(false)
 
+     const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
      
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -70,7 +69,31 @@ const AllSchool = () => {
         
         dispatch(fetchSchoolList())
       }, [schoolPostRes || schoolDeleteRes || schoolUpdateRes ])
-  
+      const loginValue = localStorage.getItem('loginData')
+
+      let  parsedLoginValue
+      let   roleName
+      let   fullName
+      if (loginValue) {
+         parsedLoginValue = JSON.parse(loginValue);
+          roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+          fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+        console.log(parsedLoginValue.roleName, 'loginValue');
+      } else {
+        console.log('No login data found');
+      }
+      const userLoginRoleName = parsedLoginValue.roleName
+
+      //const userLoginRoleName = roleName ? 'superAdmin' : ''
+      useEffect(()=>{
+        setUserRoleName(userLoginRoleName)
+        if(userLoginRoleName === 'SuperAdmin') {
+          setAllSchAdmin(true)
+        }
+        else{
+          setAllSchAdmin(false)
+        }
+      },[])
 
     return (
         <div>
@@ -107,11 +130,13 @@ const AllSchool = () => {
                         <div className='school-head-wrap'>
                             <h4>All Schools Data</h4>
                         </div>
+                        {allSchAdmin && (
                         <div className="createstudent-btn flex justify-end w-100">
                             <Link to={`${import.meta.env.BASE_URL}pages/schools/createSchool`}>
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Add School</button>
                             </Link>
                         </div>
+                          )}
                     </div>
                     {/* Top section end */}
                     {/* Table section start */}
@@ -125,7 +150,9 @@ const AllSchool = () => {
                                         <th scope="col" className="text-start">Email</th>
                                         <th scope="col" className="text-start">Mobile No.	</th>
                                         <th scope="col" className="text-start">Address</th>
-                                        <th scope="col" className="text-start">Action</th>
+                                        {
+
+allSchAdmin && (<th scope="col" className="text-start">Action</th>)}
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -169,7 +196,9 @@ const AllSchool = () => {
                                                     <td>{dt.email}</td>
                                                     <td>{dt.schoolMobileNumber}</td>
                                                     <td>{dt.city}</td>
-                                                    <td><div className="hstack flex gap-3 text-[.9375rem]">
+                                                    {
+
+allSchAdmin && (<td ><div className="hstack flex gap-3 text-[.9375rem]" >
                                                     <div className="ti-dropdown hs-dropdown">
                                                     <button type="button"
                                                         className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">
@@ -182,7 +211,7 @@ const AllSchool = () => {
 
                                                     </ul>
                                                 </div>
-                                                        </div></td>
+                                                </div></td>)}
                                                 </tr>
                                             })
                                         ): (

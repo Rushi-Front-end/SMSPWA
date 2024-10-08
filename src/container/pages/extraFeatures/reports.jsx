@@ -17,6 +17,7 @@ import schoolLogoLarge from '../../../assets/images/logo/logo.svg'
 
 import generatePDF from "react-to-pdf";
 
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 const getFormattedToday = () => {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -257,6 +258,34 @@ console.log(reportName, 'reportName')
         toast.error("Please fix the errors before submitting.");
     }
 };
+const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+const [allSchAdmin, setAllSchAdmin] = useState(false)
+
+
+    const loginValue = localStorage.getItem('loginData')
+    let  parsedLoginValue
+    let   roleName
+    let   fullName
+    if (loginValue) {
+       parsedLoginValue = JSON.parse(loginValue);
+        roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+        fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+      console.log(parsedLoginValue.roleName, 'loginValue');
+    } else {
+      console.log('No login data found');
+    }
+  
+     const userLoginRoleName = parsedLoginValue.roleName
+  
+    useEffect(()=>{
+      setUserRoleName(userLoginRoleName)
+      if(userLoginRoleName === 'Warden' ) {
+        setAllSchAdmin(true)
+      }
+      else{
+        setAllSchAdmin(false)
+      }
+    },[])
 
 
     return (

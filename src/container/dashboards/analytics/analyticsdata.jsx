@@ -2,20 +2,42 @@
 import axios from 'axios';
 import { Chart, ArcElement, Tooltip, Legend, registerables } from 'chart.js';
 import { useEffect, useState } from 'react';
+
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Line, Bar, Doughnut,} from 'react-chartjs-2';
 import { useSchoolId } from '../../../components/common/context/idContext';
 import { useDashId } from '../../../components/common/context/allDashIdContext';
-Chart.register(...registerables, ArcElement, Tooltip, Legend);
-
+Chart.register(...registerables, ArcElement, Tooltip, Legend, ChartDataLabels);
 //  LineChart
 Chart.defaults.borderColor = "rgba(142, 156, 173,0.1)", Chart.defaults.color = "#8c9097";
 const Option1 = {
   responsive: true,
   maintainAspectRatio: false,
+  layout: {
+    padding: {
+      top: 20,  // Adjust this value to give more space at the top
+      bottom: 20,
+      left: 20,
+      right: 20,
+    },
+
+  },
   plugins: {
     legend: {
       display: true,
        position:'bottom'
+    },
+    datalabels: {
+      // Enable the data labels plugin
+      anchor: 'end',  // Position the label at the end of the bar (top)
+      align: 'end',   // Align the label at the top of the bar
+      color: '#000',  // Color of the text
+      font: {
+        weight: 'bold',
+      },
+      formatter: (value) => {
+        return Math.round(value)+ '%';  // Round the value to the nearest whole number
+      },
     },
   },
   scales: {
@@ -44,7 +66,7 @@ const aggregateData = (examData) => {
         backgroundColor: 'rgba(132, 90, 223, 0.5)',
         borderColor: 'rgb(132, 90, 223)',
         data: Object.values(aggregated).map(item => 
-          item.totalAppeared > 0 ? (item.totalPassed / item.totalAppeared) * 100 : 0
+          item.totalAppeared > 0 ? Math.round((item.totalPassed / item.totalAppeared) * 100) : 0
         ),
       },
       {
@@ -52,7 +74,7 @@ const aggregateData = (examData) => {
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         borderColor: 'rgb(255, 99, 132)',
         data: Object.values(aggregated).map(item => 
-          item.totalAppeared > 0 ? (item.totalFailed / item.totalAppeared) * 100 : 0
+          item.totalAppeared > 0 ? Math.round((item.totalFailed / item.totalAppeared) * 100) : 0
         ),
       },
       // {
@@ -116,10 +138,31 @@ const Option2 = {
 
   responsive: true,
   maintainAspectRatio: false,
+  layout: {
+    padding: {
+      top: 30,  // Adjust this value to give more space at the top
+      bottom: 20,
+      left: 20,
+      right: 20,
+    },
+
+  },
   plugins: {
     legend: {
       display: true,
        position:'bottom'
+    },
+    datalabels: {
+      // Enable the data labels plugin
+      anchor: 'end',  // Position the label at the end of the bar (top)
+      align: 'end',   // Align the label at the top of the bar
+      color: '#000',  // Color of the text
+      font: {
+        weight: 'bold',
+      },
+      formatter: (value) => {
+        return Math.round(value);  // Round the value to the nearest whole number
+      },
     },
   },
   scales: {

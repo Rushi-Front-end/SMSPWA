@@ -11,7 +11,13 @@ import Expense from '../../../../assets/images/menu-left-icons/Expense.svg';
 import Dietplan from '../../../../assets/images/menu-left-icons/Dietplan.svg';
 import Reports from '../../../../assets/images/menu-left-icons/Reports.svg';
 
+
+
+
 export const MENUITEMS = [
+
+  
+
   {
     menutitle: 'MAIN',
   },
@@ -342,23 +348,23 @@ export const MENUITEMS = [
 ];
 
 const ROLE_MENU_ITEMS = {
-  admin: [
+  Admin: [
     'Dashboards',
-    // 'All Schools',
+    'All Schools',
     'Staff',
-    // 'Timetable',
+     'Timetable',
     'Students',
     'Health Documents',
     'Staff Attendance',
-    // 'Students Attendace',
-    // 'Hostel Attendance',
+     'Students Attendace',
+     'Hostel Attendance',
     'Staff Leave',
-    // 'Students Leave',
-    // 'Hostelite Outpasses',
+     'Students Leave',
+     'Hostelite Outpasses',
     'Reports',
     'Expense Management',
     'Examination',
-    // 'Diet Plan',
+     'Diet Plan',
     'Reports',
 
   ],
@@ -383,6 +389,7 @@ const ROLE_MENU_ITEMS = {
   ],
   Principal: [
     'Dashboards',
+    'All Schools',
     'Staff',
     'Timetable',
     'Students',
@@ -399,28 +406,43 @@ const ROLE_MENU_ITEMS = {
     'Diet Plan',
     // Add additional items as needed
   ],
-  teacher: [
+  Teacher: [
     'Dashboards',
+    'All Schools',
+    //'Staff',
+    'Timetable',
     'Students',
     'Health Documents',
+    //'Staff Attendance',
     'Students Attendace',
+    //'Hostel Attendance',
+    //'Staff Leave',
     'Students Leave',
+    //'Hostelite Outpasses',
+    //'Reports',
+    //'Expense Management',
     'Examination',
-
+    //'Diet Plan',
     // Add additional items as needed
   ],
   
-  warden: [
-    'Hostel Attendance',
-    'Students',
-    
+  Warden: [
+    'Dashboards',
+    //'All Schools',
+    //'Staff',
+    //'Timetable',
+    //'Students',
     'Health Documents',
+    //'Staff Attendance',
+    //'Students Attendace',
+    'Hostel Attendance',
+    //'Staff Leave',
+    //'Students Leave',
     'Hostelite Outpasses',
-
+    //'Reports',
     'Expense Management',
-
+    //'Examination',
     'Diet Plan',
-
     // Add additional items as needed
   ],
 };
