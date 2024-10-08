@@ -27,21 +27,6 @@ const Student = () => {
     const navigate = useNavigate()
     const {id: schoolId} = useSchoolId();
 
-    
-    const getStudentDetails = () => {
-        setSpinner(true)
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students?schoolId=${schoolId}`)
-            .then(res =>{ 
-                setData(res.data)
-                setSpinner(false)
-            })
-            .catch(err => console.log(err))
-    }
-
-    useEffect(() => {
-        getStudentDetails()
-    }, [schoolId])
- 
     const openDelete = (id)=>{
         setDeleteStudent(id)
     }
@@ -66,7 +51,9 @@ const Student = () => {
 				return acc;
 			}, []);
 
+            setClassFilter(classOptionsList[0])
             setClassOptions(classOptionsList)
+            handleFilter({initialClass: classOptionsList[0]})
 
 			// Section array
 			const sectionOptionsList = classData
@@ -100,7 +87,7 @@ const Student = () => {
         }
     }
     
-    const handleFilter = async () => {
+    const handleFilter = async ({initialClass}) => {
         let params = [];
 
         if(schoolId) {
@@ -111,7 +98,9 @@ const Student = () => {
             params.push(`studentFullName=${encodeURIComponent(search)}`);
         }
     
-        if (classFilter) {
+        if (initialClass) {
+            params.push(`ClassId=${initialClass.value}`)
+        } else if (classFilter) {
             params.push(`ClassId=${classFilter.value}`);
         }
 
