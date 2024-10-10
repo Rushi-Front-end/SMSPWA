@@ -181,10 +181,14 @@ const StaffAttendance = () => {
         
             try {
                 const result = await axios.get(url);
-                const filterData = result.data;
+                let filterData = result.data;
         
                 if (!filterData?.length) {
                     toast.error("No data found");
+                }
+
+                if(roleFilter?.label) {
+                    filterData = filterData.filter(el => el.roleName == roleFilter.label)
                 }
         
                 setData(filterData);

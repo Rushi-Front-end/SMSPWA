@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import DatePicker from 'react-datepicker';
 import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const getFormattedToday = () => {
     const today = new Date();
@@ -31,6 +32,8 @@ const StudentAttendance = () => {
 
     const [changedAttendance, setChangedAttendance] = useState(new Set())
 
+    const {id: schoolId} = useSchoolId();
+
     const formattedToday = getFormattedToday();
     
 
@@ -47,12 +50,12 @@ const StudentAttendance = () => {
         const fetchStudentAndClass = async () => {
             setSpinner(true)
           try {
-            const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
+            const classRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`)
             const classNameData = classRes.data
 
-            const classOptionsList = classNameData.map((classDataItem) => ({
-				id: classDataItem.id,
-				value: classDataItem.id,
+            const classOptionsList = classNameData.filter(el => el.classId).map((classDataItem) => ({
+				id: classDataItem.classId,
+				value: classDataItem.classId,
 				label: classDataItem.className,
 			}));
 
@@ -61,14 +64,10 @@ const StudentAttendance = () => {
             setClassFilter(defaultClassOption)
             setClassOptions(classOptionsList);
 
-            
-            const sectionRes = await axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Section/GetSectionByClassId?classId=${defaultClassOption.id}`)
-            const sectionData = sectionRes.data
-
-            const sectionOptionsList = sectionData.map((sectionItem) => ({
-				id: sectionItem.id,
-				value: sectionItem.id,
-				label: sectionItem.description,
+            const sectionOptionsList = classNameData.filter(el => el.sectionId).map((sectionItem) => ({
+				id: sectionItem.sectionId,
+				value: sectionItem.sectionId,
+				label: sectionItem.sectionName,
 			}));
             
             setSectionOptions(sectionOptionsList)
@@ -82,14 +81,15 @@ const StudentAttendance = () => {
             setData(studentAttendanceData)
 
             setSpinner(false)
-
-          } catch (error) {
+            
+        } catch (error) {
+            setSpinner(false)
             console.error('Error fetching data:', error);
           }
         };
     
         fetchStudentAndClass();
-    }, []);
+    }, [schoolId]);
 
     const updateAttendanceData = (studentID) => {
         setChangedAttendance(prev => {
