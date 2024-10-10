@@ -127,7 +127,7 @@ export const assignedSubject = [
 
 export const className = [
   // { id: 1, value: "Select Class Name",label:"Select Class Name" },
-  { id: 2, value: "1th Class" ,label:"1th Class"},
+  { id: 2, value: "1st Class" ,label:"1st Class"},
   { id: 3, value: "2nd Class" ,label:"2nd Class"},
   { id: 4, value: "3rd Class" ,label:"3rd Class"},
   { id: 5, value: "4th Class" ,label:"4th Class"},
