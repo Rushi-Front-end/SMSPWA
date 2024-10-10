@@ -8,6 +8,7 @@ import DatePicker from 'react-datepicker';
 import { useForm, useController, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const formatDate = (date) => {
     if (!date) return '';
@@ -17,7 +18,7 @@ const formatDate = (date) => {
     return `${day}/${month}/${year}`;
 };
 const schema = yup.object({
-    studentName: yup.string().nullable().required("Please Select student Name"),
+    studentID: yup.string().nullable().required("Please Select student Name"),
     height: yup.string().nullable().required("Please Enter Height "),
     weight: yup.string().nullable().required("Please Enter Weight "),
     bloodPressure: yup.string().nullable().required("Please Enter Blood Pressure "),
@@ -51,10 +52,12 @@ const CreateHealth = () => {
     const [studMed, setStudMedical] = useState(false);
     const [studNameDrop, setStudNameDrop] = useState([]);
 
+    const {id: schoolId} = useSchoolId();
+
 
     const { errors, isValid } = formState;
 
-    const { field: { value: studentNameValue, onChange: studentNameOnChange, ...reststudentNameField } } = useController({ name: 'studentName', control });
+    const { field: { value: studentNameValue, onChange: studentNameOnChange, ...reststudentNameField } } = useController({ name: 'studentID', control });
     
 
 
@@ -73,7 +76,7 @@ const CreateHealth = () => {
     const getStudNameDrop = () => {
         axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
             .then(res => {
-                const studDropOptions = res.data.map(staff => ({
+                const studDropOptions = res.data.filter(el => el.schoolId == schoolId).map(staff => ({
                     value: staff.id,
                     label: staff.fullName
                 }));
@@ -83,7 +86,7 @@ const CreateHealth = () => {
       }
       useEffect(()=>{
         getStudNameDrop()
-      },[])
+      },[schoolId])
 
     return (
         <div>
@@ -148,7 +151,7 @@ const CreateHealth = () => {
                                             <Select className="!p-0 place-holder" classNamePrefix='react-select' options={studNameDrop} value={studentNameValue ? studNameDrop.find(x => x.value === studentNameValue) : studentNameValue}
                                             onChange={option => {studentNameOnChange(option ? option.value : option)}}
                                             {...reststudentNameField} />
-                                        {errors.studentName && <p className='errorTxt'>{errors.studentName.message}</p>}
+                                        {errors.studentID && <p className='errorTxt'>{errors.studentID.message}</p>}
                                         </div>
 
 

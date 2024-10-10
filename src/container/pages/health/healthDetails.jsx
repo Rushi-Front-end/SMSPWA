@@ -26,25 +26,6 @@ const HealthDetails = () => {
     const {id: schoolId} = useSchoolId();
     
 
-    const getHealthList = () => {
-        setSpinner(true);
-        axios
-            .get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/GetAllStudentHealthCheckup')
-            .then((res) => {
-                console.log(res, "GTHEALTH SL")
-                setData(res.data);
-                setSpinner(false);
-                // const initialStatusMap = res.data.reduce((acc, leave) => {
-                //   acc[leave.id] = leave.status;
-                //   return acc;
-                // }, {});
-                // setStatusMap(initialStatusMap);
-            })
-            .catch((err) => {
-                console.log(err);
-                setSpinner(false);
-            });
-    };
     const getStudentName = async () => {
         try {
             const studentsRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
@@ -54,34 +35,12 @@ const HealthDetails = () => {
             // Assuming studentsData is an array of students
             setHealthStudName(studentsData);
             setHealthClassName(classNameData)
-
-            const classIDs = [...new Set(studentsData.map(student => student.classID))];
-            const filteredClasses = classNameData.filter(cls => classIDs.includes(cls.id));
-
-            const classOptionsList = filteredClasses.map(classData => ({
-                id: classData.id,
-                value: classData.id,
-                label: classData.className
-            }))
-            setClassOptions(classOptionsList)
-
-            const sectionOptionsList = studentsData.map(student => {
-                return {
-                    id: student.classID,
-                    value: student.sectionName,
-                    label: student.sectionName
-                };
-            });
-            setSectionOptions(sectionOptionsList)
-            
-            console.log(studentsData, "StudentNAMein helath", sectionOptionsList);
         } catch (error) {
             console.error('Error fetching user roles:', error);
         }
     }
     
     useEffect(() => {
-        getHealthList();
         getStudentName();
         
     }, []);
@@ -96,7 +55,7 @@ const HealthDetails = () => {
         try {
             await axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/DeleteStudentHealthCheckup?studentId=${id}&healthCheckupDate=${healthDate}`);
             console.log(`Student with ID ${id} deleted`);
-            getHealthList(); // Refresh the student list
+            handleFilter(); // Refresh the student list
             toast.success("Student Data Deleted Successfuly")
         } catch (err) {
             console.error("Error deleting student:", err);
@@ -114,7 +73,7 @@ const HealthDetails = () => {
 
 
 
-    const handleFilter = async () => {
+    const handleFilter = async ({ initialClass }) => {
         let params = [];
 
         if(schoolId) {
@@ -125,7 +84,9 @@ const HealthDetails = () => {
             params.push(`Name=${encodeURIComponent(search)}`);
         }
     
-        if (classFilter) {
+        if (initialClass) {
+            params.push(`ClassId=${initialClass.value}`)
+        } else if (classFilter) {
             params.push(`ClassId=${classFilter.value}`);
         }
 
@@ -185,6 +146,53 @@ const [allSchAdmin, setAllSchAdmin] = useState(false)
         setAllSchAdmin(false)
       }
     },[])
+
+    const getClassData = async () => {
+        setSpinner(true)
+		try {
+			const classRes = await axios.get(
+				`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`
+			);
+			const classData = classRes.data;
+
+			// Class array
+			const classOptionsList = classData.reduce((acc, item) => {
+				// Check if classId already exists in the array to avoid duplicates
+				if (!acc.some((c) => c.id === item.classId)) {
+					acc.push({
+						id: item.classId,
+						value: item.classId,
+						label: item.className,
+					});
+				}
+				return acc;
+			}, []);
+
+            setClassFilter(classOptionsList[0])
+            setClassOptions(classOptionsList)
+            handleFilter({initialClass: classOptionsList[0]})
+
+			// Section array
+			const sectionOptionsList = classData
+				.filter(
+					(item) => item.sectionId !== 0 && item.sectionName !== null
+				) // Exclude if sectionId is 0 or sectionName is null
+				.map((item) => ({
+					id: item.sectionId,
+					value: item.sectionId,
+					label: item.sectionName,
+				}));
+
+            setSectionOptions(sectionOptionsList)
+		} catch (error) {
+			console.error("Error fetching user roles:", error);
+		}
+        setSpinner(false)
+	};
+
+    useEffect(() => {
+        getClassData();
+    }, [schoolId]);
 
 
     return (
