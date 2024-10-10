@@ -149,7 +149,7 @@ const CreateStaff = () => {
     
             // If there's an image file, append it
             if (file) { // Assuming imageFile is your state for the uploaded image
-                formDataToSend.append('imageUrl', file);
+                formDataToSend.append('profileImage', file);
             }
     
             // Append additional fields as necessary

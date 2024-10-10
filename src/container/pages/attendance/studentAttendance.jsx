@@ -275,7 +275,7 @@ const StudentAttendance = () => {
       
         useEffect(()=>{
           setUserRoleName(userLoginRoleName)
-          if(userLoginRoleName === 'Principal' || userLoginRoleName === 'Teacher') {
+          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal' || userLoginRoleName === 'Teacher') {
             setAllSchAdmin(true)
           }
           else{

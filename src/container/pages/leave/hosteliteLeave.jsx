@@ -148,7 +148,7 @@ const HosteliteLeave = () => {
       
         useEffect(()=>{
           setUserRoleName(userLoginRoleName)
-          if(userLoginRoleName === 'Principal' || userLoginRoleName === 'Warden') {
+          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal' || userLoginRoleName === 'Warden') {
             setAllSchAdmin(true)
           }
           else{

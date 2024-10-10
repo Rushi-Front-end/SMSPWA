@@ -114,7 +114,7 @@ const DietIndDetails = ({ selectedDay }) => {
       
         useEffect(()=>{
           setUserRoleName(userLoginRoleName)
-          if(userLoginRoleName === 'Warden') {
+          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Warden') {
             setAllSchAdmin(true)
           }
           else{

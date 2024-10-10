@@ -279,7 +279,7 @@ const [allSchAdmin, setAllSchAdmin] = useState(false)
   
     useEffect(()=>{
       setUserRoleName(userLoginRoleName)
-      if(userLoginRoleName === 'Warden' ) {
+      if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Warden' ) {
         setAllSchAdmin(true)
       }
       else{
