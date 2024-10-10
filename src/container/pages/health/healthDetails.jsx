@@ -5,6 +5,7 @@ import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const HealthDetails = () => {
     const [data, setData] = useState([]);
@@ -22,6 +23,8 @@ const HealthDetails = () => {
     const [sectionOptions, setSectionOptions] = useState([])
 
     const {healthID} = useParams();
+    const {id: schoolId} = useSchoolId();
+    
 
     const getHealthList = () => {
         setSpinner(true);
@@ -119,7 +122,7 @@ const HealthDetails = () => {
         }
     
         if (search) {
-            params.push(`studentFullName=${encodeURIComponent(search)}`);
+            params.push(`Name=${encodeURIComponent(search)}`);
         }
     
         if (classFilter) {
@@ -136,7 +139,7 @@ const HealthDetails = () => {
         }
     
         const queryString = params.join("&");
-        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students/details?${queryString}`;
+        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/GetAllStudentHealthDataByFilter?${queryString}`;
     
         try {
             const result = await axios.get(url);
