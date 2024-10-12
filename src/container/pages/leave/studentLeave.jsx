@@ -167,7 +167,7 @@ const StudentLeave = () => {
 
     const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
     const [allSchAdmin, setAllSchAdmin] = useState(false)
-
+    const [allLeave, setAllLeave] = useState(false)
     
         const loginValue = localStorage.getItem('loginData')
         let  parsedLoginValue
@@ -186,12 +186,21 @@ const StudentLeave = () => {
       
         useEffect(()=>{
           setUserRoleName(userLoginRoleName)
-          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal' || userLoginRoleName === 'Teacher') {
+          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Teacher') {
             setAllSchAdmin(true)
           }
           else{
             setAllSchAdmin(false)
           }
+
+
+          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal' ) {
+            setAllLeave(true)
+          }
+          else{
+            setAllLeave(false)
+          }
+
         },[])
 
 
@@ -258,11 +267,11 @@ const StudentLeave = () => {
 
                     </div>
                 </div>
-                <div className="createstudent-btn">
-                <Link to={`${import.meta.env.BASE_URL}pages/leave/createStudentLeave`}>
-                    <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create Leave</button>
-                </Link>
-            </div>
+                {allSchAdmin && (<div className="createstudent-btn">
+                    <Link to={`${import.meta.env.BASE_URL}pages/leave/createStudentLeave`}>
+                        <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create Leave</button>
+                    </Link>
+                </div>)}
             </div>
             {/* Top section end */}
             {/* Top section end */}
@@ -282,7 +291,7 @@ const StudentLeave = () => {
                                 <th scope="col" className="text-start">Leave Type</th>
                                 <th scope="col" className="text-start">Duration	</th>
                                 {/* <th scope="col" className="text-start">Status	</th> */}
-                                {allSchAdmin && (<th scope="col" className="text-start">Action</th>)}
+                                {allLeave && (<th scope="col" className="text-start">Action</th>)}
                             </tr>
                             </thead>
                             {spinner ? (
@@ -303,7 +312,7 @@ const StudentLeave = () => {
                                                                 {statusMap[dt.id] || 'Rejected'}
                                                             </span></td> */}
 
-                                {allSchAdmin && (<td rowSpan="2">
+                                {allLeave && (<td rowSpan="2">
                                     <div className="ti-dropdown hs-dropdown">
                                     <button type="button"
                                         className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import Pageheader from '../../../components/common/pageheader/pageheader';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
@@ -20,6 +20,7 @@ import UpdateClass from './updateClass';
 import Loader from '../loader/loader';
 import axios from 'axios';
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 
 
 const SchoolsDetails = () => {
@@ -145,6 +146,38 @@ const SchoolsDetails = () => {
         //     navigate(`${import.meta.env.BASE_URL}pages/schools/editSchool/${params.id}`)
         // }
         
+
+
+        const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+        const [allSchAdmin, setAllSchAdmin] = useState(false)
+    
+        
+            const loginValue = localStorage.getItem('loginData')
+            let  parsedLoginValue
+            let   roleName
+            let   fullName
+            if (loginValue) {
+               parsedLoginValue = JSON.parse(loginValue);
+                roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+                fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+              console.log(parsedLoginValue.roleName, 'loginValue');
+            } else {
+              console.log('No login data found');
+            }
+          
+             const userLoginRoleName = parsedLoginValue.roleName
+          
+            useEffect(()=>{
+              setUserRoleName(userLoginRoleName)
+              if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal') {
+                setAllSchAdmin(true)
+              }
+              else{
+                setAllSchAdmin(false)
+              }
+            },[])
+    
+
         
         return (
         <Fragment>
@@ -206,11 +239,11 @@ const SchoolsDetails = () => {
                                     <div className='p-4'>
                                         <div className='flex justify-between school-detail-listing'>
                                             <h4>{schoolIndData.list.schoolName}</h4>
-                                            <div className="school-edit-button">
+                                            {allSchAdmin && (<div className="school-edit-button">
                                                 <Link to={`${import.meta.env.BASE_URL}pages/schools/editSchool/${params.id}`}>
                                                     <button type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"  >Edit School</button>
                                                 </Link>
-                                            </div>
+                                            </div>)}
                                         </div>
 
                                         <div className='school-deatils-table pt-4'>
@@ -253,9 +286,9 @@ const SchoolsDetails = () => {
                                             <div id="underline-2" role="tabpanel" aria-labelledby="underline-item-2">
                                                 <div className="grid grid-cols-12  gap-4">
                                                     <div className="col-span-12 xl:col-span-8">
-                                                    <div className='classes-add-secbtn'>
+                                                    {allSchAdmin && (<div className='classes-add-secbtn'>
                                                        <button type="button" onClick={() => addSection(classId)} className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave"> Add Section</button>
-                                                    </div>
+                                                    </div>)}
                                                         {
                                                              isLoading || spinner ? (<Loader />) :
                                                              classDataSec.length > 0 ? (
@@ -331,7 +364,7 @@ const SchoolsDetails = () => {
                                                         {/* End of the classes top sec wrap */}
 
                                                     </div>
-                                                    <div className="col-span-12 xl:col-span-4">
+                                                    {allSchAdmin && (<div className="col-span-12 xl:col-span-4">
                                                     
                                                         {
                                                            ( (addSec === true) ? <CreateSection classSecData={classSecData} classDataSec={classDataSec} addSec={addSec} setAddSec={setAddSec} /> : (updateClass.value === true) ? <UpdateClass updateClassChild={setUpdateClass} updateClass={updateClass} /> : <CreateClass classSecData={classSecData} /> )
@@ -341,7 +374,7 @@ const SchoolsDetails = () => {
 
 
                                                         {/* <CreateSection/> */}
-                                                    </div>
+                                                    </div>)}
                                                 </div>
 
                                             </div>

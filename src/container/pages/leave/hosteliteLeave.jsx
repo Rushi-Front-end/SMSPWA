@@ -129,7 +129,8 @@ const HosteliteLeave = () => {
 
     const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
     const [allSchAdmin, setAllSchAdmin] = useState(false)
-
+    const [allLeave, setAllLeave] = useState(false)
+    
     
         const loginValue = localStorage.getItem('loginData')
         let  parsedLoginValue
@@ -148,12 +149,20 @@ const HosteliteLeave = () => {
       
         useEffect(()=>{
           setUserRoleName(userLoginRoleName)
-          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal' || userLoginRoleName === 'Warden') {
+          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Warden') {
             setAllSchAdmin(true)
           }
           else{
             setAllSchAdmin(false)
           }
+
+          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal' ) {
+            setAllLeave(true)
+          }
+          else{
+            setAllLeave(false)
+          }
+
         },[])
 
     
@@ -243,7 +252,7 @@ const HosteliteLeave = () => {
                                         <th scope="col" className="text-start"> Leave Type</th>
                                         <th scope="col" className="text-start"> Duration</th>
                                         {/* <th scope="col" className="text-start">Status</th> */}
-                                        {allSchAdmin && (<th scope="col" className="text-start">Action</th>)}
+                                        {allLeave && (<th scope="col" className="text-start">Action</th>)}
 
                                     </tr>
                                     </thead>
@@ -263,7 +272,7 @@ const HosteliteLeave = () => {
                                                                 {statusMap[dt.id] || 'Rejected'}
                                                             </span></td> */}
 
-                                            {allSchAdmin && (<td rowSpan="2">
+                                            {allLeave && (<td rowSpan="2">
                                                 <div className="ti-dropdown hs-dropdown">
                                                     <button type="button"
                                                         className="ti-btn ti-btn-ghost-primary ti-dropdown-toggle me-2 !py-2 !shadow-none" aria-expanded="false">

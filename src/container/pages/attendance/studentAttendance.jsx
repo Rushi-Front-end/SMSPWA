@@ -275,7 +275,7 @@ const StudentAttendance = () => {
       
         useEffect(()=>{
           setUserRoleName(userLoginRoleName)
-          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal' || userLoginRoleName === 'Teacher') {
+          if(userLoginRoleName === 'SuperAdmin' ||  userLoginRoleName === 'Teacher' ) {
             setAllSchAdmin(true)
           }
           else{
@@ -353,9 +353,9 @@ const StudentAttendance = () => {
                             <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
                             </div>
-                            <div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+                            {allSchAdmin &&(<div className="xl:col-span-2 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave" onClick={handleSaveAll}>Save All</button>
-                            </div>
+                            </div>)}
                         </div>
                     </div>
                     {/* Top section end */}
@@ -456,9 +456,41 @@ const ToggleSwitch = ({ status, studentID, updateAttendanceData }) => {
         updateAttendanceData(studentID)
 	};
 
+    
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+    const [allSchAdmin, setAllSchAdmin] = useState(false)
+
+    
+        const loginValue = localStorage.getItem('loginData')
+        let  parsedLoginValue
+        let   roleName
+        let   fullName
+        if (loginValue) {
+           parsedLoginValue = JSON.parse(loginValue);
+            roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+            fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+          console.log(parsedLoginValue.roleName, 'loginValue');
+        } else {
+          console.log('No login data found');
+        }
+      
+         const userLoginRoleName = parsedLoginValue.roleName
+      
+        useEffect(()=>{
+          setUserRoleName(userLoginRoleName)
+          if(userLoginRoleName === 'SuperAdmin' ||  userLoginRoleName === 'Teacher' ) {
+            setAllSchAdmin(true)
+          }
+          else{
+            setAllSchAdmin(false)
+          }
+        },[])
+
+
+
 	return (
 		<div className="flex items-center space-x-3">
-			<div
+			{allSchAdmin &&(<div
 				onClick={toggleValue}
 				className={`relative w-12 h-6 flex items-center rounded-full cursor-pointer transition-colors duration-300 ${
 					isPresent ? "bg-success" : "bg-danger"
@@ -469,7 +501,7 @@ const ToggleSwitch = ({ status, studentID, updateAttendanceData }) => {
 						isPresent ? "translate-x-6" : "translate-x-1"
 					}`}
 				></div>
-			</div>
+			</div>)}
 			<span className="text-sm font-medium w-16 text-center">
 				{isPresent ? "Present" : "Absent"}
 			</span>

@@ -224,7 +224,7 @@ const HostelAttendance = () => {
       
         useEffect(()=>{
           setUserRoleName(userLoginRoleName)
-          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Principal') {
+          if(userLoginRoleName === 'SuperAdmin' ) {
             setAllSchAdmin(true)
           }
           else{
@@ -386,9 +386,40 @@ const ToggleSwitch = ({ status, studentId, updateAttendanceData }) => {
         updateAttendanceData(studentId)
 	};
 
+      
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+    const [allSchAdmin, setAllSchAdmin] = useState(false)
+
+    
+        const loginValue = localStorage.getItem('loginData')
+        let  parsedLoginValue
+        let   roleName
+        let   fullName
+        if (loginValue) {
+           parsedLoginValue = JSON.parse(loginValue);
+            roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+            fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+          console.log(parsedLoginValue.roleName, 'loginValue');
+        } else {
+          console.log('No login data found');
+        }
+      
+         const userLoginRoleName = parsedLoginValue.roleName
+      
+        useEffect(()=>{
+          setUserRoleName(userLoginRoleName)
+          if(userLoginRoleName === 'SuperAdmin' ) {
+            setAllSchAdmin(true)
+          }
+          else{
+            setAllSchAdmin(false)
+          }
+        },[])
+
+
 	return (
 		<div className="flex items-center space-x-3">
-			<div
+			{allSchAdmin &&(<div
 				onClick={toggleValue}
 				className={`relative w-12 h-6 flex items-center rounded-full cursor-pointer transition-colors duration-300 ${
 					isPresent ? "bg-success" : "bg-danger"
@@ -399,7 +430,7 @@ const ToggleSwitch = ({ status, studentId, updateAttendanceData }) => {
 						isPresent ? "translate-x-6" : "translate-x-1"
 					}`}
 				></div>
-			</div>
+			</div>)}
 			<span className="text-sm font-medium w-16 text-center">
 				{isPresent ? "Present" : "Absent"}
 			</span>

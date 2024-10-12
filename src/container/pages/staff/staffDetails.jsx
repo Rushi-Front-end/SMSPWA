@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
@@ -6,6 +6,7 @@ import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { UserRoleNameContext } from '../../../components/common/context/userRoleContext';
 
 
 const StaffDetails = () => {
@@ -117,6 +118,36 @@ const StaffDetails = () => {
             console.error("Error fetching data:", error);
         }
     }
+
+    const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
+    const [allSchAdmin, setAllSchAdmin] = useState(false)
+
+    
+        const loginValue = localStorage.getItem('loginData')
+        let  parsedLoginValue
+        let   roleName
+        let   fullName
+        if (loginValue) {
+           parsedLoginValue = JSON.parse(loginValue);
+            roleName = parsedLoginValue.roleName || ''; // Default to empty string if undefined
+            fullName = parsedLoginValue.fullName || ''; // Default to empty string if undefined
+          console.log(parsedLoginValue.roleName, 'loginValue');
+        } else {
+          console.log('No login data found');
+        }
+      
+         const userLoginRoleName = parsedLoginValue.roleName
+      
+        useEffect(()=>{
+          setUserRoleName(userLoginRoleName)
+          if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Admin') {
+            setAllSchAdmin(true)
+          }
+          else{
+            setAllSchAdmin(false)
+          }
+        },[])
+
      
     return (
         <div>
@@ -197,11 +228,11 @@ const StaffDetails = () => {
 
                             </div>
                         </div>
-                        <div className="stud-create-btn">
+                        {allSchAdmin &&(<div className="stud-create-btn">
                             <Link to={`${import.meta.env.BASE_URL}pages/staff/createStaff`}>
                                 <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Add Staff</button>
                             </Link>
-                        </div>
+                        </div>)}
                     </div>
                     {/* Top section end */}
                     {/* Top section end */}

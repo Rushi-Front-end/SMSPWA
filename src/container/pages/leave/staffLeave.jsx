@@ -142,7 +142,7 @@ const StaffLeave = () => {
     
       useEffect(()=>{
         setUserRoleName(userLoginRoleName)
-        if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Admin' || userLoginRoleName === 'Principal') {
+        if(userLoginRoleName === 'SuperAdmin' ) {
           setAllSchAdmin(true)
         }
         else{

@@ -13,7 +13,7 @@ const AllSchool = () => {
      const [spinner, setSpinner] = useState(false)
      const [deleteData, setDeleteData] = useState()
      const [updateSchool, setUpdateSchool] = useState(true)
-     const [allSchAdmin, setAllSchAdmin] = useState(false)
+     const [allSchAdmin, setAllSchAdmin] = useState(false) 
 
      const { userRoleName, setUserRoleName } = useContext(UserRoleNameContext)
      
