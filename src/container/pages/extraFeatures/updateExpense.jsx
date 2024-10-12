@@ -131,6 +131,7 @@ const UpdateExpense = () => {
         }
         formDataToSend.append('category', otherField ? otherValue : formData.category);
         formDataToSend.append('schoolId', schoolId);
+       
 
         axios.put(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/UpdatetExpenses/${params.id}`, formDataToSend, {
             headers: {

@@ -228,7 +228,7 @@ console.log(reportName, 'reportName')
                     url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetExpenseReports');
                     break;
                 default:
-                    url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetHostelAttendanceReports');
+                    url = new URL('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Report/GetExamReport');
             }
 
             // Append parameters to URL

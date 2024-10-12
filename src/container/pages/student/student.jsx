@@ -258,7 +258,7 @@ const Student = () => {
                                         <th scope="col" className="text-start">Student ID</th>
                                         <th scope="col" className="text-start">Academic Year</th>
                                         <th scope="col" className="text-start">Student Name</th>
-                                        {/* <th scope="col" className="text-start">Date Of Birth</th> */}
+                                        <th scope="col" className="text-start">School Name</th>
                                         <th scope="col" className="text-start">Class Admitted To</th>
                                         {/* <th scope="col" className="text-start">Aadhar Card No.</th> */}
                                         {allSchAdmin && (<th scope="col" className="text-start">Action</th>)}
@@ -289,14 +289,17 @@ ti-btn-sm ti-btn-light"><i className="ri-edit-line"></i>
                                                     <td>{++index}</td>
                                                     <td>{dt.id}</td>
                                                     <td>{dt.academicYear}</td>
+
                                                     <td>
                                                         <Link className='text-primary' to={`${import.meta.env.BASE_URL}pages/student/studentIndDetails/${dt.id}`}>
                                                             {dt.fullName}
                                                         </Link>
                                                     </td>
+                                                    <td>{dt.schoolName}</td>
                                                     {/* <td>{dt.dob}</td> */}
                                                     <td>{dt?.className || 'Unknown'}- {dt?.sectionName || 'Unknown'}</td>
                                                     {/* <td>{dt.aadhar}</td> */}
+                                                  
                                                     {allSchAdmin && (<td>
                                                         <div className="hstack flex gap-3 text-[.9375rem]">
                                                     <div className="ti-dropdown hs-dropdown">

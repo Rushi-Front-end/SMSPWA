@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { IdContext } from '../../../components/common/context/idContext';
+import { IdContext, useSchoolId } from '../../../components/common/context/idContext';
 
 
 
@@ -43,8 +43,7 @@ const [data, setData] = useState([]);
     });
 
     const navigate = useNavigate()
-    const schoolIdDrop = useContext(IdContext);
-    console.log(schoolIdDrop.id,"UseCONTEXT")
+    const {id: schoolId} = useSchoolId();
 
 
     const { field: { value: examTypeValue, onChange: examTypeOnChange, ...restexamTypeField } } = useController({ name: 'examType', control });
@@ -56,7 +55,7 @@ const [data, setData] = useState([]);
         setData({...formData})
         axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam`, {
             ...formData,
-            schoolId:4,
+            schoolId:schoolId,
             fromDate: formatDate(startDate), // Ensure format is correct
             toDate: formatDate(endDate),
             createdBy:4
