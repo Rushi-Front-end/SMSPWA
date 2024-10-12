@@ -41,8 +41,6 @@ const schema = yup.object({
 
 
 const CreateHealth = () => {
-    const [startDate, setStartDate] = useState(new Date());
-    const [startDate1, setStartDate1] = useState(new Date());
     const [data, setData] = useState([]);
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema),
@@ -237,13 +235,11 @@ const CreateHealth = () => {
                                                 render={({ field }) => (
                                                     <DatePicker
                                                         {...field}
-                                                        selected={startDate}
                                                         dateFormat="dd/MM/yyyy"
                                                         showMonthDropdown="true"
                                                         showYearDropdown="true"   
 
                                                         onChange={(date) => {
-                                                            setStartDate(date);
                                                             field.onChange(formatDate(date));
                                                         }}
                                                         
@@ -264,13 +260,11 @@ const CreateHealth = () => {
                                                 render={({ field }) => (
                                                     <DatePicker
                                                         {...field}
-                                                        selected={startDate1}
                                                         dateFormat="dd/MM/yyyy"
                                                         showMonthDropdown="true"
                                                         showYearDropdown="true"   
 
                                                         onChange={(date) => {
-                                                            setStartDate1(date);
                                                             field.onChange(formatDate(date));
                                                         }}
                                                         
