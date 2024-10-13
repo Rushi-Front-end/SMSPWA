@@ -29,7 +29,7 @@ const HosteliteLeave = () => {
                 setData(res.data)
                 setSpinner(false)
                 const initialStatusMap = res.data.reduce((acc, leave) => { //leave will return single value
-                    acc[leave.id] = leave.status; // Assuming each leave has an id and status
+                    acc[leave.hostelOutPassId] = leave.status; // Assuming each leave has an id and status
                     return acc;
                 }, {});
                 setStatusMap(initialStatusMap);
@@ -53,9 +53,9 @@ const HosteliteLeave = () => {
         //  .catch(err => console.log(err));
     }
 
-    const deleteHostelLeave = (id) => {
-        setDeleteLeav(id)
-    }
+    // const deleteHostelLeave = (id) => {
+    //     setDeleteLeav(id)
+    // }
 
     const deleteDatahandler = (data) => {
          console.log(data, "DeleeLeave")
@@ -70,6 +70,7 @@ const HosteliteLeave = () => {
     }
 
     const deleteStaffLeave = (id) => {
+        console.log(id,"dadasdasd")
         setDeleteLeav(id)
     }
    
@@ -281,8 +282,8 @@ const HosteliteLeave = () => {
                                                     <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
                                                                     {/* <li><Link className="ti-dropdown-item" to="#"onClick={() => handleStatusChange(dt.id, 'Approved')} >Approve</Link></li>
                                                                     <li><Link className="ti-dropdown-item" to="#" onClick={() => handleStatusChange(dt.id, 'Rejected')}>Reject</Link></li> */}
-                                                                    <li><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/leave/updateHosteliteLeave/${dt.id}`}>Edit</Link></li>
-                                                                    <li><Link className="ti-dropdown-item" to="#" data-hs-overlay={`#hs-vertically-centered-modal${dt.id}`} onClick={()=>deleteStaffLeave(dt.id)}>Cancel</Link></li>
+                                                                    <li><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/leave/updateHosteliteLeave/${dt.hostelOutPassId}`}>Edit</Link></li>
+                                                                    <li><Link className="ti-dropdown-item" to="#" data-hs-overlay={`#hs-vertically-centered-modal${dt.hostelOutPassId}`} onClick={()=>deleteStaffLeave(dt.hostelOutPassId)}>Cancel</Link></li>
                                                                 </ul>
                                                 </div>
                                             </td>)}

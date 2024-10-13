@@ -1,17 +1,17 @@
 import React from 'react'
 
-const HostelReport = ({reportGenData}) => {
+const StudentAttendanceReport = ({reportGenData}) => {
   return (
-    <div className='generated-report-wrapper'>
+    <div>
+         <div className='generated-report-wrapper'>
     <table className="table border table-bordered  whitespace-nowrap table-sm min-w-full">
                              <thead><tr className="border-b border-defaultborder">
                                  <th scope="col" className="text-start">SrNo</th>
-                                 <th scope="col" className="text-start"> Hostel Name</th>
-                                 <th scope="col" className="text-start">Total Students	</th>
-                                 <th scope="col" className="text-start">School Name	</th>
+                                 <th scope="col" className="text-start"> Total Students</th>
                                  <th scope="col" className="text-start">Present Students	</th>
                                  <th scope="col" className="text-start">Absent Students	</th>
-                                 <th scope="col" className="text-start">Attendance Percentage</th>
+                                 <th scope="col" className="text-start">Attendance Percentage	</th>
+                                 <th scope="col" className="text-start">School Name	</th>
                              </tr>
                              </thead>
 
@@ -19,13 +19,12 @@ const HostelReport = ({reportGenData}) => {
                              {
                                  reportGenData.map((dt,index)=>{
                                      return <tr key={index}>
-                                         <td className="text-start">{index + 1}</td>
-                                         <td className="text-start">{dt.hostelName}</td>
+                                          <td className="text-start">{index + 1}</td>
                                          <td className="text-start">{dt.totalStudents}</td>
-                                         <td className="text-start">{dt.schoolName}</td>
                                          <td className="text-start">{dt.presentStudents}</td>
                                          <td className="text-start">{dt.absentStudents}</td>
                                          <td className="text-start">{dt.attendancePercentage}</td>
+                                         <td className="text-start">{dt.schoolName}</td>
 
                                      </tr>
                                  })
@@ -33,7 +32,8 @@ const HostelReport = ({reportGenData}) => {
                             </tbody>
                          </table>
     </div>
+    </div>
   )
 }
 
-export default HostelReport
+export default StudentAttendanceReport

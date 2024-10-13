@@ -22,9 +22,9 @@ const ExamReport = ({reportGenData}) => {
                                         return <tr key={index}>
                                             <td className="text-start">{index+1}</td>
                                             <td className="text-start">{dt.date}</td>
-                                            <td className="text-start">{dt.noOfFailedStudent}</td>
-                                            <td className="text-start">{dt.noOfPassedStudent}</td>
                                             <td className="text-start">{dt.totalAppearedStudent}</td>
+                                            <td className="text-start">{dt.noOfPassedStudent}</td>
+                                            <td className="text-start">{dt.noOfFailedStudent}</td>
 
                                         </tr>
                                     })
