@@ -246,8 +246,8 @@ const Option4 = {
     },
     datalabels: {  // Add this section
       color: '#000',  // Set text color to white
-      anchor: 'end',
-      align: 'end',
+      // anchor: 'end',
+      // align: 'end',
       formatter: (value, context) => {
         return value !== 0 ? value : ''; // Avoid showing labels for zero values
       }
@@ -322,8 +322,8 @@ const OptionStaff = {
     },
     datalabels: {  // Add this section
       color: '#000',  // Set text color to white
-      anchor: 'end',
-      align: 'end',
+      // anchor: 'end',
+      // align: 'end',
       formatter: (value, context) => {
         return value !== 0 ? value : ''; // Avoid showing labels for zero values
       }
