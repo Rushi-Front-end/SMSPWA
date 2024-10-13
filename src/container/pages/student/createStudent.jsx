@@ -206,6 +206,10 @@ const CreateStudent = () => {
                 formDataToSend.append('imageURL', file);
             }
 
+            // if(!formData.sectionId) {
+            //     formDataToSend.append('sectionId', null)
+            // }
+
             // Post the data
             const response = await axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students', formDataToSend, {
                 headers: {

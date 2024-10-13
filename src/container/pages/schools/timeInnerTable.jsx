@@ -150,6 +150,8 @@ const TimeTableEntry = ({
 	const [staff, setStaff] = useState("");
 	const [staffList, setStaffList] = useState([]);
 
+	const {id: schoolId, name: schoolName, prakalpName} = useSchoolId();
+
 	useEffect(() => {
 		(async () => {
 			await fetchSubjects();
@@ -194,8 +196,8 @@ const TimeTableEntry = ({
 			);
 
 			const staffListData = staffResponse.data;
-
-			setStaffList(staffListData);
+			const filteredStaffList = staffListData.filter(staff => staff.schoolID == schoolId)
+			setStaffList(filteredStaffList);
 		} catch (err) {
 			setStaffList([]);
 		}
@@ -231,6 +233,9 @@ const TimeTableEntry = ({
 					subject: subjectName,
 					subjectType: subjectType,
 					teacherID: staff.roleID,
+					prakalpName: prakalpName,
+					schoolName: schoolName,
+					className: selectedOption.label,
 				}
 			);
 			disableInputs()
@@ -247,6 +252,9 @@ const TimeTableEntry = ({
 					subject: subjectName,
 					subjectType: subjectType,
 					teacherID: staff.roleID,
+					prakalpName: prakalpName,
+					schoolName: schoolName,
+					className: selectedOption.label,
 				}
 			);
 			removeAddNew(newIndex);
