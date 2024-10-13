@@ -51,7 +51,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   }, []);
   //
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const { id, setId } = useContext(IdContext);
+  const { setId, setName, setPrakalpName } = useContext(IdContext);
   const { dashId, setDashId } = useContext(AllDashIdContext);
   const { dashIdCheck, setDashIdCheck } = useContext(AllDashIdContext);
 
@@ -403,6 +403,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
         const initialPrakalp = schoolPrakalpOptions[0];
         setSelectedPrakalValue(initialPrakalp);
         setPrakalpId(initialPrakalp.value);
+        setPrakalpName(initialPrakalp.value)
       } catch (err) {
         setSchoolPrakalpList([]);
       }
@@ -435,6 +436,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
           const initialSchool = filteredSchoolOptions[0];
           setSelectedValue(initialSchool);
           setId(initialSchool.id);
+          setName(initialSchool.value)
         } catch (err) {
           setSchoolDataList([]);
         }
@@ -447,12 +449,14 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
   const schoolPrakalpDown = (selectedOption) => {
     setSelectedPrakalValue(selectedOption);
     setPrakalpId(selectedOption.value);
+    setPrakalpName(selectedOption.value)
   };
 
   const schoolDropDown = (selectedOption) => {
     console.log(selectedOption.id,'SChoooooo')
     setSelectedValue(selectedOption);
     setId(selectedOption.id);
+    setName(selectedOption.value);
   };
   
  
