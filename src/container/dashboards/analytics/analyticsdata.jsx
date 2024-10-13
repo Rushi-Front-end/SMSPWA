@@ -244,6 +244,14 @@ const Option4 = {
       display: true,
        position:'bottom'
     },
+    datalabels: {  // Add this section
+      color: '#000',  // Set text color to white
+      anchor: 'end',
+      align: 'end',
+      formatter: (value, context) => {
+        return value !== 0 ? value : ''; // Avoid showing labels for zero values
+      }
+    },
   },
 };
 
@@ -305,75 +313,73 @@ export function Chartjsdonut() {
 }
 //donut
 const OptionStaff = {
-
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
       display: true,
-       position:'bottom'
+      position: 'bottom',
+    },
+    datalabels: {  // Add this section
+      color: '#000',  // Set text color to white
+      anchor: 'end',
+      align: 'end',
+      formatter: (value, context) => {
+        return value !== 0 ? value : ''; // Avoid showing labels for zero values
+      }
     },
   },
 };
 
 const Data5 = (staffData) => ({
-  type: 'donut',
   labels: ['Total Staff', 'Present', 'Absent'],
   datasets: [{
     label: 'Staff',
-    data: [staffData.totalStudent, staffData.presentCount, staffData.absentCount],
-    //data: ['100', '80', '15'],
+    data: [
+      staffData.totalStaff || 0,
+      staffData.presentCount || 0,
+      staffData.absentCount || 0,
+    ],
     backgroundColor: [
       'rgb(132, 90, 223)',
       'rgb(35, 183, 229)',
-      'rgb(255, 99, 132)', // Updated to a valid color
+      'rgb(255, 99, 132)',
     ],
     hoverOffset: 1,
   }],
 });
 
 export function Chartjsdonut1() {
-
   const [staffData, setStaffData] = useState(null);
-  const {id: schoolId} = useSchoolId();
-  const {dashId: dashIDAll} = useDashId();
-  const {dashIdCheck: dashIDCheckAll} = useDashId();
+  const { id: schoolId } = useSchoolId();
+  const { dashId: dashIDAll } = useDashId();
+  const { dashIdCheck: dashIDCheckAll } = useDashId();
 
   useEffect(() => {
     const fetchStaffData = async () => {
       try {
+        const dashURL = dashIDCheckAll
+          ? axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph', { schoolId: dashIDAll })
+          : axios.post('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph', { schoolId: JSON.stringify(schoolId) });
 
-        let dashURL;
-        if (dashIDCheckAll) {
-          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph`,{
-            schoolId:dashIDAll
-          });
-        } else {
-          dashURL = axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/DashBoard/GetStaffAttendanceGraph`,{
-            schoolId:JSON.stringify(schoolId)
-          });
-        }
-        
-        const response = await dashURL; // Replace with your API URL
+        const response = await dashURL;
         const data = response.data;
+        console.log('Staff Data:', data); // Check here for correct values
         setStaffData(data);
       } catch (error) {
-        console.error('Error fetching student data:', error);
+        console.error('Error fetching staff data:', error);
       }
     };
 
     fetchStaffData();
   }, [schoolId, dashIDCheckAll]);
 
-  // Show a loading state while data is being fetched
   if (!staffData) {
     return <div>Loading...</div>;
   }
-  
 
   return <Doughnut options={OptionStaff} data={Data5(staffData)} height='300px' />;
 }
-
 
 // line chart expense
 const optionExpense = {
