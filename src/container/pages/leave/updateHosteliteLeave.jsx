@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { leaveType } from '../../forms/formelements/formselect/formselectdata';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 // Validation Schema
 const schema = yup.object({
@@ -40,6 +41,7 @@ const UpdateHosteliteLeave = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
     const [studentNameDrop, setstudentNameDrop] = useState([]);
+    const {id: schoolId} = useSchoolId();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -56,22 +58,24 @@ const UpdateHosteliteLeave = () => {
     
     const { errors } = formState;
 
-    // Fetch staff names
-    const getStudentName = () => {
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
-            .then(res => {
-                const studentOptions = res.data.map(student => ({
-                    value: student.id,
-                    label: student.fullName
-                }));
-                setstudentNameDrop(studentOptions);
-            })
-            .catch(err => console.log(err));
-    };
+  // Fetch staff names
+  const getStudentName = () => {
+    axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
+        .then(res => {
+            const studentOptions = res.data.filter(el => el.schoolId == schoolId).map(student => ({
+                value: student.id,
+                label: student.fullName
+            }));
+            setstudentNameDrop(studentOptions);
+        })
+        .catch(err => console.log(err));
+};
 
-    useEffect(() => {
+useEffect(() => {
+    if(schoolId)
         getStudentName();
-    }, []);
+}, [schoolId]);
+
 
     useEffect(() => {
         if (params.id) {

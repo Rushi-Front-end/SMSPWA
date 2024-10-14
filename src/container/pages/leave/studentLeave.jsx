@@ -113,6 +113,7 @@ const StudentLeave = () => {
             console.error("Error fetching data:", error);
         }
     }
+ 
     const getStudentName = async () => {
         try {
             const studentsRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');

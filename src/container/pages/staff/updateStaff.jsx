@@ -52,18 +52,18 @@ const UpdateStaff = () => {
     const [data, setData] = useState({})
     const [file, setFile] = useState();
     const [staffRole, setStaffRole] = useState()
-
+    const [currentImage, setCurrentImage] = useState(null); // To store the current image URL
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(new Date());
     const [startDate1, setStartDate1] = useState(new Date());
 
     const profileImage = (e) => {
-        console.log(e.target.files[0], "Image URL");
         const selectedFile = e.target.files[0];
         if (selectedFile) {
             setFile(selectedFile); // Store the file directly
+            setCurrentImage(URL.createObjectURL(selectedFile)); // Create a local URL for preview
         }
-    }
+    };
 
     const { register, handleSubmit,  formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema)
@@ -169,9 +169,9 @@ useEffect(()=>{
 //   }
 
   // Handle the image URL if it exists
-  if (editStaff.imageUrl) {
-    setFile(editStaff.imageUrl); // Assuming you want to set the image URL for display
-  }     
+  if (editStaff.ProfileImage) {
+    setCurrentImage(editStaff.ProfileImage); // Set the current image URL
+} 
       }
     })
     .catch((err)=>{
@@ -195,7 +195,7 @@ useEffect(()=>{
 
         // If there's an image file, append it
         if (file) {
-            formDataToSend.append('imageUrl', file); // Assuming 'file' is the image URL or file object
+            formDataToSend.append('ProfileImage', file); // Assuming 'file' is the image URL or file object
         }
 
         // Append additional fields as necessary
@@ -283,7 +283,7 @@ const roleChange = (option) => {
                     <div className='staff-profile-uploads pt-4'>
                         <div className='staff-profile-wrap flex items-center'>
                             <div className='left-side-profile-pic'>
-                            {file && <img src={file} alt="Staff" className="img-fluid !rounded-full profile-image !inline-flex" />}
+                            {currentImage && <img src={currentImage} alt="Profile" style={{ width: '100px', height: '100px' }} />}
                             </div>
                             <div className='right-side-upload-pic'>
                                 <p>Upload Staff Photo (150px X 150px)</p>

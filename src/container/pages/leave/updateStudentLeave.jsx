@@ -77,6 +77,8 @@ const UpdateStudentLeave = () => {
             getStudentName();
     }, [schoolId]);
 
+    console.log(params.id,"sdadasdasd")
+
     useEffect(() => {
         if (params.id) {
             axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentLeave/GetStudentLeaveById/${params.id}`)

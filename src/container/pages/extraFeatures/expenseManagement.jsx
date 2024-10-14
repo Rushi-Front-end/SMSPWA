@@ -318,6 +318,7 @@ const ExpenseManagement = () => {
                                                                 <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
                                                                     {/* <li><Link className="ti-dropdown-item" to="#">Approve</Link></li>
                                                                     <li><Link className="ti-dropdown-item" to="#">Reject</Link></li> */}
+                                                                    <li>  <Link className='ti-dropdown-item ' data-hs-overlay="#hs-vertically-centered-modal">View</Link></li>
                                                                     <li><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/extraFeatures/updateExpense/${dt.id}`}>Edit</Link></li>
                                                                     <li>
                                                                         <Link

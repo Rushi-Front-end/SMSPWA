@@ -35,6 +35,7 @@ const UpdateExpense = () => {
     const [data, setData] = useState([]);
     const [otherValue, setOtherValue] = useState('');
     const [file, setFile] = useState(null);
+    const [invoiceFileURL, setInvoiceFileURL] = useState('');
     const { register, handleSubmit, formState, control, setValue, reset } = useForm({
         resolver: yupResolver(schema)
     });
@@ -86,6 +87,7 @@ const UpdateExpense = () => {
                 Object.keys(classData).forEach(key => {
                     setValue(key, classData[key]);
                 });
+                setInvoiceFileURL(classData.invoiceFileURL); // Assuming your API response has this
                  // Check for the category and set otherValue accordingly
                  if (classData.category === 'Other') {
                     setOtherField(true);
@@ -271,6 +273,13 @@ const UpdateExpense = () => {
                                 <label htmlFor="input-text" className="form-label">Invoice<span className='redText'>*</span></label>
                                 <div>
                                 <label htmlFor="file-input" className="sr-only">Choose file</label>
+                                {invoiceFileURL && (
+                                            <div className="mb-2">
+                                                <a href={invoiceFileURL} target="_blank" rel="noopener noreferrer">
+                                                    View Invoice
+                                                </a>
+                                            </div>
+                                        )}
                                 <input name='invoice' type="file" id="file-input" className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/50
                                        file:border-0
                                       file:bg-light file:me-4

@@ -87,7 +87,9 @@ const CreateStaff = () => {
     const profileImage = (e) => {
         console.log(e.target.files[0].name, "Image URL");
         //setFile(URL.createObjectURL(e.target.files[0]));
-        setFile(e.target.files[0].name);
+        if (e.target.files.length > 0) {
+            setFile(URL.createObjectURL(e.target.files[0])); // Store the actual file object
+        }
     }
 
     const { register, handleSubmit,  formState, control, setValue, reset } = useForm({
@@ -149,7 +151,7 @@ const CreateStaff = () => {
     
             // If there's an image file, append it
             if (file) { // Assuming imageFile is your state for the uploaded image
-                formDataToSend.append('profileImage', file);
+                formDataToSend.append('ProfileImage', file);
             }
     
             // Append additional fields as necessary

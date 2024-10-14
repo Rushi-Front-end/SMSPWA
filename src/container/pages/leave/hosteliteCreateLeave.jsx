@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 const schema = yup.object({
@@ -44,6 +45,7 @@ const HosteliteCreateLeave = () => {
             comment: ''
         }
     });
+    const {id: schoolId} = useSchoolId();
 
     const navigate = useNavigate();
 
@@ -60,22 +62,23 @@ const HosteliteCreateLeave = () => {
         setStartDate1(dateChange);
         setValue("toDate", formatDate(dateChange), { shouldDirty: true });
     };
-
     const getStudentName = () => {
         axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
             .then(res => {
-                const outpassOptions = res.data.map(outpass => ({
-                    value: outpass.id,
-                    label: outpass.fullName
+                const studentOptions = res.data.filter(el => el.schoolId == schoolId).map(student => ({
+                    value: student.id,
+                    label: student.fullName
                 }));
-                setStudentNameDrop(outpassOptions);
+                setStudentNameDrop(studentOptions);
             })
             .catch(err => console.log(err));
     };
 
     useEffect(() => {
-        getStudentName();
-    }, []);
+        if(schoolId)
+            getStudentName();
+    }, [schoolId]);
+
 
     const onSubmit = (formData) => {
         console.log('Submitting form data:', formData);
