@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 
 const schema = yup.object({
@@ -42,6 +43,8 @@ const [staffNameDrop, setStaffNameDrop] = useState([]);
         resolver: yupResolver(schema)
     });
 
+    const {id: schoolId} = useSchoolId();
+
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -63,7 +66,7 @@ const [staffNameDrop, setStaffNameDrop] = useState([]);
       };
 
       const getStaffName = () => {
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff/GetStaffBySearchFilter?schoolId=${schoolId}`)
             .then(res => {
                 console.log(res, 'classDATA')
                 const staffOptions = res.data.map(staff => ({
@@ -75,8 +78,9 @@ const [staffNameDrop, setStaffNameDrop] = useState([]);
             .catch(err => console.log(err));
       }
       useEffect(()=>{
-        getStaffName()
-      },[])
+        if(schoolId)
+            getStaffName()
+      },[schoolId])
 
 
     const onSubmit = (formData) => {
