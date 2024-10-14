@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { leaveType } from '../../forms/formelements/formselect/formselectdata';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 // Validation Schema
 const schema = yup.object({
@@ -41,6 +42,7 @@ const UpdateLeave = () => {
     const [staffNameDrop, setStaffNameDrop] = useState([]);
 const [staffId, setStaffID] = useState(null);
 
+    const {id: schoolId} = useSchoolId();
 
     const params = useParams();
     const navigate = useNavigate();
@@ -57,7 +59,7 @@ const [staffId, setStaffID] = useState(null);
 
     // Fetch staff names
     const getStaffName = () => {
-        axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff')
+        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Staff/GetStaffBySearchFilter?schoolId=${schoolId}`)
             .then(res => {
                 const staffOptions = res.data.map(staff => ({
                     value: staff.id,
@@ -69,8 +71,9 @@ const [staffId, setStaffID] = useState(null);
     };
 
     useEffect(() => {
-        getStaffName();
-    }, []);
+        if(schoolId)
+            getStaffName();
+    }, [schoolId]);
 
     useEffect(() => {
         if (params.id) {
