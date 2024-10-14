@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 const schema = yup.object({
     studentName: yup.string().nullable().required("Please Select Student Name"),
@@ -43,6 +44,8 @@ const CreateStudentLeave = () => {
         }
     });
 
+    const {id: schoolId} = useSchoolId();
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -63,7 +66,7 @@ const CreateStudentLeave = () => {
     const getStudentName = () => {
         axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
             .then(res => {
-                const studentOptions = res.data.map(student => ({
+                const studentOptions = res.data.filter(el => el.schoolId == schoolId).map(student => ({
                     value: student.id,
                     label: student.fullName
                 }));
@@ -73,8 +76,9 @@ const CreateStudentLeave = () => {
     };
 
     useEffect(() => {
-        getStudentName();
-    }, []);
+        if(schoolId)
+            getStudentName();
+    }, [schoolId]);
 
     const onSubmit = (formData) => {
         console.log('Submitting form data:', formData);

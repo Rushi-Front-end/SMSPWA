@@ -25,72 +25,38 @@ const StudentLeave = () => {
     const [healthClassName, setHealthClassName] = useState([]);
     const {id: schoolId} = useSchoolId();
 
-    useEffect(() => {
-        const fetchStudentAndClass = async () => {
-            try {
-              const studentLeavesRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentLeave/GetAllStudentLeave')
-              const studentLeavesData = studentLeavesRes.data
-              
-              const studentRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students');
-              const studentData = studentRes.data;
-  
-              const classRes = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class')
-              const classNameData = classRes.data
-  
-              const studentClassIDs = studentLeavesData.map(attendance => {
-                  const student = studentData.find(student => student.id === attendance.studentID);
-                  return student ? student.classID : null;
-              }).filter(Boolean); // Remove null values
-              
-              // Filter classData based on the classID from students
-              const filteredClassData = classNameData
-                  .filter(classDataItem => studentClassIDs.includes(classDataItem.id))
-                  .map(classDataItem => ({
-                      id: classDataItem.id,
-                      value: classDataItem.id,
-                      label: classDataItem.className
-                  }));
-              
-              setClassOptions(filteredClassData);
-              
-  
-            } catch (error) {
-              console.error('Error fetching data:', error);
-            }
-          };
-      
-          fetchStudentAndClass();
-    }, []);
+    const getClassData = async () => {
+		try {
+			const classRes = await axios.get(
+				`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Class/GetClassBySchoolId/${schoolId}`
+			);
+			const classData = classRes.data;
 
-    const getStudentList = () => {
-        setSpinner(true)
-        axios.get(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentLeave/GetStudentLeaveByFilter?SchoolId=${schoolId}`)
-            .then(res => {
-                setData(res.data)
-                setSpinner(false)
-                const initialStatusMap = res.data.reduce((acc, leave) => { //leave will return single value
-                    acc[leave.id] = leave.status; // Assuming each leave has an id and status
-                    return acc;
-                }, {});
-                setStatusMap(initialStatusMap);
-            })
-            .catch(err => console.log(err))
-        }
-        const handleStatusChange = (id, newStatus) => {
-            // Update the status locally
-            setStatusMap(prevStatusMap => ({
-            ...prevStatusMap,
-            [id]: newStatus
-        }));
-         // Optionally, update the status on the server
-        //  axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StaffLeave/UpdateStatus`, { id, status: newStatus })
-        //  .then(res => {
-        //      if (res.status === 200) {
-        //          // Optionally handle successful status update
-        //      }
-        //  })
-        //  .catch(err => console.log(err));
-    }
+			// Class array
+			const classOptionsList = classData.reduce((acc, item) => {
+				// Check if classId already exists in the array to avoid duplicates
+				if (!acc.some((c) => c.id === item.classId)) {
+					acc.push({
+						id: item.classId,
+						value: item.classId,
+						label: item.className,
+					});
+				}
+				return acc;
+			}, []);
+
+            setClassFilter(classOptionsList[0])
+            setClassOptions(classOptionsList)
+            handleFilter({initialClass: classOptionsList[0]})
+		} catch (error) {
+			console.error("Error fetching class:", error);
+		}
+	};
+
+    useEffect(() => {
+        if(schoolId) 
+            getClassData()
+    }, [schoolId])
 
     const deleteStudentLeave = (id) => {
         setDeleteLeav(id)
@@ -101,26 +67,27 @@ const StudentLeave = () => {
          axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentLeave/DeleteStudentLeave/${data}`)
          .then((res)=>{
             if(res.status === 200){
-                getStudentList()
+                handleFilter()
                 toast.success('Student Delete Data Successfully')
             }
          }) 
 
     }
 
-   
-    useEffect(() => {
-        getStudentList()
-    }, [schoolId])
-
-    const handleFilter = async () => {
+    const handleFilter = async ({ initialClass }) => {
         let params = [];
+
+        if (schoolId) {
+            params.push(`SchoolId=${schoolId}`)
+        }
     
         if (searchFilter) {
             params.push(`Name=${encodeURIComponent(searchFilter)}`);
         }
     
-        if (classFilter) {
+        if (initialClass) {
+            params.push(`ClassId=${initialClass.value}`)
+        } else if (classFilter) {
             params.push(`ClassId=${classFilter.value}`);
         }
     
