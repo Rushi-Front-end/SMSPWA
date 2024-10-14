@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { leaveType, studentLeave } from '../../forms/formelements/formselect/formselectdata';
+import { useSchoolId } from '../../../components/common/context/idContext';
 
 // Validation Schema
 const schema = yup.object({
@@ -41,6 +42,8 @@ const UpdateStudentLeave = () => {
     const [studentNameDrop, setstudentNameDrop] = useState([]);
     const [studentId, setStudentID] = useState(null);
 
+    const {id: schoolId} = useSchoolId();
+
     const params = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -60,7 +63,7 @@ const UpdateStudentLeave = () => {
     const getStudentName = () => {
         axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Students')
             .then(res => {
-                const studentOptions = res.data.map(student => ({
+                const studentOptions = res.data.filter(el => el.schoolId == schoolId).map(student => ({
                     value: student.id,
                     label: student.fullName
                 }));
@@ -70,8 +73,9 @@ const UpdateStudentLeave = () => {
     };
 
     useEffect(() => {
-        getStudentName();
-    }, []);
+        if(schoolId)
+            getStudentName();
+    }, [schoolId]);
 
     useEffect(() => {
         if (params.id) {
@@ -116,7 +120,6 @@ const UpdateStudentLeave = () => {
         .then(res => {
             if (res.status === 200) {
                 navigate(`${import.meta.env.BASE_URL}pages/leave/studentLeave`);
-                axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentLeave/GetAllStudentLeave')
                 toast.success("Student Data Updated Successfully");
             }
         })
