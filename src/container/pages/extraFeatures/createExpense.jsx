@@ -58,7 +58,7 @@ const CreateExpense = () => {
 
     const profileImage = (e) => {
         console.log(e.target.files[0].name, "Image URL");
-        setFile(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
     }
 
 
@@ -71,7 +71,7 @@ const CreateExpense = () => {
         data.append('note', formData.note);
         data.append('date', formData.date);
         if (file) {
-            data.append('invoice', file);
+            data.append('file', file);
         }
     
         axios.post(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Expenses/CreateExpenses`, data, {

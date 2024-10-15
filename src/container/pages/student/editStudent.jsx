@@ -85,6 +85,7 @@ const EditStudent = () => {
     const [classOptions, setClassOptions] = useState([])
     const [sectionOptions, setSectionOptions] = useState([])
     const [file, setFile] = useState();
+    const [imagePreview, setImagePreview] = useState();
 
 
     const {id:schoolId} = useSchoolId()
@@ -185,6 +186,7 @@ useEffect(()=>{
           Object.keys(editStudent).forEach(key => {
             setValue(key, editStudent[key]);
         });
+        setImagePreview(editStudent.imageUrl)
 
         // setValue('id', editStudent.id);
         // setValue('academicYear', editStudent.academicYear);
@@ -236,7 +238,7 @@ useEffect(()=>{
         formDataToSend.set('enrolmentDate', formatDate(new Date(formatDate2(formData.enrolmentDate))));
         formDataToSend.set('toDate', formatDate(new Date(formatDate2(formData.toDate))));
 
-        formDataToSend.append('image', file); // Ensure the key matches your API expectations
+        formDataToSend.append('ProfileImage', file); // Ensure the key matches your API expectations
         // Append the image file if it exists
         // if (file) {
         // }
@@ -267,7 +269,7 @@ useEffect(()=>{
 
 const profileImage = (e) => {
     console.log(e.target.files[0], "Image URL");
-    setFile(URL.createObjectURL(e.target.files[0]));
+    setFile(e.target.files[0]);
 }
 
 
@@ -328,7 +330,7 @@ const profileImage = (e) => {
                     <div className='student-profile-uploads pt-4'>
                         <div className='student-profile-wrap flex items-center'>
                             <div className='left-side-profile-pic'>
-                        <img src={media50} style={{width: "150px",height:"150px", background:'gray', marginRight:'50px' }}  className="img-fluid !rounded-full !inline-flex profileImage"  />
+                        <img src={(file && URL.createObjectURL(file)) ?? imagePreview ?? media50} style={{width: "150px",height:"150px", background:'gray', marginRight:'50px' }}  className="img-fluid !rounded-full !inline-flex profileImage"  />
                             </div>
                             <div className='right-side-upload-pic'>
                                 <p>Upload Student Photo (150px X 150px)</p>

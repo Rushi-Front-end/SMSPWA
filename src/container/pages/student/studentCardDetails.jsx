@@ -54,7 +54,7 @@ useEffect(()=>{
                 <div className="box">
                     <div className="grid grid-cols-12 gap-0">
                         <div className="md:col-span-3 col-span-12 text-center">
-                            <img src={media37}
+                            <img src={data.imageUrl ?? media37}
                                 className="img-fluid !rounded-full !inline-flex profile-image" alt="..." />
                         </div>
                         <div className="md:col-span-8 col-span-12">
