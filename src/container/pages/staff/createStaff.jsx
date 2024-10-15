@@ -88,7 +88,7 @@ const CreateStaff = () => {
         console.log(e.target.files[0].name, "Image URL");
         //setFile(URL.createObjectURL(e.target.files[0]));
         if (e.target.files.length > 0) {
-            setFile(URL.createObjectURL(e.target.files[0])); // Store the actual file object
+            setFile(e.target.files[0]); // Store the actual file object
         }
     }
 
@@ -241,7 +241,10 @@ const CreateStaff = () => {
                     <div className='staff-profile-uploads pt-4'>
                         <div className='staff-profile-wrap flex items-center'>
                             <div className='left-side-profile-pic'>
-                            <img src={file} className="img-fluid !rounded-full profile-image !inline-flex"  />
+                            {
+                                file &&
+                                <img src={URL.createObjectURL(file)} className="img-fluid !rounded-full profile-image !inline-flex"  />
+                            }
                             </div>
                             <div className='right-side-upload-pic'>
                                 <p>Upload Staff Photo (150px X 150px)</p>
