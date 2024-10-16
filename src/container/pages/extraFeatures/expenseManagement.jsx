@@ -375,20 +375,16 @@ const ExpenseManagement = () => {
                             </button>
                         </div>
                         <div className="ti-modal-body">
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                Libero
-                                ipsum quasi, error quibusdam debitis maiores hic eum? Vitae
-                                nisi
-                                ipsa maiores fugiat deleniti quis reiciendis veritatis.</p>
-                        </div>
+                           
                         {viewableData && <img src={viewableData?.fileUrl} className="img-fluid  !inline-flex" alt="..." />}
+                        </div>
                         <div className="ti-modal-footer">
                             <button type="button" className="hs-dropdown-toggle ti-btn ti-btn-secondary-full" data-hs-overlay="#hs-vertically-centered-modal">
                                 Close
                             </button>
-                            <Link className="ti-btn ti-btn-primary-full" to="#">
+                            {/* <Link className="ti-btn ti-btn-primary-full" to="#">
                                 Save changes
-                            </Link>
+                            </Link> */}
                         </div>
                     </div>
                 </div>
