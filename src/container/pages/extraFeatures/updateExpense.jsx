@@ -64,7 +64,7 @@ const UpdateExpense = () => {
 
     const profileImage = (e) => {
         console.log(e.target.files[0].name, "Image URL");
-        setFile(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
     }
 
 
@@ -87,7 +87,7 @@ const UpdateExpense = () => {
                 Object.keys(classData).forEach(key => {
                     setValue(key, classData[key]);
                 });
-                setInvoiceFileURL(classData.invoiceFileURL); // Assuming your API response has this
+                setInvoiceFileURL(classData.fileUrl); // Assuming your API response has this
                  // Check for the category and set otherValue accordingly
                  if (classData.category === 'Other') {
                     setOtherField(true);
@@ -129,7 +129,7 @@ const UpdateExpense = () => {
             formDataToSend.append(key, formData[key]);
         }
         if (file) {
-            formDataToSend.append('invoice', file);
+            formDataToSend.append('file', file);
         }
         formDataToSend.append('category', otherField ? otherValue : formData.category);
         formDataToSend.append('schoolId', schoolId);

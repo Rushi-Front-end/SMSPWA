@@ -169,8 +169,8 @@ useEffect(()=>{
 //   }
 
   // Handle the image URL if it exists
-  if (editStaff.ProfileImage) {
-    setCurrentImage(editStaff.ProfileImage); // Set the current image URL
+  if (editStaff.imageUrl) {
+    setCurrentImage(editStaff.imageUrl); // Set the current image URL
 } 
       }
     })

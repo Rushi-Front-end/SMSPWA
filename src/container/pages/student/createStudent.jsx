@@ -158,7 +158,7 @@ const CreateStudent = () => {
 
     const profileImage = (e) => {
         console.log(e.target.files[0], "Image URL");
-        setFile(URL.createObjectURL(e.target.files[0]));
+        setFile(e.target.files[0]);
     }
 
     const { register, handleSubmit,  formState, control, setValue, reset } = useForm({
@@ -203,7 +203,7 @@ const CreateStudent = () => {
 
             // Append image if exists
             if (file) {
-                formDataToSend.append('imageURL', file);
+                formDataToSend.append('ProfileImage', file);
             }
 
             // if(!formData.sectionId) {
@@ -291,7 +291,7 @@ const CreateStudent = () => {
                             <div className='student-profile-uploads pt-4'>
                                 <div className='student-profile-wrap flex items-center'>
                                     <div className='left-side-profile-pic'>
-                                        <img src={file} className="img-fluid !rounded-full !inline-flex profile-image" />
+                                        {file && <img src={URL.createObjectURL(file)} className="img-fluid !rounded-full !inline-flex profile-image" />}
                                     </div>
                                     <div className='right-side-upload-pic'>
                                         <p>Upload Student Photo (150px X 150px)</p>
