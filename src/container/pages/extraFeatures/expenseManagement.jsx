@@ -18,6 +18,7 @@ const ExpenseManagement = () => {
     const [deleteLeav, setDeleteLeav] = useState();
     const [categoryFilter, setCategoryFilter] = useState(null)
     const [categoryOptions, setCategoryOptions] = useState([])
+    const [viewableData, setViewableData] = useState({})
     const {id: schoolId} = useSchoolId();
 
     const getExpenseList = () => {
@@ -318,7 +319,7 @@ const ExpenseManagement = () => {
                                                                 <ul className="hs-dropdown-menu ti-dropdown-menu hidden">
                                                                     {/* <li><Link className="ti-dropdown-item" to="#">Approve</Link></li>
                                                                     <li><Link className="ti-dropdown-item" to="#">Reject</Link></li> */}
-                                                                    <li>  <Link className='ti-dropdown-item ' data-hs-overlay="#hs-vertically-centered-modal">View</Link></li>
+                                                                    <li>  <Link className='ti-dropdown-item ' data-hs-overlay="#hs-vertically-centered-modal" onClick={() => setViewableData(dt)}>View</Link></li>
                                                                     <li><Link className="ti-dropdown-item" to={`${import.meta.env.BASE_URL}pages/extraFeatures/updateExpense/${dt.id}`}>Edit</Link></li>
                                                                     <li>
                                                                         <Link
@@ -380,6 +381,7 @@ const ExpenseManagement = () => {
                                 nisi
                                 ipsa maiores fugiat deleniti quis reiciendis veritatis.</p>
                         </div>
+                        {viewableData && <img src={viewableData?.fileUrl} className="img-fluid  !inline-flex" alt="..." />}
                         <div className="ti-modal-footer">
                             <button type="button" className="hs-dropdown-toggle ti-btn ti-btn-secondary-full" data-hs-overlay="#hs-vertically-centered-modal">
                                 Close
