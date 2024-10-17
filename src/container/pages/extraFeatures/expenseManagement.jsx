@@ -201,7 +201,7 @@ const ExpenseManagement = () => {
                         <div className='expense-export-create-sec flex  justify-end'>
 
 
-                        {allSchAdmin &&(<div className='export-button'>
+                        {/* {allSchAdmin &&(<div className='export-button'>
                                 <div className="ti-btn-list">
                                     <div className="ti-btn-group" >
                                         <div className="hs-dropdown ti-dropdown">
@@ -227,7 +227,7 @@ const ExpenseManagement = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>)}
+                            </div>)} */}
                             {allSchAdmin && (<div className="createstudent-btn">
                                 <Link to={`${import.meta.env.BASE_URL}pages/extrafeatures/createExpense`}>
                                     <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Create Expense</button>
