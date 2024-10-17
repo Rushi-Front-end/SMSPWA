@@ -53,10 +53,8 @@ const CreateClass = ({classSecData}) => {
             description: "A"
         })
         .then(async (res) => {
-            if(res.status === 201){
-                await classSecData();
-                toast.success('Classes Added Successfully')
-            }
+            toast.success('Classes Added Successfully')
+            await classSecData();
         })
         .catch(err => toast.error(err.message))
        // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
