@@ -376,7 +376,7 @@ const profileImage = (e) => {
                             </div>
 
                             <div className="xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Section <span className="redText">*</span></label>
+                            <label className="ti-form-select rounded-sm !p-0 mb-2">Select Section </label>
                             
                             <Select className="!p-0 place-holder"  
                                      isClearable

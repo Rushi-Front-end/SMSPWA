@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { academicYear, classIDSelect, sectionselect, bloodGroupSelect, genderSelect, stateSelect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
+import media50 from "../../../assets/images/media/media-50.jpg";
+
 import { Link, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import Pageheader from '../../../components/common/pageheader/pageheader';
@@ -291,7 +293,14 @@ const CreateStudent = () => {
                             <div className='student-profile-uploads pt-4'>
                                 <div className='student-profile-wrap flex items-center'>
                                     <div className='left-side-profile-pic'>
-                                        {file && <img src={URL.createObjectURL(file)} className="img-fluid !rounded-full !inline-flex profile-image" />}
+                                        {
+                                        file && <img src={URL.createObjectURL(file)} className="img-fluid !rounded-full !inline-flex profile-image" />
+                                        ?
+                                        file && <img src={URL.createObjectURL(file)} className="img-fluid !rounded-full !inline-flex profile-image" />
+                                        :
+                                         <img src={media50} className="img-fluid !rounded-full !inline-flex profile-image" />
+                                        
+                                        }
                                     </div>
                                     <div className='right-side-upload-pic'>
                                         <p>Upload Student Photo (150px X 150px)</p>

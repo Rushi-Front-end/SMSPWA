@@ -283,7 +283,13 @@ const roleChange = (option) => {
                     <div className='staff-profile-uploads pt-4'>
                         <div className='staff-profile-wrap flex items-center'>
                             <div className='left-side-profile-pic'>
-                            {currentImage && <img src={currentImage} alt="Profile" style={{ width: '100px', height: '100px' }} />}
+                            {
+                            currentImage && <img src={currentImage} alt="Profile" className='img-fluid !rounded-full profile-image !inline-flex'  style={{ width: '100px', height: '100px' }} />
+                            ?
+                            currentImage && <img src={currentImage} alt="Profile" className='img-fluid !rounded-full profile-image !inline-flex' style={{ width: '100px', height: '100px' }} />
+                            :
+                            <img src={media50} alt="Profile" style={{ width: '100px', height: '100px' }} className='img-fluid !rounded-full profile-image !inline-flex' />
+                            }
                             </div>
                             <div className='right-side-upload-pic'>
                                 <p>Upload Staff Photo (150px X 150px)</p>

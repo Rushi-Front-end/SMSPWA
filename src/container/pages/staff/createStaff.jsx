@@ -244,6 +244,10 @@ const CreateStaff = () => {
                             {
                                 file &&
                                 <img src={URL.createObjectURL(file)} className="img-fluid !rounded-full profile-image !inline-flex"  />
+                                ? file &&
+                                <img src={URL.createObjectURL(file)} className="img-fluid !rounded-full profile-image !inline-flex"  />
+                                :
+                                <img src={media50} className="img-fluid !rounded-full profile-image !inline-flex"  />
                             }
                             </div>
                             <div className='right-side-upload-pic'>

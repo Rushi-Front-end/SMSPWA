@@ -9,6 +9,7 @@ import { fetchClassList, postClassList } from '../../../redux/reducers/classRedu
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSchoolId } from '../../../components/common/context/idContext';
+import { toast } from 'react-toastify';
 
 
 
@@ -57,7 +58,7 @@ const CreateClass = ({classSecData}) => {
                 toast.success('Classes Added Successfully')
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => toast.error(err.message))
        // navigate(`${import.meta.env.BASE_URL}pages/schools/allSchools`)
     //    reset({
     //     className: '',
