@@ -53,7 +53,7 @@ const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sat
 
               <div className="">
                 <div className='timeTablebottompanel'>
-                 <h3 className='pt-4 pb-4'>MONDAY</h3>
+                 <h3 className='pt-4 pb-4'>{selectedDay}</h3>
                  <TimeInnerTable selectedDay={selectedDay}  selectedOption={selectedOption} />
                 </div>
                 {/* <div id="hs-tab-to-select-2" className="hidden" role="tabpanel" aria-labelledby="hs-tab-to-select-item-2">
