@@ -267,19 +267,19 @@ export const MENUITEMS = [
                         badgetxt: '',
                         class: '',                
                       },  
-                      // {
-                      //   icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-                      //   path: `${import.meta.env.BASE_URL}pages/extraFeatures/complaints`,
-                      //   type: "link",
-                      //   Name: '',
-                      //   active: false,
-                      //   selected: false,
-                      //    dirchange: false,
-                      //   title: "Complaints",
-                      //   badge: '',
-                      //   badgetxt: '',
-                      //   class: '',                
-                      // }, 
+                      {
+                        icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
+                        path: `${import.meta.env.BASE_URL}pages/extraFeatures/complaints`,
+                        type: "link",
+                        Name: '',
+                        active: false,
+                        selected: false,
+                         dirchange: false,
+                        title: "Complaints",
+                        badge: '',
+                        badgetxt: '',
+                        class: '',                
+                      }, 
                       // {
                       //   icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
                       //   path: `${import.meta.env.BASE_URL}pages/aboutus`,
@@ -293,19 +293,19 @@ export const MENUITEMS = [
                       //   badgetxt: '',
                       //   class: '',                
                       // }, 
-                      // {
-                      //   icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
-                      //   path: `${import.meta.env.BASE_URL}pages/extraFeatures/annoucement`,
-                      //   type: "link",
-                      //   Name: '',
-                      //   active: false,
-                      //   selected: false,
-                      //    dirchange: false,
-                      //   title: "Announcements",
-                      //   badge: '',
-                      //   badgetxt: '',
-                      //   class: '',                
-                      // }, 
+                      {
+                        icon: (<i className="bx bx-fingerprint side-menu__icon"></i>),
+                        path: `${import.meta.env.BASE_URL}pages/extraFeatures/annoucement`,
+                        type: "link",
+                        Name: '',
+                        active: false,
+                        selected: false,
+                         dirchange: false,
+                        title: "Announcements",
+                        badge: '',
+                        badgetxt: '',
+                        class: '',                
+                      }, 
                       {
                         icon: <img src={Examination} alt="Examination Icon" />,
                         path: `${import.meta.env.BASE_URL}pages/examination/examinationList`,
@@ -366,6 +366,8 @@ const ROLE_MENU_ITEMS = {
     'Examination',
      'Diet Plan',
     'Reports',
+    'Complaints',
+    'Announcements'
 
   ],
   SuperAdmin: [
@@ -385,6 +387,8 @@ const ROLE_MENU_ITEMS = {
     'Expense Management',
     'Examination',
     'Diet Plan',
+     'Complaints',
+    'Announcements'
     // Add additional items as needed
   ],
   Principal: [

@@ -268,7 +268,7 @@ const HosteliteLeave = () => {
                                             <td>{dt.fullName}</td>
                                             <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === healthStudName.filter(staff => staff.id === dt.studentID)[0]?.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.sectionName || 'Unknown'}</td>
                                             <td>{dt.outpassType}</td>
-                                            <td>{`${dt.fromDate} - ${dt.toDate}`}</td>
+                                            <td>{`${new Date(dt.fromDate).toLocaleDateString()} - ${new Date(dt.toDate).toLocaleDateString()}`}</td>
                                             {/* <td>  <span className={`badge ${statusMap[dt.id] === 'Approved' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
                                                                 {statusMap[dt.id] || 'Rejected'}
                                                             </span></td> */}

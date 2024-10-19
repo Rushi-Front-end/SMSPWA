@@ -103,9 +103,9 @@ const Login = ({ ThemeChanger }) => {
                                         </div>}
                                         <div className="grid grid-cols-12 gap-y-4">
                                             <div className="xl:col-span-12 col-span-12">
-                                                <label htmlFor="signin-username" className="form-label text-default">Email</label>
+                                                <label htmlFor="signin-username" className="form-label text-default">Mobile Number</label>
                                                 <input type="text" name="userId" className="form-control form-control-lg w-full !rounded-md" onChange={changeHandler} value={userId}
-                                                    id="signin-username" placeholder="user name" />
+                                                    id="signin-username" placeholder="Enter mobile number" />
                                             </div>
                                             <div className="xl:col-span-12 col-span-12 mb-2">
                                                 <div className="input-group">

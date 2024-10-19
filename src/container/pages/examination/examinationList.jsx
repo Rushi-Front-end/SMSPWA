@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { singleselect } from '../../forms/formelements/formselect/formselectdata'
 import Select from 'react-select';
+import DatePicker from 'react-datepicker';
+
 import axios from 'axios';
 import Loader from '../loader/loader';
 import { toast } from 'react-toastify';
@@ -10,6 +12,8 @@ import { UserRoleNameContext } from '../../../components/common/context/userRole
 
 const ExaminationList = () => {
     const [examData, setExamData] = useState([])
+    const [startDate, setStartDate] = useState(new Date());
+    const [startDate1, setStartDate1] = useState(new Date());
     const [spinner, setSpinner] = useState(false)
     const [deleteStudent, setDeleteStudent] = useState()
     const {id: schoolId} = useSchoolId();
@@ -48,6 +52,55 @@ const ExaminationList = () => {
             toast.success("Exam Data Deleted Successfuly")
         } catch (err) {
             console.error("Error deleting student:", err);
+        }
+    }
+    const formatDate = (inputDate) => {
+        const date = new Date(inputDate);
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        const formattedDate = `${day}/${month}/${year}`;
+        
+        return formattedDate
+    }
+    const handleFilter = async () => {
+        const startDateFilter = formatDate(new Date(startDate));
+        const endDateFilter = formatDate(new Date(startDate1))
+
+        let params = [];
+    
+        if (startDateFilter) {
+            params.push(`FromDate=${encodeURIComponent(startDateFilter)}`);
+        }
+    
+        if (endDateFilter) {
+            params.push(`ToDate=${encodeURIComponent(endDateFilter)}`);
+        }
+    
+        
+    
+        if (params.length === 0) {
+            toast.error("Choose a Filter");
+            return;
+        }
+    
+        const queryString = params.join("&");
+        const url = `https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/Exam/GetExamByFilter?${queryString}`;
+    
+        try {
+            const result = await axios.get(url);
+            const filteredData = result.data;
+    
+            if (!filteredData?.length) {
+                toast.error("No data found");
+            }
+
+            setExamData(filteredData);
+        } catch (error) {
+            toast.error("An error occurred while fetching data");
+            console.error("Error fetching data:", error);
         }
     }
 
@@ -130,17 +183,54 @@ const ExaminationList = () => {
 
     <div className='exam-stud-table'>
         <div className='box p-4'>
+            <div className='exam-top-sec flex  justify-between   pb-4'>
         <div className='exam-head-wrap'>
                 <h4>Exam Data</h4>
             </div>
-            <div className='exam-top-sec flex  justify-end  pt-4 pb-4'>
 
             {allSchAdmin && (<div className="exam-create-btn ">
                 <Link to={`${import.meta.env.BASE_URL}pages/examination/createExamination`}>
                     <button type="button" className="ti-btn ti-btn-warning-full !rounded-full ti-btn-wave">Add Exam</button>
                 </Link>
                 </div>)}
+
+
             </div>
+                <div className='expenses-top-wrapper flex justify-between pb-4'>
+
+<div className='flex left-expense-date align-center'>
+    <div className='expense-datepicker'>
+        <label className="ti-form-select rounded-sm !p-0 mb-2"> From:</label>
+        <div className="input-group !flex-nowrap">
+            <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
+            <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10" dateFormat="dd/MM/yyyy"
+                showMonthDropdown="true"
+                showYearDropdown="true" showIcon selected={startDate} onChange={(date) => setStartDate(date)} />
+        </div>
+    </div>
+    <div className='expense-datepicker'>
+        <label className="ti-form-select rounded-sm !p-0 mb-2"> To:</label>
+        <div className="input-group !flex-nowrap">
+
+            <div className="input-group-text text-[#8c9097] dark:text-white/50"> <i className="ri-calendar-line"></i> </div>
+            <DatePicker placeholderText="Choose date" className="ti-form-input  focus:z-10"
+                showMonthDropdown="true"
+                showYearDropdown="true" showIcon selected={startDate1} onChange={(date) => setStartDate1(date)} dateFormat="dd/MM/yyyy" />
+        </div>
+    </div>
+    {/* <div className="expense-category-div  xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
+        <label className="ti-form-select rounded-sm !p-0 mb-2"> Category:</label>
+
+        <Select className="!p-0 place-holder" classNamePrefix='react-select' value={categoryFilter} options={categoryOptions} onChange={(option) => setCategoryFilter(option)} />
+    </div> */}
+    <div className="expenseFilter-btn xl:col-span-4 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
+
+        <button type="button" className="ti-btn ti-btn-warning-full filterbutton !rounded-full ti-btn-wave" onClick={handleFilter}>Filter</button>
+    </div>
+
+</div>
+
+</div>
             {/* Top section end */}
             {/* Top section end */}
             {/* Table section start */}

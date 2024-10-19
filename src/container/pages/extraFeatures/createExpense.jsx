@@ -67,9 +67,9 @@ const CreateExpense = () => {
         data.append('category', otherField ? otherCategoryValue : formData.category);
         data.append('schoolId', schoolId);
         data.append('amount', formData.amount);
-        data.append('invoiceNumber', formData.invoiceNumber);
         data.append('note', formData.note);
         data.append('date', formData.date);
+        data.append('invoiceNumber', formData.invoiceNumber || ''); 
         if (file) {
             data.append('file', file);
         }
@@ -176,7 +176,7 @@ const CreateExpense = () => {
 
                             </div>
                             <div className="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-12 col-span-12">
-            <label htmlFor="input-text" className="form-label">Invoice Number<span className='redText'>*</span></label>
+            <label htmlFor="input-text" className="form-label">Invoice Number</label>
             <input type="text" {...register('invoiceNumber')} name='invoiceNumber' className="form-control" id="input-text" placeholder="Enter Invoice Number" />
             {/* {errors.invoiceNumber && <p className='errorTxt'>{errors.invoiceNumber.message}</p>} */}
 
@@ -211,7 +211,7 @@ const CreateExpense = () => {
 
 
                                 <div className='right-side-upload- xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-12 col-span-12'>
-                                <label htmlFor="input-text" className="form-label">Invoice<span className='redText'>*</span></label>
+                                <label htmlFor="input-text" className="form-label">Invoice</label>
                                 <div>
                                 <label htmlFor="file-input" className="sr-only">Choose file</label>
                                 <input name='invoice' type="file" id="file-input" className="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/50

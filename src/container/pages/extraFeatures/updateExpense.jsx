@@ -22,7 +22,7 @@ const schema = yup.object({
     category: yup.string().nullable().required("Please Select Category"),
     date: yup.string().nullable().required("Please Select Expense Date "),
     amount: yup.string().nullable().required("Please Enter Amount "),
-    invoiceNumber: yup.string().nullable().required("Please Enter Invoice Number "),
+    invoiceNumber: yup.string().nullable(),
     note: yup.string().nullable(),
     message: yup.string().nullable(),
     //invoice: yup.string().nullable().required("Please Upload Invoice File "),
@@ -128,6 +128,10 @@ const UpdateExpense = () => {
         for (const key in formData) {
             formDataToSend.append(key, formData[key]);
         }
+          // If invoiceNumber is not provided, set it to an empty string
+    const invoiceNumberValue = formData.invoiceNumber || '';
+    formDataToSend.append('invoiceNumber', invoiceNumberValue);
+
         if (file) {
             formDataToSend.append('file', file);
         }
@@ -235,7 +239,7 @@ const UpdateExpense = () => {
 
                             </div>
                             <div className="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-12 col-span-12">
-            <label htmlFor="input-text" className="form-label">Invoice Number<span className='redText'>*</span></label>
+            <label htmlFor="input-text" className="form-label">Invoice Number</label>
             <input type="text" {...register('invoiceNumber')} name='invoiceNumber' className="form-control" id="input-text" placeholder="Enter Invoice Number" />
             {errors.invoiceNumber && <p className='errorTxt'>{errors.invoiceNumber.message}</p>}
 
@@ -270,7 +274,7 @@ const UpdateExpense = () => {
 
 
                                 <div className='right-side-upload- xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-12 col-span-12'>
-                                <label htmlFor="input-text" className="form-label">Invoice<span className='redText'>*</span></label>
+                                <label htmlFor="input-text" className="form-label">Invoice</label>
                                 <div>
                                 <label htmlFor="file-input" className="sr-only">Choose file</label>
                                 {invoiceFileURL && (
