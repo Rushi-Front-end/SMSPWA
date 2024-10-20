@@ -137,7 +137,7 @@ const StaffDetails = () => {
         }
       
          const userLoginRoleName = parsedLoginValue.roleName
-      
+        
         useEffect(()=>{
           setUserRoleName(userLoginRoleName)
           if(userLoginRoleName === 'SuperAdmin' || userLoginRoleName === 'Admin') {
@@ -244,6 +244,7 @@ const StaffDetails = () => {
                                     <th scope="col" className="text-start">#</th>
                                     {/* <th scope="col" className="text-start">Staff Code</th> */}
                                     <th scope="col" className="text-start">Staff Name</th>
+                                    <th scope="col" className="text-start">School Name</th>
                                     <th scope="col" className="text-start">Mobile No.</th>
                                     <th scope="col" className="text-start">Role</th>
                                     {/* <th scope="col" className="text-start">Departments</th> */}
@@ -263,6 +264,7 @@ const StaffDetails = () => {
                                                            {dt.fullName}
                                                         </Link>
                                                     </td>
+                                                    <td>{dt.schoolName}</td>
                                                     <td>{dt.mobileNumber}</td>
                                                     <td>{roleList.find(role => role.id === dt.roleID)?.roleName}</td>
                                                     {/* <td><span className="badge bg-primary text-white">Staff</span></td> */}

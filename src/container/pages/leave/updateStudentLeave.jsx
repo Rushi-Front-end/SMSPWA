@@ -262,7 +262,7 @@ const UpdateStudentLeave = () => {
                                 </div>
                                 <div className='grid grid-cols-12 sm:gap-6 pt-4'>
                                     <div className='leave-staff-comment pb-2 xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12'>
-                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Comments</label>
+                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Reason</label>
                                         <textarea {...register('comment')} name='comment' className="form-control" id="text-area" rows="5"></textarea>
                                     </div>
                                 </div>

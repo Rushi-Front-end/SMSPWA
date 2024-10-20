@@ -173,7 +173,7 @@ const staffchange = (id) => {
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className='grid grid-cols-12 sm:gap-6 pt-4'>
                                     <div className="leave-staff-div xl:col-span-4 lg:col-span-4 md:col-span-6 sm:col-span-12 col-span-12">
-                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Select Staff/Student<span className='redText'>*</span>:</label>
+                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Select Staff<span className='redText'>*</span>:</label>
                                         <Select className="!p-0 place-holder" classNamePrefix='react-select' options={staffNameDrop}
                                          value={fullNameValue ? staffNameDrop.find(x => x.label === fullNameValue) : fullNameValue}
                                             onChange={option =>{ fullNameOnChange(option ? option.label : option); staffchange(option) }}
@@ -248,7 +248,7 @@ const staffchange = (id) => {
                                 </div>
                                 <div className='grid grid-cols-12 sm:gap-6 pt-4'>
                                     <div className='leave-staff-comment pb-2 xl:col-span-6 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12'>
-                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Comments</label>
+                                        <label className="ti-form-select rounded-sm !p-0 mb-2">Reason</label>
                                         <textarea {...register('comments')} name='comments' className="form-control" id="text-area" rows="5"></textarea>
                                     </div>
                                 </div>

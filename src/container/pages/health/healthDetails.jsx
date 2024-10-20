@@ -303,7 +303,7 @@ const [allSchAdmin, setAllSchAdmin] = useState(false)
                                         <th scope="col" className="text-start">	Document Date</th>
                                         <th scope="col" className="text-start">Student Name</th>
                                         <th scope="col" className="text-start">	Class Name	</th>
-                                        <th scope="col" className="text-start">	Created At</th>
+                                        {/* <th scope="col" className="text-start">	Created At</th> */}
                                         {allSchAdmin && (<th scope="col" className="text-start">Action</th>)}
                                     </tr>
                                     </thead>
@@ -320,7 +320,7 @@ const [allSchAdmin, setAllSchAdmin] = useState(false)
                                                             <td>{Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.fullName || 'Unknown'}</td> {/* Display student name */}
 
                                                             <td>{Array.isArray(healthClassName) && healthClassName.filter(staff => staff.id === healthStudName.filter(staff => staff.id === dt.studentID)[0]?.classID)[0]?.className || 'Unknown'}- {Array.isArray(healthStudName) && healthStudName.filter(staff => staff.id === dt.studentID)[0]?.sectionName || 'Unknown'}</td>
-                                                            <td>{dt.createdAt}</td>
+                                                            {/* <td>{dt.createdAt}</td> */}
                                                             {allSchAdmin && (<td>
                                                                 {/* <Link to={`${import.meta.env.BASE_URL}pages/health/viewHealthDocument/?id=${dt.studentID}&date=${dt.healthCheckupDate}`}>
                                                                     <button onClick={handleDocUrl} type="button" className="ti-btn ti-btn-outline-warning !rounded-full ti-btn-wave">View</button>

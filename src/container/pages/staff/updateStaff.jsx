@@ -13,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { IdContext, useSchoolId } from '../../../components/common/context/idContext';
 import { toast } from 'react-toastify';
+import { useLoginName } from '../../../components/common/context/userRoleContext';
 
 
 const schema = yup.object({
@@ -114,13 +115,20 @@ const UpdateStaff = () => {
     const params = useParams()
 
     const [roleList, setRoleList] = useState([]);
-
+    const {userRoleName: userRoleNameLogin} = useLoginName();
     useEffect(() => {
         const fetchUserRoles = async () => {
           try {
             const response = await axios.get('https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/UserRoles');
             const roleData = response.data;
-            const roleOptions = roleData.map(role => ({id:role.id, value: role.id, label: role.roleName}))
+            const userRole  = userRoleNameLogin
+            const roleOptions = roleData
+            .filter(role => {
+                const isAdminOrPrincipal = userRole === 'Admin' || userRole === 'Principal';
+                const shouldExclude = role.roleName === 'Admin' || role.roleName === 'SuperAdmin';
+                return !(isAdminOrPrincipal && shouldExclude);
+              })
+            .map(role => ({id:role.id, value: role.id, label: role.roleName}))
             setRoleList(roleOptions)
           } catch (error) {
             console.error('Error fetching user roles:', error);

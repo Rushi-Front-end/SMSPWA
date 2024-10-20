@@ -257,10 +257,12 @@ const Option4 = {
 
 const Data4 = (studentData) => ({
   type: 'donut',
-  labels: ['Total Student', 'Present', 'Absent'],
+  labels: [ 'Present', 'Absent'],
   datasets: [{
     label: 'Student',
-     data: [studentData.totalStudent, studentData.presentCount, studentData.absentCount],
+     data: [
+      //studentData.totalStudent, 
+      studentData.presentCount, studentData.absentCount],
     //data: ['100', '80', '15'],
     backgroundColor: [
       'rgb(132, 90, 223)',
@@ -332,11 +334,11 @@ const OptionStaff = {
 };
 
 const Data5 = (staffData) => ({
-  labels: ['Total Staff', 'Present', 'Absent'],
+  labels: [ 'Present', 'Absent'],
   datasets: [{
     label: 'Staff',
     data: [
-      staffData.totalStaff || 0,
+      // staffData.totalStaff || 0,
       staffData.presentCount || 0,
       staffData.absentCount || 0,
     ],

@@ -636,27 +636,24 @@ useEffect(() => {
                   aria-labelledby="dropdown-profile">
 
                   <ul className="text-defaulttextcolor font-medium dark:text-[#8c9097] dark:text-white/50">
-                    <li>
-                      {/* <Link className="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0  !p-[0.65rem] !inline-flex" to={`${import.meta.env.BASE_URL}pages/profile/`}> */}
+                    {/* <li>
                       <Link className="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0  !p-[0.65rem] !inline-flex">
                         <i className="ti ti-user-circle text-[1.125rem] me-2 opacity-[0.7]"></i>Profile
                       </Link>
                     </li>
                     
                     <li>
-                      {/* <Link className="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex" to={`${import.meta.env.BASE_URL}pages/email/mailsettings/`}> */}
                       <Link className="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex" to={`${import.meta.env.BASE_URL}pages/appSettings/settings`}>
                       <i className="ti ti-adjustments-horizontal text-[1.125rem] me-2 opacity-[0.7]"></i>App Settings</Link></li>
-                    
+                     */}
                     {/* <li>
                       
                       <Link className="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex" >
                       <i className="ti ti-adjustments-horizontal text-[1.125rem] me-2 opacity-[0.7]"></i>App Preference</Link></li> */}
                     
-                    <li>
-                      {/* <Link className="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex" to={`${import.meta.env.BASE_URL}pages/email/mailsettings/`}> */}
+                    {/* <li>
                       <Link className="w-full ti-dropdown-item !text-[0.8125rem] !gap-x-0 !p-[0.65rem] !inline-flex" to={`${import.meta.env.BASE_URL}pages/changePassword/passwordChange`}>
-                      <i className="ti ti-lock text-[1.125rem] me-2 opacity-[0.7]"></i>Change Password</Link></li>
+                      <i className="ti ti-lock text-[1.125rem] me-2 opacity-[0.7]"></i>Change Password</Link></li> */}
                     
                     <li><p className="w-full ti-dropdown-item !text-[0.8125rem] !p-[0.65rem] !gap-x-0 !inline-flex" onClick={loginOut}><i
                       className="ti ti-logout text-[1.125rem] me-2 opacity-[0.7]"></i>Log Out</p></li>

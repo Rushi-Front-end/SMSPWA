@@ -258,6 +258,32 @@ img{display: none;}
     font-size: 10px;
     padding: 0 8px;
 }
+.schoolTable tbody tr td{padding: 15px 0!important;border-bottom: 1px solid #f3f3f3;}
+.main-sidebar-header{padding: 0px!important;
+.desktop-dark{height: auto!important;}
+}
+#calendar2{font-size: 14px!important;}
+
+.report-modalpopup{
+    .ti-modal-body{
+        width: 900px;
+    }
+     .ti-modal-box{
+        max-width: 65%;
+    }
+    .table{
+        border: 2px solid #ddd!important;
+        thead tr th{
+            border: 2px solid #ddd!important;
+
+        }
+        tbody tr td{
+            border: 2px solid #ddd!important;
+
+        }
+    }
+}
+
 
 @media (min-width:481px) and (max-width:767px){
     .time-tables-wrap{

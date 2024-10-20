@@ -7,7 +7,7 @@ const SchoolDetailsTable = ({schoolIndData}) => {
                 <table className="table whitespace-nowrap table-sm min-w-full">
                     <thead><tr className="border-b border-defaultborder">
                         {/* <th scope="col" className="text-start">Name</th> */}
-                        <th scope="col" className="text-start">School Code</th>
+                        {/* <th scope="col" className="text-start">School Code</th> */}
                         <th scope="col" className="text-start">Prakalp Name</th>
                         <th scope="col" className="text-start">Principal Name</th>
                         <th scope="col" className="text-start">Address</th>
@@ -25,7 +25,7 @@ const SchoolDetailsTable = ({schoolIndData}) => {
                         
                         <tr className="border-b border-defaultborder">
                             {/* <td>Ashram School</td> */}
-                            <td>{schoolIndData.list.pinCode}</td>
+                            {/* <td>{schoolIndData.list.pinCode}</td> */}
                             <td>{schoolIndData.list.prakalpName}</td>
                             <td>{schoolIndData.list.principalName}</td>
                             <td>{schoolIndData.list.address}</td>

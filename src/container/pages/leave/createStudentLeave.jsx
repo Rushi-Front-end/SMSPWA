@@ -219,7 +219,7 @@ const CreateStudentLeave = () => {
                                     </div>
                                 </div>
                                 <div className='leave-staff-comment pt-4 pb-2'>
-                                    <label className="ti-form-select rounded-sm !p-0 mb-2">Comments</label>
+                                    <label className="ti-form-select rounded-sm !p-0 mb-2">Reason</label>
                                     <textarea {...register('comment')} name='comment' className="form-control" id="text-area" rows="5"></textarea>
                                 </div>
                                 <hr />

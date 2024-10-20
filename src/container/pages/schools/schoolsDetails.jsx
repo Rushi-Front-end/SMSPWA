@@ -266,9 +266,9 @@ const SchoolsDetails = () => {
                                                 <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning active" to="#" id="underline-item-2" data-hs-tab="#underline-2" aria-controls="underline-2">
                                                     Classes
                                                 </Link>
-                                                <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning" to="#" id="underline-item-3" data-hs-tab="#underline-3" aria-controls="underline-3">
+                                                {/* <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning" to="#" id="underline-item-3" data-hs-tab="#underline-3" aria-controls="underline-3">
                                                     Roles & Permissions
-                                                </Link>
+                                                </Link> */}
                                                 {/* <Link className="hs-tab-active:font-semibold hs-tab-active:border-warning hs-tab-active:text-warning py-4 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-defaulttextcolor  dark:text-[#8c9097] dark:text-white/50 hover:text-warning" to="#" id="underline-item-4" data-hs-tab="#underline-4" aria-controls="underline-4">
                                                     Timetables
                                                 </Link> */}
@@ -380,16 +380,15 @@ const SchoolsDetails = () => {
                                             </div>
                                             <div id="underline-3" className="hidden" role="tabpanel" aria-labelledby="underline-item-3">
                                                 <div className="grid grid-cols-12  gap-4">
-                                                    <div className="col-span-12 xl:col-span-8">
+                                                    {/* <div className="col-span-12 xl:col-span-8">
                                                         <RolesPermissionTable sendDataToParent={handleDataFromChild} />
-                                                    </div>
-                                                    <div className="col-span-12 xl:col-span-4">
+                                                    </div> */}
+                                                    {/* <div className="col-span-12 xl:col-span-4">
                                                         {updateRoleId?
                                                         <UpdateRole dataFromChild={dataFromChild} setDataFromChild={setDataFromChild} />:
                                                         <CreateRole dataFromChild={dataFromChild} setDataFromChild={setDataFromChild} />
                                                         }
-                                                        {/* <CreateSection/> */}
-                                                    </div>
+                                                    </div> */}
                                                 </div>
 
                                             </div>

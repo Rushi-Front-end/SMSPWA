@@ -435,7 +435,7 @@ const [allSchAdmin, setAllSchAdmin] = useState(false)
 
             {/* Modal popup */}
             {modalIsOpen && (
-                <div id="hs-vertically-centered-modal" className="hs-overlay reports-modal-popup ti-modal">
+                <div id="hs-vertically-centered-modal" className="hs-overlay reports-modal-popup ti-modal report-modalpopup">
                     <div className="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out min-h-[calc(100%-3.5rem)] flex items-center">
                         <div className="ti-modal-content">
                             {/* <div className="ti-modal-header">
@@ -455,7 +455,7 @@ const [allSchAdmin, setAllSchAdmin] = useState(false)
                                     <p><b>Prakalp Name:</b> {reportHead.prakalpName}</p>
                                     <p><b>From:</b>  {reportHead.fromDate}</p>
                                     {/* <p><b>Report Type:</b>  {reportHead.reportType}</p> */}
-                                    <p><b>Created By:</b>  Anup Singh</p>
+                                    <p><b>Created By:</b>  {fullName}</p>
                                 </div>  
                                 <div className='headRightReport'>
                                     <p><b>School Name:</b>  {reportHead.schoolName}</p>

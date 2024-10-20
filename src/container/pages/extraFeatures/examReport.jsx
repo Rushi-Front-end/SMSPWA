@@ -8,6 +8,7 @@ const ExamReport = ({reportGenData}) => {
        <table className="table border table-bordered  whitespace-nowrap table-sm min-w-full">
                                 <thead><tr className="border border-defaultborder">
                                     <th scope="col" className="text-start">#</th>
+                                    {/* <th scope="col" className="text-start">School Name</th> */}
                                     {/* <th scope="col" className="text-start">Title	</th> */}
                                     <th scope="col" className="text-start"> Date</th>
                                     <th scope="col" className="text-start">Total Appeared Student	</th>
@@ -21,6 +22,7 @@ const ExamReport = ({reportGenData}) => {
                                     reportGenData.map((dt,index)=>{
                                         return <tr key={index}>
                                             <td className="text-start">{index+1}</td>
+                                            {/* <td className="text-start">{dt.schoolName}</td> */}
                                             <td className="text-start">{dt.date}</td>
                                             <td className="text-start">{dt.totalAppearedStudent}</td>
                                             <td className="text-start">{dt.noOfPassedStudent}</td>

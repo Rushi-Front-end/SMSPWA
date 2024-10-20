@@ -152,7 +152,7 @@ const HosteliteCreateLeave = () => {
                         <div className='staffleave-details mb-4'>
 
                             <div className="leave-staff-div pt-4">
-                                <label className="ti-form-select rounded-sm !p-0 mb-2">Select Staff/Student<span className='redText'>*</span>:</label>
+                                <label className="ti-form-select rounded-sm !p-0 mb-2">Select Student<span className='redText'>*</span>:</label>
                                     <Select
                                         className="!p-0 place-holder"
                                         classNamePrefix='react-select'
@@ -226,7 +226,7 @@ const HosteliteCreateLeave = () => {
                             {/* End of the grid */}
 
                             <div className='leave-staff-comment pt-4 pb-2'>
-                                <label className="ti-form-select rounded-sm !p-0 mb-2">Comments*</label>
+                                <label className="ti-form-select rounded-sm !p-0 mb-2">Reason</label>
                                 <textarea {...register('comments')} name='comments' className="form-control" id="text-area" rows="5"></textarea>
                             </div>
 

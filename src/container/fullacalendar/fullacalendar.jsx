@@ -5,6 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import media86 from "../../assets/images/media/media-83.svg";
 import SimpleBar from 'simplebar-react';
+import '../../../src/school.scss'
 
 
 const Fullacalendar = () => {
