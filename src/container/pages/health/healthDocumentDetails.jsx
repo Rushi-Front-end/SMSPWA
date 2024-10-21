@@ -52,6 +52,12 @@ const HealthDocumentDetails = ({data}) => {
                                 <span className="label-text">Developmental delay & Disability :</span>
                                 <span className="field-text">{data?.developmentalDelay}</span>
                             </div>
+
+                            <div className="health-rows-wrap pt-4">
+                                <span className="label-text">Adolescent Specific Questionnaire:</span>
+                                <span className="field-text">{data?.adolescentSpecificQuestionnaire}</span>
+                            </div>
+                            
                             <div className="health-rows-wrap pt-4">
                                 <span className="label-text">Acuity Left Eye : </span>
                                 <span className="field-text">{data?.acuityOfVisionLeftEye}</span>

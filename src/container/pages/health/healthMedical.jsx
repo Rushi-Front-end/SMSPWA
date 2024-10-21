@@ -84,7 +84,7 @@ const HealthMedical = (props) => {
             deficiency: medicalB,
             childhoodDiseases: medicalC,
             developmentalDelay: medicalD,
-            E: medicalE,
+            adolescentSpecificQuestionnaire: medicalE,
         };
 
         const formattedMedicalData = convertToSimplifiedForm(medicalData)

@@ -7,7 +7,7 @@ const ExamReport = ({reportGenData}) => {
        <div className='generated-report-wrapper'>
        <table className="table border table-bordered  whitespace-nowrap table-sm min-w-full">
                                 <thead><tr className="border border-defaultborder">
-                                    <th scope="col" className="text-start">#</th>
+                                    <th scope="col" className="text-start">Sr.No</th>
                                     <th scope="col" className="text-start">School Name</th>
                                     {/* <th scope="col" className="text-start">Title	</th> */}
                                     <th scope="col" className="text-start"> Date</th>

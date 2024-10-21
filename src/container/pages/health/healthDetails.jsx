@@ -55,10 +55,11 @@ const HealthDetails = () => {
         try {
             await axios.delete(`https://sms-webapi-hthkcnfhfrdcdyhv.eastus-01.azurewebsites.net/api/StudentHealthCheckup/DeleteStudentHealthCheckup?studentId=${id}&healthCheckupDate=${healthDate}`);
             console.log(`Student with ID ${id} deleted`);
-            handleFilter(); // Refresh the student list
             toast.success("Student Data Deleted Successfuly")
+            handleFilter(); // Refresh the student list
         } catch (err) {
             console.error("Error deleting student:", err);
+            toast.error("Failed to delete student data");
         }
     }
 

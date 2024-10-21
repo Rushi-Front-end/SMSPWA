@@ -49,8 +49,8 @@ const EditHealthMedical = (props) => {
                             }, {});
             setMedicalD(finalObj)
         }
-        if(props.data?.E?.split(",").filter(el => el)?.length){
-            const filteredObj = props.data?.E?.split(",").filter(el => el).map(el => ({[el]: true}))
+        if(props.data?.adolescentSpecificQuestionnaire?.split(",").filter(el => el)?.length){
+            const filteredObj = props.data?.adolescentSpecificQuestionnaire?.split(",").filter(el => el).map(el => ({[el]: true}))
             const finalObj = filteredObj.reduce((acc, obj) => {
                                 return { ...acc, ...obj };
                             }, {});
@@ -127,7 +127,7 @@ const EditHealthMedical = (props) => {
             deficiency: medicalB,
             childhoodDiseases: medicalC,
             developmentalDelay: medicalD,
-            E: medicalE,
+            adolescentSpecificQuestionnaire: medicalE,
         };
 
         const formattedMedicalData = convertToSimplifiedForm(medicalData)
