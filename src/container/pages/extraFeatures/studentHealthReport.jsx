@@ -9,7 +9,10 @@ const StudentHealthReport = ({ reportGenData }) => {
                     <thead><tr className="border-b border-defaultborder">
                         <th scope="col" className="text-start">SrNo</th>
                         <th scope="col" className="text-start">School Name	</th>
-                        <th scope="col" className="text-start"> Sick Student Percentage</th>
+                        <th scope="col" className="text-start"> Date </th>
+                        <th scope="col" className="text-start"> Total No. of Student </th>
+                        <th scope="col" className="text-start"> Sick Student </th>
+                        <th scope="col" className="text-start"> Percentage</th>
                     </tr>
                     </thead>
 
@@ -19,6 +22,9 @@ const StudentHealthReport = ({ reportGenData }) => {
                                 return <tr key={index}>
                                     <td className="text-start">{index + 1}</td>
                                     <td className="text-start">{dt.schoolName}</td>
+                                    <td className="text-start">{dt.healthCheckupDate}</td>
+                                    <td className="text-start">{dt.totalStudent}</td>
+                                    <td className="text-start">{dt.sickStudentCount}</td>
                                     <td className="text-start">{dt.sickStudentPercentage}</td>
 
                                 </tr>

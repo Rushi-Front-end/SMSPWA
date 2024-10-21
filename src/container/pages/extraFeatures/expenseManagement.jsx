@@ -276,7 +276,7 @@ const ExpenseManagement = () => {
                     {/* Table section start */}
                     <div className="student-table-details pt-4">
                         <div className="table-responsive">
-                            <table className="table   whitespace-nowrap table-sm min-w-full">
+                            <table className="table border   whitespace-nowrap table-sm min-w-full leaveTable-wrappp">
                                 <thead><tr className="border-b border-defaultborder">
                                     <th scope="col" className="text-start">#</th>
                                     {/* <th scope="col" className="text-start">Title	</th> */}

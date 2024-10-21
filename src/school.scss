@@ -258,15 +258,30 @@ img{display: none;}
     font-size: 10px;
     padding: 0 8px;
 }
-.schoolTable tbody tr td{padding: 15px 0!important;border-bottom: 1px solid #f3f3f3;}
+.schoolTable tbody tr td{padding: 12px 0!important;border-bottom: 1px solid #f3f3f3;}
 .main-sidebar-header{padding: 0px!important;
 .desktop-dark{height: auto!important;}
 }
 #calendar2{font-size: 14px!important;}
+.leaveTable-wrappp{
+    thead tr th{
+        padding: 12px 10px!important;
+    }
+    tbody {
+            tr td{
+                padding: 6px 10px!important;
+        }
+        border-bottom: 1px solid #f3f3f3;
+        &:last-child{
+            border-bottom: 0px;
+        }
+    }
+}
+
 
 .report-modalpopup{
     .ti-modal-body{
-        width: 900px;
+        width: 950px;
     }
      .ti-modal-box{
         max-width: 65%;

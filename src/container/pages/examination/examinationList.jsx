@@ -236,7 +236,7 @@ const ExaminationList = () => {
             {/* Table section start */}
             <div className="exam-table-details">
                     <div className="table-responsive">
-                        <table className="table whitespace-nowrap table-sm min-w-full">
+                        <table className="table table-bordered whitespace-nowrap table-sm min-w-full">
                             <thead><tr className="border-b border-defaultborder">
                                 <th scope="col" className="text-start">#</th>
                                 {/* <th scope="col" className="text-start">Staff Code</th> */}

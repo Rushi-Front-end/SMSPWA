@@ -295,9 +295,9 @@ const [allSchAdmin, setAllSchAdmin] = useState(false)
                     {/* Top section end */}
                     {/* Table section start */}
                     <div className="student-table-details pt-4">
-                        <div className='p-5 border rounded-sm dark:border-white/10 border-gray-200'>
+                        <div className='  rounded-sm dark:border-white/10 border-gray-200'>
                             <div className="table-responsive">
-                                <table className="table whitespace-nowrap table-sm min-w-full">
+                                <table className="table whitespace-nowrap table-bordered table-sm min-w-full">
                                     <thead><tr className="border-b border-defaultborder">
                                         <th scope="col" className="text-start">Sl No.</th>
                                         <th scope="col" className="text-start">	Document Date</th>

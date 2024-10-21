@@ -256,9 +256,9 @@ const StaffLeave = () => {
           </div>
           {/* Table section start */}
           <div className="student-table-details">
-            <div className="p-5 border rounded-sm dark:border-white/10 border-gray-200">
+            <div className=" rounded-sm dark:border-white/10 border-gray-200">
               <div className="table-responsive">
-                <table className="table whitespace-nowrap table-sm min-w-full">
+                <table className="table border whitespace-nowrap table-sm min-w-full leaveTable-wrappp">
                   <thead>
                     <tr className="border-b border-defaultborder">
                       <th scope="col" className="text-start">

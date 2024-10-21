@@ -141,9 +141,9 @@ const AllSchool = () => {
                     {/* Top section end */}
                     {/* Table section start */}
                     <div className="student-table-details">
-                        <div className='p-5 border rounded-sm dark:border-white/10 border-gray-200'>
+                        <div className=' rounded-sm dark:border-white/10 border-gray-200'>
                             <div className="table-responsive">
-                                <table className="table schoolTable whitespace-nowrap table-sm min-w-full">
+                                <table className="table whitespace-nowrap table-bordered table-sm min-w-full">
                                     <thead><tr className="border-b border-defaultborder">
                                         <th scope="col" className="text-start">#</th>
                                         <th scope="col" className="text-start">Name</th>
@@ -185,7 +185,7 @@ allSchAdmin && (<th scope="col" className="text-start">Action</th>)}
                                              isLoading ||  spinner ? (<Loader />) :
                                              Array.isArray(schoolListData?.list) && schoolListData.list.length > 0 ? (  
                                                 schoolListData.list.map((dt, index) => {
-                                                return <tr key={dt.id}>
+                                                return <tr className="border-b border-defaultborder"  key={dt.id}>
                                                     <td>{++index}</td>
                                                     {/* <td>{dt.id}</td> */}
                                                     <td>

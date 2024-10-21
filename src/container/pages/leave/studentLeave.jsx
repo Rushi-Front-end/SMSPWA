@@ -245,9 +245,9 @@ const StudentLeave = () => {
             {/* Top section end */}
             {/* Table section start */}
             <div className="student-table-details">
-                <div className='p-5 border rounded-sm dark:border-white/10 border-gray-200'>
+                <div className='  rounded-sm dark:border-white/10 border-gray-200'>
                     <div className="table-responsive">
-                        <table className="table whitespace-nowrap table-sm min-w-full">
+                        <table className="border table whitespace-nowrap table-sm min-w-full leaveTable-wrappp">
                             <thead>
                                 
                                 

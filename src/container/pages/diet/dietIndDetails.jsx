@@ -132,13 +132,14 @@ const DietIndDetails = ({ selectedDay }) => {
                         <div className="timetable-deatils-wrapper">
                             <h2 className="text-center">{selectedDay}</h2>
                             <div className="table-responsive pt-2">
-                                <table className="table whitespace-nowrap table-sm min-w-full">
+                                <table className="table table-bordered whitespace-nowrap table-sm min-w-full">
                                     <thead>
                                         <tr className="border-b border-defaultborder">
                                             <th scope="col" className="text-start">Type</th>
                                             <th scope="col" className="text-start">Time</th>
                                             <th scope="col" className="text-start">Menu</th>
                                             <th scope="col" className="text-start">Total Calories <br /> (Kcal)</th>
+                                            <th scope="col" className="text-start">Action</th>
                                             {/* <th scope="col" className="text-start">Created By</th>
                                             <th scope="col" className="text-start">Created At</th> */}
                                         </tr>
